@@ -74,7 +74,7 @@ function ScrollingBelt() {
       <div
         className="flex items-center whitespace-nowrap animate-scroll"
         style={{
-          animationDuration: isMobile ? '12.4s' : '17.25s'
+          animationDuration: isMobile ? '16s' : '17.25s'
         }}
       >
         <span className="px-4 text-xl font-black tracking-[0.1em] text-[#1a2332] uppercase leading-none">{beltText} •</span>
@@ -177,7 +177,7 @@ function HowWeHelp() {
   ];
 
   return (
-    <section className="py-24">
+    <section className="py-24 bg-gradient-to-b from-[#B08D57]/10 via-[#B08D57]/5 to-transparent border-y border-[#B08D57]/20">
       <Container>
         <motion.div
           variants={staggerContainer}
