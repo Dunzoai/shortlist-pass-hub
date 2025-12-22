@@ -75,9 +75,9 @@ function ScrollingBelt() {
   return (
     <div className="relative overflow-hidden h-14 bg-gradient-to-r from-[#b39347] via-[#d4b87f] to-[#b39347]">
       <motion.div
-        animate={{ x: ["0%", "-16.666%"] }}
+        animate={{ x: ["0%", "-50%"] }}
         transition={{
-          duration: isMobile ? 3 : 4,
+          duration: isMobile ? 12 : 15,
           repeat: Infinity,
           ease: "linear",
           repeatType: "loop"
