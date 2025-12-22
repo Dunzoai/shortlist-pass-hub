@@ -18,41 +18,56 @@ const staggerContainer = {
   },
 };
 
-function HeroVisual() {
+function HeroBackground() {
   return (
-    <div className="relative w-full h-[400px] lg:h-[500px] flex items-center justify-center">
+    <>
       {/* Ambient brass glow */}
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: [0.06, 0.08, 0.06], scale: [0.8, 1, 0.8] }}
-        transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute w-96 h-96 bg-[#B08D57] rounded-full blur-3xl"
+        transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#B08D57] rounded-full blur-3xl -z-20"
       />
 
-      {/* Light sweep */}
+      {/* Glass panel with vignette */}
       <motion.div
-        initial={{ x: "-100%", opacity: 0 }}
-        animate={{ x: "100%", opacity: [0, 0.03, 0] }}
-        transition={{ duration: 20, repeat: Infinity, ease: "linear", repeatDelay: 5 }}
-        className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent"
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-[500px] -z-10"
+      >
+        <div className="absolute inset-0 bg-[#0F1A2B]/40 backdrop-blur-sm rounded-3xl border border-white/5" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0B1220]/60 rounded-3xl" />
+      </motion.div>
+
+      {/* Subtle gradient drift */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{
+          opacity: [0.02, 0.04, 0.02],
+          backgroundPosition: ["0% 0%", "100% 100%", "0% 0%"]
+        }}
+        transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+        className="absolute inset-0 bg-gradient-to-br from-[#B08D57]/10 via-transparent to-[#B08D57]/5 -z-15"
+        style={{ backgroundSize: "200% 200%" }}
       />
-    </div>
+    </>
   );
 }
 
 function ScrollingBelt() {
-  const beltText = "Posts that get seen • Pages that explain things • Websites that convert • Apps built to solve real problems • Content that sounds like you • Custom builds, not templates • Fewer missed customers";
+  const beltText = "FEWER MISSED CUSTOMERS • PAGES THAT EXPLAIN • POSTS THAT GET SEEN • WEBSITES THAT CONVERT • APPS BUILT FOR REAL PROBLEMS • LOOK LEGIT ONLINE • STAY TOP-OF-MIND";
 
   return (
-    <div className="border-t border-b border-white/[0.08] bg-[#0B1220] h-16 overflow-hidden">
+    <div className="relative overflow-hidden h-16 bg-gradient-to-r from-[#B08D57] via-[#c9a46a] to-[#B08D57]">
       <motion.div
         initial={{ x: 0 }}
         animate={{ x: "-50%" }}
-        transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
+        transition={{ duration: 26, repeat: Infinity, ease: "linear" }}
         className="flex items-center h-full whitespace-nowrap"
       >
         {/* Duplicate for seamless loop */}
-        <span className="text-[15px] font-medium tracking-[0.06em] text-[#A9B4C4]/65 px-4">
+        <span className="text-[15px] font-extrabold tracking-[0.06em] text-[#0B1220] px-6 uppercase">
           {beltText} • {beltText}
         </span>
       </motion.div>
@@ -198,53 +213,49 @@ export default function Home() {
   return (
     <main className="pt-16">
       {/* Hero Section */}
-      <section className="py-24 lg:py-32">
+      <section className="relative py-20 lg:py-28">
+        <HeroBackground />
         <Container>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            {/* Left: Copy */}
+          <div className="relative z-10">
             <motion.div
               initial="hidden"
               animate="visible"
               variants={staggerContainer}
+              className="max-w-4xl mx-auto text-center"
             >
               <motion.h1
                 variants={fadeUpVariant}
                 transition={{ duration: 0.5, ease: "easeOut" }}
-                className="text-[40px] md:text-[56px] lg:text-[64px] font-semibold text-[#F4F6FA] leading-[1.1] mb-6"
+                className="text-[40px] md:text-[56px] lg:text-[64px] font-semibold text-[#F4F6FA] leading-[1.05] mb-6"
               >
-                Small business tools <br className="hidden lg:block" />that actually get used.
+                Look legit. Get chosen. Stay busy.
               </motion.h1>
               <motion.p
                 variants={fadeUpVariant}
                 transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-                className="text-lg lg:text-xl text-[#A9B4C4] mb-8 max-w-[520px]"
+                className="text-lg lg:text-xl text-[#A9B4C4] mb-8 max-w-[720px] mx-auto"
               >
-                We build systems, apps, and digital experiences that make it easier for customers to understand, decide, and take action — without getting lost or distracted.
+                We help local businesses show up clearly online — with websites, social, SmartPages, and custom tools that make it easier for customers to understand, decide, and take action.
               </motion.p>
               <motion.div
                 variants={fadeUpVariant}
                 transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
-                className="flex flex-col sm:flex-row gap-4"
+                className="flex flex-col sm:flex-row gap-4 justify-center"
               >
                 <Link
-                  href="#choose-lane"
+                  href="mailto:hello@shortlistpass.com"
                   className="inline-flex items-center justify-center px-6 py-3 text-sm font-medium bg-[#B08D57] text-[#0B1220] rounded-full hover:bg-[#c9a46a] transition-colors duration-300"
                 >
-                  See how we help
+                  Get a demo
                 </Link>
                 <Link
                   href="/digital"
                   className="inline-flex items-center justify-center px-6 py-3 text-sm font-medium border border-white/10 text-[#F4F6FA] rounded-full hover:border-[#B08D57]/50 hover:text-[#B08D57] transition-all duration-300"
                 >
-                  View our work
+                  See our work
                 </Link>
               </motion.div>
             </motion.div>
-
-            {/* Right: Visual */}
-            <div className="flex justify-center lg:justify-end">
-              <HeroVisual />
-            </div>
           </div>
         </Container>
       </section>
