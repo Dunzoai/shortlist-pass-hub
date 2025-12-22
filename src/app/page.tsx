@@ -58,15 +58,15 @@ function HeroBackground() {
 function ScrollingBelt() {
   const beltText = "GET SEEN • WEBSITES THAT CONVERT • APPS BUILT FOR REAL PROBLEMS • FEWER MISSED CUSTOMERS • LOOK LEGIT";
 
-  // Triple the text for ultra-smooth looping
-  const repeatedText = `${beltText} • ${beltText} • ${beltText}`;
+  // Quadruple the text for seamless infinite looping
+  const repeatedText = `${beltText} • ${beltText} • ${beltText} • ${beltText}`;
 
   return (
     <div className="relative overflow-hidden h-14 bg-gradient-to-r from-[#b39347] via-[#d4b87f] to-[#b39347]">
       <motion.div
-        animate={{ x: [0, "-33.333%"] }}
+        animate={{ x: [0, "-25%"] }}
         transition={{
-          duration: 8,
+          duration: 12,
           repeat: Infinity,
           ease: "linear",
           repeatType: "loop"
@@ -215,8 +215,9 @@ export default function Home() {
                 transition={{ duration: 0.5, ease: "easeOut" }}
                 className="text-[40px] md:text-[56px] lg:text-[64px] font-semibold text-[#F4F6FA] leading-[1.05] mb-6"
               >
+                <span className="block lg:inline">Look legit.</span>{" "}
                 <span className="block">
-                  Look legit. Get{" "}
+                  <span className="lg:inline">Get </span>
                   <span className="relative inline-block px-2">
                     chosen.
                     {/* SVG circle animation */}
@@ -239,7 +240,7 @@ export default function Home() {
                         cx="100"
                         cy="40"
                         rx="115"
-                        ry="36"
+                        ry="42"
                         stroke="#B08D57"
                         strokeWidth="3.5"
                         strokeLinecap="round"
