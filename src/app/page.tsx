@@ -230,7 +230,7 @@ function ProofStrip() {
             transition={{ duration: 0.5, ease: "easeOut" }}
             className="text-3xl font-semibold text-[#F4F6FA] mb-8"
           >
-            Built for real operators.
+            Built for real business owners.
           </motion.h2>
 
           {/* Chips */}
@@ -290,7 +290,7 @@ export default function Home() {
       title: "SmartPages",
       tagline: "Your website-light that's intelligent.",
       description: "A branded site that knows your business inside and out and can answer questions in chat so customers don't get bored looking for answers. Immediate responses 24/7 = better conversions, plus we keep all your important links tidy in one cool-ass smart page.",
-      href: "/smartpages",
+      href: "/shorty",
     },
     {
       title: "Websites & Apps",
