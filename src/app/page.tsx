@@ -231,7 +231,8 @@ export default function Home() {
                         left: "-24px",
                         top: "-14px",
                         overflow: "visible",
-                        transform: "rotate(-2deg)"
+                        transform: "rotate(2deg)",
+                        filter: "drop-shadow(0 0 8px rgba(176, 141, 87, 0.4))"
                       }}
                     >
                       <motion.ellipse
