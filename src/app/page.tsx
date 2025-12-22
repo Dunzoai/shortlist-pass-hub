@@ -56,7 +56,7 @@ function HeroBackground() {
 }
 
 function ScrollingBelt() {
-  const beltText = "FEWER MISSED CUSTOMERS • PAGES THAT EXPLAIN • POSTS THAT GET SEEN • WEBSITES THAT CONVERT • APPS BUILT FOR REAL PROBLEMS • LOOK LEGIT ONLINE • STAY TOP-OF-MIND";
+  const beltText = "GET SEEN • WEBSITES THAT CONVERT • APPS BUILT FOR REAL PROBLEMS • FEWER MISSED CUSTOMERS • LOOK LEGIT";
 
   // Triple the text for ultra-smooth looping
   const repeatedText = `${beltText} • ${beltText} • ${beltText}`;
@@ -66,7 +66,7 @@ function ScrollingBelt() {
       <motion.div
         animate={{ x: [0, "-33.333%"] }}
         transition={{
-          duration: 22,
+          duration: 16,
           repeat: Infinity,
           ease: "linear",
           repeatType: "loop"
@@ -215,7 +215,35 @@ export default function Home() {
                 transition={{ duration: 0.5, ease: "easeOut" }}
                 className="text-[40px] md:text-[56px] lg:text-[64px] font-semibold text-[#F4F6FA] leading-[1.05] mb-6"
               >
-                Look legit. Get chosen. Stay busy.
+                <span className="block">
+                  Look legit.{" "}
+                  <span className="relative inline-block">
+                    Get chosen.
+                    {/* SVG circle animation */}
+                    <motion.svg
+                      className="absolute inset-0 w-full h-full pointer-events-none"
+                      viewBox="0 0 300 100"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      style={{ overflow: "visible" }}
+                    >
+                      <motion.ellipse
+                        cx="150"
+                        cy="50"
+                        rx="145"
+                        ry="45"
+                        stroke="#B08D57"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        fill="none"
+                        initial={{ pathLength: 0, opacity: 0 }}
+                        animate={{ pathLength: 1, opacity: 0.7 }}
+                        transition={{ duration: 1.1, delay: 0.8, ease: "easeInOut" }}
+                      />
+                    </motion.svg>
+                  </span>
+                </span>
+                <span className="block">Stay busy.</span>
               </motion.h1>
               <motion.p
                 variants={fadeUpVariant}
