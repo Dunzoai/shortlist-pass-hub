@@ -216,9 +216,9 @@ export default function Home() {
                 className="text-[40px] md:text-[56px] lg:text-[64px] font-semibold text-[#F4F6FA] leading-[1.05] mb-6"
               >
                 <span className="block">
-                  Look legit.{" "}
-                  <span className="relative inline-block px-4">
-                    Get chosen.
+                  Look legit. Get{" "}
+                  <span className="relative inline-block px-2">
+                    chosen.
                     {/* SVG circle animation */}
                     <motion.svg
                       className="absolute pointer-events-none"
@@ -226,18 +226,18 @@ export default function Home() {
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
                       style={{
-                        width: "calc(100% + 40px)",
-                        height: "calc(100% + 32px)",
-                        left: "-20px",
-                        top: "-16px",
+                        width: "calc(100% + 32px)",
+                        height: "calc(100% + 24px)",
+                        left: "-16px",
+                        top: "-12px",
                         overflow: "visible",
                         transform: "rotate(-2deg)"
                       }}
                     >
                       <motion.ellipse
                         cx="100"
-                        cy="42"
-                        rx="93"
+                        cy="40"
+                        rx="96"
                         ry="36"
                         stroke="#B08D57"
                         strokeWidth="3.5"
