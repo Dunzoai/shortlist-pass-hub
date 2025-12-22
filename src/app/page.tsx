@@ -75,15 +75,15 @@ function ScrollingBelt() {
   );
 }
 
-interface FeatureCardProps {
+interface ServiceTileProps {
   title: string;
-  oneLiner: string;
-  bullets: string[];
+  tagline: string;
+  description: string;
   href: string;
   index: number;
 }
 
-function FeatureCard({ title, oneLiner, bullets, href, index }: FeatureCardProps) {
+function ServiceTile({ title, tagline, description, href, index }: ServiceTileProps) {
   return (
     <motion.div
       variants={fadeUpVariant}
@@ -93,29 +93,10 @@ function FeatureCard({ title, oneLiner, bullets, href, index }: FeatureCardProps
       transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
     >
       <Link href={href} className="group block h-full">
-        <div className="h-full p-6 bg-[#0F1A2B] border border-white/10 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#B08D57]/30 hover:shadow-lg hover:shadow-[#B08D57]/5">
-          <div className="flex items-center gap-2 mb-3">
-            <h3 className="text-xl font-semibold text-[#F4F6FA]">{title}</h3>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              stroke="currentColor"
-              className="w-4 h-4 text-[#B08D57] transition-transform duration-300 group-hover:translate-x-0.5"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-            </svg>
-          </div>
-          <p className="text-base text-[#A9B4C4] mb-4">{oneLiner}</p>
-          <ul className="space-y-2">
-            {bullets.map((bullet) => (
-              <li key={bullet} className="flex items-center gap-2 text-sm text-[#A9B4C4]">
-                <span className="w-1 h-1 rounded-full bg-[#B08D57]" />
-                {bullet}
-              </li>
-            ))}
-          </ul>
+        <div className="h-full p-8 bg-[#0F1A2B] border border-white/10 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#B08D57]/30 hover:shadow-lg hover:shadow-[#B08D57]/5">
+          <h3 className="text-2xl font-semibold text-[#F4F6FA] mb-3">{title}</h3>
+          <p className="text-base font-medium text-[#B08D57] mb-4">{tagline}</p>
+          <p className="text-base text-[#A9B4C4] leading-relaxed">{description}</p>
         </div>
       </Link>
     </motion.div>
@@ -189,23 +170,23 @@ function Footer() {
 }
 
 export default function Home() {
-  const features = [
+  const services = [
     {
       title: "Social",
-      oneLiner: "Stay visible without sounding generic.",
-      bullets: ["Posts, reels, stories", "Managed by real people"],
+      tagline: "Stay visible without sounding generic.",
+      description: "Posts, reels, and content that sound like you — not a template or AI sludge — so customers remember you when it's time to choose.",
       href: "/social",
     },
     {
       title: "SmartPages",
-      oneLiner: "One clear destination for your business.",
-      bullets: ["No link chasing", "No confusion"],
+      tagline: "One clear place for customers to get answers.",
+      description: "A fast, simple page that explains what you do, where to find you, and how to take the next step — without chasing links or DMing back and forth.",
       href: "/smartpages",
     },
     {
       title: "Websites & Apps",
-      oneLiner: "When the problem needs more than a template.",
-      bullets: ["Custom websites", "Purpose-built apps"],
+      tagline: "When the problem needs more than a template.",
+      description: "Custom websites and lightweight apps built around how your business actually works — not cookie-cutter themes that all look the same.",
       href: "/digital",
     },
   ];
@@ -233,28 +214,10 @@ export default function Home() {
               <motion.p
                 variants={fadeUpVariant}
                 transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-                className="text-lg lg:text-xl text-[#A9B4C4] mb-8 max-w-[720px] mx-auto"
+                className="text-lg lg:text-xl text-[#A9B4C4] max-w-[720px] mx-auto"
               >
                 We help local businesses show up clearly online — with websites, social, SmartPages, and custom tools that make it easier for customers to understand, decide, and take action.
               </motion.p>
-              <motion.div
-                variants={fadeUpVariant}
-                transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
-                className="flex flex-col sm:flex-row gap-4 justify-center"
-              >
-                <Link
-                  href="mailto:hello@shortlistpass.com"
-                  className="inline-flex items-center justify-center px-6 py-3 text-sm font-medium bg-[#B08D57] text-[#0B1220] rounded-full hover:bg-[#c9a46a] transition-colors duration-300"
-                >
-                  Get a demo
-                </Link>
-                <Link
-                  href="/digital"
-                  className="inline-flex items-center justify-center px-6 py-3 text-sm font-medium border border-white/10 text-[#F4F6FA] rounded-full hover:border-[#B08D57]/50 hover:text-[#B08D57] transition-all duration-300"
-                >
-                  See our work
-                </Link>
-              </motion.div>
             </motion.div>
           </div>
         </Container>
@@ -263,21 +226,12 @@ export default function Home() {
       {/* Scrolling Belt */}
       <ScrollingBelt />
 
-      {/* Choose Your Lane Section */}
-      <section id="choose-lane" className="py-32 border-t border-white/10">
+      {/* Service Tiles */}
+      <section className="py-24">
         <Container>
-          <motion.h2
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className="text-3xl font-semibold text-[#F4F6FA] text-center mb-16"
-          >
-            Choose your lane
-          </motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {features.map((feature, index) => (
-              <FeatureCard key={feature.title} {...feature} index={index} />
+            {services.map((service, index) => (
+              <ServiceTile key={service.title} {...service} index={index} />
             ))}
           </div>
         </Container>
