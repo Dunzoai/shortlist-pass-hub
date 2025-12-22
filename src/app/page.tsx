@@ -62,7 +62,7 @@ function ScrollingBelt() {
   const repeatedText = `${beltText} • ${beltText} • ${beltText}`;
 
   return (
-    <div className="relative overflow-hidden h-20 bg-gradient-to-r from-[#9d7847] via-[#B08D57] to-[#c9a46a]">
+    <div className="relative overflow-hidden h-14 bg-gradient-to-r from-[#b39347] via-[#d4b87f] to-[#b39347]">
       <motion.div
         animate={{ x: [0, "-33.333%"] }}
         transition={{
@@ -71,9 +71,9 @@ function ScrollingBelt() {
           ease: "linear",
           repeatType: "loop"
         }}
-        className="flex items-center h-full whitespace-nowrap"
+        className="flex items-center justify-center h-full whitespace-nowrap"
       >
-        <span className="text-lg font-extrabold tracking-[0.08em] text-[#0F1A2B] px-8 uppercase">
+        <span className="text-xl font-black tracking-[0.1em] text-[#0F1A2B] px-8 uppercase leading-none">
           {repeatedText}
         </span>
       </motion.div>
