@@ -226,10 +226,10 @@ export default function Home() {
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
                       style={{
-                        width: "calc(100% + 32px)",
-                        height: "calc(100% + 24px)",
-                        left: "-16px",
-                        top: "-12px",
+                        width: "calc(100% + 48px)",
+                        height: "calc(100% + 28px)",
+                        left: "-24px",
+                        top: "-14px",
                         overflow: "visible",
                         transform: "rotate(-2deg)"
                       }}
@@ -237,7 +237,7 @@ export default function Home() {
                       <motion.ellipse
                         cx="100"
                         cy="40"
-                        rx="96"
+                        rx="115"
                         ry="36"
                         stroke="#B08D57"
                         strokeWidth="3.5"
