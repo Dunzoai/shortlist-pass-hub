@@ -188,7 +188,7 @@ function HowWeHelp() {
           <motion.h2
             variants={fadeUpVariant}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="text-3xl font-semibold text-[#0B1220] mb-12 text-center"
+            className="text-[32px] md:text-[40px] lg:text-[48px] font-semibold text-[#0B1220] leading-[1.05] mb-12 text-center"
           >
             How we help
           </motion.h2>
