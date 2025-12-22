@@ -127,9 +127,9 @@ function HelpCard({ icon, title, description, index }: HelpCardProps) {
       whileInView="visible"
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
-      className="group p-6 bg-[#0F1A2B] border border-white/10 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#B08D57]/30 hover:shadow-lg hover:shadow-[#B08D57]/5"
+      className="group p-6 bg-[#0F1A2B] border border-[#1a2332]/30 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#0B1220] hover:shadow-lg hover:shadow-[#0B1220]/20"
     >
-      <div className="mb-4 text-[#B08D57]">{icon}</div>
+      <div className="mb-4 text-[#d4b87f]">{icon}</div>
       <h3 className="text-xl font-semibold text-[#F4F6FA] mb-3">{title}</h3>
       <p className="text-base text-[#A9B4C4] leading-relaxed">{description}</p>
     </motion.div>
@@ -177,7 +177,7 @@ function HowWeHelp() {
   ];
 
   return (
-    <section className="py-24 bg-[#B08D57]/15 border-y border-[#B08D57]/30">
+    <section className="py-24 bg-gradient-to-b from-[#b39347] via-[#d4b87f] to-[#b39347]">
       <Container>
         <motion.div
           variants={staggerContainer}
@@ -188,7 +188,7 @@ function HowWeHelp() {
           <motion.h2
             variants={fadeUpVariant}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="text-3xl font-semibold text-[#F4F6FA] mb-12 text-center"
+            className="text-3xl font-semibold text-[#0B1220] mb-12 text-center"
           >
             How we help
           </motion.h2>
@@ -202,7 +202,7 @@ function HowWeHelp() {
           <motion.p
             variants={fadeUpVariant}
             transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
-            className="text-center text-sm text-[#A9B4C4]"
+            className="text-center text-sm text-[#1a2332] font-medium"
           >
             Each service dives deeper — pick what you need.
           </motion.p>
