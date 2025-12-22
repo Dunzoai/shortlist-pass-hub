@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Container } from "@/components/Container";
+import { useState, useEffect } from "react";
 
 const fadeUpVariant = {
   hidden: { opacity: 0, y: 12 },
@@ -56,7 +57,17 @@ function HeroBackground() {
 }
 
 function ScrollingBelt() {
-  const beltText = "GET SEEN • WEBSITES THAT CONVERT • APPS BUILT FOR REAL PROBLEMS • FEWER MISSED CUSTOMERS • LOOK LEGIT";
+  const beltText = "GET SEEN • LOOK LEGIT • WEBSITES THAT CONVERT • POSTS THAT SOUND LIKE YOU • TOOLS BUILT FOR REAL PROBLEMS • INSTANT CUSTOMER ANSWERS • ONE CLEAR PLACE FOR CUSTOMERS • FEWER MISSED CUSTOMERS • MORE ORDERS • BUSY WHEN IT MATTERS";
+
+  // Detect mobile for faster scroll speed
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Quadruple the text for seamless infinite looping
   const repeatedText = `${beltText} • ${beltText} • ${beltText} • ${beltText}`;
@@ -66,7 +77,7 @@ function ScrollingBelt() {
       <motion.div
         animate={{ x: [0, "-25%"] }}
         transition={{
-          duration: 12,
+          duration: isMobile ? 6 : 12,
           repeat: Infinity,
           ease: "linear",
           repeatType: "loop"
