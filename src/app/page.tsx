@@ -20,60 +20,41 @@ const staggerContainer = {
 
 function HeroVisual() {
   return (
-    <div className="relative flex justify-center lg:justify-end">
-      {/* Radial glow */}
-      <div className="absolute inset-0 -z-10 blur-3xl opacity-15">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-[#B08D57] rounded-full" />
-      </div>
-
-      {/* SmartPage Preview Panel */}
+    <div className="relative w-full h-[400px] lg:h-[500px] flex items-center justify-center">
+      {/* Ambient brass glow */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-        className="relative w-[280px] h-[560px] bg-[#0F1A2B] border border-white/10 rounded-3xl p-6 shadow-2xl"
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: [0.06, 0.08, 0.06], scale: [0.8, 1, 0.8] }}
+        transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute w-96 h-96 bg-[#B08D57] rounded-full blur-3xl"
+      />
+
+      {/* Light sweep */}
+      <motion.div
+        initial={{ x: "-100%", opacity: 0 }}
+        animate={{ x: "100%", opacity: [0, 0.03, 0] }}
+        transition={{ duration: 20, repeat: Infinity, ease: "linear", repeatDelay: 5 }}
+        className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent"
+      />
+    </div>
+  );
+}
+
+function ScrollingBelt() {
+  const beltText = "Posts that get seen • Pages that explain things • Websites that convert • Apps built to solve real problems • Content that sounds like you • Custom builds, not templates • Fewer missed customers";
+
+  return (
+    <div className="border-t border-b border-white/[0.08] bg-[#0B1220] h-16 overflow-hidden">
+      <motion.div
+        initial={{ x: 0 }}
+        animate={{ x: "-50%" }}
+        transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
+        className="flex items-center h-full whitespace-nowrap"
       >
-        {/* Phone notch area */}
-        <div className="flex items-center justify-between mb-6">
-          <span className="text-xs font-semibold text-[#F4F6FA]">The Mill Taproom</span>
-          <div className="flex gap-1">
-            <div className="w-1 h-1 rounded-full bg-[#B08D57]" />
-            <div className="w-1 h-1 rounded-full bg-[#B08D57]" />
-            <div className="w-1 h-1 rounded-full bg-[#B08D57]/40" />
-          </div>
-        </div>
-
-        {/* Content area with staggered reveal */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" }}
-          className="space-y-4"
-        >
-          {/* Quick action links */}
-          <div className="space-y-2">
-            <div className="flex items-center gap-3 px-4 py-3 bg-[#0B1220] border border-white/5 rounded-xl">
-              <div className="w-2 h-2 rounded-full bg-[#B08D57]" />
-              <span className="text-sm text-[#F4F6FA]">Today's Hours</span>
-            </div>
-            <div className="flex items-center gap-3 px-4 py-3 bg-[#0B1220] border border-white/5 rounded-xl">
-              <div className="w-2 h-2 rounded-full bg-[#B08D57]" />
-              <span className="text-sm text-[#F4F6FA]">This Week's Menu</span>
-            </div>
-            <div className="flex items-center gap-3 px-4 py-3 bg-[#0B1220] border border-white/5 rounded-xl">
-              <div className="w-2 h-2 rounded-full bg-[#B08D57]" />
-              <span className="text-sm text-[#F4F6FA]">Reserve a Table</span>
-            </div>
-          </div>
-
-          {/* Info section */}
-          <div className="pt-4 border-t border-white/5">
-            <div className="text-xs text-[#A9B4C4] mb-2">Latest Update</div>
-            <div className="text-sm text-[#F4F6FA] leading-relaxed">
-              Live music tonight at 7pm. Kitchen open till 10.
-            </div>
-          </div>
-        </motion.div>
+        {/* Duplicate for seamless loop */}
+        <span className="text-[15px] font-medium tracking-[0.06em] text-[#A9B4C4]/65 px-4">
+          {beltText} • {beltText}
+        </span>
       </motion.div>
     </div>
   );
@@ -127,11 +108,7 @@ function FeatureCard({ title, oneLiner, bullets, href, index }: FeatureCardProps
 }
 
 function ProofStrip() {
-  const chips = ["Food trucks", "Taprooms", "Salons", "Contractors", "Studios"];
-  const proofBlocks = [
-    { title: "Speed", desc: "Updates in minutes, not days." },
-    { title: "Clarity", desc: "Customers stop DM'ing the same questions." },
-  ];
+  const chips = ["Food Trucks", "Taprooms", "Restaurants", "Salons", "Service Businesses"];
 
   return (
     <section className="py-24">
@@ -148,14 +125,14 @@ function ProofStrip() {
             transition={{ duration: 0.5, ease: "easeOut" }}
             className="text-3xl font-semibold text-[#F4F6FA] mb-8"
           >
-            Built for operators who move fast.
+            Built for real operators.
           </motion.h2>
 
           {/* Chips */}
           <motion.div
             variants={fadeUpVariant}
             transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-            className="flex flex-wrap justify-center gap-3 mb-12"
+            className="flex flex-wrap justify-center gap-3 mb-6"
           >
             {chips.map((chip) => (
               <span
@@ -167,22 +144,14 @@ function ProofStrip() {
             ))}
           </motion.div>
 
-          {/* Proof blocks */}
-          <motion.div
+          {/* Optional reinforcement line */}
+          <motion.p
             variants={fadeUpVariant}
-            transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
-            className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-xl mx-auto"
+            transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
+            className="text-base text-[#A9B4C4]/80"
           >
-            {proofBlocks.map((block) => (
-              <div
-                key={block.title}
-                className="p-6 bg-[#0F1A2B] border border-white/10 rounded-xl text-left"
-              >
-                <h3 className="text-lg font-semibold text-[#B08D57] mb-2">{block.title}</h3>
-                <p className="text-sm text-[#A9B4C4]">{block.desc}</p>
-              </div>
-            ))}
-          </motion.div>
+            Designed around how customers actually behave.
+          </motion.p>
         </motion.div>
       </Container>
     </section>
@@ -208,20 +177,20 @@ export default function Home() {
   const features = [
     {
       title: "Social",
-      oneLiner: "Consistent content that keeps you top-of-mind.",
-      bullets: ["Posts + reels + stories", "Local-first strategy"],
+      oneLiner: "Stay visible without sounding generic.",
+      bullets: ["Posts, reels, stories", "Managed by real people"],
       href: "/social",
     },
     {
       title: "SmartPages",
-      oneLiner: "Answer the next question before it's asked.",
-      bullets: ["Decision compression at the moment of intent", "Reduce friction between interest and action"],
+      oneLiner: "One clear destination for your business.",
+      bullets: ["No link chasing", "No confusion"],
       href: "/smartpages",
     },
     {
       title: "Websites & Apps",
-      oneLiner: "When templates aren't enough.",
-      bullets: ["Fast, modern sites", "Lightweight custom builds"],
+      oneLiner: "When the problem needs more than a template.",
+      bullets: ["Custom websites", "Purpose-built apps"],
       href: "/digital",
     },
   ];
@@ -241,23 +210,16 @@ export default function Home() {
               <motion.h1
                 variants={fadeUpVariant}
                 transition={{ duration: 0.5, ease: "easeOut" }}
-                className="text-4xl md:text-5xl lg:text-6xl font-semibold text-[#F4F6FA] leading-tight mb-6"
+                className="text-[40px] md:text-[56px] lg:text-[64px] font-semibold text-[#F4F6FA] leading-[1.1] mb-6"
               >
                 Small business tools <br className="hidden lg:block" />that actually get used.
               </motion.h1>
               <motion.p
                 variants={fadeUpVariant}
                 transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-                className="text-lg lg:text-xl text-[#A9B4C4] mb-3 max-w-lg"
+                className="text-lg lg:text-xl text-[#A9B4C4] mb-8 max-w-[520px]"
               >
-                We compress decisions at the moment of intent — so interested customers don't leave confused.
-              </motion.p>
-              <motion.p
-                variants={fadeUpVariant}
-                transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
-                className="text-sm text-[#A9B4C4]/70 mb-8 max-w-lg"
-              >
-                Social content, SmartPages, and custom builds that reduce friction between discovery and action.
+                We build systems, apps, and digital experiences that make it easier for customers to understand, decide, and take action — without getting lost or distracted.
               </motion.p>
               <motion.div
                 variants={fadeUpVariant}
@@ -265,10 +227,10 @@ export default function Home() {
                 className="flex flex-col sm:flex-row gap-4"
               >
                 <Link
-                  href="/smartpages"
+                  href="#choose-lane"
                   className="inline-flex items-center justify-center px-6 py-3 text-sm font-medium bg-[#B08D57] text-[#0B1220] rounded-full hover:bg-[#c9a46a] transition-colors duration-300"
                 >
-                  See SmartPages
+                  See how we help
                 </Link>
                 <Link
                   href="/digital"
@@ -287,8 +249,11 @@ export default function Home() {
         </Container>
       </section>
 
+      {/* Scrolling Belt */}
+      <ScrollingBelt />
+
       {/* Choose Your Lane Section */}
-      <section className="py-32 border-t border-white/10">
+      <section id="choose-lane" className="py-32 border-t border-white/10">
         <Container>
           <motion.h2
             initial={{ opacity: 0, y: 12 }}
