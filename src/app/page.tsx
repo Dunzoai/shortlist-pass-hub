@@ -69,15 +69,15 @@ function ScrollingBelt() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Triple for seamless loop - shows all 10 messages then repeats
-  const repeatedText = `${beltText} • ${beltText} • ${beltText}`;
+  // Just 2 copies - one visible, one waiting
+  const repeatedText = `${beltText} • ${beltText}`;
 
   return (
     <div className="relative overflow-hidden h-14 bg-gradient-to-r from-[#b39347] via-[#d4b87f] to-[#b39347]">
       <motion.div
-        animate={{ x: ["0%", "-33.333%"] }}
+        animate={{ x: ["0%", "-50%"] }}
         transition={{
-          duration: isMobile ? 10 : 12,
+          duration: isMobile ? 8 : 10,
           repeat: Infinity,
           ease: "linear",
           repeatType: "loop"
