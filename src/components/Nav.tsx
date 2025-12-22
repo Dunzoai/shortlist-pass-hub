@@ -26,7 +26,7 @@ export function Nav() {
             Social
           </Link>
           <Link
-            href="/shorty"
+            href="/smartpages"
             className="text-sm text-[#A9B4C4] px-4 py-2 rounded-full transition-all duration-300 hover:bg-[#B08D57] hover:text-[#0B1220]"
           >
             SmartPages
@@ -74,7 +74,7 @@ export function Nav() {
               Social
             </Link>
             <Link
-              href="/shorty"
+              href="/smartpages"
               className="text-sm text-[#A9B4C4] hover:text-[#F4F6FA] transition-colors"
               onClick={() => setMobileOpen(false)}
             >

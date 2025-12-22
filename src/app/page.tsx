@@ -290,7 +290,7 @@ export default function Home() {
       title: "SmartPages",
       tagline: "Your website-light that's intelligent.",
       description: "A branded site that knows your business inside and out and can answer questions in chat so customers don't get bored looking for answers. Immediate responses 24/7 = better conversions, plus we keep all your important links tidy in one cool-ass smart page.",
-      href: "/shorty",
+      href: "/smartpages",
     },
     {
       title: "Websites & Apps",
