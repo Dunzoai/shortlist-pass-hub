@@ -18,22 +18,22 @@ export function Nav() {
         </Link>
 
         {/* Desktop Nav Links */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-4">
           <Link
             href="/social"
-            className="text-sm text-[#A9B4C4] hover:text-[#F4F6FA] transition-colors duration-300"
+            className="text-sm text-[#A9B4C4] px-4 py-2 rounded-full transition-all duration-300 hover:bg-[#B08D57] hover:text-[#0B1220]"
           >
             Social
           </Link>
           <Link
             href="/smartpages"
-            className="text-sm text-[#A9B4C4] hover:text-[#F4F6FA] transition-colors duration-300"
+            className="text-sm text-[#A9B4C4] px-4 py-2 rounded-full transition-all duration-300 hover:bg-[#B08D57] hover:text-[#0B1220]"
           >
             SmartPages
           </Link>
           <Link
             href="/digital"
-            className="text-sm text-[#A9B4C4] hover:text-[#F4F6FA] transition-colors duration-300"
+            className="text-sm text-[#A9B4C4] px-4 py-2 rounded-full transition-all duration-300 hover:bg-[#B08D57] hover:text-[#0B1220]"
           >
             Digital
           </Link>

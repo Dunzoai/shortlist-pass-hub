@@ -66,7 +66,7 @@ function ScrollingBelt() {
       <motion.div
         animate={{ x: [0, "-33.333%"] }}
         transition={{
-          duration: 10,
+          duration: 8,
           repeat: Infinity,
           ease: "linear",
           repeatType: "loop"
@@ -99,10 +99,10 @@ function ServiceTile({ title, tagline, description, href, index }: ServiceTilePr
       transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
     >
       <Link href={href} className="group block h-full">
-        <div className="h-full p-8 bg-[#0F1A2B] border border-white/10 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#B08D57]/30 hover:shadow-lg hover:shadow-[#B08D57]/5">
-          <h3 className="text-2xl font-semibold text-[#F4F6FA] mb-3">{title}</h3>
-          <p className="text-base font-medium text-[#B08D57] mb-4">{tagline}</p>
-          <p className="text-base text-[#A9B4C4] leading-relaxed">{description}</p>
+        <div className="h-full p-8 bg-[#0F1A2B] border border-white/10 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#B08D57]/30 hover:shadow-lg hover:shadow-[#B08D57]/5 hover:bg-[#B08D57]">
+          <h3 className="text-2xl font-semibold text-[#F4F6FA] mb-3 transition-colors duration-300 group-hover:text-[#0B1220]">{title}</h3>
+          <p className="text-base font-medium text-[#B08D57] mb-4 transition-colors duration-300 group-hover:text-[#0B1220]">{tagline}</p>
+          <p className="text-base text-[#A9B4C4] leading-relaxed transition-colors duration-300 group-hover:text-[#0B1220]">{description}</p>
         </div>
       </Link>
     </motion.div>
@@ -217,27 +217,27 @@ export default function Home() {
               >
                 <span className="block">
                   Look legit.{" "}
-                  <span className="relative inline-block">
+                  <span className="relative inline-block px-4">
                     Get chosen.
                     {/* SVG circle animation */}
                     <motion.svg
                       className="absolute pointer-events-none"
-                      viewBox="0 0 100 100"
+                      viewBox="0 0 200 80"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
                       style={{
-                        width: "calc(100% + 32px)",
-                        height: "calc(100% + 24px)",
-                        left: "-16px",
-                        top: "-12px",
+                        width: "calc(100% + 40px)",
+                        height: "calc(100% + 32px)",
+                        left: "-20px",
+                        top: "-16px",
                         overflow: "visible"
                       }}
                     >
                       <motion.ellipse
-                        cx="50"
-                        cy="50"
-                        rx="47"
-                        ry="40"
+                        cx="100"
+                        cy="40"
+                        rx="95"
+                        ry="35"
                         stroke="#B08D57"
                         strokeWidth="3.5"
                         strokeLinecap="round"
