@@ -58,17 +58,23 @@ function HeroBackground() {
 function ScrollingBelt() {
   const beltText = "FEWER MISSED CUSTOMERS • PAGES THAT EXPLAIN • POSTS THAT GET SEEN • WEBSITES THAT CONVERT • APPS BUILT FOR REAL PROBLEMS • LOOK LEGIT ONLINE • STAY TOP-OF-MIND";
 
+  // Triple the text for ultra-smooth looping
+  const repeatedText = `${beltText} • ${beltText} • ${beltText}`;
+
   return (
-    <div className="relative overflow-hidden h-16 bg-gradient-to-r from-[#B08D57] via-[#c9a46a] to-[#B08D57]">
+    <div className="relative overflow-hidden h-20 bg-gradient-to-r from-[#9d7847] via-[#B08D57] to-[#c9a46a]">
       <motion.div
-        initial={{ x: 0 }}
-        animate={{ x: "-50%" }}
-        transition={{ duration: 26, repeat: Infinity, ease: "linear" }}
+        animate={{ x: [0, "-33.333%"] }}
+        transition={{
+          duration: 22,
+          repeat: Infinity,
+          ease: "linear",
+          repeatType: "loop"
+        }}
         className="flex items-center h-full whitespace-nowrap"
       >
-        {/* Duplicate for seamless loop */}
-        <span className="text-[15px] font-extrabold tracking-[0.06em] text-[#0B1220] px-6 uppercase">
-          {beltText} • {beltText}
+        <span className="text-lg font-extrabold tracking-[0.08em] text-[#0F1A2B] px-8 uppercase">
+          {repeatedText}
         </span>
       </motion.div>
     </div>
@@ -179,8 +185,8 @@ export default function Home() {
     },
     {
       title: "SmartPages",
-      tagline: "One clear place for customers to get answers.",
-      description: "A fast, simple page that explains what you do, where to find you, and how to take the next step — without chasing links or DMing back and forth.",
+      tagline: "Your website-light that's intelligent.",
+      description: "A branded site that knows your business inside and out and can answer questions in chat so customers don't get bored looking for answers. Immediate responses 24/7 = better conversions, plus we keep all your important links tidy in one cool-ass smart page.",
       href: "/smartpages",
     },
     {
