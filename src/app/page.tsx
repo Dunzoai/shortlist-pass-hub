@@ -73,7 +73,7 @@ function ScrollingBelt() {
         }}
         className="flex items-center justify-center h-full whitespace-nowrap"
       >
-        <span className="text-xl font-black tracking-[0.1em] text-[#0F1A2B] px-8 uppercase leading-none">
+        <span className="text-xl font-black tracking-[0.1em] text-[#1a2332] px-8 uppercase leading-none">
           {repeatedText}
         </span>
       </motion.div>
@@ -217,23 +217,29 @@ export default function Home() {
               >
                 <span className="block">
                   Look legit.{" "}
-                  <span className="relative inline-block">
+                  <span className="relative inline-block px-2">
                     Get chosen.
                     {/* SVG circle animation */}
                     <motion.svg
-                      className="absolute inset-0 w-full h-full pointer-events-none"
-                      viewBox="0 0 300 100"
+                      className="absolute pointer-events-none"
+                      viewBox="0 0 100 100"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
-                      style={{ overflow: "visible" }}
+                      style={{
+                        width: "calc(100% + 24px)",
+                        height: "calc(100% + 16px)",
+                        left: "-12px",
+                        top: "-8px",
+                        overflow: "visible"
+                      }}
                     >
                       <motion.ellipse
-                        cx="150"
+                        cx="50"
                         cy="50"
-                        rx="145"
-                        ry="45"
+                        rx="48"
+                        ry="42"
                         stroke="#B08D57"
-                        strokeWidth="3"
+                        strokeWidth="2.5"
                         strokeLinecap="round"
                         fill="none"
                         initial={{ pathLength: 0, opacity: 0 }}
