@@ -43,3 +43,12 @@ html {
 .animate-scroll {
   animation: scroll linear infinite;
 }
+
+@keyframes scrollText {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
