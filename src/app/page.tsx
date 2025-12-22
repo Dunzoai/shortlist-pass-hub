@@ -66,7 +66,7 @@ function ScrollingBelt() {
       <motion.div
         animate={{ x: [0, "-33.333%"] }}
         transition={{
-          duration: 16,
+          duration: 10,
           repeat: Infinity,
           ease: "linear",
           repeatType: "loop"
@@ -217,7 +217,7 @@ export default function Home() {
               >
                 <span className="block">
                   Look legit.{" "}
-                  <span className="relative inline-block px-2">
+                  <span className="relative inline-block">
                     Get chosen.
                     {/* SVG circle animation */}
                     <motion.svg
@@ -226,25 +226,25 @@ export default function Home() {
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
                       style={{
-                        width: "calc(100% + 24px)",
-                        height: "calc(100% + 16px)",
-                        left: "-12px",
-                        top: "-8px",
+                        width: "calc(100% + 32px)",
+                        height: "calc(100% + 24px)",
+                        left: "-16px",
+                        top: "-12px",
                         overflow: "visible"
                       }}
                     >
                       <motion.ellipse
                         cx="50"
                         cy="50"
-                        rx="48"
-                        ry="42"
+                        rx="47"
+                        ry="40"
                         stroke="#B08D57"
-                        strokeWidth="2.5"
+                        strokeWidth="3.5"
                         strokeLinecap="round"
                         fill="none"
                         initial={{ pathLength: 0, opacity: 0 }}
-                        animate={{ pathLength: 1, opacity: 0.7 }}
-                        transition={{ duration: 1.1, delay: 0.8, ease: "easeInOut" }}
+                        animate={{ pathLength: 1, opacity: 0.8 }}
+                        transition={{ duration: 1.8, delay: 0.6, ease: "easeInOut" }}
                       />
                     </motion.svg>
                   </span>
