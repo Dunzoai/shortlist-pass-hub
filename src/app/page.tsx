@@ -70,11 +70,11 @@ function ScrollingBelt() {
   }, []);
 
   return (
-    <div className="relative overflow-hidden h-14 bg-gradient-to-r from-[#b39347] via-[#d4b87f] to-[#b39347]">
+    <div className="relative overflow-hidden h-14 bg-gradient-to-r from-[#b39347] via-[#d4b87f] to-[#b39347] flex items-center">
       <div
-        className="flex whitespace-nowrap animate-scroll"
+        className="flex items-center whitespace-nowrap animate-scroll"
         style={{
-          animationDuration: isMobile ? '15s' : '25s'
+          animationDuration: isMobile ? '5s' : '8s'
         }}
       >
         <span className="px-4 text-xl font-black tracking-[0.1em] text-[#1a2332] uppercase leading-none">{beltText} •</span>
