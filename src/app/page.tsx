@@ -69,25 +69,17 @@ function ScrollingBelt() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // 4 copies for full coverage
-  const repeatedText = `${beltText} • ${beltText} • ${beltText} • ${beltText}`;
-
   return (
     <div className="relative overflow-hidden h-14 bg-gradient-to-r from-[#b39347] via-[#d4b87f] to-[#b39347]">
-      <motion.div
-        animate={{ x: ["0%", "-25%"] }}
-        transition={{
-          duration: isMobile ? 4 : 5,
-          repeat: Infinity,
-          ease: "linear",
-          repeatType: "loop"
+      <div
+        className="flex whitespace-nowrap animate-scroll"
+        style={{
+          animationDuration: isMobile ? '15s' : '25s'
         }}
-        className="flex items-center justify-center h-full whitespace-nowrap"
       >
-        <span className="text-xl font-black tracking-[0.1em] text-[#1a2332] px-8 uppercase leading-none">
-          {repeatedText}
-        </span>
-      </motion.div>
+        <span className="px-4 text-xl font-black tracking-[0.1em] text-[#1a2332] uppercase leading-none">{beltText} •</span>
+        <span className="px-4 text-xl font-black tracking-[0.1em] text-[#1a2332] uppercase leading-none">{beltText} •</span>
+      </div>
     </div>
   );
 }
