@@ -177,7 +177,7 @@ function HowWeHelp() {
   ];
 
   return (
-    <section className="py-24 bg-gradient-to-b from-[#B08D57]/10 via-[#B08D57]/5 to-transparent border-y border-[#B08D57]/20">
+    <section className="py-24 bg-[#B08D57]/15 border-y border-[#B08D57]/30">
       <Container>
         <motion.div
           variants={staggerContainer}
