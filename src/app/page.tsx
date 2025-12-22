@@ -74,7 +74,7 @@ function ScrollingBelt() {
       <div
         className="flex items-center whitespace-nowrap animate-scroll"
         style={{
-          animationDuration: isMobile ? '6.25s' : '10s'
+          animationDuration: isMobile ? '7.8s' : '12.5s'
         }}
       >
         <span className="px-4 text-xl font-black tracking-[0.1em] text-[#1a2332] uppercase leading-none">{beltText} •</span>
