@@ -43,7 +43,7 @@ export function Nav() {
         <div className="flex items-center gap-4">
           <a
             href="mailto:hello@shortlistpass.com"
-            className="hidden sm:inline-flex px-5 py-2 text-sm font-medium bg-[#B08D57] text-[#0B1220] rounded-full hover:bg-[#c9a46a] transition-colors duration-300"
+            className="hidden sm:inline-flex px-6 py-2.5 text-sm font-semibold bg-[#B08D57] text-[#0B1220] rounded-full hover:bg-[#c9a46a] hover:shadow-lg hover:shadow-[#B08D57]/20 transition-all duration-300"
           >
             Get a demo
           </a>
@@ -99,7 +99,7 @@ export function Nav() {
             </Link>
             <a
               href="mailto:hello@shortlistpass.com"
-              className="sm:hidden inline-flex justify-center px-5 py-2 text-sm font-medium bg-[#B08D57] text-[#0B1220] rounded-full hover:bg-[#c9a46a] transition-colors"
+              className="sm:hidden inline-flex justify-center px-6 py-2.5 text-sm font-semibold bg-[#B08D57] text-[#0B1220] rounded-full hover:bg-[#c9a46a] transition-colors"
             >
               Get a demo
             </a>

@@ -36,9 +36,23 @@ function HeroVisual() {
           <motion.div
             key={card.label}
             initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3 + i * 0.15, duration: 0.5, ease: "easeOut" }}
-            className="flex items-center gap-3 px-4 py-3 bg-[#0F1A2B] border border-white/10 rounded-lg"
+            animate={{
+              opacity: 1,
+              x: 0,
+              y: [0, -4, 0],
+            }}
+            transition={{
+              opacity: { delay: 0.3 + i * 0.15, duration: 0.5, ease: "easeOut" },
+              x: { delay: 0.3 + i * 0.15, duration: 0.5, ease: "easeOut" },
+              y: {
+                delay: 1.5 + i * 0.3,
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }
+            }}
+            whileHover={{ scale: 1.02, borderColor: "rgba(176, 141, 87, 0.2)" }}
+            className="flex items-center gap-3 px-4 py-3 bg-[#0F1A2B] border border-white/10 rounded-lg transition-colors duration-300"
           >
             <div className="w-8 h-8 flex items-center justify-center rounded bg-[#B08D57]/10">
               <svg
@@ -141,7 +155,7 @@ function ProofStrip() {
             {chips.map((chip) => (
               <span
                 key={chip}
-                className="px-4 py-2 text-sm text-[#A9B4C4] bg-[#0F1A2B] border border-white/10 rounded-full"
+                className="px-3 py-1.5 text-xs text-[#A9B4C4]/70 bg-[#0F1A2B] border border-white/5 rounded-full"
               >
                 {chip}
               </span>
@@ -174,7 +188,7 @@ function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-white/10 py-8">
+    <footer className="border-t border-white/5 py-12">
       <Container>
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[#A9B4C4]">
           <span>&copy; {year} Shortlist Pass</span>
@@ -224,7 +238,7 @@ export default function Home() {
                 transition={{ duration: 0.5, ease: "easeOut" }}
                 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-[#F4F6FA] leading-tight mb-6"
               >
-                Small business tools that actually get used.
+                Small business tools <br className="hidden lg:block" />that actually get used.
               </motion.h1>
               <motion.p
                 variants={fadeUpVariant}
@@ -262,14 +276,14 @@ export default function Home() {
       </section>
 
       {/* Choose Your Lane Section */}
-      <section className="py-24 border-t border-white/10">
+      <section className="py-32 border-t border-white/10">
         <Container>
           <motion.h2
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="text-3xl font-semibold text-[#F4F6FA] text-center mb-12"
+            className="text-3xl font-semibold text-[#F4F6FA] text-center mb-16"
           >
             Choose your lane
           </motion.h2>
