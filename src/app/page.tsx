@@ -230,14 +230,15 @@ export default function Home() {
                         height: "calc(100% + 32px)",
                         left: "-20px",
                         top: "-16px",
-                        overflow: "visible"
+                        overflow: "visible",
+                        transform: "rotate(-2deg)"
                       }}
                     >
                       <motion.ellipse
                         cx="100"
-                        cy="40"
-                        rx="95"
-                        ry="35"
+                        cy="42"
+                        rx="93"
+                        ry="36"
                         stroke="#B08D57"
                         strokeWidth="3.5"
                         strokeLinecap="round"
