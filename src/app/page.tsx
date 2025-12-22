@@ -77,7 +77,7 @@ function ScrollingBelt() {
       <motion.div
         animate={{ x: ["0%", "-16.666%"] }}
         transition={{
-          duration: isMobile ? 8 : 12,
+          duration: isMobile ? 3 : 4,
           repeat: Infinity,
           ease: "linear",
           repeatType: "loop"
