@@ -20,56 +20,61 @@ const staggerContainer = {
 
 function HeroVisual() {
   return (
-    <div className="relative">
+    <div className="relative flex justify-center lg:justify-end">
       {/* Radial glow */}
       <div className="absolute inset-0 -z-10 blur-3xl opacity-15">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-[#B08D57] rounded-full" />
       </div>
 
-      {/* Floating cards */}
-      <div className="relative flex flex-col gap-3">
-        {[
-          { label: "Social", icon: "M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" },
-          { label: "SmartPages", icon: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" },
-          { label: "Digital", icon: "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" },
-        ].map((card, i) => (
-          <motion.div
-            key={card.label}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{
-              opacity: 1,
-              x: 0,
-              y: [0, -4, 0],
-            }}
-            transition={{
-              opacity: { delay: 0.3 + i * 0.15, duration: 0.5, ease: "easeOut" },
-              x: { delay: 0.3 + i * 0.15, duration: 0.5, ease: "easeOut" },
-              y: {
-                delay: 1.5 + i * 0.3,
-                duration: 4,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }
-            }}
-            whileHover={{ scale: 1.02, borderColor: "rgba(176, 141, 87, 0.2)" }}
-            className="flex items-center gap-3 px-4 py-3 bg-[#0F1A2B] border border-white/10 rounded-lg transition-colors duration-300"
-          >
-            <div className="w-8 h-8 flex items-center justify-center rounded bg-[#B08D57]/10">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-4 h-4 text-[#B08D57]"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d={card.icon} />
-              </svg>
+      {/* SmartPage Preview Panel */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+        className="relative w-[280px] h-[560px] bg-[#0F1A2B] border border-white/10 rounded-3xl p-6 shadow-2xl"
+      >
+        {/* Phone notch area */}
+        <div className="flex items-center justify-between mb-6">
+          <span className="text-xs font-semibold text-[#F4F6FA]">The Mill Taproom</span>
+          <div className="flex gap-1">
+            <div className="w-1 h-1 rounded-full bg-[#B08D57]" />
+            <div className="w-1 h-1 rounded-full bg-[#B08D57]" />
+            <div className="w-1 h-1 rounded-full bg-[#B08D57]/40" />
+          </div>
+        </div>
+
+        {/* Content area with staggered reveal */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" }}
+          className="space-y-4"
+        >
+          {/* Quick action links */}
+          <div className="space-y-2">
+            <div className="flex items-center gap-3 px-4 py-3 bg-[#0B1220] border border-white/5 rounded-xl">
+              <div className="w-2 h-2 rounded-full bg-[#B08D57]" />
+              <span className="text-sm text-[#F4F6FA]">Today's Hours</span>
             </div>
-            <span className="text-sm font-medium text-[#F4F6FA]">{card.label}</span>
-          </motion.div>
-        ))}
-      </div>
+            <div className="flex items-center gap-3 px-4 py-3 bg-[#0B1220] border border-white/5 rounded-xl">
+              <div className="w-2 h-2 rounded-full bg-[#B08D57]" />
+              <span className="text-sm text-[#F4F6FA]">This Week's Menu</span>
+            </div>
+            <div className="flex items-center gap-3 px-4 py-3 bg-[#0B1220] border border-white/5 rounded-xl">
+              <div className="w-2 h-2 rounded-full bg-[#B08D57]" />
+              <span className="text-sm text-[#F4F6FA]">Reserve a Table</span>
+            </div>
+          </div>
+
+          {/* Info section */}
+          <div className="pt-4 border-t border-white/5">
+            <div className="text-xs text-[#A9B4C4] mb-2">Latest Update</div>
+            <div className="text-sm text-[#F4F6FA] leading-relaxed">
+              Live music tonight at 7pm. Kitchen open till 10.
+            </div>
+          </div>
+        </motion.div>
+      </motion.div>
     </div>
   );
 }
@@ -209,8 +214,8 @@ export default function Home() {
     },
     {
       title: "SmartPages",
-      oneLiner: "One place for customers to get answers fast.",
-      bullets: ["App-style experience", "Links, updates, and info"],
+      oneLiner: "Answer the next question before it's asked.",
+      bullets: ["Decision compression at the moment of intent", "Reduce friction between interest and action"],
       href: "/smartpages",
     },
     {
@@ -243,9 +248,16 @@ export default function Home() {
               <motion.p
                 variants={fadeUpVariant}
                 transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-                className="text-lg lg:text-xl text-[#A9B4C4] mb-8 max-w-lg"
+                className="text-lg lg:text-xl text-[#A9B4C4] mb-3 max-w-lg"
               >
-                Social, SmartPages, and custom builds — designed to keep customers engaged and moving.
+                We compress decisions at the moment of intent — so interested customers don't leave confused.
+              </motion.p>
+              <motion.p
+                variants={fadeUpVariant}
+                transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
+                className="text-sm text-[#A9B4C4]/70 mb-8 max-w-lg"
+              >
+                Social content, SmartPages, and custom builds that reduce friction between discovery and action.
               </motion.p>
               <motion.div
                 variants={fadeUpVariant}
@@ -268,7 +280,7 @@ export default function Home() {
             </motion.div>
 
             {/* Right: Visual */}
-            <div className="hidden lg:flex justify-end">
+            <div className="flex justify-center lg:justify-end">
               <HeroVisual />
             </div>
           </div>
