@@ -1270,25 +1270,9 @@ function RealBuildsSection() {
             <h2 className="text-[36px] md:text-[48px] lg:text-[56px] font-bold text-[#0B1220] leading-[1.1] mb-2">
               Real problems.
             </h2>
-            <h2 className="text-[36px] md:text-[48px] lg:text-[56px] font-bold text-[#0B1220]/80 leading-[1.1] mb-8">
+            <h2 className="text-[36px] md:text-[48px] lg:text-[56px] font-bold text-[#0B1220]/80 leading-[1.1] mb-6">
               Real builds.
             </h2>
-
-            {/* Example pills */}
-            <div className="flex flex-wrap gap-3 mb-6">
-              <span className="px-4 py-2 bg-[#0B1220]/10 rounded-full text-sm text-[#0B1220]/80 font-medium">
-                SmartPages
-              </span>
-              <span className="px-4 py-2 bg-[#0B1220]/10 rounded-full text-sm text-[#0B1220]/80 font-medium">
-                Custom Websites
-              </span>
-              <span className="px-4 py-2 bg-[#0B1220]/10 rounded-full text-sm text-[#0B1220]/80 font-medium">
-                Family Vault
-              </span>
-              <span className="px-4 py-2 bg-[#0B1220]/10 rounded-full text-sm text-[#0B1220]/80 font-medium">
-                Business Apps
-              </span>
-            </div>
 
             <p className="text-lg text-[#0B1220]/70 max-w-xl">
               A few examples of tools we&apos;ve built — and why they exist.
@@ -1385,13 +1369,26 @@ function RealBuildsSection() {
             </div>
           </motion.div>
 
-          {/* Build 2: Family Vault */}
+          {/* Build 2: Family Vault - with subtle background separation */}
           <motion.div
             variants={fadeUpVariant}
             transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-            className="mb-20"
+            className="mb-20 relative -mx-4 md:-mx-8 lg:-mx-12 px-4 md:px-8 lg:px-12 py-12 rounded-2xl"
+            style={{
+              background: "linear-gradient(180deg, rgba(15, 26, 43, 0.6) 0%, rgba(11, 18, 32, 0.4) 100%)",
+            }}
           >
-            <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
+            {/* Subtle grid texture */}
+            <div
+              className="absolute inset-0 opacity-[0.03] pointer-events-none rounded-2xl"
+              style={{
+                backgroundImage: "url(/grid.png)",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+            />
+
+            <div className="relative flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
               {/* Preview card - on left for desktop */}
               <div className="order-2 lg:order-1 shrink-0 self-center lg:self-start w-full lg:w-auto flex justify-center lg:justify-start">
                 <FamilyVaultPreviewCard onOpen={openFamilyVaultModal} />
