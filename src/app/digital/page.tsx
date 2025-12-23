@@ -857,6 +857,52 @@ function SmartPagePreviewCard({ onOpen }: { onOpen: () => void }) {
   );
 }
 
+function FamilyVaultPreviewCard() {
+  return (
+    <div className="relative">
+      {/* Soft pulsing glow behind card */}
+      <motion.div
+        className="absolute -inset-6 rounded-3xl"
+        style={{
+          background: "radial-gradient(ellipse at 50% 50%, rgba(11, 18, 32, 0.9) 0%, transparent 70%)",
+          filter: "blur(30px)",
+        }}
+        animate={{ opacity: [0.5, 0.7, 0.5] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      {/* Preview card container */}
+      <motion.div
+        className="relative rounded-2xl overflow-hidden border border-[#1E2A3D] transition-colors duration-300 hover:border-[#B08D57]/50"
+        style={{
+          background: "linear-gradient(180deg, #0F1724 0%, #0B1220 100%)",
+          boxShadow: "0 25px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.03), inset 0 0 80px rgba(11, 18, 32, 0.5)",
+        }}
+        whileHover={{ y: -4 }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
+      >
+        {/* Card content */}
+        <div className="p-5 md:p-8 flex flex-col items-center">
+          {/* Image with soft shadow */}
+          <img
+            src="/family-vault.png"
+            alt="Family Vault interface"
+            className="block rounded-2xl w-[90%] md:w-full md:max-w-[520px] h-auto"
+            style={{
+              boxShadow: "0 15px 40px rgba(0, 0, 0, 0.35)",
+            }}
+          />
+        </div>
+      </motion.div>
+
+      {/* Caption */}
+      <p className="mt-5 text-[12px] text-[#A9B4C4]/50 text-center">
+        A real Family Vault interface — built for real life, not demos.
+      </p>
+    </div>
+  );
+}
+
 function RealBuildsSection() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const ctaButtonRef = useRef<HTMLButtonElement>(null);
@@ -967,32 +1013,14 @@ function RealBuildsSection() {
             transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
             className="mb-20"
           >
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              {/* Visual placeholder - on left for alternating layout */}
-              <div className="bg-[#0F1A2B] border border-white/10 rounded-2xl p-6 lg:p-8 order-2 lg:order-1">
-                <div className="aspect-[4/3] bg-gradient-to-br from-[#1a2332] to-[#0F1A2B] rounded-lg flex items-center justify-center">
-                  <div className="w-48 space-y-3">
-                    {/* Timeline visualization */}
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-3 h-3 rounded-full bg-[#B08D57]/40" />
-                      <div className="h-0.5 flex-1 bg-[#B08D57]/20" />
-                      <div className="w-3 h-3 rounded-full bg-[#B08D57]/60" />
-                      <div className="h-0.5 flex-1 bg-[#B08D57]/20" />
-                      <div className="w-3 h-3 rounded-full bg-[#B08D57]" />
-                    </div>
-                    <div className="h-2 bg-white/10 rounded w-full" />
-                    <div className="h-2 bg-white/10 rounded w-3/4" />
-                    <div className="flex items-center gap-2 mt-4">
-                      <div className="w-8 h-8 rounded-full bg-[#B08D57]/20 flex items-center justify-center">
-                        <div className="w-3 h-3 rounded-full bg-[#B08D57]/40" />
-                      </div>
-                      <div className="flex-1 h-6 bg-white/5 rounded" />
-                    </div>
-                  </div>
-                </div>
+            <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
+              {/* Preview card - on left for desktop */}
+              <div className="order-2 lg:order-1 shrink-0 self-center lg:self-start w-full lg:w-auto flex justify-center lg:justify-start">
+                <FamilyVaultPreviewCard />
               </div>
 
-              <div className="order-1 lg:order-2">
+              {/* Copy - on right for desktop */}
+              <div className="order-1 lg:order-2 flex-1 min-w-0">
                 <p className="text-sm text-[#B08D57] uppercase tracking-wider mb-3">Family Vault</p>
                 <h3 className="text-xl md:text-2xl font-semibold text-[#F4F6FA] mb-4">
                   A custom app built around real life — not business
