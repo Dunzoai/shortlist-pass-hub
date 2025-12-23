@@ -1590,7 +1590,7 @@ function BenefitsSection() {
 
 function ProcessSection() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, margin: "-50px" });
+  const isInView = useInView(containerRef, { once: true, margin: "-100px" });
 
   // Simplified, human step copy
   const steps = [
@@ -1615,67 +1615,61 @@ function ProcessSection() {
             How working with us actually works
           </motion.h2>
 
-          {/* Steps with connecting line */}
-          <div className="relative mb-12">
-            {/* Connecting line that fills */}
-            <div className="absolute left-4 top-4 bottom-4 w-px bg-[#1E2A3D]">
+          {/* Steps - numbers fill one at a time */}
+          <div className="space-y-6 mb-12">
+            {steps.map((step, index) => (
               <motion.div
-                className="absolute top-0 left-0 w-full bg-gradient-to-b from-[#B08D57] to-[#B08D57]/30"
-                initial={{ height: 0 }}
-                animate={isInView ? { height: "100%" } : {}}
-                transition={{ duration: 1.5, delay: 0.3, ease: "easeOut" }}
-              />
-            </div>
-
-            <div className="space-y-8">
-              {steps.map((step, index) => (
+                key={step}
+                className="flex items-center gap-5"
+                initial={{ opacity: 0 }}
+                animate={isInView ? { opacity: 1 } : {}}
+                transition={{ duration: 0.4, delay: 0.3 + index * 0.15, ease: "easeOut" }}
+              >
+                {/* Number circle - fills with brass on scroll */}
                 <motion.div
-                  key={step}
-                  className="flex items-start gap-6 relative"
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ duration: 0.5, delay: 0.2 + index * 0.3, ease: "easeOut" }}
+                  className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 text-sm font-medium border"
+                  initial={{
+                    backgroundColor: "transparent",
+                    color: "rgba(169, 180, 196, 0.4)",
+                    borderColor: "rgba(169, 180, 196, 0.2)",
+                  }}
+                  animate={isInView ? {
+                    backgroundColor: "rgba(176, 141, 87, 0.15)",
+                    color: "#B08D57",
+                    borderColor: "rgba(176, 141, 87, 0.5)",
+                  } : {}}
+                  transition={{
+                    duration: 0.6,
+                    delay: 0.5 + index * 0.4,
+                    ease: "easeOut"
+                  }}
                 >
-                  {/* Number circle - fills with gold */}
-                  <motion.div
-                    className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-sm font-medium relative z-10"
-                    initial={{
-                      backgroundColor: "rgba(30, 42, 61, 0.5)",
-                      color: "rgba(169, 180, 196, 0.5)",
-                      borderWidth: 1,
-                      borderColor: "rgba(30, 42, 61, 0.8)",
-                    }}
-                    animate={isInView ? {
-                      backgroundColor: "rgba(176, 141, 87, 0.2)",
-                      color: "#B08D57",
-                      borderColor: "rgba(176, 141, 87, 0.4)",
-                    } : {}}
-                    transition={{ duration: 0.5, delay: 0.4 + index * 0.3, ease: "easeOut" }}
-                    style={{ borderStyle: "solid" }}
-                  >
-                    {index + 1}
-                  </motion.div>
-
-                  {/* Step text */}
-                  <motion.p
-                    className="text-base md:text-lg pt-1"
-                    initial={{ color: "rgba(169, 180, 196, 0.5)" }}
-                    animate={isInView ? { color: "#A9B4C4" } : {}}
-                    transition={{ duration: 0.5, delay: 0.5 + index * 0.3, ease: "easeOut" }}
-                  >
-                    {step}
-                  </motion.p>
+                  {index + 1}
                 </motion.div>
-              ))}
-            </div>
+
+                {/* Step text - also lights up with the number */}
+                <motion.p
+                  className="text-base md:text-lg"
+                  initial={{ color: "rgba(169, 180, 196, 0.4)" }}
+                  animate={isInView ? { color: "#A9B4C4" } : {}}
+                  transition={{
+                    duration: 0.6,
+                    delay: 0.5 + index * 0.4,
+                    ease: "easeOut"
+                  }}
+                >
+                  {step}
+                </motion.p>
+              </motion.div>
+            ))}
           </div>
 
           {/* Quiet closing reassurance */}
           <motion.p
-            className="text-sm text-[#A9B4C4]/60 text-center"
+            className="text-sm text-[#A9B4C4]/50 text-center"
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.6, delay: 1.5 }}
+            transition={{ duration: 0.5, delay: 2 }}
           >
             Clear steps. No surprises.
           </motion.p>
