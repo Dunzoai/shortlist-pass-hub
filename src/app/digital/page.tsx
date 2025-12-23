@@ -227,20 +227,20 @@ function ProblemVisual() {
   return (
     <div className="relative w-full max-w-lg mx-auto lg:mx-0">
       {/* Side-by-side on desktop, stacked on mobile (Custom first on mobile) */}
-      <div className="flex flex-col sm:flex-row gap-4 items-stretch">
+      <div className="flex flex-col sm:flex-row gap-4">
         {/* Custom side - ALIVE (shows first on mobile) */}
         <motion.div
           initial={{ opacity: 0, y: 20, scale: 0.98 }}
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
-          className="flex-1 order-1 sm:order-2 flex flex-col"
+          className="flex-1 order-1 sm:order-2"
         >
           <div className="text-[13px] text-[#B08D57] mb-2.5 uppercase tracking-[0.12em] font-semibold">
             Custom Build
           </div>
           {/* Soft radius glow wrapper */}
-          <div className="relative flex-1">
+          <div className="relative">
             {/* Glow layer */}
             <div
               className="absolute inset-0 rounded-xl opacity-60"
@@ -250,41 +250,83 @@ function ProblemVisual() {
                 transform: "scale(1.1)",
               }}
             />
-            <div className="relative bg-[#0F1A2B] border-2 border-[#B08D57]/35 rounded-xl p-5 space-y-3 shadow-2xl h-full">
-              {/* Header - intentional hierarchy */}
-              <div className="h-2.5 bg-[#B08D57]/35 rounded w-2/3" />
-              <div className="h-2.5 bg-white/25 rounded w-full" />
-              {/* Flexible layout - TWO GLOWING BLOCKS */}
-              <div className="flex gap-2.5">
-                {/* Pulsing glow block 1 */}
+            <div className="relative bg-[#0F1A2B] border-2 border-[#B08D57]/35 rounded-xl p-5 space-y-2.5 shadow-2xl">
+              {/* Smart Dashboard - pulsing */}
+              <div className="flex items-center gap-2">
                 <motion.div
-                  className="h-[4.5rem] rounded flex-1 relative overflow-hidden"
-                  style={{ backgroundColor: "rgba(176, 141, 87, 0.3)" }}
+                  className="h-2 w-2 rounded-full"
+                  style={{ backgroundColor: "rgba(199, 163, 90, 0.6)" }}
+                  animate={{ opacity: [0.4, 1, 0.4] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                />
+                <span className="text-[8px] text-[#B08D57] uppercase tracking-wider font-medium">Smart Dashboard</span>
+              </div>
+              <div className="h-8 bg-white/[0.08] rounded" />
+
+              {/* Live Booking */}
+              <div className="flex items-center gap-2">
+                <div className="h-2 w-2 rounded-full bg-[#B08D57]/50" />
+                <span className="text-[8px] text-[#B08D57]/80 uppercase tracking-wider font-medium">Live Booking</span>
+              </div>
+
+              {/* Two glowing blocks side by side */}
+              <div className="flex gap-2">
+                <motion.div
+                  className="h-12 rounded flex-1 relative overflow-hidden"
+                  style={{ backgroundColor: "rgba(176, 141, 87, 0.25)" }}
                 >
                   <motion.div
                     className="absolute inset-0 rounded"
-                    style={{ backgroundColor: "rgba(199, 163, 90, 0.4)" }}
-                    animate={{ opacity: [0.3, 0.6, 0.3] }}
+                    style={{ backgroundColor: "rgba(199, 163, 90, 0.35)" }}
+                    animate={{ opacity: [0.3, 0.7, 0.3] }}
                     transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                   />
                 </motion.div>
-                {/* Pulsing glow block 2 */}
                 <motion.div
-                  className="h-[4.5rem] rounded flex-[2] relative overflow-hidden"
+                  className="h-12 rounded flex-1 relative overflow-hidden"
                   style={{ backgroundColor: "rgba(176, 141, 87, 0.2)" }}
                 >
                   <motion.div
                     className="absolute inset-0 rounded"
                     style={{ backgroundColor: "rgba(199, 163, 90, 0.3)" }}
-                    animate={{ opacity: [0.2, 0.5, 0.2] }}
-                    transition={{ duration: 2.5, delay: 0.5, repeat: Infinity, ease: "easeInOut" }}
+                    animate={{ opacity: [0.2, 0.6, 0.2] }}
+                    transition={{ duration: 2.5, delay: 0.3, repeat: Infinity, ease: "easeInOut" }}
                   />
                 </motion.div>
               </div>
-              {/* Clear content */}
-              <div className="h-2.5 bg-white/25 rounded w-4/5" />
-              {/* CTA - alive, rounded, looks clickable */}
-              <div className="h-11 bg-[#B08D57]/30 rounded-full w-1/2" />
+
+              {/* Real-time Analytics */}
+              <div className="flex items-center gap-2">
+                <div className="h-2 w-2 rounded-full bg-[#B08D57]/50" />
+                <span className="text-[8px] text-[#B08D57]/80 uppercase tracking-wider font-medium">Real-time Analytics</span>
+              </div>
+
+              {/* Third glowing block - full width for movement */}
+              <motion.div
+                className="h-10 rounded relative overflow-hidden"
+                style={{ backgroundColor: "rgba(176, 141, 87, 0.15)" }}
+              >
+                <motion.div
+                  className="absolute inset-0 rounded"
+                  style={{ backgroundColor: "rgba(199, 163, 90, 0.25)" }}
+                  animate={{ opacity: [0.2, 0.5, 0.2] }}
+                  transition={{ duration: 3, delay: 0.6, repeat: Infinity, ease: "easeInOut" }}
+                />
+              </motion.div>
+
+              {/* One-Click Actions */}
+              <div className="flex items-center gap-2">
+                <motion.div
+                  className="h-2 w-2 rounded-full"
+                  style={{ backgroundColor: "rgba(199, 163, 90, 0.6)" }}
+                  animate={{ opacity: [0.4, 1, 0.4] }}
+                  transition={{ duration: 1.5, delay: 0.8, repeat: Infinity, ease: "easeInOut" }}
+                />
+                <span className="text-[8px] text-[#B08D57] uppercase tracking-wider font-medium">One-Click Actions</span>
+              </div>
+
+              {/* CTA - alive, rounded */}
+              <div className="h-9 bg-[#B08D57]/30 rounded-full w-1/2" />
             </div>
           </div>
           <div className="mt-3 text-center">
@@ -303,38 +345,37 @@ function ProblemVisual() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7, ease: "easeOut" }}
-          className="flex-1 order-2 sm:order-1 flex flex-col"
+          className="flex-1 order-2 sm:order-1"
         >
           <div className="text-[10px] text-[#A9B4C4]/50 mb-2.5 uppercase tracking-[0.15em] font-medium">
             Template
           </div>
-          <div className="bg-[#0a0f18] border border-white/[0.08] rounded-lg p-5 space-y-2.5 opacity-70 flex-1">
+          <div className="bg-[#0a0f18] border border-white/[0.08] rounded-lg p-5 space-y-2.5 opacity-70">
             {/* Dead labels - instantly recognizable */}
             <div className="flex items-center gap-2">
-              <div className="h-2 bg-white/[0.08] rounded w-2" />
+              <div className="h-2 w-2 bg-white/[0.08] rounded-full" />
               <span className="text-[8px] text-white/[0.25] uppercase tracking-wider">Hero Section</span>
             </div>
             <div className="h-8 bg-white/[0.05] rounded" />
             <div className="flex items-center gap-2">
-              <div className="h-2 bg-white/[0.08] rounded w-2" />
+              <div className="h-2 w-2 bg-white/[0.08] rounded-full" />
               <span className="text-[8px] text-white/[0.25] uppercase tracking-wider">About Us</span>
             </div>
-            <div className="h-2 bg-white/[0.06] rounded w-3/4" />
+            <div className="flex gap-2">
+              <div className="h-12 bg-white/[0.04] rounded flex-1" />
+              <div className="h-12 bg-white/[0.04] rounded flex-1" />
+            </div>
             <div className="flex items-center gap-2">
-              <div className="h-2 bg-white/[0.08] rounded w-2" />
+              <div className="h-2 w-2 bg-white/[0.08] rounded-full" />
               <span className="text-[8px] text-white/[0.25] uppercase tracking-wider">Services</span>
             </div>
-            <div className="grid grid-cols-3 gap-1.5">
-              <div className="h-10 bg-white/[0.04] rounded" />
-              <div className="h-10 bg-white/[0.04] rounded" />
-              <div className="h-10 bg-white/[0.04] rounded" />
-            </div>
+            <div className="h-10 bg-white/[0.04] rounded" />
             <div className="flex items-center gap-2">
-              <div className="h-2 bg-white/[0.08] rounded w-2" />
+              <div className="h-2 w-2 bg-white/[0.08] rounded-full" />
               <span className="text-[8px] text-white/[0.25] uppercase tracking-wider">Contact</span>
             </div>
             {/* Dead CTA - rectangle, no affordance */}
-            <div className="h-8 bg-white/[0.06] rounded-none w-1/2" />
+            <div className="h-9 bg-white/[0.06] rounded-none w-1/2" />
           </div>
           <p className="text-[10px] text-[#A9B4C4]/40 mt-3 text-center tracking-wide">
             Rigid. Generic. Looks done.
