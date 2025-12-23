@@ -440,9 +440,60 @@ function ProblemVisual() {
   );
 }
 
-function ProblemSection() {
+function ScrollLitBullet({ text, index, scrollProgress }: { text: string; index: number; scrollProgress: MotionValue<number> }) {
+  // Each bullet lights up at different scroll points
+  const thresholds = [0.15, 0.3, 0.45, 0.6];
+  const threshold = thresholds[index] || 0.6;
+
+  const bulletColor = useTransform(
+    scrollProgress,
+    [threshold - 0.1, threshold],
+    ["rgba(169, 180, 196, 0.4)", "#B08D57"]
+  );
+
+  const bulletSize = useTransform(
+    scrollProgress,
+    [threshold - 0.1, threshold],
+    ["4px", "6px"]
+  );
+
+  const textColor = useTransform(
+    scrollProgress,
+    [threshold - 0.1, threshold],
+    ["#A9B4C4", "#F4F6FA"]
+  );
+
   return (
-    <section className="relative py-24 lg:py-32 bg-[#0B1220] overflow-hidden">
+    <li className="flex items-start gap-3 text-base">
+      <motion.span
+        className="rounded-full mt-[0.55rem] shrink-0"
+        style={{
+          backgroundColor: bulletColor,
+          width: bulletSize,
+          height: bulletSize,
+        }}
+      />
+      <motion.span style={{ color: textColor }}>{text}</motion.span>
+    </li>
+  );
+}
+
+function ProblemSection() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+
+  const painPoints = [
+    "Customers get confused",
+    "Information is buried",
+    "Tools don't talk to each other",
+    "Simple tasks take too long",
+  ];
+
+  return (
+    <section ref={sectionRef} className="relative py-24 lg:py-32 bg-[#0B1220] overflow-hidden">
       {/* Subtle grid texture - reinforces systems/structure */}
       <div
         className="absolute inset-0 opacity-[0.06] pointer-events-none"
@@ -474,24 +525,16 @@ function ProblemSection() {
               Templates aren&apos;t built for how your business actually runs. They look good on day one — then quickly get in the way.
             </p>
 
-            {/* Pain points - staggered emphasis, last one hits harder */}
+            {/* Pain points - light up one by one as you scroll */}
             <ul className="space-y-4 mb-16 lg:mb-20">
-              <li className="flex items-start gap-3 text-base text-[#A9B4C4]">
-                <span className="w-1 h-1 rounded-full bg-[#A9B4C4]/40 mt-[0.6rem] shrink-0" />
-                Customers get confused
-              </li>
-              <li className="flex items-start gap-3 text-base text-[#A9B4C4]">
-                <span className="w-1 h-1 rounded-full bg-[#A9B4C4]/40 mt-[0.6rem] shrink-0" />
-                Information is buried
-              </li>
-              <li className="flex items-start gap-3 text-base text-[#A9B4C4]">
-                <span className="w-1 h-1 rounded-full bg-[#A9B4C4]/40 mt-[0.6rem] shrink-0" />
-                Tools don&apos;t talk to each other
-              </li>
-              <li className="flex items-start gap-3 text-base text-[#F4F6FA]">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#B08D57] mt-[0.55rem] shrink-0" />
-                Simple tasks take too long
-              </li>
+              {painPoints.map((point, index) => (
+                <ScrollLitBullet
+                  key={point}
+                  text={point}
+                  index={index}
+                  scrollProgress={scrollYProgress}
+                />
+              ))}
             </ul>
 
             {/* Bridge - emotion + logic (extra space before = gut punch) */}
