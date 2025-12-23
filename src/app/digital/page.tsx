@@ -2,7 +2,7 @@
 
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { Container } from "@/components/Container";
-import { useRef } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 
 // =============================================================================
@@ -686,10 +686,183 @@ function WhatWeBuildSection() {
 }
 
 // =============================================================================
-// SECTION 5: REAL BUILDS
+// SECTION 5: REAL BUILDS — SMARTPAGE MODAL SHOWCASE
 // =============================================================================
 
+function SmartPageModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+  const modalRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+      // Focus trap - focus the close button when modal opens
+      closeButtonRef.current?.focus();
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
+  // Close on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
+
+  // Close when clicking backdrop
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8"
+      onClick={handleBackdropClick}
+      role="dialog"
+      aria-modal="true"
+      aria-label="SmartPage Preview"
+    >
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-[#0B1220]/90 backdrop-blur-sm" />
+
+      {/* Modal content */}
+      <motion.div
+        ref={modalRef}
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
+        className="relative w-full max-w-4xl h-[90vh] md:h-[85vh] bg-[#0B1220] rounded-2xl overflow-hidden border border-white/10 shadow-2xl"
+      >
+        {/* Close button */}
+        <button
+          ref={closeButtonRef}
+          onClick={onClose}
+          className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-[#0F1A2B] border border-white/10 flex items-center justify-center text-[#A9B4C4] hover:text-[#F4F6FA] hover:border-white/20 transition-all duration-200"
+          aria-label="Close modal"
+        >
+          <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+
+        {/* iframe */}
+        <iframe
+          src="https://nitos.shortlistpass.com/"
+          className="w-full h-full border-0"
+          title="Nito's SmartPage"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        />
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function SmartPagePreviewCard({ onOpen }: { onOpen: () => void }) {
+  return (
+    <div className="relative">
+      {/* Slow pulsing brass glow */}
+      <motion.div
+        className="absolute inset-0 rounded-2xl"
+        style={{
+          background: "radial-gradient(ellipse at 50% 50%, rgba(180, 145, 85, 0.08) 0%, transparent 70%)",
+          filter: "blur(30px)",
+          transform: "scale(1.1)",
+        }}
+        animate={{ opacity: [0.4, 0.7, 0.4] }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      {/* Card */}
+      <div
+        className="relative bg-[#0F1A2B] rounded-2xl overflow-hidden"
+        style={{
+          boxShadow: "inset 0 0 40px rgba(180, 145, 85, 0.04), 0 4px 30px rgba(0, 0, 0, 0.3)",
+          border: "1px solid rgba(180, 145, 85, 0.15)",
+        }}
+      >
+        {/* Label */}
+        <div className="px-6 pt-5 pb-3">
+          <span className="text-[10px] text-[#B08D57]/70 uppercase tracking-[0.15em] font-medium">
+            Live SmartPage Example
+          </span>
+        </div>
+
+        {/* Preview area */}
+        <div className="px-6 pb-6">
+          <div className="aspect-[4/3] bg-gradient-to-br from-[#1a2535] to-[#0F1A2B] rounded-xl flex items-center justify-center border border-white/5">
+            {/* Static preview layout */}
+            <div className="w-48 space-y-3">
+              {/* Header */}
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 rounded-full bg-[#B08D57]/20" />
+                <div className="flex-1">
+                  <div className="h-2 bg-[#B08D57]/30 rounded w-2/3 mb-1" />
+                  <div className="h-1.5 bg-white/10 rounded w-1/2" />
+                </div>
+              </div>
+              {/* Content blocks */}
+              <div className="h-2 bg-white/10 rounded w-full" />
+              <div className="h-2 bg-white/10 rounded w-4/5" />
+              <div className="h-10 bg-white/5 rounded mt-2" />
+              {/* Action buttons */}
+              <div className="flex gap-2 mt-3">
+                <div className="h-8 bg-[#B08D57]/25 rounded-full flex-1" />
+                <div className="h-8 bg-white/10 rounded-full flex-1" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* CTA Button */}
+        <div className="px-6 pb-6">
+          <button
+            onClick={onOpen}
+            className="w-full py-3.5 bg-[#B08D57] text-[#0B1220] rounded-full font-medium text-sm hover:bg-[#c9a46a] transition-all duration-300 flex items-center justify-center gap-2"
+          >
+            Explore Nito&apos;s SmartPage
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function RealBuildsSection() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const ctaButtonRef = useRef<HTMLButtonElement>(null);
+
+  const openModal = useCallback(() => {
+    setIsModalOpen(true);
+  }, []);
+
+  const closeModal = useCallback(() => {
+    setIsModalOpen(false);
+    // Restore focus to CTA button
+    ctaButtonRef.current?.focus();
+  }, []);
+
   return (
     <section id="real-builds" className="py-20 lg:py-28 bg-[#0B1220]">
       <Container>
@@ -708,83 +881,72 @@ function RealBuildsSection() {
             <h2 className="text-[28px] md:text-[36px] font-semibold text-[#F4F6FA] leading-tight mb-3">
               Real problems. Real builds.
             </h2>
-            <p className="text-lg text-[#A9B4C4]">
-              A few examples of tools we&apos;ve built — and why they exist.
-            </p>
           </motion.div>
 
-          {/* Build 1: SmartPages */}
+          {/* SmartPages Showcase */}
           <motion.div
             variants={fadeUpVariant}
             transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
             className="mb-20"
           >
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+              {/* Left column - Copy */}
               <div>
-                <p className="text-sm text-[#B08D57] uppercase tracking-wider mb-3">SmartPages</p>
-                <h3 className="text-xl md:text-2xl font-semibold text-[#F4F6FA] mb-4">
-                  For businesses that don&apos;t need a full website — but still need to be understood
+                <p className="text-sm text-[#B08D57] uppercase tracking-wider mb-4">SmartPages</p>
+                <h3 className="text-xl md:text-2xl font-semibold text-[#F4F6FA] mb-6 leading-tight">
+                  For businesses that don&apos;t need a full website —<br />
+                  but still need to be understood.
                 </h3>
 
-                <div className="mb-6">
-                  <p className="text-sm text-[#A9B4C4]/70 uppercase tracking-wider mb-2">The problem</p>
-                  <p className="text-base text-[#A9B4C4]">
-                    Many small businesses don&apos;t have a website — or have one customers don&apos;t understand. Information is scattered. Links are buried. Questions go unanswered.
+                <div className="space-y-4 mb-8 text-base text-[#A9B4C4]">
+                  <p>
+                    Most small businesses either don&apos;t have a website — or have one customers can&apos;t make sense of.
+                  </p>
+                  <p>
+                    Information is scattered.<br />
+                    Links are buried.<br />
+                    Questions go unanswered.
                   </p>
                 </div>
 
-                <div className="mb-6">
-                  <p className="text-sm text-[#A9B4C4]/70 uppercase tracking-wider mb-2">What we built</p>
+                <div className="mb-8">
+                  <p className="text-sm text-[#A9B4C4]/70 uppercase tracking-wider mb-3">What we built</p>
                   <p className="text-base text-[#A9B4C4]">
-                    SmartPages — an intelligent, website-light page that acts like a business assistant. It stores all your information in one place, answers customer questions instantly, and gives people clear next steps without confusion.
+                    SmartPages — an intelligent, website-light page that acts like a business assistant. It keeps everything in one place, answers real customer questions instantly, and gives people clear next steps without confusion.
                   </p>
                 </div>
 
-                <div className="mb-6">
-                  <p className="text-sm text-[#A9B4C4]/70 uppercase tracking-wider mb-2">Why it matters</p>
-                  <ul className="space-y-2">
+                <div className="mb-8">
+                  <p className="text-sm text-[#A9B4C4]/70 uppercase tracking-wider mb-3">Why it matters</p>
+                  <ul className="space-y-2.5">
                     <li className="flex items-start gap-3 text-base text-[#A9B4C4]">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#B08D57] mt-2.5 shrink-0" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#B08D57] mt-2 shrink-0" />
                       Fraction of the cost of a full website
                     </li>
                     <li className="flex items-start gap-3 text-base text-[#A9B4C4]">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#B08D57] mt-2.5 shrink-0" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#B08D57] mt-2 shrink-0" />
                       Clear enough for any business
                     </li>
                     <li className="flex items-start gap-3 text-base text-[#A9B4C4]">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#B08D57] mt-2.5 shrink-0" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#B08D57] mt-2 shrink-0" />
                       Smart enough to handle real customer questions
                     </li>
                     <li className="flex items-start gap-3 text-base text-[#A9B4C4]">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#B08D57] mt-2.5 shrink-0" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#B08D57] mt-2 shrink-0" />
                       Keeps customers engaged through updates and notifications
                     </li>
                   </ul>
                 </div>
 
-                <p className="text-base text-[#F4F6FA] font-medium mb-4">
-                  More useful than most websites. Less expensive than all of them.
+                <p className="text-base text-[#F4F6FA] font-medium">
+                  More useful than most websites.<br />
+                  Less expensive than all of them.
                 </p>
-
-                <Link href="/smartpages" className="text-sm text-[#B08D57] hover:text-[#c9a46a] transition-colors">
-                  View SmartPages →
-                </Link>
               </div>
 
-              {/* Visual placeholder */}
-              <div className="bg-[#0F1A2B] border border-white/10 rounded-2xl p-6 lg:p-8">
-                <div className="aspect-[4/3] bg-gradient-to-br from-[#1a2332] to-[#0F1A2B] rounded-lg flex items-center justify-center">
-                  <div className="w-48 space-y-3">
-                    <div className="h-3 bg-[#B08D57]/30 rounded w-2/3" />
-                    <div className="h-2 bg-white/10 rounded w-full" />
-                    <div className="h-2 bg-white/10 rounded w-4/5" />
-                    <div className="h-8 bg-white/5 rounded mt-4" />
-                    <div className="flex gap-2 mt-4">
-                      <div className="h-8 bg-[#B08D57]/20 rounded-full flex-1" />
-                      <div className="h-8 bg-white/10 rounded-full flex-1" />
-                    </div>
-                  </div>
-                </div>
+              {/* Right column - SmartPage Preview Card */}
+              <div className="lg:pt-8">
+                <SmartPagePreviewCard onOpen={openModal} />
               </div>
             </div>
           </motion.div>
@@ -891,6 +1053,9 @@ function RealBuildsSection() {
           </motion.div>
         </motion.div>
       </Container>
+
+      {/* SmartPage Modal */}
+      <SmartPageModal isOpen={isModalOpen} onClose={closeModal} />
     </section>
   );
 }
