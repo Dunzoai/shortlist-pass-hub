@@ -781,11 +781,11 @@ function SmartPagePreviewCard({ onOpen }: { onOpen: () => void }) {
     <div className="relative flex flex-col items-center">
       {/* Slow pulsing glow behind phone */}
       <motion.div
-        className="absolute inset-0 rounded-[3rem]"
+        className="absolute inset-0 rounded-[2rem]"
         style={{
-          background: "radial-gradient(ellipse at 50% 40%, rgba(180, 145, 85, 0.12) 0%, rgba(11, 18, 32, 0.8) 60%, transparent 80%)",
-          filter: "blur(40px)",
-          transform: "scale(1.2)",
+          background: "radial-gradient(ellipse at 50% 40%, rgba(180, 145, 85, 0.15) 0%, transparent 70%)",
+          filter: "blur(30px)",
+          transform: "scale(1.1)",
         }}
         animate={{ opacity: [0.5, 0.8, 0.5] }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
@@ -799,41 +799,34 @@ function SmartPagePreviewCard({ onOpen }: { onOpen: () => void }) {
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
         whileHover={{ scale: 1.02 }}
       >
-        {/* Phone frame */}
+        {/* Tight phone frame - minimal bezel */}
         <div
-          className="relative bg-[#0a0f18] rounded-[2.5rem] p-2 overflow-hidden"
+          className="relative rounded-[1.75rem] overflow-hidden"
           style={{
-            boxShadow: "0 25px 80px rgba(0, 0, 0, 0.5), 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.05)",
+            boxShadow: "0 25px 60px rgba(0, 0, 0, 0.4), 0 8px 20px rgba(0, 0, 0, 0.3)",
+            border: "3px solid #1a1f2e",
           }}
         >
-          {/* Screen bezel */}
-          <div className="relative bg-[#0B1220] rounded-[2rem] overflow-hidden">
-            {/* Notch */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-6 bg-[#0a0f18] rounded-b-2xl z-10" />
+          {/* Screen content - the actual image */}
+          <img
+            src="/nitos-modal-mock.png"
+            alt="Nito's Empanadas SmartPage"
+            className="block transition-all duration-300 group-hover:brightness-110"
+            style={{ width: "280px", height: "auto" }}
+          />
 
-            {/* Screen content - the actual image */}
-            <div className="relative">
-              <img
-                src="/nitos-modal-mock.png"
-                alt="Nito's Empanadas SmartPage"
-                className="w-full h-auto block transition-all duration-300 group-hover:brightness-110"
-                style={{ maxWidth: "320px" }}
-              />
-
-              {/* Hover overlay */}
-              <div className="absolute inset-0 bg-[#B08D57]/0 group-hover:bg-[#B08D57]/5 transition-all duration-300 flex items-center justify-center">
-                <motion.div
-                  className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[#0B1220]/80 backdrop-blur-sm px-4 py-2 rounded-full flex items-center gap-2"
-                  initial={{ scale: 0.9 }}
-                  whileHover={{ scale: 1 }}
-                >
-                  <span className="text-sm text-[#F4F6FA] font-medium">Tap to explore</span>
-                  <svg className="w-4 h-4 text-[#B08D57]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
-                </motion.div>
-              </div>
-            </div>
+          {/* Hover overlay */}
+          <div className="absolute inset-0 bg-[#B08D57]/0 group-hover:bg-[#B08D57]/5 transition-all duration-300 flex items-center justify-center">
+            <motion.div
+              className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[#0B1220]/80 backdrop-blur-sm px-4 py-2 rounded-full flex items-center gap-2"
+              initial={{ scale: 0.9 }}
+              whileHover={{ scale: 1 }}
+            >
+              <span className="text-sm text-[#F4F6FA] font-medium">Tap to explore</span>
+              <svg className="w-4 h-4 text-[#B08D57]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </motion.div>
           </div>
         </div>
       </motion.div>
