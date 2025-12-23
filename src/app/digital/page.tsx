@@ -579,15 +579,18 @@ interface BuildCardProps {
 }
 
 function BuildCard({ headline, copy, emphasis, punchline, visual, index, highlighted }: BuildCardProps) {
+  // Cards slide in from opposite sides: left for index 0, right for index 1, left for index 2
+  const slideDirection = index % 2 === 0 ? -80 : 80;
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
+      initial={{ opacity: 0, x: slideDirection }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
       transition={{
-        duration: 0.7,
-        delay: index * 0.1,
-        ease: "easeOut"
+        duration: 0.9,
+        delay: index * 0.15,
+        ease: [0.25, 0.1, 0.25, 1.0]
       }}
       className={`group bg-[#0F1A2B] rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 ${
         highlighted
@@ -1412,24 +1415,28 @@ function RealBuildsSection() {
             </div>
           </motion.div>
 
-          {/* Build 2: Family Vault - with subtle background separation */}
+          {/* Build 2: Family Vault - with distinct background separation */}
           <motion.div
             variants={fadeUpVariant}
             transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-            className="mb-20 relative -mx-4 md:-mx-8 lg:-mx-12 px-4 md:px-8 lg:px-12 py-12 rounded-2xl"
+            className="mb-20 relative -mx-4 md:-mx-8 lg:-mx-12 px-4 md:px-8 lg:px-12 py-16 rounded-2xl"
             style={{
-              background: "linear-gradient(180deg, rgba(15, 26, 43, 0.6) 0%, rgba(11, 18, 32, 0.4) 100%)",
+              background: "linear-gradient(180deg, #0F1724 0%, #0A1018 100%)",
+              boxShadow: "inset 0 1px 0 rgba(255, 255, 255, 0.03), inset 0 -1px 0 rgba(0, 0, 0, 0.2)",
             }}
           >
-            {/* Subtle grid texture */}
+            {/* Grid texture overlay */}
             <div
-              className="absolute inset-0 opacity-[0.03] pointer-events-none rounded-2xl"
+              className="absolute inset-0 opacity-[0.08] pointer-events-none rounded-2xl"
               style={{
                 backgroundImage: "url(/grid.png)",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
             />
+
+            {/* Subtle brass accent line at top */}
+            <div className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-[#B08D57]/20 to-transparent" />
 
             <div className="relative flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
               {/* Preview card - on left for desktop */}
