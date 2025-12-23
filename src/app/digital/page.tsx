@@ -203,15 +203,15 @@ function HardLineSection() {
           </div>
 
           {/* Final line: Brand positioning - dominates */}
-          <div className="relative">
+          <div className="relative inline-block">
             <p
               className="text-[1.875rem] md:text-[3rem] lg:text-[3.5rem] font-bold text-[#0B1220] leading-[1.1] whitespace-nowrap"
               style={{ letterSpacing: "-0.005em" }}
             >
               We build around you.
             </p>
-            {/* Editorial underline - 75% width, offset left */}
-            <div className="mt-3 w-[75%] h-[2px] bg-[#B08D57]" />
+            {/* Editorial underline - full text width plus overhang */}
+            <div className="mt-3 w-[115%] h-[2px] bg-[#B08D57]" />
           </div>
         </div>
       </Container>
