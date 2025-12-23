@@ -163,7 +163,8 @@ function HeroSection() {
 
 function HardLineSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const wordContainerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(wordContainerRef, { once: true, margin: "0px 0px -200px 0px" });
 
   const words = ["We", "build", "around", "you."];
 
@@ -208,7 +209,7 @@ function HardLineSection() {
           </div>
 
           {/* Final line: Brand positioning - words pop up one by one, slow and impactful */}
-          <div className="relative inline-block">
+          <div ref={wordContainerRef} className="relative inline-block">
             <div
               className="text-[1.875rem] md:text-[3rem] lg:text-[3.5rem] font-bold text-[#0B1220] leading-[1.1] flex gap-2 md:gap-4"
               style={{ letterSpacing: "-0.005em" }}
@@ -370,74 +371,58 @@ function ProblemVisual() {
                 border: "1px solid rgba(180, 145, 85, 0.15)",
               }}
             >
-              {/* Smart Dashboard - glowing header */}
+              {/* Smart Dashboard - header + block synced */}
               <GlowingHeader text="Smart Dashboard" isActive={activeHeader === 0} />
-              <div className="h-8 bg-white/[0.06] rounded" />
+              <motion.div
+                className="h-8 rounded"
+                animate={{
+                  backgroundColor: activeHeader === 0 ? "rgba(180, 145, 85, 0.15)" : "rgba(255, 255, 255, 0.06)",
+                  boxShadow: activeHeader === 0 ? "inset 0 0 20px rgba(180, 145, 85, 0.1)" : "none",
+                }}
+                transition={{ duration: 0.4 }}
+              />
 
-              {/* Live Booking */}
+              {/* Live Booking - header + two blocks synced */}
               <GlowingHeader text="Live Booking" isActive={activeHeader === 1} />
-
-              {/* Two blocks with subtle inner glow - dirty brass */}
               <div className="flex gap-2">
                 <motion.div
-                  className="h-12 rounded flex-1 relative overflow-hidden"
-                  style={{
-                    backgroundColor: "rgba(180, 145, 85, 0.06)",
-                    boxShadow: "inset 0 0 20px rgba(180, 145, 85, 0.04)",
+                  className="h-12 rounded flex-1"
+                  animate={{
+                    backgroundColor: activeHeader === 1 ? "rgba(180, 145, 85, 0.15)" : "rgba(180, 145, 85, 0.06)",
+                    boxShadow: activeHeader === 1 ? "inset 0 0 20px rgba(180, 145, 85, 0.12)" : "inset 0 0 20px rgba(180, 145, 85, 0.04)",
                   }}
-                >
-                  <motion.div
-                    className="absolute inset-0 rounded"
-                    style={{ backgroundColor: "rgba(180, 145, 85, 0.08)" }}
-                    initial={{ opacity: 0.06 }}
-                    animate={{ opacity: [0.06, 0.14, 0.06] }}
-                    transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut", repeatDelay: 2.1 }}
-                  />
-                </motion.div>
+                  transition={{ duration: 0.4 }}
+                />
                 <motion.div
-                  className="h-12 rounded flex-1 relative overflow-hidden"
-                  style={{
-                    backgroundColor: "rgba(180, 145, 85, 0.05)",
-                    boxShadow: "inset 0 0 20px rgba(180, 145, 85, 0.03)",
+                  className="h-12 rounded flex-1"
+                  animate={{
+                    backgroundColor: activeHeader === 1 ? "rgba(180, 145, 85, 0.15)" : "rgba(180, 145, 85, 0.05)",
+                    boxShadow: activeHeader === 1 ? "inset 0 0 20px rgba(180, 145, 85, 0.12)" : "inset 0 0 20px rgba(180, 145, 85, 0.03)",
                   }}
-                >
-                  <motion.div
-                    className="absolute inset-0 rounded"
-                    style={{ backgroundColor: "rgba(180, 145, 87, 0.07)" }}
-                    initial={{ opacity: 0.05 }}
-                    animate={{ opacity: [0.05, 0.12, 0.05] }}
-                    transition={{ duration: 3.8, delay: 1.4, repeat: Infinity, ease: "easeInOut", repeatDelay: 2.6 }}
-                  />
-                </motion.div>
+                  transition={{ duration: 0.4, delay: 0.05 }}
+                />
               </div>
 
-              {/* Real-time Analytics */}
+              {/* Real-time Analytics - header + block synced */}
               <GlowingHeader text="Real-time Analytics" isActive={activeHeader === 2} />
-
-              {/* Third block - full width, subtle breathe */}
               <motion.div
-                className="h-10 rounded relative overflow-hidden"
-                style={{
-                  backgroundColor: "rgba(180, 145, 85, 0.04)",
-                  boxShadow: "inset 0 0 25px rgba(180, 145, 85, 0.03)",
+                className="h-10 rounded"
+                animate={{
+                  backgroundColor: activeHeader === 2 ? "rgba(180, 145, 85, 0.15)" : "rgba(180, 145, 85, 0.04)",
+                  boxShadow: activeHeader === 2 ? "inset 0 0 25px rgba(180, 145, 85, 0.12)" : "inset 0 0 25px rgba(180, 145, 85, 0.03)",
                 }}
-              >
-                <motion.div
-                  className="absolute inset-0 rounded"
-                  style={{ backgroundColor: "rgba(180, 145, 85, 0.06)" }}
-                  initial={{ opacity: 0.04 }}
-                  animate={{ opacity: [0.04, 0.10, 0.04] }}
-                  transition={{ duration: 4.2, delay: 2.8, repeat: Infinity, ease: "easeInOut", repeatDelay: 3.1 }}
-                />
-              </motion.div>
+                transition={{ duration: 0.4 }}
+              />
 
-              {/* One-Click Actions - glowing header */}
+              {/* One-Click Actions - header + CTA synced */}
               <GlowingHeader text="One-Click Actions" isActive={activeHeader === 3} />
-
-              {/* CTA - subtle, rounded */}
-              <div
+              <motion.div
                 className="h-9 rounded-full w-1/2"
-                style={{ backgroundColor: "rgba(180, 145, 85, 0.12)" }}
+                animate={{
+                  backgroundColor: activeHeader === 3 ? "rgba(180, 145, 85, 0.25)" : "rgba(180, 145, 85, 0.12)",
+                  boxShadow: activeHeader === 3 ? "0 0 15px rgba(180, 145, 85, 0.3)" : "none",
+                }}
+                transition={{ duration: 0.4 }}
               />
             </div>
           </motion.div>
@@ -551,15 +536,16 @@ interface BuildCardProps {
 }
 
 function BuildCard({ headline, copy, emphasis, punchline, visual, index, highlighted }: BuildCardProps) {
-  // Cards swipe in from opposite sides: left for even index, right for odd
-  const swipeDirection = index % 2 === 0 ? -60 : 60;
-
   return (
     <motion.div
-      initial={{ opacity: 0, x: swipeDirection }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.8, delay: index * 0.12, ease: [0.25, 0.1, 0.25, 1] }}
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{
+        duration: 0.7,
+        delay: index * 0.1,
+        ease: "easeOut"
+      }}
       className={`group bg-[#0F1A2B] rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 ${
         highlighted
           ? "border border-[#B08D57]/25 hover:border-[#B08D57]/40 hover:shadow-xl hover:shadow-[#B08D57]/10"
@@ -1263,31 +1249,63 @@ function RealBuildsSection() {
   }, []);
 
   return (
-    <section id="real-builds" className="py-20 lg:py-28 bg-[#0B1220]">
-      <Container>
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={staggerContainer}
-        >
-          {/* Section header - bigger, two lines */}
+    <>
+      {/* Brass header strip */}
+      <section className="relative py-16 lg:py-20 bg-gradient-to-b from-[#a38542] via-[#d4b87f] to-[#c9a46a] overflow-hidden">
+        {/* Grain texture */}
+        <div
+          className="absolute inset-0 opacity-[0.12] pointer-events-none"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+          }}
+        />
+
+        <Container>
           <motion.div
-            variants={fadeUpVariant}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="mb-20"
           >
-            <h2 className="text-[36px] md:text-[48px] lg:text-[56px] font-bold text-[#F4F6FA] leading-[1.1] mb-2">
+            <h2 className="text-[36px] md:text-[48px] lg:text-[56px] font-bold text-[#0B1220] leading-[1.1] mb-2">
               Real problems.
             </h2>
-            <h2 className="text-[36px] md:text-[48px] lg:text-[56px] font-bold text-[#B08D57] leading-[1.1] mb-6">
+            <h2 className="text-[36px] md:text-[48px] lg:text-[56px] font-bold text-[#0B1220]/80 leading-[1.1] mb-8">
               Real builds.
             </h2>
-            <p className="text-lg md:text-xl text-[#A9B4C4]">
+
+            {/* Example pills */}
+            <div className="flex flex-wrap gap-3 mb-6">
+              <span className="px-4 py-2 bg-[#0B1220]/10 rounded-full text-sm text-[#0B1220]/80 font-medium">
+                SmartPages
+              </span>
+              <span className="px-4 py-2 bg-[#0B1220]/10 rounded-full text-sm text-[#0B1220]/80 font-medium">
+                Custom Websites
+              </span>
+              <span className="px-4 py-2 bg-[#0B1220]/10 rounded-full text-sm text-[#0B1220]/80 font-medium">
+                Family Vault
+              </span>
+              <span className="px-4 py-2 bg-[#0B1220]/10 rounded-full text-sm text-[#0B1220]/80 font-medium">
+                Business Apps
+              </span>
+            </div>
+
+            <p className="text-lg text-[#0B1220]/70 max-w-xl">
               A few examples of tools we&apos;ve built — and why they exist.
             </p>
           </motion.div>
+        </Container>
+      </section>
 
+      {/* Builds content on dark background */}
+      <section id="real-builds" className="py-20 lg:py-28 bg-[#0B1220]">
+        <Container>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+          >
           {/* SmartPages Showcase */}
           <motion.div
             variants={fadeUpVariant}
@@ -1474,6 +1492,7 @@ function RealBuildsSection() {
       <SmartPageModal isOpen={isSmartPageModalOpen} onClose={closeSmartPageModal} />
       <FamilyVaultModal isOpen={isFamilyVaultModalOpen} onClose={closeFamilyVaultModal} />
     </section>
+    </>
   );
 }
 
