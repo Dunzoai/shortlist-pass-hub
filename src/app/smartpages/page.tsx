@@ -903,6 +903,17 @@ function FeatureVisual({ type }: { type: string }) {
         </div>
       );
     case 'app':
+      // Subtle fake app colors and patterns
+      const fakeApps = [
+        'bg-gradient-to-br from-blue-500/20 to-blue-600/20',
+        'bg-gradient-to-br from-purple-500/20 to-purple-600/20',
+        'bg-gradient-to-br from-green-500/20 to-green-600/20',
+        'bg-gradient-to-br from-red-500/20 to-red-600/20',
+        'bg-gradient-to-br from-pink-500/20 to-pink-600/20',
+        'bg-gradient-to-br from-orange-500/20 to-orange-600/20',
+        'bg-gradient-to-br from-teal-500/20 to-teal-600/20',
+      ];
+
       return (
         <div className="bg-gray-900 rounded-3xl p-6 md:p-8 w-full max-w-sm md:max-w-lg md:min-w-[400px] mx-auto">
           <div className="flex flex-col items-center gap-4">
@@ -920,7 +931,11 @@ function FeatureVisual({ type }: { type: string }) {
                     />
                   </div>
                 ) : (
-                  <div key={i} className="w-14 h-14 md:w-16 md:h-16 rounded-xl bg-gray-600" />
+                  // Subtle fake app icons with gradients and blur
+                  <div
+                    key={i}
+                    className={`w-14 h-14 md:w-16 md:h-16 rounded-xl backdrop-blur-sm border border-white/5 ${fakeApps[i]} opacity-40`}
+                  />
                 )
               ))}
             </div>
