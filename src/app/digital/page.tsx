@@ -49,7 +49,7 @@ function HeroSection() {
 
       {/* Grid background - static with subtle scroll parallax */}
       <motion.div
-        className="absolute inset-[-10%] opacity-[0.35] pointer-events-none"
+        className="absolute inset-[-10%] opacity-[0.6] pointer-events-none"
         style={{
           backgroundImage: "url(/grid.png)",
           backgroundSize: "cover",
@@ -103,28 +103,28 @@ function HeroSection() {
             Most digital tools weren&apos;t built for real businesses. We design and build custom websites and apps that remove friction, save time, and make running your business easier — not harder.
           </motion.p>
 
-          {/* Emphasis phrases - slap down one at a time */}
-          <div className="flex flex-wrap justify-center gap-x-2 gap-y-1 mb-10">
+          {/* Emphasis phrases - slap in from left to right */}
+          <div className="flex justify-center gap-x-2 mb-10 whitespace-nowrap">
             <motion.span
-              initial={{ opacity: 0, y: -20, scale: 1.1 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.3, delay: 0.4, ease: "easeOut" }}
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.25, delay: 0.4, ease: "easeOut" }}
               className="text-base text-[#B08D57] font-medium"
             >
               No templates.
             </motion.span>
             <motion.span
-              initial={{ opacity: 0, y: -20, scale: 1.1 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.3, delay: 0.55, ease: "easeOut" }}
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.25, delay: 0.55, ease: "easeOut" }}
               className="text-base text-[#B08D57] font-medium"
             >
               No shortcuts.
             </motion.span>
             <motion.span
-              initial={{ opacity: 0, y: -20, scale: 1.1 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.3, delay: 0.7, ease: "easeOut" }}
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.25, delay: 0.7, ease: "easeOut" }}
               className="text-base text-[#B08D57] font-medium"
             >
               No guessing.
