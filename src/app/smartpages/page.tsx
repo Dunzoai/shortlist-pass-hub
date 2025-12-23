@@ -580,7 +580,7 @@ function AppGridSection() {
             href={app.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex flex-col items-center gap-1"
+            className="flex flex-col items-center"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
@@ -594,7 +594,7 @@ function AppGridSection() {
               style={{ width: '350px', height: '350px', minWidth: '350px', minHeight: '350px' }}
               className="rounded-2xl"
             />
-            <span className="text-sm text-slate-400">{app.alt}</span>
+            <span className="text-sm text-slate-400 mt-2">{app.alt}</span>
           </motion.a>
         ))}
       </div>
@@ -607,7 +607,7 @@ function AppGridSection() {
             href={app.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex flex-col items-center gap-1"
+            className="flex flex-col items-center"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
@@ -621,7 +621,7 @@ function AppGridSection() {
               style={{ width: '350px', height: '350px', minWidth: '350px', minHeight: '350px' }}
               className="rounded-2xl"
             />
-            <span className="text-sm text-slate-400">{app.alt}</span>
+            <span className="text-sm text-slate-400 mt-2">{app.alt}</span>
           </motion.a>
         ))}
       </div>
