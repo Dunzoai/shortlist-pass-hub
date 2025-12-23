@@ -562,7 +562,7 @@ function AppGridSection() {
 
       {/* Try These Header */}
       <motion.p
-        className="text-center text-base md:text-lg text-slate-300 mb-6 md:mb-8"
+        className="text-center text-base md:text-lg text-slate-300 mb-3 md:mb-4"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
