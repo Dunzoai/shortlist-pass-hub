@@ -1444,6 +1444,10 @@ function RealBuildsSection() {
 // =============================================================================
 
 function BenefitsSection() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { once: true, margin: "-100px" });
+  const [hoveredBenefit, setHoveredBenefit] = useState<number | null>(null);
+
   const benefits = [
     {
       title: "Fewer confused customers",
@@ -1460,54 +1464,121 @@ function BenefitsSection() {
   ];
 
   return (
-    <section className="py-20 lg:py-28 bg-[#0B1220]">
+    <section className="py-20 lg:py-28 bg-[#0B1220]" ref={containerRef}>
       <Container>
+        {/* Statement container - frosted glass card */}
         <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={staggerContainer}
-          className="text-center"
+          className="relative max-w-3xl mx-auto mb-16 rounded-2xl overflow-hidden"
+          style={{
+            background: "linear-gradient(180deg, rgba(15, 23, 36, 0.6) 0%, rgba(11, 18, 32, 0.4) 100%)",
+            boxShadow: "0 20px 50px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.03)",
+          }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, ease: "easeOut" }}
         >
-          <motion.div
-            variants={fadeUpVariant}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="mb-12"
-          >
-            <p className="text-xl md:text-2xl text-[#F4F6FA] font-semibold mb-2">
+          {/* Subtle border glow */}
+          <div
+            className="absolute inset-0 rounded-2xl pointer-events-none"
+            style={{
+              border: "1px solid rgba(176, 141, 87, 0.1)",
+            }}
+          />
+
+          <div className="px-8 py-12 md:px-12 md:py-16 text-center">
+            {/* First line - fades in normally */}
+            <motion.p
+              className="text-xl md:text-2xl lg:text-3xl text-[#F4F6FA] font-semibold mb-3"
+              initial={{ opacity: 0 }}
+              animate={isInView ? { opacity: 1 } : {}}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
               Good digital tools don&apos;t add work.
-            </p>
-            <p className="text-xl md:text-2xl text-[#B08D57] font-semibold">
-              They remove it.
-            </p>
-          </motion.div>
+            </motion.p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            {benefits.map((benefit, index) => (
-              <motion.div
-                key={benefit.title}
-                variants={fadeUpVariant}
-                transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
-                className="text-center"
-              >
-                <h3 className="text-lg font-semibold text-[#F4F6FA] mb-2">
-                  {benefit.title}
-                </h3>
-                <p className="text-base text-[#A9B4C4]">
-                  {benefit.description}
-                </p>
-              </motion.div>
-            ))}
+            {/* Second line - slides up with emphasis */}
+            <motion.div
+              className="relative inline-block"
+              initial={{ opacity: 0, y: 10 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.5 }}
+            >
+              <p className="text-xl md:text-2xl lg:text-3xl font-semibold">
+                <span className="text-[#F4F6FA]">They </span>
+                <span className="relative text-[#B08D57]">
+                  remove it.
+                  {/* Gold underline animation */}
+                  <motion.span
+                    className="absolute -bottom-1 left-0 h-[2px] bg-[#B08D57]"
+                    initial={{ width: 0 }}
+                    animate={isInView ? { width: "100%" } : {}}
+                    transition={{ duration: 0.6, delay: 0.9, ease: "easeOut" }}
+                    style={{
+                      borderRadius: "2px",
+                    }}
+                  />
+                </span>
+              </p>
+            </motion.div>
           </div>
-
-          <motion.p
-            variants={fadeUpVariant}
-            transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
-            className="text-base text-[#A9B4C4]"
-          >
-            When your digital setup works, everything else feels lighter.
-          </motion.p>
         </motion.div>
+
+        {/* Benefits as quiet pillars */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mb-12">
+          {benefits.map((benefit, index) => (
+            <motion.div
+              key={benefit.title}
+              className="text-center cursor-default group"
+              initial={{ opacity: 0, y: 15 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 0.3 + index * 0.15, ease: "easeOut" }}
+              onMouseEnter={() => setHoveredBenefit(index)}
+              onMouseLeave={() => setHoveredBenefit(null)}
+            >
+              {/* Tiny dot above */}
+              <div className="flex justify-center mb-4">
+                <motion.div
+                  className="w-1.5 h-1.5 rounded-full bg-[#B08D57]/40"
+                  animate={{
+                    backgroundColor: hoveredBenefit === index ? "rgba(176, 141, 87, 0.8)" : "rgba(176, 141, 87, 0.4)",
+                  }}
+                  transition={{ duration: 0.2 }}
+                />
+              </div>
+
+              <h3
+                className="text-lg font-semibold mb-2 transition-colors duration-200"
+                style={{
+                  color: hoveredBenefit === index ? "#F4F6FA" : "rgba(244, 246, 250, 0.85)",
+                }}
+              >
+                {benefit.title}
+              </h3>
+
+              <p className="text-base text-[#A9B4C4]/80">
+                {benefit.description}
+              </p>
+
+              {/* Micro underline on hover */}
+              <motion.div
+                className="mt-3 mx-auto h-px bg-[#B08D57]/30"
+                initial={{ width: 0 }}
+                animate={{ width: hoveredBenefit === index ? 40 : 0 }}
+                transition={{ duration: 0.2 }}
+              />
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Whisper-level closing */}
+        <motion.p
+          className="text-sm text-[#A9B4C4]/50 text-center"
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.6, delay: 0.8 }}
+        >
+          When your digital setup works, everything else feels lighter.
+        </motion.p>
       </Container>
     </section>
   );
@@ -1518,60 +1589,97 @@ function BenefitsSection() {
 // =============================================================================
 
 function ProcessSection() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { once: true, margin: "-50px" });
+
+  // Simplified, human step copy
   const steps = [
-    "We learn how your business actually runs",
-    "We identify friction and wasted effort",
-    "We design the right tool — website, app, or system",
-    "We build it intentionally",
-    "We support and evolve it as you grow",
+    "Learn how your business actually runs",
+    "Find the stuff that wastes your time",
+    "Build the right thing — nothing extra",
   ];
 
   return (
-    <section className="py-20 lg:py-28 bg-gradient-to-b from-[#0B1220] via-[#0d1627] to-[#0B1220]">
+    <section
+      ref={containerRef}
+      className="py-20 lg:py-28 bg-gradient-to-b from-[#0B1220] via-[#0d1627] to-[#0B1220]"
+    >
       <Container>
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={staggerContainer}
-          className="max-w-2xl mx-auto"
-        >
+        <div className="max-w-2xl mx-auto">
           <motion.h2
-            variants={fadeUpVariant}
+            className="text-[28px] md:text-[36px] font-semibold text-[#F4F6FA] leading-tight mb-12 text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="text-[28px] md:text-[36px] font-semibold text-[#F4F6FA] leading-tight mb-10 text-center"
           >
             How working with us actually works
           </motion.h2>
 
-          <div className="space-y-4 mb-10">
-            {steps.map((step, index) => (
+          {/* Steps with connecting line */}
+          <div className="relative mb-12">
+            {/* Connecting line that fills */}
+            <div className="absolute left-4 top-4 bottom-4 w-px bg-[#1E2A3D]">
               <motion.div
-                key={step}
-                variants={fadeUpVariant}
-                transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
-                className="flex items-start gap-4"
-              >
-                <span className="w-8 h-8 rounded-full bg-[#B08D57]/20 text-[#B08D57] text-sm font-medium flex items-center justify-center shrink-0">
-                  {index + 1}
-                </span>
-                <p className="text-base md:text-lg text-[#A9B4C4] pt-1">
-                  {step}
-                </p>
-              </motion.div>
-            ))}
+                className="absolute top-0 left-0 w-full bg-gradient-to-b from-[#B08D57] to-[#B08D57]/30"
+                initial={{ height: 0 }}
+                animate={isInView ? { height: "100%" } : {}}
+                transition={{ duration: 1.5, delay: 0.3, ease: "easeOut" }}
+              />
+            </div>
+
+            <div className="space-y-8">
+              {steps.map((step, index) => (
+                <motion.div
+                  key={step}
+                  className="flex items-start gap-6 relative"
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={isInView ? { opacity: 1, x: 0 } : {}}
+                  transition={{ duration: 0.5, delay: 0.2 + index * 0.3, ease: "easeOut" }}
+                >
+                  {/* Number circle - fills with gold */}
+                  <motion.div
+                    className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-sm font-medium relative z-10"
+                    initial={{
+                      backgroundColor: "rgba(30, 42, 61, 0.5)",
+                      color: "rgba(169, 180, 196, 0.5)",
+                      borderWidth: 1,
+                      borderColor: "rgba(30, 42, 61, 0.8)",
+                    }}
+                    animate={isInView ? {
+                      backgroundColor: "rgba(176, 141, 87, 0.2)",
+                      color: "#B08D57",
+                      borderColor: "rgba(176, 141, 87, 0.4)",
+                    } : {}}
+                    transition={{ duration: 0.5, delay: 0.4 + index * 0.3, ease: "easeOut" }}
+                    style={{ borderStyle: "solid" }}
+                  >
+                    {index + 1}
+                  </motion.div>
+
+                  {/* Step text */}
+                  <motion.p
+                    className="text-base md:text-lg pt-1"
+                    initial={{ color: "rgba(169, 180, 196, 0.5)" }}
+                    animate={isInView ? { color: "#A9B4C4" } : {}}
+                    transition={{ duration: 0.5, delay: 0.5 + index * 0.3, ease: "easeOut" }}
+                  >
+                    {step}
+                  </motion.p>
+                </motion.div>
+              ))}
+            </div>
           </div>
 
-          <motion.div
-            variants={fadeUpVariant}
-            transition={{ duration: 0.6, delay: 0.6, ease: "easeOut" }}
-            className="text-center"
+          {/* Quiet closing reassurance */}
+          <motion.p
+            className="text-sm text-[#A9B4C4]/60 text-center"
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.6, delay: 1.5 }}
           >
-            <p className="text-base text-[#F4F6FA] font-medium mb-1">No over-engineering.</p>
-            <p className="text-base text-[#F4F6FA] font-medium mb-1">No mystery invoices.</p>
-            <p className="text-base text-[#F4F6FA] font-medium">No disappearing act.</p>
-          </motion.div>
-        </motion.div>
+            Clear steps. No surprises.
+          </motion.p>
+        </div>
       </Container>
     </section>
   );
