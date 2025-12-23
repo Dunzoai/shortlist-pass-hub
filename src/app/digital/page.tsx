@@ -778,73 +778,70 @@ function SmartPageModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
 
 function SmartPagePreviewCard({ onOpen }: { onOpen: () => void }) {
   return (
-    <div className="relative">
-      {/* Slow pulsing brass glow */}
+    <div className="relative flex flex-col items-center">
+      {/* Slow pulsing glow behind phone */}
       <motion.div
-        className="absolute inset-0 rounded-2xl"
+        className="absolute inset-0 rounded-[3rem]"
         style={{
-          background: "radial-gradient(ellipse at 50% 50%, rgba(180, 145, 85, 0.08) 0%, transparent 70%)",
-          filter: "blur(30px)",
-          transform: "scale(1.1)",
+          background: "radial-gradient(ellipse at 50% 40%, rgba(180, 145, 85, 0.12) 0%, rgba(11, 18, 32, 0.8) 60%, transparent 80%)",
+          filter: "blur(40px)",
+          transform: "scale(1.2)",
         }}
-        animate={{ opacity: [0.4, 0.7, 0.4] }}
-        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+        animate={{ opacity: [0.5, 0.8, 0.5] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* Card */}
-      <div
-        className="relative bg-[#0F1A2B] rounded-2xl overflow-hidden"
-        style={{
-          boxShadow: "inset 0 0 40px rgba(180, 145, 85, 0.04), 0 4px 30px rgba(0, 0, 0, 0.3)",
-          border: "1px solid rgba(180, 145, 85, 0.15)",
-        }}
+      {/* Phone container with gentle float */}
+      <motion.div
+        className="relative cursor-pointer group"
+        onClick={onOpen}
+        animate={{ y: [0, -4, 0] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        whileHover={{ scale: 1.02 }}
       >
-        {/* Label */}
-        <div className="px-6 pt-5 pb-3">
-          <span className="text-[10px] text-[#B08D57]/70 uppercase tracking-[0.15em] font-medium">
-            Live SmartPage Example
-          </span>
-        </div>
+        {/* Phone frame */}
+        <div
+          className="relative bg-[#0a0f18] rounded-[2.5rem] p-2 overflow-hidden"
+          style={{
+            boxShadow: "0 25px 80px rgba(0, 0, 0, 0.5), 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.05)",
+          }}
+        >
+          {/* Screen bezel */}
+          <div className="relative bg-[#0B1220] rounded-[2rem] overflow-hidden">
+            {/* Notch */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-6 bg-[#0a0f18] rounded-b-2xl z-10" />
 
-        {/* Preview area */}
-        <div className="px-6 pb-6">
-          <div className="aspect-[4/3] bg-gradient-to-br from-[#1a2535] to-[#0F1A2B] rounded-xl flex items-center justify-center border border-white/5">
-            {/* Static preview layout */}
-            <div className="w-48 space-y-3">
-              {/* Header */}
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 rounded-full bg-[#B08D57]/20" />
-                <div className="flex-1">
-                  <div className="h-2 bg-[#B08D57]/30 rounded w-2/3 mb-1" />
-                  <div className="h-1.5 bg-white/10 rounded w-1/2" />
-                </div>
-              </div>
-              {/* Content blocks */}
-              <div className="h-2 bg-white/10 rounded w-full" />
-              <div className="h-2 bg-white/10 rounded w-4/5" />
-              <div className="h-10 bg-white/5 rounded mt-2" />
-              {/* Action buttons */}
-              <div className="flex gap-2 mt-3">
-                <div className="h-8 bg-[#B08D57]/25 rounded-full flex-1" />
-                <div className="h-8 bg-white/10 rounded-full flex-1" />
+            {/* Screen content - the actual image */}
+            <div className="relative">
+              <img
+                src="/nitos-modal-mock.png"
+                alt="Nito's Empanadas SmartPage"
+                className="w-full h-auto block transition-all duration-300 group-hover:brightness-110"
+                style={{ maxWidth: "320px" }}
+              />
+
+              {/* Hover overlay */}
+              <div className="absolute inset-0 bg-[#B08D57]/0 group-hover:bg-[#B08D57]/5 transition-all duration-300 flex items-center justify-center">
+                <motion.div
+                  className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[#0B1220]/80 backdrop-blur-sm px-4 py-2 rounded-full flex items-center gap-2"
+                  initial={{ scale: 0.9 }}
+                  whileHover={{ scale: 1 }}
+                >
+                  <span className="text-sm text-[#F4F6FA] font-medium">Tap to explore</span>
+                  <svg className="w-4 h-4 text-[#B08D57]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </motion.div>
               </div>
             </div>
           </div>
         </div>
+      </motion.div>
 
-        {/* CTA Button */}
-        <div className="px-6 pb-6">
-          <button
-            onClick={onOpen}
-            className="w-full py-3.5 bg-[#B08D57] text-[#0B1220] rounded-full font-medium text-sm hover:bg-[#c9a46a] transition-all duration-300 flex items-center justify-center gap-2"
-          >
-            Explore Nito&apos;s SmartPage
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </button>
-        </div>
-      </div>
+      {/* Caption */}
+      <p className="mt-5 text-[12px] text-[#A9B4C4]/60 text-center">
+        This is a real SmartPage — not a mockup.
+      </p>
     </div>
   );
 }
@@ -881,6 +878,9 @@ function RealBuildsSection() {
             <h2 className="text-[28px] md:text-[36px] font-semibold text-[#F4F6FA] leading-tight mb-3">
               Real problems. Real builds.
             </h2>
+            <p className="text-lg text-[#A9B4C4]">
+              A few examples of tools we&apos;ve built — and why they exist.
+            </p>
           </motion.div>
 
           {/* SmartPages Showcase */}
@@ -892,60 +892,59 @@ function RealBuildsSection() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
               {/* Left column - Copy */}
               <div>
-                <p className="text-sm text-[#B08D57] uppercase tracking-wider mb-4">SmartPages</p>
+                <p className="text-[11px] text-[#A9B4C4]/50 uppercase tracking-[0.15em] mb-4">SmartPages</p>
                 <h3 className="text-xl md:text-2xl font-semibold text-[#F4F6FA] mb-6 leading-tight">
                   For businesses that don&apos;t need a full website —<br />
                   but still need to be understood.
                 </h3>
 
-                <div className="space-y-4 mb-8 text-base text-[#A9B4C4]">
-                  <p>
-                    Most small businesses either don&apos;t have a website — or have one customers can&apos;t make sense of.
+                <div className="mb-8">
+                  <p className="text-base text-[#A9B4C4] mb-4">
+                    Most small businesses either don&apos;t have a website — or have one that doesn&apos;t help.
                   </p>
-                  <p>
+                  <p className="text-base text-[#A9B4C4]">
                     Information is scattered.<br />
                     Links are buried.<br />
-                    Questions go unanswered.
+                    Customers ask the same questions over and over.
                   </p>
                 </div>
 
                 <div className="mb-8">
-                  <p className="text-sm text-[#A9B4C4]/70 uppercase tracking-wider mb-3">What we built</p>
+                  <p className="text-sm text-[#A9B4C4]/60 uppercase tracking-wider mb-3">What we built</p>
                   <p className="text-base text-[#A9B4C4]">
-                    SmartPages — an intelligent, website-light page that acts like a business assistant. It keeps everything in one place, answers real customer questions instantly, and gives people clear next steps without confusion.
+                    SmartPages — an intelligent, website-light page that acts like a business assistant. It keeps everything in one place, answers real customer questions instantly, and makes it obvious what to do next.
                   </p>
                 </div>
 
                 <div className="mb-8">
-                  <p className="text-sm text-[#A9B4C4]/70 uppercase tracking-wider mb-3">Why it matters</p>
+                  <p className="text-sm text-[#A9B4C4]/60 uppercase tracking-wider mb-3">Why it matters</p>
                   <ul className="space-y-2.5">
                     <li className="flex items-start gap-3 text-base text-[#A9B4C4]">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#B08D57] mt-2 shrink-0" />
-                      Fraction of the cost of a full website
+                      Costs a fraction of a full website
                     </li>
                     <li className="flex items-start gap-3 text-base text-[#A9B4C4]">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#B08D57] mt-2 shrink-0" />
-                      Clear enough for any business
+                      Clear enough for any customer
                     </li>
                     <li className="flex items-start gap-3 text-base text-[#A9B4C4]">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#B08D57] mt-2 shrink-0" />
-                      Smart enough to handle real customer questions
+                      Smart enough to handle real questions
                     </li>
                     <li className="flex items-start gap-3 text-base text-[#A9B4C4]">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#B08D57] mt-2 shrink-0" />
-                      Keeps customers engaged through updates and notifications
+                      Keeps customers engaged with updates and notifications
                     </li>
                   </ul>
                 </div>
 
-                <p className="text-base text-[#F4F6FA] font-medium">
-                  More useful than most websites.<br />
-                  Less expensive than all of them.
+                <p className="text-base text-[#F4F6FA] font-semibold">
+                  More useful than most websites. Less expensive than all of them.
                 </p>
               </div>
 
-              {/* Right column - SmartPage Preview Card */}
-              <div className="lg:pt-8">
+              {/* Right column - Phone mockup */}
+              <div className="flex items-center justify-center lg:justify-end">
                 <SmartPagePreviewCard onOpen={openModal} />
               </div>
             </div>
