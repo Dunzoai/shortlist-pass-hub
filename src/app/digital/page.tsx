@@ -1028,6 +1028,174 @@ function FamilyVaultPreviewCard({ onOpen }: { onOpen: () => void }) {
   );
 }
 
+function CustomWebsiteSystemVisual() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { once: true, margin: "-100px" });
+  const [hasAnimated, setHasAnimated] = useState(false);
+
+  // Track when CTA pulse should happen (once)
+  useEffect(() => {
+    if (isInView && !hasAnimated) {
+      const timer = setTimeout(() => setHasAnimated(true), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [isInView, hasAnimated]);
+
+  return (
+    <div ref={containerRef} className="relative">
+      {/* Subtle glow behind */}
+      <div
+        className="absolute -inset-4 rounded-3xl opacity-40"
+        style={{
+          background: "radial-gradient(ellipse at 50% 50%, rgba(11, 18, 32, 0.8) 0%, transparent 70%)",
+          filter: "blur(25px)",
+        }}
+      />
+
+      {/* Frosted glass container */}
+      <motion.div
+        className="relative rounded-2xl overflow-hidden border border-[#1E2A3D]"
+        style={{
+          background: "linear-gradient(180deg, rgba(15, 23, 36, 0.95) 0%, rgba(11, 18, 32, 0.98) 100%)",
+          boxShadow: "0 25px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.03), inset 0 0 60px rgba(11, 18, 32, 0.4)",
+        }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={isInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
+        <div className="p-6 md:p-8">
+          {/* Website system diagram */}
+          <div className="space-y-4">
+            {/* Hero block */}
+            <motion.div
+              className="rounded-xl p-4 border border-[#1E2A3D]/80"
+              style={{
+                background: "linear-gradient(135deg, rgba(26, 35, 50, 0.6) 0%, rgba(15, 26, 43, 0.4) 100%)",
+              }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
+            >
+              <div className="flex items-center justify-between mb-3">
+                <div className="h-2 w-24 bg-white/15 rounded" />
+                <div className="h-2 w-16 bg-white/10 rounded" />
+              </div>
+              <div className="h-3 w-3/4 bg-white/20 rounded mb-2" />
+              <div className="h-2 w-1/2 bg-white/10 rounded" />
+              <p className="text-[10px] text-[#B08D57]/70 uppercase tracking-wider mt-3">
+                Clear value, fast
+              </p>
+            </motion.div>
+
+            {/* Primary CTA block */}
+            <motion.div
+              className="rounded-xl p-4 border relative overflow-hidden"
+              style={{
+                background: "linear-gradient(135deg, rgba(176, 141, 87, 0.08) 0%, rgba(176, 141, 87, 0.03) 100%)",
+                borderColor: "rgba(176, 141, 87, 0.25)",
+              }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
+            >
+              {/* One-time gold pulse */}
+              {isInView && !hasAnimated && (
+                <motion.div
+                  className="absolute inset-0 rounded-xl"
+                  style={{
+                    background: "radial-gradient(ellipse at 50% 50%, rgba(176, 141, 87, 0.15) 0%, transparent 70%)",
+                  }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: [0, 1, 0] }}
+                  transition={{ duration: 1.5, delay: 0.8, ease: "easeInOut" }}
+                />
+              )}
+              <div className="flex items-center gap-4">
+                <div className="h-10 w-32 bg-[#B08D57]/20 rounded-lg border border-[#B08D57]/30" />
+                <div className="flex-1">
+                  <div className="h-2 w-full bg-white/10 rounded mb-1.5" />
+                  <div className="h-2 w-2/3 bg-white/8 rounded" />
+                </div>
+              </div>
+              <p className="text-[10px] text-[#B08D57]/70 uppercase tracking-wider mt-3">
+                One clear next step
+              </p>
+            </motion.div>
+
+            {/* Supporting content blocks */}
+            <motion.div
+              className="grid grid-cols-2 gap-3"
+              initial={{ opacity: 0, y: 10 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
+            >
+              <div
+                className="rounded-lg p-3 border border-[#1E2A3D]/60"
+                style={{
+                  background: "linear-gradient(135deg, rgba(26, 35, 50, 0.4) 0%, rgba(15, 26, 43, 0.3) 100%)",
+                }}
+              >
+                <div className="h-8 w-8 rounded bg-white/8 mb-2" />
+                <div className="h-2 w-full bg-white/10 rounded mb-1" />
+                <div className="h-2 w-3/4 bg-white/6 rounded" />
+              </div>
+              <div
+                className="rounded-lg p-3 border border-[#1E2A3D]/60"
+                style={{
+                  background: "linear-gradient(135deg, rgba(26, 35, 50, 0.4) 0%, rgba(15, 26, 43, 0.3) 100%)",
+                }}
+              >
+                <div className="h-8 w-8 rounded bg-white/8 mb-2" />
+                <div className="h-2 w-full bg-white/10 rounded mb-1" />
+                <div className="h-2 w-2/3 bg-white/6 rounded" />
+              </div>
+            </motion.div>
+
+            {/* Connected module */}
+            <motion.div
+              className="rounded-xl p-4 border border-dashed border-[#B08D57]/30 relative"
+              style={{
+                background: "linear-gradient(135deg, rgba(176, 141, 87, 0.04) 0%, transparent 100%)",
+              }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 0.8, ease: "easeOut" }}
+            >
+              {/* Connection line */}
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-px h-4 bg-gradient-to-b from-transparent to-[#B08D57]/30" />
+
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-[#B08D57]/10 border border-[#B08D57]/20 flex items-center justify-center">
+                  <svg className="w-4 h-4 text-[#B08D57]/60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <div className="h-2 w-full bg-white/10 rounded mb-1" />
+                  <div className="h-2 w-1/2 bg-white/6 rounded" />
+                </div>
+              </div>
+              <p className="text-[10px] text-[#B08D57]/70 uppercase tracking-wider mt-3">
+                Talks to your systems
+              </p>
+            </motion.div>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Caption */}
+      <motion.p
+        className="mt-5 text-[12px] text-[#A9B4C4]/50 text-center"
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1 } : {}}
+        transition={{ duration: 0.5, delay: 1, ease: "easeOut" }}
+      >
+        Designed intentionally. Built around real workflows.
+      </motion.p>
+    </div>
+  );
+}
+
 function RealBuildsSection() {
   const [isSmartPageModalOpen, setIsSmartPageModalOpen] = useState(false);
   const [isFamilyVaultModalOpen, setIsFamilyVaultModalOpen] = useState(false);
@@ -1188,36 +1356,32 @@ function RealBuildsSection() {
             variants={fadeUpVariant}
             transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
           >
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div>
-                <p className="text-sm text-[#B08D57] uppercase tracking-wider mb-3">Custom Websites</p>
-                <h3 className="text-xl md:text-2xl font-semibold text-[#F4F6FA] mb-4">
+            <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
+              {/* Left column - Copy */}
+              <div className="flex-1 min-w-0 order-1">
+                <p className="text-[11px] text-[#B08D57] uppercase tracking-[0.15em] mb-4">Custom Websites</p>
+                <h3 className="text-xl md:text-2xl font-semibold text-[#F4F6FA] mb-6 leading-tight">
                   For businesses that have outgrown templates
                 </h3>
 
-                <p className="text-base text-[#A9B4C4] mb-6">
-                  When businesses grow, templates stop working. We design custom websites that match how customers actually decide — and how your business actually operates.
-                </p>
+                <div className="mb-6">
+                  <p className="text-base text-[#A9B4C4] mb-4">
+                    When businesses grow, templates stop working.<br />
+                    What once looked fine starts getting in the way.
+                  </p>
+                  <p className="text-base text-[#A9B4C4]">
+                    We design custom websites from scratch — based on how your customers actually decide, and how your business actually operates.
+                  </p>
+                </div>
 
-                <p className="text-base text-[#F4F6FA] font-medium">
-                  Clear structure. Clear messaging. Built to convert, not just look nice.
+                <p className="text-lg text-[#F4F6FA] font-medium">
+                  Clear structure. Clear messaging. Built to convert — not just look nice.
                 </p>
               </div>
 
-              {/* Visual placeholder */}
-              <div className="bg-[#0F1A2B] border border-white/10 rounded-2xl p-6 lg:p-8">
-                <div className="aspect-[4/3] bg-gradient-to-br from-[#1a2332] to-[#0F1A2B] rounded-lg flex items-center justify-center">
-                  <div className="w-56 space-y-3">
-                    <div className="h-4 bg-[#B08D57]/30 rounded w-1/2" />
-                    <div className="h-2 bg-white/10 rounded w-full" />
-                    <div className="h-2 bg-white/10 rounded w-5/6" />
-                    <div className="grid grid-cols-2 gap-2 mt-4">
-                      <div className="h-16 bg-white/5 rounded" />
-                      <div className="h-16 bg-white/5 rounded" />
-                    </div>
-                    <div className="h-10 bg-[#B08D57]/20 rounded-full w-1/3 mt-4" />
-                  </div>
-                </div>
+              {/* Right column - System visual */}
+              <div className="shrink-0 self-center lg:self-start order-2 w-full lg:w-auto lg:max-w-[400px]">
+                <CustomWebsiteSystemVisual />
               </div>
             </div>
           </motion.div>
