@@ -76,20 +76,18 @@ function HeroSection() {
         }}
       />
 
-      {/* Very subtle edge vignette */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_#0B1220_85%)] opacity-50 pointer-events-none" />
-
       <Container>
         <motion.div
           initial="hidden"
           animate="visible"
           variants={staggerContainer}
-          className="relative z-10 max-w-3xl"
+          className="relative z-10 max-w-3xl mx-auto text-center"
         >
           {/* Headline */}
           <motion.h1
-            variants={fadeUpVariant}
-            transition={{ duration: 0.6, ease: "easeOut" }}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
             className="text-[36px] md:text-[48px] lg:text-[56px] font-semibold text-[#F4F6FA] leading-[1.1] mb-6"
           >
             Websites & apps built from scratch — for how your business actually works.
@@ -97,27 +95,48 @@ function HeroSection() {
 
           {/* Subhead */}
           <motion.p
-            variants={fadeUpVariant}
-            transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-            className="text-lg md:text-xl text-[#A9B4C4] leading-relaxed mb-4 max-w-2xl"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
+            className="text-lg md:text-xl text-[#A9B4C4] leading-relaxed mb-6 max-w-2xl mx-auto"
           >
             Most digital tools weren&apos;t built for real businesses. We design and build custom websites and apps that remove friction, save time, and make running your business easier — not harder.
           </motion.p>
 
-          {/* Emphasis line */}
-          <motion.p
-            variants={fadeUpVariant}
-            transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-            className="text-base text-[#B08D57] font-medium mb-10"
-          >
-            No templates. No shortcuts. No guessing.
-          </motion.p>
+          {/* Emphasis phrases - slap down one at a time */}
+          <div className="flex flex-wrap justify-center gap-x-2 gap-y-1 mb-10">
+            <motion.span
+              initial={{ opacity: 0, y: -20, scale: 1.1 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.3, delay: 0.4, ease: "easeOut" }}
+              className="text-base text-[#B08D57] font-medium"
+            >
+              No templates.
+            </motion.span>
+            <motion.span
+              initial={{ opacity: 0, y: -20, scale: 1.1 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.3, delay: 0.55, ease: "easeOut" }}
+              className="text-base text-[#B08D57] font-medium"
+            >
+              No shortcuts.
+            </motion.span>
+            <motion.span
+              initial={{ opacity: 0, y: -20, scale: 1.1 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.3, delay: 0.7, ease: "easeOut" }}
+              className="text-base text-[#B08D57] font-medium"
+            >
+              No guessing.
+            </motion.span>
+          </div>
 
           {/* CTAs */}
           <motion.div
-            variants={fadeUpVariant}
-            transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
-            className="flex flex-col sm:flex-row items-start gap-4"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.9, ease: "easeOut" }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
             <a
               href="mailto:hello@shortlistpass.com?subject=Project consult"
