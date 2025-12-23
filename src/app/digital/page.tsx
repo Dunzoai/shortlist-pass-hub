@@ -512,11 +512,13 @@ interface BuildCardProps {
   headline: string;
   copy: string;
   emphasis?: string;
+  punchline?: string;
   visual: React.ReactNode;
   index: number;
+  highlighted?: boolean;
 }
 
-function BuildCard({ headline, copy, emphasis, visual, index }: BuildCardProps) {
+function BuildCard({ headline, copy, emphasis, punchline, visual, index, highlighted }: BuildCardProps) {
   return (
     <motion.div
       variants={fadeUpVariant}
@@ -524,10 +526,21 @@ function BuildCard({ headline, copy, emphasis, visual, index }: BuildCardProps) 
       whileInView="visible"
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
-      className="group bg-[#0F1A2B] border border-white/10 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-[#B08D57]/30 hover:shadow-lg hover:shadow-[#B08D57]/5"
+      className={`group bg-[#0F1A2B] rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 ${
+        highlighted
+          ? "border border-[#B08D57]/25 hover:border-[#B08D57]/40 hover:shadow-xl hover:shadow-[#B08D57]/10"
+          : "border border-white/10 hover:border-[#B08D57]/20 hover:shadow-lg hover:shadow-[#B08D57]/5"
+      }`}
+      style={highlighted ? {
+        boxShadow: "inset 0 0 40px rgba(180, 145, 85, 0.04), 0 4px 20px rgba(0, 0, 0, 0.2)",
+      } : undefined}
     >
       {/* Visual placeholder */}
-      <div className="h-48 bg-gradient-to-br from-[#0F1A2B] to-[#1a2332] flex items-center justify-center border-b border-white/5">
+      <div className={`h-48 flex items-center justify-center border-b ${
+        highlighted
+          ? "bg-gradient-to-br from-[#0F1A2B] to-[#1a2535] border-[#B08D57]/10"
+          : "bg-gradient-to-br from-[#0F1A2B] to-[#1a2332] border-white/5"
+      }`}>
         {visual}
       </div>
 
@@ -540,8 +553,13 @@ function BuildCard({ headline, copy, emphasis, visual, index }: BuildCardProps) 
           {copy}
         </p>
         {emphasis && (
-          <p className="text-sm text-[#B08D57] font-medium">
+          <p className={`text-sm font-medium mb-3 ${highlighted ? "text-[#B08D57]" : "text-[#B08D57]/80"}`}>
             {emphasis}
+          </p>
+        )}
+        {punchline && (
+          <p className="text-sm text-[#A9B4C4]/60 italic">
+            {punchline}
           </p>
         )}
       </div>
@@ -565,19 +583,33 @@ function WebsiteWireframe() {
 
 function AppFlowDiagram() {
   return (
-    <div className="flex items-center gap-2">
-      <div className="w-12 h-16 bg-[#0B1220]/50 rounded border border-white/10 p-1">
-        <div className="h-1 bg-white/20 rounded mb-1" />
-        <div className="h-6 bg-white/5 rounded mb-1" />
-        <div className="h-4 bg-[#B08D57]/20 rounded" />
+    <div className="flex items-center gap-3">
+      {/* Messy input */}
+      <div className="relative">
+        <div className="w-14 h-18 bg-[#0B1220]/60 rounded border border-white/10 p-1.5 rotate-[-2deg]">
+          <div className="h-1 bg-white/15 rounded mb-1 w-3/4" />
+          <div className="h-1 bg-white/10 rounded mb-1" />
+          <div className="h-1 bg-white/10 rounded mb-1 w-2/3" />
+          <div className="h-6 bg-white/5 rounded" />
+        </div>
+        <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-red-500/30 rounded-full" />
       </div>
-      <svg className="w-6 h-6 text-[#B08D57]/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      {/* Arrow */}
+      <svg className="w-8 h-8 text-[#B08D57]/60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
         <path d="M5 12h14M12 5l7 7-7 7" />
       </svg>
-      <div className="w-12 h-16 bg-[#0B1220]/50 rounded border border-[#B08D57]/30 p-1">
-        <div className="h-1 bg-[#B08D57]/30 rounded mb-1" />
-        <div className="h-8 bg-[#B08D57]/10 rounded mb-1" />
-        <div className="h-2 bg-white/10 rounded" />
+      {/* Clean output */}
+      <div className="relative">
+        <motion.div
+          className="w-14 h-18 bg-[#0B1220]/60 rounded border border-[#B08D57]/30 p-1.5"
+          style={{ boxShadow: "inset 0 0 15px rgba(180, 145, 85, 0.06)" }}
+        >
+          <div className="h-1 bg-[#B08D57]/35 rounded mb-1 w-2/3" />
+          <div className="h-1 bg-white/15 rounded mb-1" />
+          <div className="h-8 bg-[#B08D57]/15 rounded mb-1" />
+          <div className="h-3 bg-[#B08D57]/25 rounded-full w-2/3" />
+        </motion.div>
+        <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-[#B08D57]/50 rounded-full" />
       </div>
     </div>
   );
@@ -585,17 +617,17 @@ function AppFlowDiagram() {
 
 function SystemFlowDiagram() {
   return (
-    <div className="flex items-center gap-3">
-      <div className="w-10 h-10 bg-[#0B1220]/50 rounded border border-white/10 flex items-center justify-center">
-        <div className="w-4 h-4 bg-white/20 rounded" />
+    <div className="flex items-center gap-2">
+      <div className="w-9 h-9 bg-[#0B1220]/50 rounded border border-white/10 flex items-center justify-center">
+        <div className="w-3.5 h-3.5 bg-white/15 rounded" />
       </div>
-      <div className="w-8 h-0.5 bg-[#B08D57]/30" />
-      <div className="w-10 h-10 bg-[#0B1220]/50 rounded border border-[#B08D57]/30 flex items-center justify-center">
-        <div className="w-4 h-4 bg-[#B08D57]/30 rounded" />
+      <div className="w-6 h-px bg-white/20" />
+      <div className="w-9 h-9 bg-[#0B1220]/50 rounded border border-[#B08D57]/20 flex items-center justify-center">
+        <div className="w-3.5 h-3.5 bg-[#B08D57]/25 rounded" />
       </div>
-      <div className="w-8 h-0.5 bg-[#B08D57]/30" />
-      <div className="w-10 h-10 bg-[#0B1220]/50 rounded border border-white/10 flex items-center justify-center">
-        <div className="w-4 h-4 bg-white/20 rounded" />
+      <div className="w-6 h-px bg-white/20" />
+      <div className="w-9 h-9 bg-[#0B1220]/50 rounded border border-white/10 flex items-center justify-center">
+        <div className="w-3.5 h-3.5 bg-white/15 rounded" />
       </div>
     </div>
   );
@@ -605,19 +637,23 @@ function WhatWeBuildSection() {
   const builds = [
     {
       headline: "Websites that explain clearly and convert intentionally",
-      copy: "We build custom websites from scratch — designed to make it obvious what you do, who you're for, and what customers should do next. No clutter. No fluff. No guessing. Just clear information and clear actions that help customers choose you.",
+      copy: "Your website isn't art. It's staff. We build sites that make it obvious what you do and what customers should do next.",
+      punchline: "If a customer lands here and still has questions, we didn't do our job.",
       visual: <WebsiteWireframe />,
+      highlighted: false,
     },
     {
       headline: "Apps built to remove friction",
-      copy: "When a website isn't enough, we build simple custom apps that solve real problems — scheduling, internal tools, ordering flows, dashboards, or systems that replace messy spreadsheets.",
-      emphasis: "If your business is held together by notes, texts, and workarounds, this is usually where things start to get easier.",
+      copy: "When a website isn't enough, we build custom apps that solve real problems — booking, intake, daily tasks, internal tracking, or anything else held together by spreadsheets.",
+      emphasis: "If your business runs on notes, texts, and workarounds, this is where things get easier.",
       visual: <AppFlowDiagram />,
+      highlighted: true,
     },
     {
       headline: "Systems, not one-off builds",
-      copy: "We don't build things in isolation. Websites, SmartPages, and apps are designed to work together — so your business runs smoother today and scales cleaner tomorrow.",
+      copy: "We don't build in isolation. Websites, SmartPages, and apps work together — so your business runs smoother today and scales cleaner tomorrow.",
       visual: <SystemFlowDiagram />,
+      highlighted: false,
     },
   ];
 
