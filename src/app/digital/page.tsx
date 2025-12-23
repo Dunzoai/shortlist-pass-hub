@@ -778,50 +778,79 @@ function SmartPageModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
 
 function SmartPagePreviewCard({ onOpen }: { onOpen: () => void }) {
   return (
-    <div className="relative inline-flex flex-col items-center">
-      {/* Slow pulsing glow behind image */}
-      <motion.div
-        className="absolute inset-0"
+    <div className="relative">
+      {/* Subtle navy glow behind card */}
+      <div
+        className="absolute -inset-4 rounded-2xl opacity-60"
         style={{
-          background: "radial-gradient(ellipse at 50% 50%, rgba(180, 145, 85, 0.2) 0%, transparent 60%)",
-          filter: "blur(40px)",
+          background: "radial-gradient(ellipse at 50% 50%, rgba(11, 18, 32, 0.8) 0%, transparent 70%)",
+          filter: "blur(20px)",
         }}
-        animate={{ opacity: [0.4, 0.7, 0.4] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* Image with gentle float - no frame, just the image */}
-      <motion.div
-        className="relative cursor-pointer group"
-        onClick={onOpen}
-        animate={{ y: [0, -4, 0] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-        whileHover={{ scale: 1.02 }}
+      {/* Browser-style preview card */}
+      <div
+        className="relative rounded-xl overflow-hidden transition-all duration-300 hover:border-[#B08D57]/50 border border-[#1E2A3D]"
+        style={{
+          background: "linear-gradient(180deg, #0F1724 0%, #0B1220 100%)",
+          boxShadow: "0 20px 50px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.03)",
+        }}
       >
-        <img
-          src="/nitos-modal-mock.png"
-          alt="Nito's Empanadas SmartPage"
-          className="block rounded-2xl transition-all duration-300 group-hover:brightness-110"
-          style={{
-            width: "260px",
-            height: "auto",
-            boxShadow: "0 20px 50px rgba(0, 0, 0, 0.4)",
-          }}
-        />
-
-        {/* Hover overlay */}
-        <div className="absolute inset-0 rounded-2xl bg-[#B08D57]/0 group-hover:bg-[#B08D57]/10 transition-all duration-300 flex items-center justify-center">
-          <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[#0B1220]/80 backdrop-blur-sm px-4 py-2 rounded-full flex items-center gap-2">
-            <span className="text-sm text-[#F4F6FA] font-medium">Tap to explore</span>
-            <svg className="w-4 h-4 text-[#B08D57]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
+        {/* Browser top bar */}
+        <div className="flex items-center justify-between px-4 py-3 border-b border-[#1E2A3D]/60 bg-[#0D1520]">
+          {/* Window dots */}
+          <div className="flex items-center gap-1.5">
+            <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F57]/70" />
+            <div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]/70" />
+            <div className="w-2.5 h-2.5 rounded-full bg-[#28CA41]/70" />
           </div>
+
+          {/* Label */}
+          <span className="text-[11px] text-[#A9B4C4]/60 uppercase tracking-wider">
+            SmartPage Preview
+          </span>
+
+          {/* Open live link */}
+          <a
+            href="https://nitos.shortlistpass.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[12px] text-[#B08D57] hover:text-[#C9A66B] transition-colors flex items-center gap-1"
+          >
+            Open live
+            <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M7 17L17 7M17 7H7M17 7V17" />
+            </svg>
+          </a>
         </div>
-      </motion.div>
+
+        {/* Card content */}
+        <div className="p-6 flex flex-col items-center">
+          {/* Image */}
+          <img
+            src="/nitos-modal-mock.png"
+            alt="Nito's Empanadas SmartPage"
+            className="block rounded-lg max-w-[220px] md:max-w-[260px] w-full h-auto"
+            style={{
+              boxShadow: "0 10px 30px rgba(0, 0, 0, 0.3)",
+            }}
+          />
+
+          {/* Expand preview button */}
+          <button
+            onClick={onOpen}
+            className="mt-5 px-4 py-2 text-[13px] text-[#A9B4C4] hover:text-[#F4F6FA] border border-[#1E2A3D] hover:border-[#B08D57]/40 rounded-lg transition-all duration-300 flex items-center gap-2 bg-[#0B1220]/50 hover:bg-[#0B1220]"
+          >
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+            </svg>
+            Expand preview
+          </button>
+        </div>
+      </div>
 
       {/* Caption */}
-      <p className="mt-4 text-[12px] text-[#A9B4C4]/60 text-center">
+      <p className="mt-4 text-[12px] text-[#A9B4C4]/50 text-center">
         This is a real SmartPage — not a mockup.
       </p>
     </div>
