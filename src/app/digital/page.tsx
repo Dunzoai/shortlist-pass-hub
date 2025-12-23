@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
+import { motion, useInView, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { Container } from "@/components/Container";
 import { useRef, useState, useEffect, useCallback } from "react";
 import Link from "next/link";
@@ -1028,18 +1028,36 @@ function FamilyVaultPreviewCard({ onOpen }: { onOpen: () => void }) {
   );
 }
 
-function CustomWebsiteSystemVisual() {
+function CustomWebsiteLivingCanvas() {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
-  const [hasAnimated, setHasAnimated] = useState(false);
+  const [activeCardIndex, setActiveCardIndex] = useState(0);
+  const [hoveredIcon, setHoveredIcon] = useState<number | null>(null);
 
-  // Track when CTA pulse should happen (once)
+  // Cycling action cards
+  const actionCards = [
+    "Get started",
+    "Check availability",
+    "View options",
+    "Contact us",
+    "Book a spot",
+  ];
+
+  // Cycle through action cards
   useEffect(() => {
-    if (isInView && !hasAnimated) {
-      const timer = setTimeout(() => setHasAnimated(true), 2000);
-      return () => clearTimeout(timer);
-    }
-  }, [isInView, hasAnimated]);
+    if (!isInView) return;
+    const interval = setInterval(() => {
+      setActiveCardIndex((prev) => (prev + 1) % actionCards.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [isInView, actionCards.length]);
+
+  // Icon tiles data
+  const iconTiles = [
+    { icon: "🕒", label: "Hours & availability" },
+    { icon: "📍", label: "Where to find you" },
+    { icon: "💬", label: "Common questions" },
+  ];
 
   return (
     <div ref={containerRef} className="relative">
@@ -1052,9 +1070,9 @@ function CustomWebsiteSystemVisual() {
         }}
       />
 
-      {/* Frosted glass container */}
+      {/* Living canvas container */}
       <motion.div
-        className="relative rounded-2xl overflow-hidden border border-[#1E2A3D]"
+        className="relative rounded-2xl overflow-hidden border border-[#1E2A3D] group"
         style={{
           background: "linear-gradient(180deg, rgba(15, 23, 36, 0.95) 0%, rgba(11, 18, 32, 0.98) 100%)",
           boxShadow: "0 25px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.03), inset 0 0 60px rgba(11, 18, 32, 0.4)",
@@ -1063,126 +1081,149 @@ function CustomWebsiteSystemVisual() {
         animate={isInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
-        <div className="p-6 md:p-8">
-          {/* Website layout diagram - human labels */}
-          <div className="space-y-4">
-            {/* Top block - what customers ask */}
+        {/* Gold glow scan - top to bottom */}
+        {isInView && (
+          <motion.div
+            className="absolute inset-x-0 h-32 pointer-events-none"
+            style={{
+              background: "linear-gradient(180deg, rgba(176, 141, 87, 0.08) 0%, transparent 100%)",
+            }}
+            animate={{ top: ["-128px", "100%"] }}
+            transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+          />
+        )}
+
+        <div className="p-6 md:p-8 relative">
+          {/* Top text - floating, minimal */}
+          <motion.div
+            className="mb-8 text-center"
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <p className="text-[13px] text-[#A9B4C4]/70 leading-relaxed">
+              Clear answers.<br />
+              Clear actions.<br />
+              No confusion.
+            </p>
+          </motion.div>
+
+          {/* Swipe-in action card */}
+          <motion.div
+            className="mb-6 h-12 relative overflow-hidden rounded-xl border border-[#B08D57]/20"
+            style={{
+              background: "linear-gradient(135deg, rgba(176, 141, 87, 0.06) 0%, rgba(176, 141, 87, 0.02) 100%)",
+            }}
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeCardIndex}
+                className="absolute inset-0 flex items-center justify-center"
+                initial={{ x: 100, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: -100, opacity: 0 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+              >
+                <span className="text-[12px] text-[#B08D57] tracking-wide">
+                  {actionCards[activeCardIndex]}
+                </span>
+              </motion.div>
+            </AnimatePresence>
+          </motion.div>
+
+          {/* CTA buttons */}
+          <motion.div
+            className="flex items-center justify-center gap-3 mb-6"
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.5, delay: 0.6 }}
+          >
+            {/* Primary - gold with subtle pulse */}
             <motion.div
-              className="rounded-xl p-4 border border-[#1E2A3D]/80"
+              className="px-4 py-2 rounded-lg text-[12px] text-[#B08D57] border border-[#B08D57]/40 flex items-center gap-1.5"
               style={{
-                background: "linear-gradient(135deg, rgba(26, 35, 50, 0.6) 0%, rgba(15, 26, 43, 0.4) 100%)",
+                background: "linear-gradient(135deg, rgba(176, 141, 87, 0.15) 0%, rgba(176, 141, 87, 0.05) 100%)",
               }}
-              initial={{ opacity: 0, y: 10 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
+              animate={{
+                boxShadow: [
+                  "0 0 0 rgba(176, 141, 87, 0)",
+                  "0 0 20px rgba(176, 141, 87, 0.15)",
+                  "0 0 0 rgba(176, 141, 87, 0)",
+                ],
+              }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             >
-              <div className="space-y-2">
-                <p className="text-[11px] text-[#A9B4C4]/80">&quot;What do you actually do?&quot;</p>
-                <p className="text-[11px] text-[#A9B4C4]/60">&quot;How does this work?&quot;</p>
-                <p className="text-[11px] text-[#A9B4C4]/60">&quot;What should I do next?&quot;</p>
-              </div>
-              <p className="text-[10px] text-[#B08D57]/70 mt-3">
-                Answered instantly
-              </p>
+              Start here
+              <span className="text-[10px]">→</span>
             </motion.div>
 
-            {/* Primary CTA block - the action */}
-            <motion.div
-              className="rounded-xl p-4 border relative overflow-hidden"
-              style={{
-                background: "linear-gradient(135deg, rgba(176, 141, 87, 0.08) 0%, rgba(176, 141, 87, 0.03) 100%)",
-                borderColor: "rgba(176, 141, 87, 0.25)",
-              }}
-              initial={{ opacity: 0, y: 10 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
-            >
-              {/* One-time gold pulse */}
-              {isInView && !hasAnimated && (
-                <motion.div
-                  className="absolute inset-0 rounded-xl"
+            {/* Secondary - ghost */}
+            <div className="px-4 py-2 rounded-lg text-[12px] text-[#A9B4C4]/60 border border-[#1E2A3D] hover:border-[#A9B4C4]/30 transition-colors">
+              See an example
+            </div>
+          </motion.div>
+
+          {/* Icon tiles - expand on hover */}
+          <motion.div
+            className="flex items-center justify-center gap-4"
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.5, delay: 0.8 }}
+          >
+            {iconTiles.map((tile, index) => (
+              <motion.div
+                key={index}
+                className="relative cursor-pointer"
+                onMouseEnter={() => setHoveredIcon(index)}
+                onMouseLeave={() => setHoveredIcon(null)}
+                animate={{
+                  scale: hoveredIcon === index ? 1.1 : 1,
+                }}
+                transition={{ duration: 0.2 }}
+              >
+                <div
+                  className="w-10 h-10 rounded-lg flex items-center justify-center border border-[#1E2A3D]/60 transition-all duration-200"
                   style={{
-                    background: "radial-gradient(ellipse at 50% 50%, rgba(176, 141, 87, 0.15) 0%, transparent 70%)",
+                    background: hoveredIcon === index
+                      ? "linear-gradient(135deg, rgba(176, 141, 87, 0.1) 0%, rgba(176, 141, 87, 0.03) 100%)"
+                      : "linear-gradient(135deg, rgba(26, 35, 50, 0.4) 0%, rgba(15, 26, 43, 0.3) 100%)",
+                    borderColor: hoveredIcon === index ? "rgba(176, 141, 87, 0.3)" : undefined,
                   }}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: [0, 1, 0] }}
-                  transition={{ duration: 1.5, delay: 0.8, ease: "easeInOut" }}
-                />
-              )}
-              <div className="flex items-center gap-3 flex-wrap">
-                <div className="px-3 py-1.5 bg-[#B08D57]/20 rounded-lg border border-[#B08D57]/30 text-[11px] text-[#B08D57]">
-                  Get started
+                >
+                  <span className="text-sm opacity-60">{tile.icon}</span>
                 </div>
-                <div className="px-3 py-1.5 bg-white/5 rounded-lg border border-white/10 text-[11px] text-[#A9B4C4]/70">
-                  See options
-                </div>
-                <div className="px-3 py-1.5 bg-white/5 rounded-lg border border-white/10 text-[11px] text-[#A9B4C4]/70">
-                  Get in touch
-                </div>
-              </div>
-              <p className="text-[10px] text-[#B08D57]/70 mt-3">
-                One clear next step
-              </p>
-            </motion.div>
 
-            {/* Supporting info blocks */}
-            <motion.div
-              className="grid grid-cols-2 gap-3"
-              initial={{ opacity: 0, y: 10 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
-            >
-              <div
-                className="rounded-lg p-3 border border-[#1E2A3D]/60"
-                style={{
-                  background: "linear-gradient(135deg, rgba(26, 35, 50, 0.4) 0%, rgba(15, 26, 43, 0.3) 100%)",
-                }}
-              >
-                <p className="text-[11px] text-[#A9B4C4]/70 mb-1">Hours, location, availability</p>
-                <div className="h-2 w-full bg-white/8 rounded" />
-              </div>
-              <div
-                className="rounded-lg p-3 border border-[#1E2A3D]/60"
-                style={{
-                  background: "linear-gradient(135deg, rgba(26, 35, 50, 0.4) 0%, rgba(15, 26, 43, 0.3) 100%)",
-                }}
-              >
-                <p className="text-[11px] text-[#A9B4C4]/70 mb-1">Pricing or packages</p>
-                <div className="h-2 w-full bg-white/8 rounded" />
-              </div>
-            </motion.div>
-
-            {/* Bottom block - stops the confusion */}
-            <motion.div
-              className="rounded-xl p-4 border border-[#1E2A3D]/60"
-              style={{
-                background: "linear-gradient(135deg, rgba(26, 35, 50, 0.3) 0%, rgba(15, 26, 43, 0.2) 100%)",
-              }}
-              initial={{ opacity: 0, y: 10 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.8, ease: "easeOut" }}
-            >
-              <p className="text-[11px] text-[#A9B4C4]/70 mb-2">Questions customers keep asking</p>
-              <div className="space-y-1.5">
-                <div className="h-2 w-full bg-white/6 rounded" />
-                <div className="h-2 w-4/5 bg-white/5 rounded" />
-              </div>
-              <p className="text-[10px] text-[#B08D57]/70 mt-3">
-                Stops the back-and-forth
-              </p>
-            </motion.div>
-          </div>
+                {/* Hover tooltip */}
+                <AnimatePresence>
+                  {hoveredIcon === index && (
+                    <motion.div
+                      className="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap"
+                      initial={{ opacity: 0, y: -4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
+                      transition={{ duration: 0.15 }}
+                    >
+                      <span className="text-[10px] text-[#A9B4C4]/60">{tile.label}</span>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </motion.div>
 
-      {/* Caption - removed designer speak */}
+      {/* Caption */}
       <motion.p
         className="mt-5 text-[12px] text-[#A9B4C4]/50 text-center"
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 1 } : {}}
-        transition={{ duration: 0.5, delay: 1, ease: "easeOut" }}
+        transition={{ duration: 0.5, delay: 1 }}
       >
-        Everything they need. Nothing they don&apos;t.
+        Built for real people, not templates.
       </motion.p>
     </div>
   );
@@ -1384,7 +1425,7 @@ function RealBuildsSection() {
 
               {/* Right column - System visual */}
               <div className="shrink-0 self-center lg:self-start order-2 w-full lg:w-auto lg:max-w-[400px]">
-                <CustomWebsiteSystemVisual />
+                <CustomWebsiteLivingCanvas />
               </div>
             </div>
           </motion.div>
