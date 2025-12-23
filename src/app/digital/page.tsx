@@ -210,8 +210,8 @@ function HardLineSection() {
             >
               We build around you.
             </p>
-            {/* Editorial underline - full text width plus overhang */}
-            <div className="mt-3 w-[115%] h-[2px] bg-[#B08D57]" />
+            {/* Editorial underline - full text width plus slight overhang */}
+            <div className="mt-3 w-[103%] h-[2px] bg-[#B08D57]" />
           </div>
         </div>
       </Container>
