@@ -560,6 +560,17 @@ function AppGridSection() {
         </motion.p>
       </div>
 
+      {/* Try These Header */}
+      <motion.p
+        className="text-center text-base md:text-lg text-slate-300 mb-6 md:mb-8"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+      >
+        Try these real live SmartPages
+      </motion.p>
+
       {/* App Icons - 350px, desktop: one row, mobile: 2x2 */}
       {/* Mobile: 2x2 grid */}
       <div className="md:hidden grid grid-cols-2 gap-4 w-fit mx-auto">
@@ -569,7 +580,7 @@ function AppGridSection() {
             href={app.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex flex-col items-center gap-2"
+            className="flex flex-col items-center gap-1"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
@@ -596,7 +607,7 @@ function AppGridSection() {
             href={app.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex flex-col items-center gap-2"
+            className="flex flex-col items-center gap-1"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
