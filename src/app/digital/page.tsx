@@ -239,96 +239,127 @@ function ProblemVisual() {
           <div className="text-[13px] text-[#B08D57] mb-2.5 uppercase tracking-[0.12em] font-semibold">
             Custom Build
           </div>
-          {/* Soft radius glow wrapper */}
-          <div className="relative">
-            {/* Glow layer */}
-            <div
-              className="absolute inset-0 rounded-xl opacity-60"
+          {/* Card with inner glow */}
+          <motion.div
+            className="relative"
+            initial={{ opacity: 0.95 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+          >
+            {/* Soft background bloom - dirty brass, warm smoke */}
+            <motion.div
+              className="absolute inset-0 rounded-xl"
               style={{
-                background: "radial-gradient(ellipse at center, rgba(199, 163, 90, 0.15) 0%, transparent 70%)",
-                filter: "blur(20px)",
-                transform: "scale(1.1)",
+                background: "radial-gradient(ellipse at 50% 50%, rgba(180, 145, 85, 0.08) 0%, transparent 65%)",
+                filter: "blur(25px)",
+                transform: "scale(1.15)",
               }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.2, delay: 0.3 }}
             />
-            <div className="relative bg-[#0F1A2B] border-2 border-[#B08D57]/35 rounded-xl p-5 space-y-2.5 shadow-2xl">
-              {/* Smart Dashboard - pulsing */}
+            {/* Inner border glow */}
+            <div
+              className="relative bg-[#0F1A2B] rounded-xl p-5 space-y-2.5"
+              style={{
+                boxShadow: "inset 0 0 30px rgba(180, 145, 85, 0.06), 0 4px 20px rgba(0, 0, 0, 0.3)",
+                border: "1px solid rgba(180, 145, 85, 0.15)",
+              }}
+            >
+              {/* Smart Dashboard - subtle indicator */}
               <div className="flex items-center gap-2">
                 <motion.div
                   className="h-2 w-2 rounded-full"
-                  style={{ backgroundColor: "rgba(199, 163, 90, 0.6)" }}
-                  animate={{ opacity: [0.4, 1, 0.4] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  style={{ backgroundColor: "rgba(180, 145, 85, 0.35)" }}
+                  animate={{ opacity: [0.25, 0.5, 0.25] }}
+                  transition={{ duration: 2.8, delay: 0.2, repeat: Infinity, ease: "easeInOut", repeatDelay: 1.2 }}
                 />
-                <span className="text-[8px] text-[#B08D57] uppercase tracking-wider font-medium">Smart Dashboard</span>
+                <span className="text-[8px] text-[#B08D57]/90 uppercase tracking-wider font-medium">Smart Dashboard</span>
               </div>
-              <div className="h-8 bg-white/[0.08] rounded" />
+              <div className="h-8 bg-white/[0.06] rounded" />
 
               {/* Live Booking */}
               <div className="flex items-center gap-2">
-                <div className="h-2 w-2 rounded-full bg-[#B08D57]/50" />
-                <span className="text-[8px] text-[#B08D57]/80 uppercase tracking-wider font-medium">Live Booking</span>
+                <div className="h-2 w-2 rounded-full bg-[#B08D57]/25" />
+                <span className="text-[8px] text-[#B08D57]/70 uppercase tracking-wider font-medium">Live Booking</span>
               </div>
 
-              {/* Two glowing blocks side by side */}
+              {/* Two blocks with subtle inner glow - dirty brass */}
               <div className="flex gap-2">
                 <motion.div
                   className="h-12 rounded flex-1 relative overflow-hidden"
-                  style={{ backgroundColor: "rgba(176, 141, 87, 0.25)" }}
+                  style={{
+                    backgroundColor: "rgba(180, 145, 85, 0.06)",
+                    boxShadow: "inset 0 0 20px rgba(180, 145, 85, 0.04)",
+                  }}
                 >
                   <motion.div
                     className="absolute inset-0 rounded"
-                    style={{ backgroundColor: "rgba(199, 163, 90, 0.35)" }}
-                    animate={{ opacity: [0.3, 0.7, 0.3] }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    style={{ backgroundColor: "rgba(180, 145, 85, 0.08)" }}
+                    initial={{ opacity: 0.06 }}
+                    animate={{ opacity: [0.06, 0.14, 0.06] }}
+                    transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut", repeatDelay: 2.1 }}
                   />
                 </motion.div>
                 <motion.div
                   className="h-12 rounded flex-1 relative overflow-hidden"
-                  style={{ backgroundColor: "rgba(176, 141, 87, 0.2)" }}
+                  style={{
+                    backgroundColor: "rgba(180, 145, 85, 0.05)",
+                    boxShadow: "inset 0 0 20px rgba(180, 145, 85, 0.03)",
+                  }}
                 >
                   <motion.div
                     className="absolute inset-0 rounded"
-                    style={{ backgroundColor: "rgba(199, 163, 90, 0.3)" }}
-                    animate={{ opacity: [0.2, 0.6, 0.2] }}
-                    transition={{ duration: 2.5, delay: 0.3, repeat: Infinity, ease: "easeInOut" }}
+                    style={{ backgroundColor: "rgba(180, 145, 85, 0.07)" }}
+                    initial={{ opacity: 0.05 }}
+                    animate={{ opacity: [0.05, 0.12, 0.05] }}
+                    transition={{ duration: 3.8, delay: 1.4, repeat: Infinity, ease: "easeInOut", repeatDelay: 2.6 }}
                   />
                 </motion.div>
               </div>
 
               {/* Real-time Analytics */}
               <div className="flex items-center gap-2">
-                <div className="h-2 w-2 rounded-full bg-[#B08D57]/50" />
-                <span className="text-[8px] text-[#B08D57]/80 uppercase tracking-wider font-medium">Real-time Analytics</span>
+                <div className="h-2 w-2 rounded-full bg-[#B08D57]/25" />
+                <span className="text-[8px] text-[#B08D57]/70 uppercase tracking-wider font-medium">Real-time Analytics</span>
               </div>
 
-              {/* Third glowing block - full width for movement */}
+              {/* Third block - full width, subtle breathe */}
               <motion.div
                 className="h-10 rounded relative overflow-hidden"
-                style={{ backgroundColor: "rgba(176, 141, 87, 0.15)" }}
+                style={{
+                  backgroundColor: "rgba(180, 145, 85, 0.04)",
+                  boxShadow: "inset 0 0 25px rgba(180, 145, 85, 0.03)",
+                }}
               >
                 <motion.div
                   className="absolute inset-0 rounded"
-                  style={{ backgroundColor: "rgba(199, 163, 90, 0.25)" }}
-                  animate={{ opacity: [0.2, 0.5, 0.2] }}
-                  transition={{ duration: 3, delay: 0.6, repeat: Infinity, ease: "easeInOut" }}
+                  style={{ backgroundColor: "rgba(180, 145, 85, 0.06)" }}
+                  initial={{ opacity: 0.04 }}
+                  animate={{ opacity: [0.04, 0.10, 0.04] }}
+                  transition={{ duration: 4.2, delay: 2.8, repeat: Infinity, ease: "easeInOut", repeatDelay: 3.1 }}
                 />
               </motion.div>
 
-              {/* One-Click Actions */}
+              {/* One-Click Actions - subtle pulse */}
               <div className="flex items-center gap-2">
                 <motion.div
                   className="h-2 w-2 rounded-full"
-                  style={{ backgroundColor: "rgba(199, 163, 90, 0.6)" }}
-                  animate={{ opacity: [0.4, 1, 0.4] }}
-                  transition={{ duration: 1.5, delay: 0.8, repeat: Infinity, ease: "easeInOut" }}
+                  style={{ backgroundColor: "rgba(180, 145, 85, 0.35)" }}
+                  animate={{ opacity: [0.2, 0.45, 0.2] }}
+                  transition={{ duration: 2.4, delay: 3.5, repeat: Infinity, ease: "easeInOut", repeatDelay: 1.8 }}
                 />
-                <span className="text-[8px] text-[#B08D57] uppercase tracking-wider font-medium">One-Click Actions</span>
+                <span className="text-[8px] text-[#B08D57]/90 uppercase tracking-wider font-medium">One-Click Actions</span>
               </div>
 
-              {/* CTA - alive, rounded */}
-              <div className="h-9 bg-[#B08D57]/30 rounded-full w-1/2" />
+              {/* CTA - subtle, rounded */}
+              <div
+                className="h-9 rounded-full w-1/2"
+                style={{ backgroundColor: "rgba(180, 145, 85, 0.12)" }}
+              />
             </div>
-          </div>
+          </motion.div>
           <div className="mt-3 text-center">
             <p className="text-[11px] text-[#B08D57] tracking-wide">
               Built for how you work.
