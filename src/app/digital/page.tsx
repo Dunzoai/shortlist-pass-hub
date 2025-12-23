@@ -871,9 +871,9 @@ function RealBuildsSection() {
             transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
             className="mb-20"
           >
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+            <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
               {/* Left column - Copy */}
-              <div>
+              <div className="flex-1 min-w-0">
                 <p className="text-[11px] text-[#A9B4C4]/50 uppercase tracking-[0.15em] mb-4">SmartPages</p>
                 <h3 className="text-xl md:text-2xl font-semibold text-[#F4F6FA] mb-6 leading-tight">
                   For businesses that don&apos;t need a full website —<br />
@@ -926,7 +926,7 @@ function RealBuildsSection() {
               </div>
 
               {/* Right column - Phone mockup */}
-              <div className="flex items-center justify-center lg:justify-end">
+              <div className="shrink-0 self-center lg:self-start">
                 <SmartPagePreviewCard onOpen={openModal} />
               </div>
             </div>
