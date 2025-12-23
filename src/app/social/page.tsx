@@ -2,7 +2,7 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Container } from "@/components/Container";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 
 // =============================================================================
@@ -27,49 +27,6 @@ const staggerContainer = {
 // ICONS
 // =============================================================================
 
-function SparkIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707" />
-      <circle cx="12" cy="12" r="4" />
-    </svg>
-  );
-}
-
-function CalendarRefreshIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-      <line x1="16" y1="2" x2="16" y2="6" />
-      <line x1="8" y1="2" x2="8" y2="6" />
-      <line x1="3" y1="10" x2="21" y2="10" />
-      <path d="M17 14l-5 5-3-3" />
-    </svg>
-  );
-}
-
-function VoiceIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
-      <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-      <line x1="12" y1="19" x2="12" y2="23" />
-      <line x1="8" y1="23" x2="16" y2="23" />
-    </svg>
-  );
-}
-
-function FlowIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="5" cy="12" r="2" />
-      <circle cx="19" cy="12" r="2" />
-      <path d="M7 12h10" />
-      <path d="M14 8l3 4-3 4" />
-    </svg>
-  );
-}
-
 function ChevronLeftIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -92,9 +49,34 @@ function ChevronRightIcon({ className }: { className?: string }) {
 
 function HeroSection() {
   return (
-    <section className="relative py-28 lg:py-36">
-      {/* Soft gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0B1220] via-[#0d1627] to-[#0B1220]" />
+    <section className="relative py-28 lg:py-36 overflow-hidden">
+      {/* Dark navy background */}
+      <div className="absolute inset-0 bg-[#0B1220]" />
+
+      {/* Animated grain/noise layer */}
+      <div
+        className="absolute inset-0 opacity-[0.03] pointer-events-none"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+        }}
+      />
+
+      {/* Diagonal light sweep - brass tone */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: "linear-gradient(135deg, transparent 0%, transparent 40%, rgba(176, 141, 87, 0.08) 50%, transparent 60%, transparent 100%)",
+          backgroundSize: "200% 200%",
+        }}
+        animate={{
+          backgroundPosition: ["0% 0%", "100% 100%", "0% 0%"],
+        }}
+        transition={{
+          duration: 12,
+          ease: "linear",
+          repeat: Infinity,
+        }}
+      />
 
       <Container>
         <motion.div
@@ -116,24 +98,15 @@ function HeroSection() {
           <motion.p
             variants={fadeUpVariant}
             transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-            className="text-lg md:text-xl text-[#A9B4C4] leading-relaxed max-w-2xl mx-auto mb-4"
+            className="text-lg md:text-xl text-[#A9B4C4] leading-relaxed max-w-2xl mx-auto"
           >
-            Get consistent, scroll-stopping social content — without living on Instagram.
-          </motion.p>
-
-          {/* Credibility line */}
-          <motion.p
-            variants={fadeUpVariant}
-            transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-            className="text-sm text-[#A9B4C4]/70"
-          >
-            Built for real businesses, not influencer accounts.
+            Get consistent, scroll-stopping content — without living on social media.
           </motion.p>
 
           {/* CTAs */}
           <motion.div
             variants={fadeUpVariant}
-            transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
+            transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
             className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
           >
             <a
@@ -156,8 +129,107 @@ function HeroSection() {
 }
 
 // =============================================================================
-// SECTION 2: THE PROBLEM (WHY SOCIAL FAILS)
+// SECTION 2: MOVING BELT (HIGH ENERGY)
 // =============================================================================
+
+function MovingBelt() {
+  const beltText = "SCROLL-STOPPING CONTENT • POSTS THAT SOUND LIKE YOU • SHOW UP WHERE IT MATTERS • BUILT FOR REAL BUSINESSES • NO TREND CHASING • CONSISTENT VISIBILITY • CONTENT WITH A POINT";
+
+  return (
+    <div className="relative overflow-hidden h-14 bg-gradient-to-r from-[#b39347] via-[#d4b87f] to-[#b39347] flex items-center">
+      <div
+        className="flex items-center whitespace-nowrap animate-scroll-social"
+        style={{
+          animation: "scroll-social 20s linear infinite",
+        }}
+      >
+        <span className="px-4 text-base font-bold tracking-[0.15em] text-[#0B1220] uppercase leading-none">
+          {beltText} •
+        </span>
+        <span className="px-4 text-base font-bold tracking-[0.15em] text-[#0B1220] uppercase leading-none">
+          {beltText} •
+        </span>
+        <span className="px-4 text-base font-bold tracking-[0.15em] text-[#0B1220] uppercase leading-none">
+          {beltText} •
+        </span>
+      </div>
+      <style jsx>{`
+        @keyframes scroll-social {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-33.333%);
+          }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+// =============================================================================
+// SECTION 3: THE PROBLEM (WHY SOCIAL FAILS)
+// =============================================================================
+
+function AnimatedFeedVisualization() {
+  // Simulated posts drifting up and fading
+  const posts = [
+    { id: 1, delay: 0, highlight: false },
+    { id: 2, delay: 1.5, highlight: false },
+    { id: 3, delay: 3, highlight: true }, // The breakthrough post
+    { id: 4, delay: 4.5, highlight: false },
+    { id: 5, delay: 6, highlight: false },
+  ];
+
+  return (
+    <div className="relative h-[320px] w-full max-w-[280px] mx-auto overflow-hidden">
+      {/* Feed container */}
+      <div className="absolute inset-0 rounded-xl bg-[#0F1A2B]/50 border border-white/5">
+        {posts.map((post) => (
+          <motion.div
+            key={post.id}
+            className={`absolute left-4 right-4 h-16 rounded-lg ${
+              post.highlight
+                ? "bg-gradient-to-r from-[#B08D57]/30 to-[#B08D57]/10 border border-[#B08D57]/40"
+                : "bg-white/5 border border-white/5"
+            }`}
+            initial={{ y: 280, opacity: 0 }}
+            animate={{
+              y: [-20, -320],
+              opacity: post.highlight ? [0, 1, 1, 0.8] : [0, 0.6, 0.3, 0],
+            }}
+            transition={{
+              duration: 8,
+              delay: post.delay,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+          >
+            {/* Post content placeholder */}
+            <div className="p-3 h-full flex items-center gap-3">
+              <div className={`w-8 h-8 rounded-full flex-shrink-0 ${
+                post.highlight ? "bg-[#B08D57]/40" : "bg-white/10"
+              }`} />
+              <div className="flex-1 space-y-2">
+                <div className={`h-2 rounded ${
+                  post.highlight ? "bg-[#B08D57]/40 w-3/4" : "bg-white/10 w-2/3"
+                }`} />
+                <div className={`h-2 rounded ${
+                  post.highlight ? "bg-[#B08D57]/20 w-1/2" : "bg-white/5 w-1/2"
+                }`} />
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Gradient fade at top */}
+      <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-[#0B1220] to-transparent pointer-events-none z-10" />
+      {/* Gradient fade at bottom */}
+      <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#0B1220] to-transparent pointer-events-none z-10" />
+    </div>
+  );
+}
 
 function ProblemSection() {
   return (
@@ -168,46 +240,42 @@ function ProblemSection() {
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
           variants={staggerContainer}
-          className="max-w-2xl mx-auto text-center"
         >
-          {/* Title */}
+          {/* Title - centered above columns */}
           <motion.h2
             variants={fadeUpVariant}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="text-[28px] md:text-[36px] lg:text-[42px] font-semibold text-[#F4F6FA] leading-tight mb-10"
+            className="text-[28px] md:text-[36px] lg:text-[42px] font-semibold text-[#F4F6FA] leading-tight mb-12 text-center"
           >
             Most businesses don&apos;t lose on social — they disappear.
           </motion.h2>
 
-          {/* Pain points */}
-          <motion.div
-            variants={fadeUpVariant}
-            transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-            className="space-y-3 text-base md:text-lg text-[#A9B4C4]"
-          >
-            <p>You&apos;re too busy running your business to post 3–5x per week.</p>
-            <p>Posting randomly doesn&apos;t work.</p>
-            <p>Sounding generic doesn&apos;t work.</p>
-            <p>And hoping the algorithm is &quot;nice&quot; definitely doesn&apos;t work.</p>
-          </motion.div>
+          {/* Two-column layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            {/* Left side - Copy */}
+            <motion.div
+              variants={fadeUpVariant}
+              transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+              className="space-y-4"
+            >
+              <p className="text-base md:text-lg text-[#A9B4C4]">Posting when you remember.</p>
+              <p className="text-base md:text-lg text-[#A9B4C4]">Guessing what works.</p>
+              <p className="text-base md:text-lg text-[#A9B4C4]">Getting buried by the algorithm.</p>
+              <p className="text-base md:text-lg text-[#A9B4C4]">Too busy to do this right.</p>
 
-          {/* Cost of inaction */}
-          <motion.p
-            variants={fadeUpVariant}
-            transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-            className="mt-8 text-base md:text-lg text-[#A9B4C4]"
-          >
-            And while you&apos;re busy running your business, someone else is showing up consistently.
-          </motion.p>
+              <p className="text-base md:text-lg text-[#F4F6FA] font-medium pt-4">
+                And while you&apos;re busy running your business, someone else is showing up consistently.
+              </p>
+            </motion.div>
 
-          {/* Bridge line */}
-          <motion.p
-            variants={fadeUpVariant}
-            transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
-            className="mt-8 text-lg md:text-xl text-[#F4F6FA] font-semibold"
-          >
-            Here&apos;s what actually works.
-          </motion.p>
+            {/* Right side - Animated visualization */}
+            <motion.div
+              variants={fadeUpVariant}
+              transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+            >
+              <AnimatedFeedVisualization />
+            </motion.div>
+          </div>
         </motion.div>
       </Container>
     </section>
@@ -215,21 +283,21 @@ function ProblemSection() {
 }
 
 // =============================================================================
-// SECTION 3: CAROUSEL - "A GLIMPSE AT OUR WORK"
+// SECTION 4: CAROUSEL - "WHAT SHOWING UP LOOKS LIKE"
 // =============================================================================
 
 interface CarouselSlide {
-  label: string;
+  caption: string;
   industry: string;
   type: "video" | "reel" | "static" | "voice" | "grid";
 }
 
 const carouselSlides: CarouselSlide[] = [
-  { label: "Short-form video", industry: "Restaurant", type: "video" },
-  { label: "Reel", industry: "Service business", type: "reel" },
-  { label: "Static post", industry: "Local brand", type: "static" },
-  { label: "Brand voice", industry: "Salon", type: "voice" },
-  { label: "Content grid", industry: "Food truck", type: "grid" },
+  { caption: "Daily specials without sounding salesy", industry: "Restaurant", type: "video" },
+  { caption: "Service posts that don't feel boring", industry: "Service Business", type: "reel" },
+  { caption: "Offers people actually notice", industry: "Local Brand", type: "static" },
+  { caption: "A voice customers recognize instantly", industry: "Salon", type: "voice" },
+  { caption: "Consistent presence that builds trust", industry: "Food Truck", type: "grid" },
 ];
 
 function CarouselPlaceholder({ slide }: { slide: CarouselSlide }) {
@@ -309,7 +377,7 @@ function CarouselPlaceholder({ slide }: { slide: CarouselSlide }) {
         <span className="inline-block px-3 py-1.5 text-xs font-medium text-[#F4F6FA] bg-white/10 border border-white/10 rounded-full mb-2">
           {slide.industry}
         </span>
-        <p className="text-xs text-[#A9B4C4]">{slide.label}</p>
+        <p className="text-sm text-[#A9B4C4]">{slide.caption}</p>
       </div>
     </div>
   );
@@ -349,21 +417,21 @@ function WorkCarousel() {
           className="mb-10"
         >
           {/* Header */}
-          <motion.h2
-            variants={fadeUpVariant}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="text-[28px] md:text-[36px] font-semibold text-[#F4F6FA] leading-tight text-center mb-3"
-          >
-            What showing up actually looks like.
-          </motion.h2>
-
           <motion.p
             variants={fadeUpVariant}
-            transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-            className="text-base text-[#A9B4C4] text-center"
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="text-sm font-medium text-[#B08D57] uppercase tracking-wider text-center mb-3"
           >
-            Real brands. Real content. Built to stop the scroll.
+            A glimpse at what showing up looks like
           </motion.p>
+
+          <motion.h2
+            variants={fadeUpVariant}
+            transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+            className="text-[28px] md:text-[36px] font-semibold text-[#F4F6FA] leading-tight text-center"
+          >
+            Content that actually gets seen.
+          </motion.h2>
         </motion.div>
       </Container>
 
@@ -420,8 +488,53 @@ function WorkCarousel() {
 }
 
 // =============================================================================
-// SECTION 4: HOW WE HELP (SOCIAL-SPECIFIC CARDS)
+// SECTION 5: HOW WE ACTUALLY HELP (BOLD BRASS SECTION)
 // =============================================================================
+
+function LightbulbIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M9 18h6" />
+      <path d="M10 22h4" />
+      <path d="M12 2a7 7 0 0 0-4 12.7V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.3A7 7 0 0 0 12 2z" />
+    </svg>
+  );
+}
+
+function WaveformIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M2 12h2" />
+      <path d="M6 8v8" />
+      <path d="M10 5v14" />
+      <path d="M14 8v8" />
+      <path d="M18 10v4" />
+      <path d="M22 12h-2" />
+    </svg>
+  );
+}
+
+function CheckCalendarIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+      <line x1="16" y1="2" x2="16" y2="6" />
+      <line x1="8" y1="2" x2="8" y2="6" />
+      <line x1="3" y1="10" x2="21" y2="10" />
+      <path d="M9 16l2 2 4-4" />
+    </svg>
+  );
+}
+
+function FlowArrowsIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M5 12h14" />
+      <path d="M12 5l7 7-7 7" />
+      <circle cx="3" cy="12" r="1" fill="currentColor" />
+    </svg>
+  );
+}
 
 interface HelpCardData {
   icon: React.ReactNode;
@@ -431,24 +544,24 @@ interface HelpCardData {
 
 const helpCards: HelpCardData[] = [
   {
-    icon: <SparkIcon className="w-8 h-8" />,
-    headline: "Built to stop the scroll.",
-    copy: "We design posts that compete with entertainment and big brands — without needing you to post constantly or chase trends.",
+    icon: <LightbulbIcon className="w-8 h-8" />,
+    headline: "Show up in the feed",
+    copy: "Scroll-stopping social content designed to beat the algorithms — so your business actually shows up where customers already are.",
   },
   {
-    icon: <CalendarRefreshIcon className="w-8 h-8" />,
-    headline: "Show up without living on Instagram.",
-    copy: "We handle planning, creation, and posting. Most clients spend about one hour a month reviewing content — that's it.",
+    icon: <WaveformIcon className="w-8 h-8" />,
+    headline: "One voice, everywhere",
+    copy: "We build a recognizable voice your customers instantly associate with you — not generic, not templated, not AI sludge.",
   },
   {
-    icon: <VoiceIcon className="w-8 h-8" />,
-    headline: "Your voice. Not internet sludge.",
-    copy: "AI content all sounds the same. We build a recognizable voice so customers know it's you — instantly.",
+    icon: <CheckCalendarIcon className="w-8 h-8" />,
+    headline: "Done without the chaos",
+    copy: "Planning, creation, posting — handled. Most clients spend about one hour a month reviewing content.",
   },
   {
-    icon: <FlowIcon className="w-8 h-8" />,
-    headline: "Social that feeds the system.",
-    copy: "Social gets attention. SmartPages and websites turn it into action. We design everything to work together — not in silos.",
+    icon: <FlowArrowsIcon className="w-8 h-8" />,
+    headline: "Social that feeds the system",
+    copy: "Social gets attention. SmartPages and websites turn it into action. Everything works together.",
   },
 ];
 
@@ -460,9 +573,9 @@ function HelpCard({ card, index }: { card: HelpCardData; index: number }) {
       whileInView="visible"
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
-      className="group p-7 bg-[#0F1A2B] border border-white/10 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:border-[#B08D57]/30 hover:shadow-lg hover:shadow-[#B08D57]/5"
+      className="group p-7 bg-[#0B1220] border border-[#0B1220]/50 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#0B1220]/20"
     >
-      <div className="mb-5 text-[#B08D57] transition-colors duration-300 group-hover:text-[#d4b87f]">
+      <div className="mb-5 text-[#d4b87f] transition-colors duration-300 group-hover:text-[#B08D57]">
         {card.icon}
       </div>
       <h3 className="text-xl font-semibold text-[#F4F6FA] mb-3">
@@ -477,7 +590,10 @@ function HelpCard({ card, index }: { card: HelpCardData; index: number }) {
 
 function HowWeHelpSection() {
   return (
-    <section id="how-it-works" className="py-20 lg:py-28">
+    <section id="how-it-works" className="relative py-20 lg:py-28 bg-gradient-to-b from-[#a38542] via-[#d4b87f] to-[#c9a46a]">
+      {/* Soft shadow at top for separation */}
+      <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-black/10 to-transparent pointer-events-none" />
+
       <Container>
         <motion.div
           initial="hidden"
@@ -488,9 +604,9 @@ function HowWeHelpSection() {
           <motion.h2
             variants={fadeUpVariant}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="text-[28px] md:text-[36px] font-semibold text-[#F4F6FA] leading-tight text-center mb-12"
+            className="text-[28px] md:text-[36px] font-semibold text-[#0B1220] leading-tight text-center mb-12"
           >
-            How we help
+            How we actually help
           </motion.h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -505,12 +621,12 @@ function HowWeHelpSection() {
 }
 
 // =============================================================================
-// SECTION 5: THE SYSTEM
+// SECTION 6: THE SYSTEM (VISUAL FLOW)
 // =============================================================================
 
 function SystemSection() {
   return (
-    <section className="py-20 lg:py-28 bg-gradient-to-b from-[#0B1220] via-[#0d1627] to-[#0B1220]">
+    <section className="py-20 lg:py-28 bg-[#0B1220]">
       <Container>
         <motion.div
           initial="hidden"
@@ -519,64 +635,55 @@ function SystemSection() {
           variants={staggerContainer}
           className="max-w-3xl mx-auto text-center"
         >
-          {/* Headline */}
-          <motion.p
-            variants={fadeUpVariant}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="text-xl md:text-2xl text-[#F4F6FA] font-semibold leading-relaxed mb-12"
-          >
-            Social alone doesn&apos;t convert. Systems do.
-          </motion.p>
-
           {/* Flow Diagram */}
           <motion.div
             variants={fadeUpVariant}
-            transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-            className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6 mb-12"
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-0 mb-10"
           >
             {/* Social */}
-            <div className="flex items-center gap-3 md:gap-4">
-              <div className="px-5 py-3 bg-[#0F1A2B] border border-white/10 rounded-xl">
-                <span className="text-sm md:text-base font-medium text-[#F4F6FA]">Social</span>
+            <div className="flex items-center">
+              <div className="px-6 py-3 bg-[#0F1A2B] border border-white/10 rounded-xl">
+                <span className="text-base font-semibold text-[#F4F6FA] uppercase tracking-wide">Social</span>
               </div>
-              <svg className="w-6 h-6 text-[#B08D57] hidden md:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="5" y1="12" x2="19" y2="12" />
-                <polyline points="12 5 19 12 12 19" />
+              <svg className="w-12 h-6 text-[#B08D57] hidden md:block" viewBox="0 0 48 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="0" y1="12" x2="40" y2="12" />
+                <polyline points="32 6 40 12 32 18" />
               </svg>
-              <svg className="w-6 h-6 text-[#B08D57] md:hidden rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="5" y1="12" x2="19" y2="12" />
-                <polyline points="12 5 19 12 12 19" />
+              <svg className="w-6 h-12 text-[#B08D57] md:hidden" viewBox="0 0 24 48" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="12" y1="0" x2="12" y2="40" />
+                <polyline points="6 32 12 40 18 32" />
               </svg>
             </div>
 
-            {/* SmartPage */}
-            <div className="flex items-center gap-3 md:gap-4">
-              <div className="px-5 py-3 bg-[#B08D57]/20 border border-[#B08D57]/40 rounded-xl">
-                <span className="text-sm md:text-base font-medium text-[#B08D57]">One Clear Page</span>
+            {/* One Clear Page */}
+            <div className="flex items-center">
+              <div className="px-6 py-3 bg-[#B08D57]/20 border border-[#B08D57]/40 rounded-xl">
+                <span className="text-base font-semibold text-[#B08D57] uppercase tracking-wide">One Clear Page</span>
               </div>
-              <svg className="w-6 h-6 text-[#B08D57] hidden md:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="5" y1="12" x2="19" y2="12" />
-                <polyline points="12 5 19 12 12 19" />
+              <svg className="w-12 h-6 text-[#B08D57] hidden md:block" viewBox="0 0 48 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="0" y1="12" x2="40" y2="12" />
+                <polyline points="32 6 40 12 32 18" />
               </svg>
-              <svg className="w-6 h-6 text-[#B08D57] md:hidden rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="5" y1="12" x2="19" y2="12" />
-                <polyline points="12 5 19 12 12 19" />
+              <svg className="w-6 h-12 text-[#B08D57] md:hidden" viewBox="0 0 24 48" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="12" y1="0" x2="12" y2="40" />
+                <polyline points="6 32 12 40 18 32" />
               </svg>
             </div>
 
             {/* Customer Action */}
-            <div className="px-5 py-3 bg-[#0F1A2B] border border-white/10 rounded-xl">
-              <span className="text-sm md:text-base font-medium text-[#F4F6FA]">Customer Action</span>
+            <div className="px-6 py-3 bg-[#0F1A2B] border border-white/10 rounded-xl">
+              <span className="text-base font-semibold text-[#F4F6FA] uppercase tracking-wide">Customer Action</span>
             </div>
           </motion.div>
 
-          {/* Supporting text */}
+          {/* Tagline */}
           <motion.p
             variants={fadeUpVariant}
-            transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+            transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
             className="text-base md:text-lg text-[#A9B4C4] leading-relaxed"
           >
-            We design everything to work together — not in silos.
+            Social isn&apos;t the whole system. It&apos;s the front door.
           </motion.p>
         </motion.div>
       </Container>
@@ -585,12 +692,12 @@ function SystemSection() {
 }
 
 // =============================================================================
-// CTA SECTION
+// SECTION 7: CTA (CALM, CONFIDENT CLOSE)
 // =============================================================================
 
 function CTASection() {
   return (
-    <section className="py-20 lg:py-28">
+    <section className="py-20 lg:py-28 bg-[#0B1220]">
       <Container>
         <motion.div
           initial="hidden"
@@ -599,10 +706,19 @@ function CTASection() {
           variants={staggerContainer}
           className="max-w-xl mx-auto text-center"
         >
+          {/* Question */}
+          <motion.p
+            variants={fadeUpVariant}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="text-xl md:text-2xl text-[#F4F6FA] font-medium mb-8"
+          >
+            Want to see what this would look like for your business?
+          </motion.p>
+
           {/* Primary CTA */}
           <motion.div
             variants={fadeUpVariant}
-            transition={{ duration: 0.6, ease: "easeOut" }}
+            transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
           >
             <a
               href="mailto:hello@shortlistpass.com?subject=15-minute strategy call"
@@ -615,7 +731,7 @@ function CTASection() {
           {/* Subtext */}
           <motion.p
             variants={fadeUpVariant}
-            transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+            transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
             className="mt-4 text-sm text-[#A9B4C4]"
           >
             We&apos;ll show you where attention is leaking — and how we&apos;d fix it.
@@ -624,12 +740,11 @@ function CTASection() {
           {/* Secondary link */}
           <motion.p
             variants={fadeUpVariant}
-            transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+            transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
             className="mt-8 text-sm text-[#A9B4C4]"
           >
-            Just browsing?{" "}
             <a href="#examples" className="text-[#B08D57] hover:text-[#c9a46a] transition-colors">
-              See our work →
+              Or just browse examples →
             </a>
           </motion.p>
         </motion.div>
@@ -670,6 +785,7 @@ export default function SocialPage() {
   return (
     <main className="pt-16">
       <HeroSection />
+      <MovingBelt />
       <ProblemSection />
       <WorkCarousel />
       <HowWeHelpSection />
