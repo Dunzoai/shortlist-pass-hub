@@ -38,25 +38,19 @@ function HeroSection() {
       {/* Dark navy background */}
       <div className="absolute inset-0 bg-[#0B1220]" />
 
-      {/* Abstract architectural background - blueprint style */}
-      <div className="absolute inset-0 opacity-[0.04] pointer-events-none">
-        <svg className="w-full h-full" viewBox="0 0 1200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
-          {/* Grid lines */}
-          <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
-            <path d="M 60 0 L 0 0 0 60" fill="none" stroke="white" strokeWidth="0.5" />
-          </pattern>
-          <rect width="100%" height="100%" fill="url(#grid)" />
-          {/* Architectural shapes */}
-          <rect x="100" y="150" width="200" height="300" stroke="white" strokeWidth="1" fill="none" />
-          <rect x="120" y="170" width="160" height="100" stroke="white" strokeWidth="0.5" fill="none" />
-          <line x1="100" y1="300" x2="300" y2="300" stroke="white" strokeWidth="0.5" />
-          <rect x="800" y="200" width="250" height="350" stroke="white" strokeWidth="1" fill="none" />
-          <circle cx="925" cy="375" r="60" stroke="white" strokeWidth="0.5" fill="none" />
-          <line x1="400" y1="100" x2="400" y2="700" stroke="white" strokeWidth="0.5" strokeDasharray="4 4" />
-          <line x1="600" y1="50" x2="600" y2="750" stroke="white" strokeWidth="0.5" strokeDasharray="4 4" />
-          <path d="M 450 400 L 550 350 L 650 400 L 550 450 Z" stroke="white" strokeWidth="0.5" fill="none" />
-        </svg>
-      </div>
+      {/* Grid background - planning layer */}
+      <div
+        className="absolute inset-0 opacity-[0.07] pointer-events-none"
+        style={{
+          backgroundImage: "url(/grid.png)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      />
+
+      {/* Dark overlay gradient for text contrast */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0B1220]/40 via-transparent to-[#0B1220]/60 pointer-events-none" />
 
       <Container>
         <motion.div
