@@ -1077,9 +1077,9 @@ function CustomWebsiteSystemVisual() {
               transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
             >
               <div className="space-y-2">
-                <p className="text-[11px] text-[#A9B4C4]/80">&quot;What do you offer?&quot;</p>
-                <p className="text-[11px] text-[#A9B4C4]/60">&quot;Where are you today?&quot;</p>
-                <p className="text-[11px] text-[#A9B4C4]/60">&quot;How do I order?&quot;</p>
+                <p className="text-[11px] text-[#A9B4C4]/80">&quot;What do you actually do?&quot;</p>
+                <p className="text-[11px] text-[#A9B4C4]/60">&quot;How does this work?&quot;</p>
+                <p className="text-[11px] text-[#A9B4C4]/60">&quot;What should I do next?&quot;</p>
               </div>
               <p className="text-[10px] text-[#B08D57]/70 mt-3">
                 Answered instantly
@@ -1111,13 +1111,13 @@ function CustomWebsiteSystemVisual() {
               )}
               <div className="flex items-center gap-3 flex-wrap">
                 <div className="px-3 py-1.5 bg-[#B08D57]/20 rounded-lg border border-[#B08D57]/30 text-[11px] text-[#B08D57]">
-                  Order pickup
+                  Get started
                 </div>
                 <div className="px-3 py-1.5 bg-white/5 rounded-lg border border-white/10 text-[11px] text-[#A9B4C4]/70">
-                  See today&apos;s menu
+                  See options
                 </div>
                 <div className="px-3 py-1.5 bg-white/5 rounded-lg border border-white/10 text-[11px] text-[#A9B4C4]/70">
-                  Book now
+                  Get in touch
                 </div>
               </div>
               <p className="text-[10px] text-[#B08D57]/70 mt-3">
@@ -1138,7 +1138,7 @@ function CustomWebsiteSystemVisual() {
                   background: "linear-gradient(135deg, rgba(26, 35, 50, 0.4) 0%, rgba(15, 26, 43, 0.3) 100%)",
                 }}
               >
-                <p className="text-[11px] text-[#A9B4C4]/70 mb-1">Hours & location</p>
+                <p className="text-[11px] text-[#A9B4C4]/70 mb-1">Hours, location, availability</p>
                 <div className="h-2 w-full bg-white/8 rounded" />
               </div>
               <div
@@ -1147,7 +1147,7 @@ function CustomWebsiteSystemVisual() {
                   background: "linear-gradient(135deg, rgba(26, 35, 50, 0.4) 0%, rgba(15, 26, 43, 0.3) 100%)",
                 }}
               >
-                <p className="text-[11px] text-[#A9B4C4]/70 mb-1">Pricing</p>
+                <p className="text-[11px] text-[#A9B4C4]/70 mb-1">Pricing or packages</p>
                 <div className="h-2 w-full bg-white/8 rounded" />
               </div>
             </motion.div>
@@ -1162,7 +1162,7 @@ function CustomWebsiteSystemVisual() {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.8, ease: "easeOut" }}
             >
-              <p className="text-[11px] text-[#A9B4C4]/70 mb-2">FAQs customers keep asking</p>
+              <p className="text-[11px] text-[#A9B4C4]/70 mb-2">Questions customers keep asking</p>
               <div className="space-y-1.5">
                 <div className="h-2 w-full bg-white/6 rounded" />
                 <div className="h-2 w-4/5 bg-white/5 rounded" />
@@ -1359,12 +1359,12 @@ function RealBuildsSection() {
                 <div className="mb-6">
                   <p className="text-base text-[#A9B4C4] mb-4">
                     Templates are built for everyone —<br />
-                    which usually means they&apos;re built for no one.
+                    which usually means they&apos;re built for no one in particular.
                   </p>
                   <p className="text-base text-[#A9B4C4]">
                     They look fine, but customers still get confused.<br />
                     They still call.<br />
-                    They still leave without ordering.
+                    They still leave without taking action.
                   </p>
                 </div>
 
@@ -1373,8 +1373,12 @@ function RealBuildsSection() {
                   help customers do what they came to do — fast.
                 </p>
 
-                <p className="text-lg text-[#F4F6FA] font-medium">
+                <p className="text-lg text-[#F4F6FA] font-medium mb-3">
                   Clear pages. Clear answers. Fewer interruptions during your day.
+                </p>
+
+                <p className="text-base text-[#A9B4C4]/70">
+                  Whether you sell food, services, or time — your customers shouldn&apos;t have to guess.
                 </p>
               </div>
 
