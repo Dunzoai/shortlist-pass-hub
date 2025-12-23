@@ -162,47 +162,53 @@ function HeroSection() {
 // =============================================================================
 
 function HardLineSection() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-
   return (
-    <section ref={ref} className="py-20 lg:py-28 bg-gradient-to-b from-[#a38542] via-[#d4b87f] to-[#c9a46a]">
+    <section className="relative py-28 lg:py-36 bg-gradient-to-b from-[#a38542] via-[#d4b87f] to-[#c9a46a] overflow-hidden">
+      {/* Subtle grain texture */}
+      <div
+        className="absolute inset-0 opacity-[0.04] pointer-events-none"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+        }}
+      />
+
+      {/* Faint grid carryover */}
+      <div
+        className="absolute inset-0 opacity-[0.03] pointer-events-none"
+        style={{
+          backgroundImage: "url(/grid.png)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      />
+
       <Container>
-        <motion.div
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          variants={staggerContainer}
-          className="max-w-3xl"
-        >
-          <motion.p
-            variants={wipeInVariant}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className="text-2xl md:text-3xl lg:text-4xl font-bold text-[#0B1220] leading-tight mb-4"
-          >
-            We don&apos;t use templates.
-          </motion.p>
-          <motion.p
-            variants={wipeInVariant}
-            transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
-            className="text-2xl md:text-3xl lg:text-4xl font-bold text-[#0B1220] leading-tight mb-4"
-          >
-            We don&apos;t reuse layouts.
-          </motion.p>
-          <motion.p
-            variants={wipeInVariant}
-            transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
-            className="text-2xl md:text-3xl lg:text-4xl font-bold text-[#0B1220] leading-tight mb-10"
-          >
-            We don&apos;t force your business into someone else&apos;s system.
-          </motion.p>
-          <motion.p
-            variants={wipeInVariant}
-            transition={{ duration: 0.5, delay: 0.5, ease: "easeOut" }}
-            className="text-2xl md:text-3xl lg:text-4xl font-bold text-[#0B1220]/80 leading-tight"
-          >
-            We build around you.
-          </motion.p>
-        </motion.div>
+        <div className="max-w-3xl relative">
+          {/* Thin vertical brass rule on left */}
+          <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-[#0B1220]/20 -ml-6 md:-ml-10" />
+
+          {/* Assertions - first 3 lines */}
+          <div className="space-y-5 md:space-y-6 mb-14 md:mb-16">
+            <p className="text-2xl md:text-3xl lg:text-[2.5rem] font-semibold text-[#0B1220] leading-snug">
+              We don&apos;t use templates.
+            </p>
+            <p className="text-2xl md:text-3xl lg:text-[2.5rem] font-semibold text-[#0B1220] leading-snug">
+              We don&apos;t reuse layouts.
+            </p>
+            <p className="text-2xl md:text-3xl lg:text-[2.5rem] font-semibold text-[#0B1220] leading-snug">
+              We don&apos;t force your business into someone else&apos;s system.
+            </p>
+          </div>
+
+          {/* Resolution - the landing moment */}
+          <div className="relative">
+            <p className="text-3xl md:text-4xl lg:text-[3rem] font-bold text-[#0B1220] leading-tight">
+              We build around you.
+            </p>
+            {/* Subtle underline */}
+            <div className="mt-3 w-32 h-[2px] bg-[#0B1220]/30" />
+          </div>
+        </div>
       </Container>
     </section>
   );
