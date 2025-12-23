@@ -859,7 +859,15 @@ const features = [
   },
   {
     headline: "Get found anywhere you do business",
-    description: "Business cards 📇 Receipts 🧾 Proposals 📄 Link in bio 🔗 QR codes 📱 — Print your SmartPage link or QR code anywhere customers interact with your business. One scan and they're in.",
+    description: "Place your SmartPage link anywhere customers interact with your business:",
+    items: [
+      "Business cards",
+      "Receipts",
+      "Proposals",
+      "Link in bio",
+      "QR codes"
+    ],
+    footer: "One scan and they're in.",
     visual: "qr",
     textLeft: true,
   },
@@ -1035,9 +1043,19 @@ function FeaturesSection() {
                   )}
                   {feature.headline}
                 </h3>
-                <p className="mt-3 md:mt-4 text-base sm:text-lg text-slate-400">
-                  {feature.description}
-                </p>
+                <div className="mt-3 md:mt-4 text-base sm:text-lg text-slate-400">
+                  <p>{feature.description}</p>
+                  {feature.items && (
+                    <ul className="mt-3 space-y-1.5 list-disc list-inside">
+                      {feature.items.map((item: string, i: number) => (
+                        <li key={i}>{item}</li>
+                      ))}
+                    </ul>
+                  )}
+                  {feature.footer && (
+                    <p className="mt-3">{feature.footer}</p>
+                  )}
+                </div>
               </div>
               <div className={feature.textLeft ? '' : 'md:[direction:ltr]'}>
                 <FeatureVisual type={feature.visual} />
