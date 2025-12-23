@@ -172,34 +172,46 @@ function HardLineSection() {
         }}
       />
 
+      {/* Ghost grid on right side - balances empty space */}
+      <div
+        className="absolute right-0 top-0 bottom-0 w-[45%] opacity-[0.06] pointer-events-none"
+        style={{
+          backgroundImage: "url(/grid.png)",
+          backgroundSize: "cover",
+          backgroundPosition: "center right",
+          maskImage: "linear-gradient(to right, transparent, black 40%)",
+          WebkitMaskImage: "linear-gradient(to right, transparent, black 40%)",
+        }}
+      />
+
       <Container>
         <div className="max-w-4xl relative">
           {/* Vertical rhythm anchor - frames the statements */}
           <div className="absolute left-0 top-2 bottom-8 w-[2px] bg-[#0B1220]/15 -ml-6 md:-ml-10" />
 
-          {/* Assertions - supporting statements (beats, not headlines) */}
-          <div className="space-y-4 md:space-y-5 mb-16 md:mb-20">
-            <p className="text-[1.75rem] md:text-[2.5rem] lg:text-[2.875rem] font-medium text-[#0B1220] leading-[1.15]">
+          {/* Lines 1-3: Rules/principles - read quickly */}
+          <div className="space-y-3 md:space-y-4 mb-12 md:mb-16">
+            <p className="text-[1.5rem] md:text-[2rem] lg:text-[2.375rem] font-medium text-[#0B1220]/90 leading-[1.15]">
               We don&apos;t use templates.
             </p>
-            <p className="text-[1.75rem] md:text-[2.5rem] lg:text-[2.875rem] font-medium text-[#0B1220] leading-[1.15]">
+            <p className="text-[1.5rem] md:text-[2rem] lg:text-[2.375rem] font-medium text-[#0B1220]/90 leading-[1.15]">
               We don&apos;t reuse layouts.
             </p>
-            <p className="text-[1.75rem] md:text-[2.5rem] lg:text-[2.875rem] font-medium text-[#0B1220] leading-[1.15]">
+            <p className="text-[1.5rem] md:text-[2rem] lg:text-[2.375rem] font-medium text-[#0B1220]/90 leading-[1.15]">
               We don&apos;t force your business into someone else&apos;s system.
             </p>
           </div>
 
-          {/* Resolution - the payoff (this line wins) */}
-          <div className="relative inline-block">
+          {/* Final line: Brand positioning - dominates */}
+          <div className="relative">
             <p
-              className="text-[2.25rem] md:text-[3.25rem] lg:text-[3.75rem] font-bold text-[#0B1220] leading-[1.1]"
-              style={{ letterSpacing: "-0.015em" }}
+              className="text-[1.875rem] md:text-[3rem] lg:text-[3.5rem] font-bold text-[#0B1220] leading-[1.1] whitespace-nowrap"
+              style={{ letterSpacing: "-0.005em" }}
             >
               We build around you.
             </p>
-            {/* Full-width underline beneath the text */}
-            <div className="mt-2 w-full h-[3px] bg-[#B08D57]" />
+            {/* Editorial underline - 75% width, offset left */}
+            <div className="mt-3 w-[75%] h-[2px] bg-[#B08D57]" />
           </div>
         </div>
       </Container>
