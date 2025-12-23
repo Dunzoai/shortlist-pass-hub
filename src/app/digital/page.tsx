@@ -776,6 +776,92 @@ function SmartPageModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
   );
 }
 
+function FamilyVaultModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+  const modalRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+      closeButtonRef.current?.focus();
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
+  // Close on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
+
+  // Close when clicking backdrop
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8"
+      onClick={handleBackdropClick}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Family Vault Preview"
+    >
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-[#0B1220]/90 backdrop-blur-sm" />
+
+      {/* Modal content */}
+      <motion.div
+        ref={modalRef}
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
+        className="relative w-full max-w-4xl h-[90vh] md:h-[85vh] bg-[#0B1220] rounded-2xl overflow-hidden border border-white/10 shadow-2xl"
+      >
+        {/* Close button */}
+        <button
+          ref={closeButtonRef}
+          onClick={onClose}
+          className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-[#0F1A2B] border border-white/10 flex items-center justify-center text-[#A9B4C4] hover:text-[#F4F6FA] hover:border-white/20 transition-all duration-200"
+          aria-label="Close modal"
+        >
+          <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+
+        {/* iframe */}
+        <iframe
+          src="https://vault.shortlistpass.com/"
+          className="w-full h-full border-0"
+          title="Family Vault"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        />
+      </motion.div>
+    </motion.div>
+  );
+}
+
 function SmartPagePreviewCard({ onOpen }: { onOpen: () => void }) {
   return (
     <div className="relative">
@@ -857,7 +943,7 @@ function SmartPagePreviewCard({ onOpen }: { onOpen: () => void }) {
   );
 }
 
-function FamilyVaultPreviewCard() {
+function FamilyVaultPreviewCard({ onOpen }: { onOpen: () => void }) {
   return (
     <div className="relative">
       {/* Soft pulsing glow behind card */}
@@ -881,6 +967,34 @@ function FamilyVaultPreviewCard() {
         whileHover={{ y: -4 }}
         transition={{ duration: 0.3, ease: "easeOut" }}
       >
+        {/* Browser-style top bar */}
+        <div className="flex items-center justify-between px-4 py-3 border-b border-[#1E2A3D]/60 bg-[#0D1520]">
+          {/* Window dots */}
+          <div className="flex items-center gap-1.5">
+            <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F57]/70" />
+            <div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]/70" />
+            <div className="w-2.5 h-2.5 rounded-full bg-[#28CA41]/70" />
+          </div>
+
+          {/* Label */}
+          <span className="text-[11px] text-[#A9B4C4]/60 uppercase tracking-wider">
+            Family Vault Preview
+          </span>
+
+          {/* Open live link */}
+          <a
+            href="https://vault.shortlistpass.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[12px] text-[#B08D57] hover:text-[#C9A66B] transition-colors flex items-center gap-1"
+          >
+            Open live
+            <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M7 17L17 7M17 7H7M17 7V17" />
+            </svg>
+          </a>
+        </div>
+
         {/* Card content */}
         <div className="p-5 md:p-8 flex flex-col items-center">
           {/* Image with soft shadow */}
@@ -892,6 +1006,17 @@ function FamilyVaultPreviewCard() {
               boxShadow: "0 15px 40px rgba(0, 0, 0, 0.35)",
             }}
           />
+
+          {/* Expand preview button */}
+          <button
+            onClick={onOpen}
+            className="mt-5 px-4 py-2 text-[13px] text-[#A9B4C4] hover:text-[#F4F6FA] border border-[#1E2A3D] hover:border-[#B08D57]/40 rounded-lg transition-all duration-300 flex items-center gap-2 bg-[#0B1220]/50 hover:bg-[#0B1220]"
+          >
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+            </svg>
+            Expand preview
+          </button>
         </div>
       </motion.div>
 
@@ -904,17 +1029,24 @@ function FamilyVaultPreviewCard() {
 }
 
 function RealBuildsSection() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSmartPageModalOpen, setIsSmartPageModalOpen] = useState(false);
+  const [isFamilyVaultModalOpen, setIsFamilyVaultModalOpen] = useState(false);
   const ctaButtonRef = useRef<HTMLButtonElement>(null);
 
-  const openModal = useCallback(() => {
-    setIsModalOpen(true);
+  const openSmartPageModal = useCallback(() => {
+    setIsSmartPageModalOpen(true);
   }, []);
 
-  const closeModal = useCallback(() => {
-    setIsModalOpen(false);
-    // Restore focus to CTA button
-    ctaButtonRef.current?.focus();
+  const closeSmartPageModal = useCallback(() => {
+    setIsSmartPageModalOpen(false);
+  }, []);
+
+  const openFamilyVaultModal = useCallback(() => {
+    setIsFamilyVaultModalOpen(true);
+  }, []);
+
+  const closeFamilyVaultModal = useCallback(() => {
+    setIsFamilyVaultModalOpen(false);
   }, []);
 
   return (
@@ -1002,7 +1134,7 @@ function RealBuildsSection() {
 
               {/* Right column - Phone mockup */}
               <div className="shrink-0 self-center lg:self-start">
-                <SmartPagePreviewCard onOpen={openModal} />
+                <SmartPagePreviewCard onOpen={openSmartPageModal} />
               </div>
             </div>
           </motion.div>
@@ -1016,7 +1148,7 @@ function RealBuildsSection() {
             <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
               {/* Preview card - on left for desktop */}
               <div className="order-2 lg:order-1 shrink-0 self-center lg:self-start w-full lg:w-auto flex justify-center lg:justify-start">
-                <FamilyVaultPreviewCard />
+                <FamilyVaultPreviewCard onOpen={openFamilyVaultModal} />
               </div>
 
               {/* Copy - on right for desktop */}
@@ -1093,7 +1225,8 @@ function RealBuildsSection() {
       </Container>
 
       {/* SmartPage Modal */}
-      <SmartPageModal isOpen={isModalOpen} onClose={closeModal} />
+      <SmartPageModal isOpen={isSmartPageModalOpen} onClose={closeSmartPageModal} />
+      <FamilyVaultModal isOpen={isFamilyVaultModalOpen} onClose={closeFamilyVaultModal} />
     </section>
   );
 }
