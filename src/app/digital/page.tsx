@@ -226,67 +226,67 @@ function HardLineSection() {
 function ProblemVisual() {
   return (
     <div className="relative w-full max-w-lg mx-auto lg:mx-0">
-      {/* Side-by-side on desktop, stacked on mobile */}
+      {/* Side-by-side on desktop, stacked on mobile (Custom first on mobile) */}
       <div className="flex flex-col sm:flex-row gap-5">
-        {/* Template side - faded, rigid, colder */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, ease: "easeOut" }}
-          className="flex-1"
-        >
-          <div className="text-[11px] text-[#A9B4C4]/60 mb-2.5 uppercase tracking-[0.15em] font-medium">
-            Template
-          </div>
-          <div className="bg-[#0a0f18] border border-white/[0.06] rounded-xl p-5 space-y-3 shadow-lg">
-            {/* Header bar */}
-            <div className="h-2.5 bg-white/[0.06] rounded w-full" />
-            <div className="h-2.5 bg-white/[0.04] rounded w-3/4" />
-            {/* Content block */}
-            <div className="h-10 bg-white/[0.03] rounded mt-1" />
-            {/* More lines */}
-            <div className="h-2.5 bg-white/[0.06] rounded w-full" />
-            <div className="h-2.5 bg-white/[0.04] rounded w-1/2" />
-            {/* Grid of boxes */}
-            <div className="grid grid-cols-3 gap-2 pt-1">
-              <div className="h-14 bg-white/[0.03] rounded" />
-              <div className="h-14 bg-white/[0.03] rounded" />
-              <div className="h-14 bg-white/[0.03] rounded" />
-            </div>
-          </div>
-          <p className="text-[11px] text-[#A9B4C4]/40 mt-3 text-center tracking-wide">
-            Rigid. Generic.
-          </p>
-        </motion.div>
-
-        {/* Custom side - warmer, clearer, more dimensional */}
+        {/* Custom side - warmer, clearer, more dimensional (shows first on mobile) */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
-          className="flex-1"
+          className="flex-1 order-1 sm:order-2"
         >
-          <div className="text-[11px] text-[#B08D57] mb-2.5 uppercase tracking-[0.15em] font-medium">
+          <div className="text-[13px] text-[#B08D57] mb-2.5 uppercase tracking-[0.12em] font-semibold">
             Custom Build
           </div>
-          <div className="bg-[#0F1A2B] border border-[#B08D57]/20 rounded-xl p-5 space-y-3 shadow-lg shadow-[#B08D57]/[0.03]">
+          <div className="bg-[#0F1A2B] border-2 border-[#B08D57]/30 rounded-xl p-5 space-y-3 shadow-xl shadow-[#B08D57]/[0.08]">
             {/* Header - intentional hierarchy */}
-            <div className="h-2.5 bg-[#B08D57]/25 rounded w-2/3" />
-            <div className="h-2.5 bg-white/15 rounded w-full" />
+            <div className="h-2.5 bg-[#B08D57]/30 rounded w-2/3" />
+            <div className="h-2.5 bg-white/20 rounded w-full" />
             {/* Flexible layout */}
             <div className="flex gap-2.5">
-              <div className="h-[4.5rem] bg-[#B08D57]/15 rounded flex-1" />
-              <div className="h-[4.5rem] bg-white/[0.08] rounded flex-[2]" />
+              <div className="h-[4.5rem] bg-[#B08D57]/20 rounded flex-1" />
+              <div className="h-[4.5rem] bg-white/[0.12] rounded flex-[2]" />
             </div>
             {/* Clear content */}
-            <div className="h-2.5 bg-white/15 rounded w-4/5" />
+            <div className="h-2.5 bg-white/20 rounded w-4/5" />
             {/* CTA */}
-            <div className="h-11 bg-[#B08D57]/20 rounded-full w-1/2" />
+            <div className="h-11 bg-[#B08D57]/25 rounded-full w-1/2" />
           </div>
-          <p className="text-[11px] text-[#B08D57]/80 mt-3 text-center tracking-wide">
-            Flexible. Intentional.
+          <p className="text-[11px] text-[#B08D57] mt-3 text-center tracking-wide">
+            Built for how you work.
+          </p>
+        </motion.div>
+
+        {/* Template side - flatter, faded, feels "off" */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+          className="flex-1 order-2 sm:order-1 opacity-60 sm:opacity-100"
+        >
+          <div className="text-[11px] text-[#A9B4C4]/40 mb-2.5 uppercase tracking-[0.15em] font-medium">
+            Template
+          </div>
+          <div className="bg-[#080c14] border border-white/[0.04] rounded-xl p-5 space-y-3">
+            {/* Header bar */}
+            <div className="h-2.5 bg-white/[0.05] rounded w-full" />
+            <div className="h-2.5 bg-white/[0.03] rounded w-3/4" />
+            {/* Content block */}
+            <div className="h-10 bg-white/[0.02] rounded mt-1" />
+            {/* More lines */}
+            <div className="h-2.5 bg-white/[0.05] rounded w-full" />
+            <div className="h-2.5 bg-white/[0.03] rounded w-1/2" />
+            {/* Grid of boxes */}
+            <div className="grid grid-cols-3 gap-2 pt-1">
+              <div className="h-14 bg-white/[0.02] rounded" />
+              <div className="h-14 bg-white/[0.02] rounded" />
+              <div className="h-14 bg-white/[0.02] rounded" />
+            </div>
+          </div>
+          <p className="text-[11px] text-[#A9B4C4]/30 mt-3 text-center tracking-wide">
+            Rigid. Generic.
           </p>
         </motion.div>
       </div>
@@ -316,12 +316,15 @@ function ProblemSection() {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            {/* Headline with hierarchy */}
+            {/* Headline with hierarchy - line 2 creates a pause */}
             <div className="mb-8">
-              <h2 className="text-[28px] md:text-[34px] lg:text-[40px] font-semibold text-[#F4F6FA] leading-[1.15] mb-2">
+              <h2 className="text-[28px] md:text-[34px] lg:text-[40px] font-bold text-[#F4F6FA] leading-[1.15] mb-3">
                 Most websites look fine.
               </h2>
-              <p className="text-[22px] md:text-[26px] lg:text-[32px] text-[#A9B4C4]/80 leading-[1.2] font-medium">
+              <p
+                className="text-[22px] md:text-[26px] lg:text-[32px] text-[#A9B4C4]/70 leading-[1.2] font-normal"
+                style={{ letterSpacing: "0.01em" }}
+              >
                 They just don&apos;t do anything.
               </p>
             </div>
@@ -331,27 +334,27 @@ function ProblemSection() {
               Templates aren&apos;t built for how your business actually runs. They look good on day one — then quickly get in the way.
             </p>
 
-            {/* Pain points - simple bullets, grounded */}
-            <ul className="space-y-3 mb-10">
+            {/* Pain points - staggered emphasis, last one hits harder */}
+            <ul className="space-y-4 mb-14">
               <li className="flex items-start gap-3 text-base text-[#A9B4C4]">
-                <span className="w-1 h-1 rounded-full bg-[#A9B4C4]/50 mt-[0.6rem] shrink-0" />
+                <span className="w-1 h-1 rounded-full bg-[#A9B4C4]/40 mt-[0.6rem] shrink-0" />
                 Customers get confused
               </li>
               <li className="flex items-start gap-3 text-base text-[#A9B4C4]">
-                <span className="w-1 h-1 rounded-full bg-[#A9B4C4]/50 mt-[0.6rem] shrink-0" />
+                <span className="w-1 h-1 rounded-full bg-[#A9B4C4]/40 mt-[0.6rem] shrink-0" />
                 Information is buried
               </li>
               <li className="flex items-start gap-3 text-base text-[#A9B4C4]">
-                <span className="w-1 h-1 rounded-full bg-[#A9B4C4]/50 mt-[0.6rem] shrink-0" />
+                <span className="w-1 h-1 rounded-full bg-[#A9B4C4]/40 mt-[0.6rem] shrink-0" />
                 Tools don&apos;t talk to each other
               </li>
-              <li className="flex items-start gap-3 text-base text-[#A9B4C4]">
-                <span className="w-1 h-1 rounded-full bg-[#A9B4C4]/50 mt-[0.6rem] shrink-0" />
+              <li className="flex items-start gap-3 text-base text-[#F4F6FA]">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#B08D57] mt-[0.55rem] shrink-0" />
                 Simple tasks take too long
               </li>
             </ul>
 
-            {/* Bridge - emotion + logic */}
+            {/* Bridge - emotion + logic (extra space before = gut punch) */}
             <p className="text-base md:text-[17px] text-[#F4F6FA] leading-relaxed mb-4">
               When your digital tools don&apos;t match how you work, your productivity drops and your workload goes up.
             </p>
