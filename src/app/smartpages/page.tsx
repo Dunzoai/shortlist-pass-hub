@@ -528,7 +528,7 @@ function AppGridSection() {
   return (
     <section className="bg-[#0a0f1a] py-10 md:py-14 px-4 overflow-x-hidden">
       {/* Header with animated highlighter on "Zero competition for attention" */}
-      <div className="max-w-4xl mx-auto text-center mb-6 md:mb-8">
+      <div className="max-w-4xl mx-auto text-center mb-4 md:mb-5">
         <motion.h2
           className="text-2xl sm:text-3xl md:text-4xl text-white font-semibold"
           initial={{ opacity: 0, y: 20 }}
@@ -562,7 +562,7 @@ function AppGridSection() {
 
       {/* Try These Header */}
       <motion.p
-        className="text-center text-base md:text-lg text-slate-300 mb-3 md:mb-4"
+        className="text-center text-base md:text-lg text-slate-300 mb-4"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
@@ -1201,7 +1201,7 @@ export default function ShortyLandingPage() {
           {/* CTA Button */}
           <motion.a
             href="https://buy.stripe.com/3cI4gyfB1eg65uZ02Q4sE05"
-            className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-black text-white font-bold px-8 py-4 text-lg shadow-lg hover:bg-black/80 transition"
+            className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-[#E5A833] text-black font-bold px-8 py-4 text-lg shadow-lg hover:bg-[#d4962e] transition"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
