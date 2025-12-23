@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { motion, useInView, useScroll, useTransform, AnimatePresence, MotionValue } from "framer-motion";
 import { Container } from "@/components/Container";
 import { useRef, useState, useEffect, useCallback } from "react";
 import Link from "next/link";
@@ -1588,9 +1588,66 @@ function BenefitsSection() {
 // SECTION 7: PROCESS
 // =============================================================================
 
+function ProcessStepNumber({ index, scrollProgress }: { index: number; scrollProgress: MotionValue<number> }) {
+  // Each number fills at different scroll points: 0.2, 0.5, 0.8
+  const thresholds = [0.2, 0.5, 0.8];
+  const threshold = thresholds[index] || 0.8;
+
+  const color = useTransform(
+    scrollProgress,
+    [threshold - 0.15, threshold],
+    ["rgba(169, 180, 196, 0.4)", "#B08D57"]
+  );
+
+  const borderColor = useTransform(
+    scrollProgress,
+    [threshold - 0.15, threshold],
+    ["rgba(169, 180, 196, 0.2)", "rgba(176, 141, 87, 0.5)"]
+  );
+
+  const bgColor = useTransform(
+    scrollProgress,
+    [threshold - 0.15, threshold],
+    ["transparent", "rgba(176, 141, 87, 0.15)"]
+  );
+
+  return (
+    <motion.div
+      className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 text-sm font-medium border"
+      style={{
+        color,
+        borderColor,
+        backgroundColor: bgColor,
+      }}
+    >
+      {index + 1}
+    </motion.div>
+  );
+}
+
+function ProcessStepText({ index, scrollProgress, children }: { index: number; scrollProgress: MotionValue<number>; children: React.ReactNode }) {
+  const thresholds = [0.2, 0.5, 0.8];
+  const threshold = thresholds[index] || 0.8;
+
+  const color = useTransform(
+    scrollProgress,
+    [threshold - 0.15, threshold],
+    ["rgba(169, 180, 196, 0.4)", "#A9B4C4"]
+  );
+
+  return (
+    <motion.p className="text-base md:text-lg" style={{ color }}>
+      {children}
+    </motion.p>
+  );
+}
+
 function ProcessSection() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, margin: "-100px" });
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
 
   // Simplified, human step copy
   const steps = [
@@ -1599,6 +1656,9 @@ function ProcessSection() {
     "Build the right thing — nothing extra",
   ];
 
+  // For the closing text
+  const closingOpacity = useTransform(scrollYProgress, [0.7, 0.85], [0, 1]);
+
   return (
     <section
       ref={containerRef}
@@ -1606,70 +1666,26 @@ function ProcessSection() {
     >
       <Container>
         <div className="max-w-2xl mx-auto">
-          <motion.h2
-            className="text-[28px] md:text-[36px] font-semibold text-[#F4F6FA] leading-tight mb-12 text-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-          >
+          <h2 className="text-[28px] md:text-[36px] font-semibold text-[#F4F6FA] leading-tight mb-12 text-center">
             How working with us actually works
-          </motion.h2>
+          </h2>
 
-          {/* Steps - numbers fill one at a time */}
+          {/* Steps - numbers fill as you scroll */}
           <div className="space-y-6 mb-12">
             {steps.map((step, index) => (
-              <motion.div
-                key={step}
-                className="flex items-center gap-5"
-                initial={{ opacity: 0 }}
-                animate={isInView ? { opacity: 1 } : {}}
-                transition={{ duration: 0.4, delay: 0.3 + index * 0.15, ease: "easeOut" }}
-              >
-                {/* Number circle - fills with brass on scroll */}
-                <motion.div
-                  className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 text-sm font-medium border"
-                  initial={{
-                    backgroundColor: "transparent",
-                    color: "rgba(169, 180, 196, 0.4)",
-                    borderColor: "rgba(169, 180, 196, 0.2)",
-                  }}
-                  animate={isInView ? {
-                    backgroundColor: "rgba(176, 141, 87, 0.15)",
-                    color: "#B08D57",
-                    borderColor: "rgba(176, 141, 87, 0.5)",
-                  } : {}}
-                  transition={{
-                    duration: 0.6,
-                    delay: 0.5 + index * 0.4,
-                    ease: "easeOut"
-                  }}
-                >
-                  {index + 1}
-                </motion.div>
-
-                {/* Step text - also lights up with the number */}
-                <motion.p
-                  className="text-base md:text-lg"
-                  initial={{ color: "rgba(169, 180, 196, 0.4)" }}
-                  animate={isInView ? { color: "#A9B4C4" } : {}}
-                  transition={{
-                    duration: 0.6,
-                    delay: 0.5 + index * 0.4,
-                    ease: "easeOut"
-                  }}
-                >
+              <div key={step} className="flex items-center gap-5">
+                <ProcessStepNumber index={index} scrollProgress={scrollYProgress} />
+                <ProcessStepText index={index} scrollProgress={scrollYProgress}>
                   {step}
-                </motion.p>
-              </motion.div>
+                </ProcessStepText>
+              </div>
             ))}
           </div>
 
           {/* Quiet closing reassurance */}
           <motion.p
             className="text-sm text-[#A9B4C4]/50 text-center"
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.5, delay: 2 }}
+            style={{ opacity: closingOpacity }}
           >
             Clear steps. No surprises.
           </motion.p>
