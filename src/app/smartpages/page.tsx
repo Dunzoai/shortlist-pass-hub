@@ -388,13 +388,13 @@ function ShortyModal() {
   const displayedMessages = currentMessages.slice(0, visibleMessages);
 
   return (
-    <div className="relative w-full max-w-[220px] sm:max-w-[260px] md:max-w-[320px] mx-auto rounded-3xl bg-[#0a0f1a] border border-white/10 shadow-[0_0_60px_rgba(251,191,36,0.15)] z-10 flex flex-col overflow-hidden">
+    <div className="relative w-full max-w-[220px] sm:max-w-[260px] md:max-w-[320px] h-[380px] md:h-[410px] mx-auto rounded-3xl bg-[#0a0f1a] border border-white/10 shadow-[0_0_60px_rgba(251,191,36,0.15)] z-10 flex flex-col overflow-hidden">
       {/* Header */}
       <div className="flex flex-col items-center pt-3 pb-2 px-3 border-b border-white/10">
         {/* Avatar */}
         <div className="relative w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#fbbf24]/15 overflow-hidden flex items-center justify-center mb-1.5">
           <Image
-            src="/Shortlist_Logo.png"
+            src="/Shortlist_logo.png"
             alt="Shorty"
             fill
             className="object-contain"
@@ -894,7 +894,7 @@ function FeatureVisual({ type }: { type: string }) {
                   // Bottom-right: Shortlist logo with gold glow
                   <div key={i} className="relative w-14 h-14 md:w-16 md:h-16 rounded-xl overflow-hidden shadow-[0_0_20px_rgba(229,168,51,0.5)]">
                     <Image
-                      src="/Shortlist_Logo.png"
+                      src="/Shortlist_logo.png"
                       alt="Shortlist"
                       fill
                       className="object-cover"
@@ -908,7 +908,7 @@ function FeatureVisual({ type }: { type: string }) {
             <div className="flex items-center gap-2 mt-2">
               <div className="relative w-8 h-8 rounded-lg overflow-hidden">
                 <Image
-                  src="/Shortlist_Logo.png"
+                  src="/Shortlist_logo.png"
                   alt="Shortlist"
                   fill
                   className="object-cover"
@@ -935,7 +935,7 @@ function FeatureVisual({ type }: { type: string }) {
               <div className="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center">
                 <div className="relative w-8 h-8">
                   <Image
-                    src="/Shortlist_Logo.png"
+                    src="/Shortlist_logo.png"
                     alt="Your Business"
                     fill
                     className="object-contain"
@@ -1011,7 +1011,17 @@ function FeaturesSection() {
               transition={{ duration: 0.5 }}
             >
               <div className={`text-center md:text-left ${feature.textLeft ? '' : 'md:[direction:ltr]'}`}>
-                <h3 className="text-xl sm:text-2xl md:text-3xl text-white font-semibold">
+                <h3 className="text-xl sm:text-2xl md:text-3xl text-white font-semibold flex items-center gap-3 justify-center md:justify-start">
+                  {index === 1 && (
+                    <div className="relative w-8 h-8 md:w-10 md:h-10 flex-shrink-0">
+                      <Image
+                        src="/Shortlist_logo.png"
+                        alt="Shortlist"
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
+                  )}
                   {feature.headline}
                 </h3>
                 <p className="mt-3 md:mt-4 text-base sm:text-lg text-slate-400">
