@@ -164,11 +164,11 @@ function HeroSection() {
 function HardLineSection() {
   return (
     <section className="relative py-28 lg:py-40 bg-gradient-to-b from-[#a38542] via-[#d4b87f] to-[#c9a46a] overflow-hidden">
-      {/* Subtle grain texture - adds material feel */}
+      {/* Grain texture - adds material feel */}
       <div
-        className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-multiply"
+        className="absolute inset-0 opacity-[0.12] pointer-events-none"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
         }}
       />
 
@@ -191,15 +191,15 @@ function HardLineSection() {
           </div>
 
           {/* Resolution - the payoff (this line wins) */}
-          <div className="relative">
+          <div className="relative inline-block">
             <p
               className="text-[2.25rem] md:text-[3.25rem] lg:text-[3.75rem] font-bold text-[#0B1220] leading-[1.1]"
               style={{ letterSpacing: "-0.015em" }}
             >
               We build around you.
             </p>
-            {/* Intentional underline - brass, offset left */}
-            <div className="mt-3 w-[45%] max-w-[200px] h-[2px] bg-[#B08D57]" />
+            {/* Full-width underline beneath the text */}
+            <div className="mt-2 w-full h-[3px] bg-[#B08D57]" />
           </div>
         </div>
       </Container>
