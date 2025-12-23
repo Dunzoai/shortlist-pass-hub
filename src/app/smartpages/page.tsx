@@ -823,32 +823,32 @@ function AppGridSection() {
 
 const features = [
   {
-    headline: "AI Chat that knows your business",
-    description: "Shorty answers instantly — hours, menu, services, FAQs — so you don't have to.",
+    headline: "Customers get answers instantly",
+    description: "Hours, menu, services, FAQs — customers ask and get clear answers immediately, even when you're busy or closed.",
     visual: "chat",
     textLeft: true,
   },
   {
-    headline: "A real app on their home screen",
-    description: "No app store. No downloads. Just tap and it's installed.",
+    headline: "One tap and they're connected",
+    description: "Customers add your SmartPage to their home screen instantly — no app store, no downloads, no friction.",
     visual: "app",
     textLeft: false,
   },
   {
-    headline: "Announcement banner",
-    description: "Pin important updates at the top. Sales, closures, events — seen instantly.",
+    headline: "Important updates seen first",
+    description: "Sales, closures, events — customers see what matters most the moment they open your page.",
     visual: "banner",
     textLeft: true,
   },
   {
-    headline: "All your links + Shorty shares them",
-    description: "Every link in one place. And when customers ask, Shorty sends them directly.",
+    headline: "No more 'where do I click?' moments",
+    description: "Every link in one place. Customers ask for what they need and get sent directly there.",
     visual: "links",
     textLeft: false,
   },
   {
-    headline: "QR code for anywhere",
-    description: "Print it on business cards, coasters, to-go boxes, shirts — wherever.",
+    headline: "Get found anywhere you do business",
+    description: "Print your QR code on business cards, coasters, to-go boxes, receipts — customers scan and they're in.",
     visual: "qr",
     textLeft: true,
   },
@@ -1066,11 +1066,13 @@ export default function ShortyLandingPage() {
         {/* Headline + Subheadline - above modal */}
         <div className="text-center max-w-2xl mb-6 md:mb-8 z-10">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight text-white">
-            The smartest way to connect with your customers.
+            One clear place customers trust.
           </h1>
           <p className="mt-4 text-lg md:text-xl text-slate-300">
-            Every detail, every link — answered 24/7 by your own AI assistant.{' '}
-            <span className="text-[#E5A833] font-semibold">$25/mo.</span>
+            SmartPages give customers instant answers, clear next steps, and everything they need to choose you — without digging, DM'ing, or bouncing.
+          </p>
+          <p className="mt-3 text-sm md:text-base text-slate-400 italic">
+            If customers have to hunt, they won't.
           </p>
         </div>
 
@@ -1085,131 +1087,53 @@ export default function ShortyLandingPage() {
       {/* SECTION 2 - Let's Be Real (moved from bottom) */}
       {/* =========================================================================== */}
 
-      {/* Let's Be Real Section */}
+      {/* Why This Exists Section */}
       <section ref={finalCtaRef} className="bg-[#E5A833] py-20 md:py-28 px-4">
         <div className="max-w-3xl mx-auto text-center space-y-8">
-          {/* Headline - PUNCH animation */}
+          {/* Headline */}
           <motion.h2
-            className="text-6xl md:text-8xl font-black text-black"
-            initial={{ scale: 3, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{
-              type: "spring",
-              stiffness: 300,
-              damping: 20,
-              duration: 0.5
-            }}
-          >
-            Let&apos;s be real.
-          </motion.h2>
-
-          {/* Line 1 - with X */}
-          <motion.p
-            className="text-lg md:text-xl text-black/70 flex items-center justify-center gap-2"
+            className="text-4xl md:text-5xl lg:text-6xl font-bold text-black"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.05 }}
+            transition={{ duration: 0.5 }}
           >
-            <span className="text-red-600 text-2xl">✕</span>
-            <span className="line-through decoration-2">Nobody scrolls through websites to find an answer anymore.</span>
-          </motion.p>
+            The problem isn&apos;t traffic. It&apos;s confusion.
+          </motion.h2>
 
-          {/* Line 2 */}
+          {/* Body copy */}
           <motion.p
-            className="text-lg md:text-xl text-black/80"
+            className="text-lg md:text-xl text-black/80 leading-relaxed"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            Not you. Not your customers. They tap a link, don&apos;t see what they need in 3 seconds, and they&apos;re gone.
+            Most customers don&apos;t leave because they&apos;re not interested — they leave because they can&apos;t quickly figure out what to do next.
           </motion.p>
 
-          {/* Line 3 - BIG with animated circle */}
-          <motion.div
-            className="py-4"
+          <motion.p
+            className="text-lg md:text-xl text-black/80 leading-relaxed"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.15 }}
           >
-            <span className="relative inline-block">
-              <span className="text-2xl md:text-3xl font-bold text-black relative z-10">
-                SmartPage makes sure that never happens.
-              </span>
-              {/* Animated hand-drawn circle */}
-              <motion.svg
-                className="absolute -inset-4 w-[calc(100%+32px)] h-[calc(100%+32px)] -rotate-2"
-                viewBox="0 0 200 60"
-                preserveAspectRatio="none"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-              >
-                <motion.ellipse
-                  cx="100"
-                  cy="30"
-                  rx="98"
-                  ry="28"
-                  fill="none"
-                  stroke="black"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  variants={{
-                    hidden: { pathLength: 0 },
-                    visible: { pathLength: 1 }
-                  }}
-                  transition={{ duration: 0.8, delay: 0.3, ease: 'easeOut' }}
-                />
-              </motion.svg>
-            </span>
-          </motion.div>
+            Hours, menus, links, booking, updates, FAQs — when this information is scattered, customers bounce.
+          </motion.p>
 
-          {/* Line 4 */}
-          <motion.p
-            className="text-lg md:text-xl text-black/80"
+          {/* Solution */}
+          <motion.div
+            className="py-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            Instant answers — 24/7 — powered by AI that <span className="font-semibold">YOU</span> train.
-          </motion.p>
-
-          {/* Line 5 */}
-          <motion.p
-            className="text-lg md:text-xl text-black/80"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.25 }}
-          >
-            A simple dashboard with guided prompts for your menu, services, hours, FAQs... all stored in Shorty&apos;s brain.
-          </motion.p>
-
-          {/* Line 6 */}
-          <motion.p
-            className="text-lg md:text-xl text-black/80"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
-            Every question gets answered. Links get shared. Notifications land on lock screens.
-          </motion.p>
-
-          {/* Line 7 - medium emphasis */}
-          <motion.p
-            className="text-xl md:text-2xl font-semibold text-black"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.35 }}
-          >
-            Your only job? Get the link in front of your customers.
-          </motion.p>
+            <span className="text-2xl md:text-3xl font-bold text-black">
+              SmartPages fix that.
+            </span>
+          </motion.div>
 
           {/* Line 8 - Pills */}
           <motion.div
@@ -1268,6 +1192,79 @@ export default function ShortyLandingPage() {
         </div>
       </section>
 
+      {/* Without vs With Comparison */}
+      <section className="bg-[#0a0f1a] py-16 md:py-20 px-4">
+        <div className="max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12">
+            {/* Without SmartPages */}
+            <motion.div
+              className="space-y-4"
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+            >
+              <h3 className="text-xl md:text-2xl font-bold text-[#E5A833] mb-6">Without SmartPages</h3>
+              <div className="space-y-3 text-slate-400">
+                <p className="flex items-start gap-3">
+                  <span className="text-red-500 mt-1">✕</span>
+                  <span>&quot;Check our bio&quot;</span>
+                </p>
+                <p className="flex items-start gap-3">
+                  <span className="text-red-500 mt-1">✕</span>
+                  <span>&quot;DM us&quot;</span>
+                </p>
+                <p className="flex items-start gap-3">
+                  <span className="text-red-500 mt-1">✕</span>
+                  <span>&quot;Link in link&quot;</span>
+                </p>
+                <p className="flex items-start gap-3">
+                  <span className="text-red-500 mt-1">✕</span>
+                  <span>Info spread across multiple platforms</span>
+                </p>
+                <p className="flex items-start gap-3">
+                  <span className="text-red-500 mt-1">✕</span>
+                  <span>Customers leave to figure it out later</span>
+                </p>
+              </div>
+            </motion.div>
+
+            {/* With SmartPages */}
+            <motion.div
+              className="space-y-4"
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              <h3 className="text-xl md:text-2xl font-bold text-[#E5A833] mb-6">With SmartPages</h3>
+              <div className="space-y-3 text-white">
+                <p className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span>One clear page</span>
+                </p>
+                <p className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span>Instant answers</span>
+                </p>
+                <p className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span>All links in one place</span>
+                </p>
+                <p className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span>Clear actions</span>
+                </p>
+                <p className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span>Customers decide faster</span>
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* Bottom part - Dark background like modal */}
       <AppGridSection />
 
@@ -1275,49 +1272,28 @@ export default function ShortyLandingPage() {
       <FeaturesSection />
 
       {/* =========================================================================== */}
-      {/* FINAL SECTION - Your Business Deserves More (moved from top) */}
+      {/* POSITIONING CLARIFIER */}
       {/* =========================================================================== */}
 
       {/* Gold/Brass background with dark text */}
-      <section className="bg-[#FACC15] py-10 md:py-14 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          {/* Header */}
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-black">
-            Your business deserves more than a link in bio.
-          </h2>
+      <section className="bg-[#FACC15] py-16 md:py-20 px-4">
+        <div className="max-w-3xl mx-auto text-center space-y-6">
+          {/* Positioning Statement */}
+          <div className="space-y-4 text-lg md:text-xl text-black/80 leading-relaxed">
+            <p>
+              <span className="font-semibold text-black">Social gets attention.</span>
+            </p>
+            <p>
+              <span className="font-semibold text-black">SmartPages give clarity.</span>
+            </p>
+            <p>
+              <span className="font-semibold text-black">Websites go deeper when needed.</span>
+            </p>
+          </div>
 
-          {/* Subheader with animated circle around "everything you offer" */}
-          <p className="mt-8 max-w-2xl text-center text-base sm:text-lg text-black/70 mx-auto leading-relaxed">
-            Give customers a direct line to{' '}
-            <span className="relative inline-block">
-              <span className="relative z-10">everything you offer</span>
-              {/* Animated hand-drawn circle */}
-              <motion.svg
-                className="absolute -inset-3 w-[calc(100%+24px)] h-[calc(100%+24px)] -rotate-3"
-                viewBox="0 0 200 60"
-                preserveAspectRatio="none"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-              >
-                <motion.ellipse
-                  cx="100"
-                  cy="30"
-                  rx="98"
-                  ry="28"
-                  fill="none"
-                  stroke="black"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  variants={{
-                    hidden: { pathLength: 0 },
-                    visible: { pathLength: 1 }
-                  }}
-                  transition={{ duration: 0.8, delay: 0.3, ease: 'easeOut' }}
-                />
-              </motion.svg>
-            </span>
-            {' '}— hours, menus, booking, FAQs — all in one tap. No app store. No downloads. Just your business, on their home screen.
+          {/* Explanation */}
+          <p className="mt-8 text-xl md:text-2xl font-bold text-black">
+            SmartPages sit in the middle — turning interest into action.
           </p>
 
           {/* CTA Button */}
