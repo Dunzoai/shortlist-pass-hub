@@ -49,7 +49,7 @@ function HeroSection() {
 
       {/* Grid background - static with subtle scroll parallax */}
       <motion.div
-        className="absolute inset-[-10%] opacity-[0.6] pointer-events-none"
+        className="absolute inset-[-10%] opacity-[0.75] pointer-events-none"
         style={{
           backgroundImage: "url(/grid.png)",
           backgroundSize: "cover",
@@ -207,7 +207,7 @@ function HardLineSection() {
             </p>
           </div>
 
-          {/* Final line: Brand positioning - words pop up one by one */}
+          {/* Final line: Brand positioning - words pop up one by one, slow and impactful */}
           <div className="relative inline-block">
             <div
               className="text-[1.875rem] md:text-[3rem] lg:text-[3.5rem] font-bold text-[#0B1220] leading-[1.1] flex gap-2 md:gap-4"
@@ -216,12 +216,12 @@ function HardLineSection() {
               {words.map((word, index) => (
                 <motion.span
                   key={word}
-                  initial={{ opacity: 0, y: 30, scale: 0.8 }}
+                  initial={{ opacity: 0, y: 40, scale: 0.7 }}
                   animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
                   transition={{
-                    duration: 0.5,
-                    delay: 0.3 + index * 0.15,
-                    ease: [0.25, 0.46, 0.45, 0.94],
+                    duration: 0.7,
+                    delay: 0.5 + index * 0.35,
+                    ease: [0.22, 1, 0.36, 1],
                   }}
                 >
                   {word}
@@ -233,7 +233,7 @@ function HardLineSection() {
               className="mt-3 h-[2px] bg-[#B08D57]"
               initial={{ width: 0 }}
               animate={isInView ? { width: "103%" } : {}}
-              transition={{ duration: 0.6, delay: 1.0, ease: "easeOut" }}
+              transition={{ duration: 0.8, delay: 2.2, ease: "easeOut" }}
             />
           </div>
         </div>
@@ -552,14 +552,14 @@ interface BuildCardProps {
 
 function BuildCard({ headline, copy, emphasis, punchline, visual, index, highlighted }: BuildCardProps) {
   // Cards swipe in from opposite sides: left for even index, right for odd
-  const swipeDirection = index % 2 === 0 ? -100 : 100;
+  const swipeDirection = index % 2 === 0 ? -60 : 60;
 
   return (
     <motion.div
       initial={{ opacity: 0, x: swipeDirection }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.6, delay: index * 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
+      transition={{ duration: 0.8, delay: index * 0.12, ease: [0.25, 0.1, 0.25, 1] }}
       className={`group bg-[#0F1A2B] rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 ${
         highlighted
           ? "border border-[#B08D57]/25 hover:border-[#B08D57]/40 hover:shadow-xl hover:shadow-[#B08D57]/10"
