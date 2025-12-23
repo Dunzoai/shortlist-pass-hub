@@ -19,45 +19,10 @@ const staggerContainer = {
   },
 };
 
-function HeroBackground() {
-  return (
-    <>
-      {/* Ambient brass glow */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: [0.06, 0.08, 0.06], scale: [0.8, 1, 0.8] }}
-        transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#B08D57] rounded-full blur-3xl -z-20"
-      />
-
-      {/* Glass panel with vignette */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1, ease: "easeOut" }}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-[500px] -z-10"
-      >
-        <div className="absolute inset-0 bg-[#0F1A2B]/40 backdrop-blur-sm rounded-3xl border border-white/5" />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0B1220]/60 rounded-3xl" />
-      </motion.div>
-
-      {/* Subtle gradient drift */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{
-          opacity: [0.02, 0.04, 0.02],
-          backgroundPosition: ["0% 0%", "100% 100%", "0% 0%"]
-        }}
-        transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-        className="absolute inset-0 bg-gradient-to-br from-[#B08D57]/10 via-transparent to-[#B08D57]/5 -z-15"
-        style={{ backgroundSize: "200% 200%" }}
-      />
-    </>
-  );
-}
+// Hero background is now static (background image only)
 
 function ScrollingBelt() {
-  const beltText = "GET SEEN • LOOK LEGIT • WEBSITES THAT CONVERT • POSTS THAT SOUND LIKE YOU • TOOLS BUILT FOR REAL PROBLEMS • INSTANT CUSTOMER ANSWERS • ONE CLEAR PLACE FOR CUSTOMERS • FEWER MISSED CUSTOMERS • MORE ORDERS • BUSY WHEN IT MATTERS";
+  const beltText = "GET SEEN • LOOK LEGIT • WEBSITES THAT CONVERT • POSTS THAT SOUND LIKE YOU • SOCIAL THAT SHOWS UP • ONE PAGE THAT EXPLAINS EVERYTHING • INSTANT CUSTOMER ANSWERS • APPS BUILT FOR REAL PROBLEMS • TOOLS THAT SAVE YOU TIME • MORE CUSTOMERS, LESS CONFUSION";
 
   // Detect mobile for faster scroll speed
   const [isMobile, setIsMobile] = useState(false);
@@ -145,7 +110,7 @@ function HowWeHelp() {
         </svg>
       ),
       title: "Show up in the feed",
-      description: "We create content people stop scrolling for — built to trigger engagement and beat the algorithms so your business actually gets seen."
+      description: "We create scroll-stopping social content designed to trigger engagement and beat the algorithms — so your business actually shows up where customers spend their time."
     },
     {
       icon: (
@@ -154,7 +119,7 @@ function HowWeHelp() {
         </svg>
       ),
       title: "One page that explains everything",
-      description: "We build SmartPages that know your business inside and out — answers, links, updates, hours, menus, booking — all in one place so customers get what they need instantly instead of clicking around or bouncing."
+      description: "We build SmartPages that know your business inside and out — answers, links, hours, menus, booking — all in one place so customers get what they need instantly without clicking around."
     },
     {
       icon: (
@@ -163,7 +128,7 @@ function HowWeHelp() {
         </svg>
       ),
       title: "Apps built for real problems",
-      description: "When your business needs more than a website, we build lightweight custom apps that solve specific problems — from ordering and scheduling to internal tools that make your day easier."
+      description: "When your business needs more than a website, we build lightweight custom apps — ordering, scheduling, internal tools — designed around how you actually operate."
     },
     {
       icon: (
@@ -314,7 +279,6 @@ export default function Home() {
       >
         {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-[#0B1220]/70 -z-5" />
-        <HeroBackground />
         <Container>
           <div className="relative z-10">
             <motion.div
@@ -328,9 +292,9 @@ export default function Home() {
                 transition={{ duration: 0.5, ease: "easeOut" }}
                 className="text-[40px] md:text-[56px] lg:text-[64px] font-semibold text-[#F4F6FA] leading-[1.05] mb-6"
               >
-                <span className="block lg:inline">Look legit.</span>{" "}
+                <span className="block">Look legit.</span>
                 <span className="block">
-                  <span className="lg:inline">Get </span>
+                  Get{" "}
                   <span className="relative inline-block px-2">
                     chosen.
                     {/* SVG circle animation */}
@@ -359,8 +323,8 @@ export default function Home() {
                         strokeLinecap="round"
                         fill="none"
                         initial={{ pathLength: 0, opacity: 0 }}
-                        animate={{ pathLength: 1, opacity: 0.8 }}
-                        transition={{ duration: 1.8, delay: 0.6, ease: "easeInOut" }}
+                        animate={{ pathLength: 1, opacity: [0.8, 0.9, 0.8] }}
+                        transition={{ duration: 1.4, delay: 0.6, ease: "easeInOut" }}
                       />
                     </motion.svg>
                   </span>
@@ -372,7 +336,7 @@ export default function Home() {
                 transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
                 className="text-lg lg:text-xl text-[#A9B4C4] max-w-[720px] mx-auto"
               >
-                We help local businesses show up clearly online — with websites, social, SmartPages, and custom tools that make it easier for customers to understand, decide, and take action.
+                Websites, social media, SmartPages, and custom apps that make customers pick you — not the place down the street.
               </motion.p>
             </motion.div>
           </div>
