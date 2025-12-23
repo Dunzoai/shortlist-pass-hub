@@ -859,7 +859,7 @@ const features = [
   },
   {
     headline: "Get found anywhere you do business",
-    description: "Print your QR code on business cards, coasters, to-go boxes, receipts — customers scan and they're in.",
+    description: "Business cards 📇 Receipts 🧾 Proposals 📄 Link in bio 🔗 QR codes 📱 — Print your SmartPage link or QR code anywhere customers interact with your business. One scan and they're in.",
     visual: "qr",
     textLeft: true,
   },
@@ -1156,42 +1156,36 @@ export default function ShortyLandingPage() {
             </span>
           </motion.div>
 
-          {/* Line 8 - Pills */}
+          {/* What is a SmartPage? Explanation */}
           <motion.div
-            className="flex flex-wrap justify-center gap-3 py-2"
+            className="mt-8 md:mt-10 p-6 md:p-8 rounded-2xl bg-slate-800/40 border border-slate-700/50 max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            <h3 className="text-xl md:text-2xl font-semibold text-white mb-4">What is a SmartPage?</h3>
+
+            <p className="text-slate-300 text-base md:text-lg leading-relaxed mb-3">
+              Think of it as a lightweight website—an intelligent version of Linktree.
+            </p>
+
+            <p className="text-slate-300 text-base md:text-lg leading-relaxed mb-3">
+              Your customers aren&apos;t reading through pages of content. Neither are you. Simply ask Shorty anything about your business, and your customer gets the answer instantly. 24/7.
+            </p>
+
+            <p className="text-slate-300 text-base md:text-lg leading-relaxed">
+              No more lost sales from click fatigue or missed opportunities. Perfect for every business that needs an online presence and real communication.
+            </p>
+          </motion.div>
+
+          {/* Once they tap - BIG */}
+          <motion.div
+            className="pt-8"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.4 }}
-          >
-            {[
-              { icon: '📇', text: 'Business cards' },
-              { icon: '🧾', text: 'Receipts' },
-              { icon: '📄', text: 'Proposals' },
-              { icon: '🔗', text: 'Link in bio' },
-              { icon: '📱', text: 'QR code' },
-            ].map((item, index) => (
-              <motion.span
-                key={item.text}
-                className="bg-black text-white rounded-full px-4 py-2 text-sm md:text-base font-medium flex items-center gap-2"
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.3, delay: 0.45 + index * 0.05 }}
-              >
-                <span>{item.icon}</span>
-                <span>{item.text}</span>
-              </motion.span>
-            ))}
-          </motion.div>
-
-          {/* Line 9 - BIG */}
-          <motion.div
-            className="pt-4"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.55 }}
           >
             <span className="text-2xl md:text-3xl font-bold text-black">
               Once they tap, you&apos;re connected forever.
