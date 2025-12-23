@@ -1028,36 +1028,9 @@ function FamilyVaultPreviewCard({ onOpen }: { onOpen: () => void }) {
   );
 }
 
-function CustomWebsiteLivingCanvas() {
+function CustomWebsiteVisual() {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
-  const [activeCardIndex, setActiveCardIndex] = useState(0);
-  const [hoveredIcon, setHoveredIcon] = useState<number | null>(null);
-
-  // Cycling action cards
-  const actionCards = [
-    "Get started",
-    "Check availability",
-    "View options",
-    "Contact us",
-    "Book a spot",
-  ];
-
-  // Cycle through action cards
-  useEffect(() => {
-    if (!isInView) return;
-    const interval = setInterval(() => {
-      setActiveCardIndex((prev) => (prev + 1) % actionCards.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, [isInView, actionCards.length]);
-
-  // Icon tiles data
-  const iconTiles = [
-    { icon: "🕒", label: "Hours & availability" },
-    { icon: "📍", label: "Where to find you" },
-    { icon: "💬", label: "Common questions" },
-  ];
 
   return (
     <div ref={containerRef} className="relative">
@@ -1070,161 +1043,63 @@ function CustomWebsiteLivingCanvas() {
         }}
       />
 
-      {/* Living canvas container */}
+      {/* Static visual container - diagram, not interface */}
       <motion.div
-        className="relative rounded-2xl overflow-hidden border border-[#1E2A3D] group"
+        className="relative rounded-2xl overflow-hidden border border-[#1E2A3D]"
         style={{
           background: "linear-gradient(180deg, rgba(15, 23, 36, 0.95) 0%, rgba(11, 18, 32, 0.98) 100%)",
-          boxShadow: "0 25px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.03), inset 0 0 60px rgba(11, 18, 32, 0.4)",
+          boxShadow: "0 25px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.03)",
         }}
         initial={{ opacity: 0, y: 20 }}
         animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
       >
-        {/* Gold glow scan - top to bottom */}
-        {isInView && (
+        <div className="p-6 md:p-8">
+          {/* Top layer - muted questions customers ask */}
           <motion.div
-            className="absolute inset-x-0 h-32 pointer-events-none"
-            style={{
-              background: "linear-gradient(180deg, rgba(176, 141, 87, 0.08) 0%, transparent 100%)",
-            }}
-            animate={{ top: ["-128px", "100%"] }}
-            transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-          />
-        )}
-
-        <div className="p-6 md:p-8 relative">
-          {/* Top text - floating, minimal */}
-          <motion.div
-            className="mb-8 text-center"
+            className="mb-6 pb-6 border-b border-[#1E2A3D]/50"
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <p className="text-[13px] text-[#A9B4C4]/70 leading-relaxed">
-              Clear answers.<br />
-              Clear actions.<br />
-              No confusion.
+            <p className="text-[12px] text-[#A9B4C4]/50 mb-3">What do you offer?</p>
+            <p className="text-[12px] text-[#A9B4C4]/40 mb-3">Where are you today?</p>
+            <p className="text-[12px] text-[#A9B4C4]/40">How do I book?</p>
+          </motion.div>
+
+          {/* Middle layer - emphasized answer (gold glow) */}
+          <motion.div
+            className="mb-6 pb-6 border-b border-[#1E2A3D]/50 relative"
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.5, delay: 0.5 }}
+          >
+            {/* Soft gold glow behind text */}
+            <motion.div
+              className="absolute inset-0 -m-2 rounded-lg"
+              style={{
+                background: "radial-gradient(ellipse at 50% 50%, rgba(176, 141, 87, 0.08) 0%, transparent 70%)",
+              }}
+              initial={{ opacity: 0 }}
+              animate={isInView ? { opacity: 1 } : {}}
+              transition={{ duration: 0.8, delay: 0.8 }}
+            />
+            <p className="text-[14px] text-[#B08D57] font-medium relative">
+              Answered automatically.
             </p>
           </motion.div>
 
-          {/* Swipe-in action card */}
-          <motion.div
-            className="mb-6 h-12 relative overflow-hidden rounded-xl border border-[#B08D57]/20"
-            style={{
-              background: "linear-gradient(135deg, rgba(176, 141, 87, 0.06) 0%, rgba(176, 141, 87, 0.02) 100%)",
-            }}
+          {/* Bottom layer - quiet result */}
+          <motion.p
+            className="text-[12px] text-[#A9B4C4]/40"
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.5, delay: 0.4 }}
+            transition={{ duration: 0.5, delay: 0.7 }}
           >
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeCardIndex}
-                className="absolute inset-0 flex items-center justify-center"
-                initial={{ x: 100, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                exit={{ x: -100, opacity: 0 }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
-              >
-                <span className="text-[12px] text-[#B08D57] tracking-wide">
-                  {actionCards[activeCardIndex]}
-                </span>
-              </motion.div>
-            </AnimatePresence>
-          </motion.div>
-
-          {/* CTA buttons */}
-          <motion.div
-            className="flex items-center justify-center gap-3 mb-6"
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.5, delay: 0.6 }}
-          >
-            {/* Primary - gold with subtle pulse */}
-            <motion.div
-              className="px-4 py-2 rounded-lg text-[12px] text-[#B08D57] border border-[#B08D57]/40 flex items-center gap-1.5"
-              style={{
-                background: "linear-gradient(135deg, rgba(176, 141, 87, 0.15) 0%, rgba(176, 141, 87, 0.05) 100%)",
-              }}
-              animate={{
-                boxShadow: [
-                  "0 0 0 rgba(176, 141, 87, 0)",
-                  "0 0 20px rgba(176, 141, 87, 0.15)",
-                  "0 0 0 rgba(176, 141, 87, 0)",
-                ],
-              }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-            >
-              Start here
-              <span className="text-[10px]">→</span>
-            </motion.div>
-
-            {/* Secondary - ghost */}
-            <div className="px-4 py-2 rounded-lg text-[12px] text-[#A9B4C4]/60 border border-[#1E2A3D] hover:border-[#A9B4C4]/30 transition-colors">
-              See an example
-            </div>
-          </motion.div>
-
-          {/* Icon tiles - expand on hover */}
-          <motion.div
-            className="flex items-center justify-center gap-4"
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.5, delay: 0.8 }}
-          >
-            {iconTiles.map((tile, index) => (
-              <motion.div
-                key={index}
-                className="relative cursor-pointer"
-                onMouseEnter={() => setHoveredIcon(index)}
-                onMouseLeave={() => setHoveredIcon(null)}
-                animate={{
-                  scale: hoveredIcon === index ? 1.1 : 1,
-                }}
-                transition={{ duration: 0.2 }}
-              >
-                <div
-                  className="w-10 h-10 rounded-lg flex items-center justify-center border border-[#1E2A3D]/60 transition-all duration-200"
-                  style={{
-                    background: hoveredIcon === index
-                      ? "linear-gradient(135deg, rgba(176, 141, 87, 0.1) 0%, rgba(176, 141, 87, 0.03) 100%)"
-                      : "linear-gradient(135deg, rgba(26, 35, 50, 0.4) 0%, rgba(15, 26, 43, 0.3) 100%)",
-                    borderColor: hoveredIcon === index ? "rgba(176, 141, 87, 0.3)" : undefined,
-                  }}
-                >
-                  <span className="text-sm opacity-60">{tile.icon}</span>
-                </div>
-
-                {/* Hover tooltip */}
-                <AnimatePresence>
-                  {hoveredIcon === index && (
-                    <motion.div
-                      className="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap"
-                      initial={{ opacity: 0, y: -4 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -4 }}
-                      transition={{ duration: 0.15 }}
-                    >
-                      <span className="text-[10px] text-[#A9B4C4]/60">{tile.label}</span>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            ))}
-          </motion.div>
+            So you can focus on running the business.
+          </motion.p>
         </div>
       </motion.div>
-
-      {/* Caption */}
-      <motion.p
-        className="mt-5 text-[12px] text-[#A9B4C4]/50 text-center"
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 1 } : {}}
-        transition={{ duration: 0.5, delay: 1 }}
-      >
-        Built for real people, not templates.
-      </motion.p>
     </div>
   );
 }
@@ -1394,38 +1269,25 @@ function RealBuildsSection() {
               <div className="flex-1 min-w-0 order-1">
                 <p className="text-[11px] text-[#B08D57] uppercase tracking-[0.15em] mb-4">Custom Builds</p>
                 <h3 className="text-xl md:text-2xl font-semibold text-[#F4F6FA] mb-6 leading-tight">
-                  Websites that actually help your business run
+                  Websites that stop the back-and-forth
                 </h3>
 
                 <div className="mb-6">
                   <p className="text-base text-[#A9B4C4] mb-4">
-                    Templates are built for everyone —<br />
-                    which usually means they&apos;re built for no one in particular.
-                  </p>
-                  <p className="text-base text-[#A9B4C4]">
-                    They look fine, but customers still get confused.<br />
-                    They still call.<br />
-                    They still leave without taking action.
+                    People know what you do.<br />
+                    They know what to do next.<br />
+                    They stop calling to ask.
                   </p>
                 </div>
 
-                <p className="text-base text-[#A9B4C4] mb-6">
-                  We build custom pages that do one thing well:<br />
-                  help customers do what they came to do — fast.
-                </p>
-
-                <p className="text-lg text-[#F4F6FA] font-medium mb-3">
-                  Clear pages. Clear answers. Fewer interruptions during your day.
-                </p>
-
                 <p className="text-base text-[#A9B4C4]/70">
-                  Whether you sell food, services, or time — your customers shouldn&apos;t have to guess.
+                  We don&apos;t use templates. We build around how your day actually works.
                 </p>
               </div>
 
-              {/* Right column - System visual */}
-              <div className="shrink-0 self-center lg:self-start order-2 w-full lg:w-auto lg:max-w-[400px]">
-                <CustomWebsiteLivingCanvas />
+              {/* Right column - Visual diagram */}
+              <div className="shrink-0 self-center lg:self-start order-2 w-full lg:w-auto lg:max-w-[320px]">
+                <CustomWebsiteVisual />
               </div>
             </div>
           </motion.div>
