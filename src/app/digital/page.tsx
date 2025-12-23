@@ -1064,9 +1064,9 @@ function CustomWebsiteSystemVisual() {
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
         <div className="p-6 md:p-8">
-          {/* Website system diagram */}
+          {/* Website layout diagram - human labels */}
           <div className="space-y-4">
-            {/* Hero block */}
+            {/* Top block - what customers ask */}
             <motion.div
               className="rounded-xl p-4 border border-[#1E2A3D]/80"
               style={{
@@ -1076,18 +1076,17 @@ function CustomWebsiteSystemVisual() {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
             >
-              <div className="flex items-center justify-between mb-3">
-                <div className="h-2 w-24 bg-white/15 rounded" />
-                <div className="h-2 w-16 bg-white/10 rounded" />
+              <div className="space-y-2">
+                <p className="text-[11px] text-[#A9B4C4]/80">&quot;What do you offer?&quot;</p>
+                <p className="text-[11px] text-[#A9B4C4]/60">&quot;Where are you today?&quot;</p>
+                <p className="text-[11px] text-[#A9B4C4]/60">&quot;How do I order?&quot;</p>
               </div>
-              <div className="h-3 w-3/4 bg-white/20 rounded mb-2" />
-              <div className="h-2 w-1/2 bg-white/10 rounded" />
-              <p className="text-[10px] text-[#B08D57]/70 uppercase tracking-wider mt-3">
-                Clear value, fast
+              <p className="text-[10px] text-[#B08D57]/70 mt-3">
+                Answered instantly
               </p>
             </motion.div>
 
-            {/* Primary CTA block */}
+            {/* Primary CTA block - the action */}
             <motion.div
               className="rounded-xl p-4 border relative overflow-hidden"
               style={{
@@ -1110,19 +1109,23 @@ function CustomWebsiteSystemVisual() {
                   transition={{ duration: 1.5, delay: 0.8, ease: "easeInOut" }}
                 />
               )}
-              <div className="flex items-center gap-4">
-                <div className="h-10 w-32 bg-[#B08D57]/20 rounded-lg border border-[#B08D57]/30" />
-                <div className="flex-1">
-                  <div className="h-2 w-full bg-white/10 rounded mb-1.5" />
-                  <div className="h-2 w-2/3 bg-white/8 rounded" />
+              <div className="flex items-center gap-3 flex-wrap">
+                <div className="px-3 py-1.5 bg-[#B08D57]/20 rounded-lg border border-[#B08D57]/30 text-[11px] text-[#B08D57]">
+                  Order pickup
+                </div>
+                <div className="px-3 py-1.5 bg-white/5 rounded-lg border border-white/10 text-[11px] text-[#A9B4C4]/70">
+                  See today&apos;s menu
+                </div>
+                <div className="px-3 py-1.5 bg-white/5 rounded-lg border border-white/10 text-[11px] text-[#A9B4C4]/70">
+                  Book now
                 </div>
               </div>
-              <p className="text-[10px] text-[#B08D57]/70 uppercase tracking-wider mt-3">
+              <p className="text-[10px] text-[#B08D57]/70 mt-3">
                 One clear next step
               </p>
             </motion.div>
 
-            {/* Supporting content blocks */}
+            {/* Supporting info blocks */}
             <motion.div
               className="grid grid-cols-2 gap-3"
               initial={{ opacity: 0, y: 10 }}
@@ -1135,9 +1138,8 @@ function CustomWebsiteSystemVisual() {
                   background: "linear-gradient(135deg, rgba(26, 35, 50, 0.4) 0%, rgba(15, 26, 43, 0.3) 100%)",
                 }}
               >
-                <div className="h-8 w-8 rounded bg-white/8 mb-2" />
-                <div className="h-2 w-full bg-white/10 rounded mb-1" />
-                <div className="h-2 w-3/4 bg-white/6 rounded" />
+                <p className="text-[11px] text-[#A9B4C4]/70 mb-1">Hours & location</p>
+                <div className="h-2 w-full bg-white/8 rounded" />
               </div>
               <div
                 className="rounded-lg p-3 border border-[#1E2A3D]/60"
@@ -1145,52 +1147,42 @@ function CustomWebsiteSystemVisual() {
                   background: "linear-gradient(135deg, rgba(26, 35, 50, 0.4) 0%, rgba(15, 26, 43, 0.3) 100%)",
                 }}
               >
-                <div className="h-8 w-8 rounded bg-white/8 mb-2" />
-                <div className="h-2 w-full bg-white/10 rounded mb-1" />
-                <div className="h-2 w-2/3 bg-white/6 rounded" />
+                <p className="text-[11px] text-[#A9B4C4]/70 mb-1">Pricing</p>
+                <div className="h-2 w-full bg-white/8 rounded" />
               </div>
             </motion.div>
 
-            {/* Connected module */}
+            {/* Bottom block - stops the confusion */}
             <motion.div
-              className="rounded-xl p-4 border border-dashed border-[#B08D57]/30 relative"
+              className="rounded-xl p-4 border border-[#1E2A3D]/60"
               style={{
-                background: "linear-gradient(135deg, rgba(176, 141, 87, 0.04) 0%, transparent 100%)",
+                background: "linear-gradient(135deg, rgba(26, 35, 50, 0.3) 0%, rgba(15, 26, 43, 0.2) 100%)",
               }}
               initial={{ opacity: 0, y: 10 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.8, ease: "easeOut" }}
             >
-              {/* Connection line */}
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-px h-4 bg-gradient-to-b from-transparent to-[#B08D57]/30" />
-
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-[#B08D57]/10 border border-[#B08D57]/20 flex items-center justify-center">
-                  <svg className="w-4 h-4 text-[#B08D57]/60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
-                  </svg>
-                </div>
-                <div className="flex-1">
-                  <div className="h-2 w-full bg-white/10 rounded mb-1" />
-                  <div className="h-2 w-1/2 bg-white/6 rounded" />
-                </div>
+              <p className="text-[11px] text-[#A9B4C4]/70 mb-2">FAQs customers keep asking</p>
+              <div className="space-y-1.5">
+                <div className="h-2 w-full bg-white/6 rounded" />
+                <div className="h-2 w-4/5 bg-white/5 rounded" />
               </div>
-              <p className="text-[10px] text-[#B08D57]/70 uppercase tracking-wider mt-3">
-                Talks to your systems
+              <p className="text-[10px] text-[#B08D57]/70 mt-3">
+                Stops the back-and-forth
               </p>
             </motion.div>
           </div>
         </div>
       </motion.div>
 
-      {/* Caption */}
+      {/* Caption - removed designer speak */}
       <motion.p
         className="mt-5 text-[12px] text-[#A9B4C4]/50 text-center"
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 1 } : {}}
         transition={{ duration: 0.5, delay: 1, ease: "easeOut" }}
       >
-        Designed intentionally. Built around real workflows.
+        Everything they need. Nothing they don&apos;t.
       </motion.p>
     </div>
   );
@@ -1351,7 +1343,7 @@ function RealBuildsSection() {
             </div>
           </motion.div>
 
-          {/* Build 3: Custom Websites */}
+          {/* Build 3: Custom Builds */}
           <motion.div
             variants={fadeUpVariant}
             transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
@@ -1359,23 +1351,30 @@ function RealBuildsSection() {
             <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
               {/* Left column - Copy */}
               <div className="flex-1 min-w-0 order-1">
-                <p className="text-[11px] text-[#B08D57] uppercase tracking-[0.15em] mb-4">Custom Websites</p>
+                <p className="text-[11px] text-[#B08D57] uppercase tracking-[0.15em] mb-4">Custom Builds</p>
                 <h3 className="text-xl md:text-2xl font-semibold text-[#F4F6FA] mb-6 leading-tight">
-                  For businesses that have outgrown templates
+                  Websites that actually help your business run
                 </h3>
 
                 <div className="mb-6">
                   <p className="text-base text-[#A9B4C4] mb-4">
-                    When businesses grow, templates stop working.<br />
-                    What once looked fine starts getting in the way.
+                    Templates are built for everyone —<br />
+                    which usually means they&apos;re built for no one.
                   </p>
                   <p className="text-base text-[#A9B4C4]">
-                    We design custom websites from scratch — based on how your customers actually decide, and how your business actually operates.
+                    They look fine, but customers still get confused.<br />
+                    They still call.<br />
+                    They still leave without ordering.
                   </p>
                 </div>
 
+                <p className="text-base text-[#A9B4C4] mb-6">
+                  We build custom pages that do one thing well:<br />
+                  help customers do what they came to do — fast.
+                </p>
+
                 <p className="text-lg text-[#F4F6FA] font-medium">
-                  Clear structure. Clear messaging. Built to convert — not just look nice.
+                  Clear pages. Clear answers. Fewer interruptions during your day.
                 </p>
               </div>
 
