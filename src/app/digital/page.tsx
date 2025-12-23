@@ -1031,6 +1031,24 @@ function FamilyVaultPreviewCard({ onOpen }: { onOpen: () => void }) {
 function CustomWebsiteVisual() {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
+  const [answerIndex, setAnswerIndex] = useState(0);
+
+  const answers = ["Answered automatically.", "Answered creatively.", "Answered for you."];
+
+  // Cycle through answers
+  useEffect(() => {
+    if (!isInView) return;
+    const interval = setInterval(() => {
+      setAnswerIndex((prev) => (prev + 1) % answers.length);
+    }, 2500);
+    return () => clearInterval(interval);
+  }, [isInView, answers.length]);
+
+  const questionBubbles = [
+    { text: "What do you offer?", delay: 0.3 },
+    { text: "Where are you today?", delay: 0.5 },
+    { text: "How do I book?", delay: 0.7 },
+  ];
 
   return (
     <div ref={containerRef} className="relative">
@@ -1043,9 +1061,9 @@ function CustomWebsiteVisual() {
         }}
       />
 
-      {/* Static visual container - diagram, not interface */}
+      {/* Browser-style website mockup */}
       <motion.div
-        className="relative rounded-2xl overflow-hidden border border-[#1E2A3D]"
+        className="relative rounded-xl overflow-hidden border border-[#1E2A3D]"
         style={{
           background: "linear-gradient(180deg, rgba(15, 23, 36, 0.95) 0%, rgba(11, 18, 32, 0.98) 100%)",
           boxShadow: "0 25px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.03)",
@@ -1054,50 +1072,135 @@ function CustomWebsiteVisual() {
         animate={isInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.7, ease: "easeOut" }}
       >
-        <div className="p-6 md:p-8">
-          {/* Top layer - muted questions customers ask */}
-          <motion.div
-            className="mb-6 pb-6 border-b border-[#1E2A3D]/50"
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
-            <p className="text-[12px] text-[#A9B4C4]/50 mb-3">What do you offer?</p>
-            <p className="text-[12px] text-[#A9B4C4]/40 mb-3">Where are you today?</p>
-            <p className="text-[12px] text-[#A9B4C4]/40">How do I book?</p>
-          </motion.div>
+        {/* Browser top bar with URL */}
+        <div className="flex items-center gap-3 px-4 py-3 border-b border-[#1E2A3D]/60 bg-[#0D1520]">
+          {/* Window dots */}
+          <div className="flex items-center gap-1.5">
+            <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F57]/70" />
+            <div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]/70" />
+            <div className="w-2.5 h-2.5 rounded-full bg-[#28CA41]/70" />
+          </div>
 
-          {/* Middle layer - emphasized answer (gold glow) */}
-          <motion.div
-            className="mb-6 pb-6 border-b border-[#1E2A3D]/50 relative"
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.5, delay: 0.5 }}
-          >
-            {/* Soft gold glow behind text */}
+          {/* URL bar */}
+          <div className="flex-1 flex justify-center">
+            <div className="flex items-center gap-2 px-4 py-1.5 bg-[#0B1220]/80 rounded-full border border-[#1E2A3D]/50">
+              <svg className="w-3 h-3 text-[#A9B4C4]/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
+              <span className="text-[11px] text-[#A9B4C4]/60">yourbusiness.com</span>
+            </div>
+          </div>
+
+          {/* Spacer for symmetry */}
+          <div className="w-[52px]" />
+        </div>
+
+        {/* Website content area */}
+        <div className="p-6 md:p-8 min-h-[220px] flex flex-col">
+          {/* Top section - floating question bubbles */}
+          <div className="relative h-24 mb-6 overflow-hidden">
+            {questionBubbles.map((bubble, index) => (
+              <motion.div
+                key={bubble.text}
+                className="absolute px-3 py-1.5 rounded-full border border-[#1E2A3D] bg-[#0F1724]/80"
+                style={{
+                  left: index === 0 ? "5%" : index === 1 ? "35%" : "15%",
+                  top: index === 0 ? "10%" : index === 1 ? "45%" : "70%",
+                }}
+                initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                animate={isInView ? {
+                  opacity: [0, 1, 1, 0.7],
+                  scale: [0.8, 1, 1, 0.95],
+                  y: [10, 0, -5, -8],
+                  x: [0, 0, index % 2 === 0 ? 5 : -5, index % 2 === 0 ? 8 : -8],
+                } : {}}
+                transition={{
+                  duration: 4,
+                  delay: bubble.delay,
+                  repeat: Infinity,
+                  repeatDelay: 1,
+                  ease: "easeInOut",
+                }}
+              >
+                <span className="text-[11px] text-[#A9B4C4]/70 whitespace-nowrap">{bubble.text}</span>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Middle section - cycling answer with gold glow */}
+          <div className="relative mb-6 py-4 border-y border-[#1E2A3D]/30">
+            {/* Soft gold glow behind */}
             <motion.div
               className="absolute inset-0 -m-2 rounded-lg"
               style={{
-                background: "radial-gradient(ellipse at 50% 50%, rgba(176, 141, 87, 0.08) 0%, transparent 70%)",
+                background: "radial-gradient(ellipse at 50% 50%, rgba(176, 141, 87, 0.1) 0%, transparent 70%)",
               }}
-              initial={{ opacity: 0 }}
-              animate={isInView ? { opacity: 1 } : {}}
-              transition={{ duration: 0.8, delay: 0.8 }}
+              animate={{ opacity: [0.5, 1, 0.5] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             />
-            <p className="text-[14px] text-[#B08D57] font-medium relative">
-              Answered automatically.
-            </p>
-          </motion.div>
 
-          {/* Bottom layer - quiet result */}
-          <motion.p
-            className="text-[12px] text-[#A9B4C4]/40"
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={answerIndex}
+                className="text-[14px] text-[#B08D57] font-medium text-center relative"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+              >
+                {answers[answerIndex]}
+              </motion.p>
+            </AnimatePresence>
+          </div>
+
+          {/* Bottom section - fading text with glowing checkmark */}
+          <motion.div
+            className="flex items-center justify-center gap-2"
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.5, delay: 0.7 }}
+            transition={{ duration: 0.5, delay: 1 }}
           >
-            So you can focus on running the business.
-          </motion.p>
+            <motion.span
+              className="text-[12px] text-[#A9B4C4]"
+              animate={{ opacity: [0.6, 0.4, 0.6] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            >
+              So you can focus on running the business.
+            </motion.span>
+
+            {/* Glowing checkmark */}
+            <motion.div
+              className="relative flex items-center justify-center"
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={isInView ? { opacity: 1, scale: 1 } : {}}
+              transition={{ duration: 0.5, delay: 1.3, ease: "easeOut" }}
+            >
+              {/* Glow behind checkmark */}
+              <motion.div
+                className="absolute w-6 h-6 rounded-full"
+                style={{
+                  background: "radial-gradient(circle, rgba(176, 141, 87, 0.4) 0%, transparent 70%)",
+                }}
+                animate={{
+                  scale: [1, 1.3, 1],
+                  opacity: [0.6, 0.9, 0.6],
+                }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              />
+              <svg
+                className="w-4 h-4 text-[#B08D57] relative"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </motion.div>
+          </motion.div>
         </div>
       </motion.div>
     </div>
