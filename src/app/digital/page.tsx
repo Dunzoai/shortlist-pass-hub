@@ -778,20 +778,19 @@ function SmartPageModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
 
 function SmartPagePreviewCard({ onOpen }: { onOpen: () => void }) {
   return (
-    <div className="relative flex flex-col items-center">
-      {/* Slow pulsing glow behind phone */}
+    <div className="relative inline-flex flex-col items-center">
+      {/* Slow pulsing glow behind image */}
       <motion.div
-        className="absolute inset-0 rounded-[2rem]"
+        className="absolute inset-0"
         style={{
-          background: "radial-gradient(ellipse at 50% 40%, rgba(180, 145, 85, 0.15) 0%, transparent 70%)",
-          filter: "blur(30px)",
-          transform: "scale(1.1)",
+          background: "radial-gradient(ellipse at 50% 50%, rgba(180, 145, 85, 0.2) 0%, transparent 60%)",
+          filter: "blur(40px)",
         }}
-        animate={{ opacity: [0.5, 0.8, 0.5] }}
+        animate={{ opacity: [0.4, 0.7, 0.4] }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* Phone container with gentle float */}
+      {/* Image with gentle float - no frame, just the image */}
       <motion.div
         className="relative cursor-pointer group"
         onClick={onOpen}
@@ -799,40 +798,30 @@ function SmartPagePreviewCard({ onOpen }: { onOpen: () => void }) {
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
         whileHover={{ scale: 1.02 }}
       >
-        {/* Tight phone frame - minimal bezel */}
-        <div
-          className="relative rounded-[1.75rem] overflow-hidden"
+        <img
+          src="/nitos-modal-mock.png"
+          alt="Nito's Empanadas SmartPage"
+          className="block rounded-2xl transition-all duration-300 group-hover:brightness-110"
           style={{
-            boxShadow: "0 25px 60px rgba(0, 0, 0, 0.4), 0 8px 20px rgba(0, 0, 0, 0.3)",
-            border: "3px solid #1a1f2e",
+            width: "260px",
+            height: "auto",
+            boxShadow: "0 20px 50px rgba(0, 0, 0, 0.4)",
           }}
-        >
-          {/* Screen content - the actual image */}
-          <img
-            src="/nitos-modal-mock.png"
-            alt="Nito's Empanadas SmartPage"
-            className="block transition-all duration-300 group-hover:brightness-110"
-            style={{ width: "280px", height: "auto" }}
-          />
+        />
 
-          {/* Hover overlay */}
-          <div className="absolute inset-0 bg-[#B08D57]/0 group-hover:bg-[#B08D57]/5 transition-all duration-300 flex items-center justify-center">
-            <motion.div
-              className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[#0B1220]/80 backdrop-blur-sm px-4 py-2 rounded-full flex items-center gap-2"
-              initial={{ scale: 0.9 }}
-              whileHover={{ scale: 1 }}
-            >
-              <span className="text-sm text-[#F4F6FA] font-medium">Tap to explore</span>
-              <svg className="w-4 h-4 text-[#B08D57]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </motion.div>
+        {/* Hover overlay */}
+        <div className="absolute inset-0 rounded-2xl bg-[#B08D57]/0 group-hover:bg-[#B08D57]/10 transition-all duration-300 flex items-center justify-center">
+          <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[#0B1220]/80 backdrop-blur-sm px-4 py-2 rounded-full flex items-center gap-2">
+            <span className="text-sm text-[#F4F6FA] font-medium">Tap to explore</span>
+            <svg className="w-4 h-4 text-[#B08D57]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
           </div>
         </div>
       </motion.div>
 
       {/* Caption */}
-      <p className="mt-5 text-[12px] text-[#A9B4C4]/60 text-center">
+      <p className="mt-4 text-[12px] text-[#A9B4C4]/60 text-center">
         This is a real SmartPage — not a mockup.
       </p>
     </div>
