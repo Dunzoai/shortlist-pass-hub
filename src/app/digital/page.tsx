@@ -63,14 +63,14 @@ function HeroSection() {
       <motion.div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: "linear-gradient(135deg, transparent 0%, transparent 40%, rgba(176, 141, 87, 0.09) 50%, transparent 60%, transparent 100%)",
+          background: "linear-gradient(135deg, transparent 0%, transparent 40%, rgba(176, 141, 87, 0.08) 50%, transparent 60%, transparent 100%)",
           backgroundSize: "200% 200%",
         }}
         animate={{
           backgroundPosition: ["0% 0%", "100% 100%", "0% 0%"],
         }}
         transition={{
-          duration: 10,
+          duration: 12,
           ease: "linear",
           repeat: Infinity,
         }}
@@ -163,50 +163,43 @@ function HeroSection() {
 
 function HardLineSection() {
   return (
-    <section className="relative py-28 lg:py-36 bg-gradient-to-b from-[#a38542] via-[#d4b87f] to-[#c9a46a] overflow-hidden">
-      {/* Subtle grain texture */}
+    <section className="relative py-28 lg:py-40 bg-gradient-to-b from-[#a38542] via-[#d4b87f] to-[#c9a46a] overflow-hidden">
+      {/* Subtle grain texture - adds material feel */}
       <div
-        className="absolute inset-0 opacity-[0.04] pointer-events-none"
+        className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-multiply"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-        }}
-      />
-
-      {/* Faint grid carryover */}
-      <div
-        className="absolute inset-0 opacity-[0.03] pointer-events-none"
-        style={{
-          backgroundImage: "url(/grid.png)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
         }}
       />
 
       <Container>
-        <div className="max-w-3xl relative">
-          {/* Thin vertical brass rule on left */}
-          <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-[#0B1220]/20 -ml-6 md:-ml-10" />
+        <div className="max-w-4xl relative">
+          {/* Vertical rhythm anchor - frames the statements */}
+          <div className="absolute left-0 top-2 bottom-8 w-[2px] bg-[#0B1220]/15 -ml-6 md:-ml-10" />
 
-          {/* Assertions - first 3 lines */}
-          <div className="space-y-5 md:space-y-6 mb-14 md:mb-16">
-            <p className="text-2xl md:text-3xl lg:text-[2.5rem] font-semibold text-[#0B1220] leading-snug">
+          {/* Assertions - supporting statements (beats, not headlines) */}
+          <div className="space-y-4 md:space-y-5 mb-16 md:mb-20">
+            <p className="text-[1.75rem] md:text-[2.5rem] lg:text-[2.875rem] font-medium text-[#0B1220] leading-[1.15]">
               We don&apos;t use templates.
             </p>
-            <p className="text-2xl md:text-3xl lg:text-[2.5rem] font-semibold text-[#0B1220] leading-snug">
+            <p className="text-[1.75rem] md:text-[2.5rem] lg:text-[2.875rem] font-medium text-[#0B1220] leading-[1.15]">
               We don&apos;t reuse layouts.
             </p>
-            <p className="text-2xl md:text-3xl lg:text-[2.5rem] font-semibold text-[#0B1220] leading-snug">
+            <p className="text-[1.75rem] md:text-[2.5rem] lg:text-[2.875rem] font-medium text-[#0B1220] leading-[1.15]">
               We don&apos;t force your business into someone else&apos;s system.
             </p>
           </div>
 
-          {/* Resolution - the landing moment */}
+          {/* Resolution - the payoff (this line wins) */}
           <div className="relative">
-            <p className="text-3xl md:text-4xl lg:text-[3rem] font-bold text-[#0B1220] leading-tight">
+            <p
+              className="text-[2.25rem] md:text-[3.25rem] lg:text-[3.75rem] font-bold text-[#0B1220] leading-[1.1]"
+              style={{ letterSpacing: "-0.015em" }}
+            >
               We build around you.
             </p>
-            {/* Subtle underline */}
-            <div className="mt-3 w-32 h-[2px] bg-[#0B1220]/30" />
+            {/* Intentional underline - brass, offset left */}
+            <div className="mt-3 w-[45%] max-w-[200px] h-[2px] bg-[#B08D57]" />
           </div>
         </div>
       </Container>
