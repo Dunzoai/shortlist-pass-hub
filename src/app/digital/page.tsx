@@ -40,7 +40,7 @@ function HeroSection() {
 
       {/* Grid background - planning layer */}
       <div
-        className="absolute inset-0 opacity-[0.18] pointer-events-none"
+        className="absolute inset-0 opacity-100 pointer-events-none"
         style={{
           backgroundImage: "url(/grid.png)",
           backgroundSize: "cover",
@@ -48,9 +48,6 @@ function HeroSection() {
           backgroundRepeat: "no-repeat",
         }}
       />
-
-      {/* Subtle vignette for text contrast */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0B1220]/20 via-transparent to-[#0B1220]/30 pointer-events-none" />
 
       <Container>
         <motion.div
