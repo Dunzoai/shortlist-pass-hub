@@ -51,13 +51,13 @@ function ScrollingBelt() {
 
 interface ServiceTileProps {
   title: string;
-  tagline: string;
+  subhead: string;
   description: string;
   href: string;
   index: number;
 }
 
-function ServiceTile({ title, tagline, description, href, index }: ServiceTileProps) {
+function ServiceTile({ title, subhead, description, href, index }: ServiceTileProps) {
   return (
     <motion.div
       variants={fadeUpVariant}
@@ -68,8 +68,8 @@ function ServiceTile({ title, tagline, description, href, index }: ServiceTilePr
     >
       <Link href={href} className="group block h-full">
         <div className="h-full p-8 bg-[#0F1A2B] border border-white/10 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#B08D57]/30 hover:shadow-lg hover:shadow-[#B08D57]/5 hover:bg-[#B08D57]">
-          <h3 className="text-2xl font-semibold text-[#F4F6FA] mb-3 transition-colors duration-300 group-hover:text-[#0B1220]">{title}</h3>
-          <p className="text-base font-medium text-[#B08D57] mb-4 transition-colors duration-300 group-hover:text-[#0B1220]">{tagline}</p>
+          <h3 className="text-2xl font-semibold text-[#F4F6FA] mb-2 transition-colors duration-300 group-hover:text-[#0B1220]">{title}</h3>
+          <p className="text-sm font-medium text-[#B08D57] mb-4 transition-colors duration-300 group-hover:text-[#0B1220]">{subhead}</p>
           <p className="text-base text-[#A9B4C4] leading-relaxed transition-colors duration-300 group-hover:text-[#0B1220]">{description}</p>
         </div>
       </Link>
@@ -110,7 +110,7 @@ function HowWeHelp() {
         </svg>
       ),
       title: "Show up in the feed",
-      description: "We create scroll-stopping social content designed to trigger engagement and beat the algorithms — so your business actually shows up where customers spend their time."
+      description: "We create scroll-stopping social media content designed to get shown — helping your business stay visible, familiar, and top-of-mind when customers are deciding where to go."
     },
     {
       icon: (
@@ -119,7 +119,7 @@ function HowWeHelp() {
         </svg>
       ),
       title: "One page that explains everything",
-      description: "We build SmartPages that know your business inside and out — answers, links, hours, menus, booking — all in one place so customers get what they need instantly without clicking around."
+      description: "We build SmartPages that know your business inside and out — answers, links, hours, menus, booking — all in one place so customers get what they need instantly and feel confident choosing you."
     },
     {
       icon: (
@@ -128,7 +128,7 @@ function HowWeHelp() {
         </svg>
       ),
       title: "Apps built for real problems",
-      description: "When your business needs more than a website, we build lightweight custom apps — ordering, scheduling, internal tools — designed around how you actually operate."
+      description: "When your business needs more than a website, we build simple custom tools — ordering, scheduling, internal systems — designed around how you actually operate."
     },
     {
       icon: (
@@ -137,7 +137,7 @@ function HowWeHelp() {
         </svg>
       ),
       title: "Websites that convert",
-      description: "Fast, modern websites built to clearly explain what you do and push customers to take action — not cookie-cutter templates that all look the same."
+      description: "Fast, modern websites built to clearly explain what you do and push customers to take action — not cookie-cutter templates that look like everyone else."
     }
   ];
 
@@ -169,7 +169,7 @@ function HowWeHelp() {
             transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
             className="text-center text-sm text-[#1a2332] font-medium"
           >
-            Each service dives deeper — pick what you need.
+            Each service dives deeper — start where you need help most.
           </motion.p>
         </motion.div>
       </Container>
@@ -246,21 +246,21 @@ function Footer() {
 export default function Home() {
   const services = [
     {
-      title: "Social",
-      tagline: "Stay visible without sounding generic.",
-      description: "Posts, reels, and content that sound like you — not a template or AI sludge — so customers remember you when it's time to choose.",
+      title: "Social that actually shows up",
+      subhead: "Be seen where customers already scroll.",
+      description: "We create and manage social media that stops the scroll and beats the algorithms — so your business actually shows up in feeds, stays familiar, and gets picked when it matters.",
       href: "/social",
     },
     {
       title: "SmartPages",
-      tagline: "Your website-light that's intelligent.",
-      description: "A branded site that knows your business inside and out and can answer questions in chat so customers don't get bored looking for answers. Immediate responses 24/7 = better conversions, plus we keep all your important links tidy in one cool-ass smart page.",
+      subhead: "One clear place customers trust.",
+      description: "A website-light page that knows your business inside and out — answers, hours, menus, links, updates, booking — all in one place, with instant responses that keep customers confident and moving forward.",
       href: "/smartpages",
     },
     {
       title: "Websites & Apps",
-      tagline: "When the problem needs more than a template.",
-      description: "Custom websites and lightweight apps built around how your business actually works — not cookie-cutter themes that all look the same.",
+      subhead: "When the problem needs more than a template.",
+      description: "Custom websites and lightweight apps built around how your business actually runs — designed to explain clearly, remove friction, and turn interest into orders, bookings, and calls.",
       href: "/digital",
     },
   ];
