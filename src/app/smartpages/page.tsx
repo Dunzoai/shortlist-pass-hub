@@ -388,7 +388,7 @@ function ShortyModal() {
   const displayedMessages = currentMessages.slice(0, visibleMessages);
 
   return (
-    <div className="relative w-full max-w-[220px] sm:max-w-[260px] md:max-w-[320px] h-[380px] md:h-[410px] mx-auto rounded-3xl bg-[#0a0f1a] border border-white/10 shadow-[0_0_60px_rgba(251,191,36,0.15)] z-10 flex flex-col overflow-hidden">
+    <div className="relative w-full max-w-[220px] sm:max-w-[260px] md:max-w-[320px] h-[440px] md:h-[475px] mx-auto rounded-3xl bg-[#0a0f1a] border border-white/10 shadow-[0_0_60px_rgba(251,191,36,0.15)] z-10 flex flex-col overflow-hidden">
       {/* Header */}
       <div className="flex flex-col items-center pt-3 pb-2 px-3 border-b border-white/10">
         {/* Avatar */}
@@ -446,7 +446,7 @@ function ShortyModal() {
       </div>
 
       {/* Content area - uniform height for both views */}
-      <div className="h-[220px] md:h-[235px] px-2.5 py-2.5 overflow-hidden">
+      <div className="h-[255px] md:h-[270px] px-2.5 py-2.5 overflow-hidden">
         {mode === 'chat' && (
           <div className="flex flex-col gap-1 text-[9px] md:text-[10px]">
             {displayedMessages.map((msg, idx) => {
