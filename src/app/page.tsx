@@ -303,7 +303,17 @@ export default function Home() {
   return (
     <main className="pt-16">
       {/* Hero Section */}
-      <section className="relative py-20 lg:py-28">
+      <section
+        className="relative py-20 lg:py-28"
+        style={{
+          backgroundImage: 'url(/hero-bg.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      >
+        {/* Dark overlay for text readability */}
+        <div className="absolute inset-0 bg-[#0B1220]/70 -z-5" />
         <HeroBackground />
         <Container>
           <div className="relative z-10">
