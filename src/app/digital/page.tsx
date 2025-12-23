@@ -63,7 +63,7 @@ function HeroSection() {
       <motion.div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: "linear-gradient(135deg, transparent 0%, transparent 35%, rgba(176, 141, 87, 0.14) 50%, transparent 65%, transparent 100%)",
+          background: "linear-gradient(135deg, transparent 0%, transparent 40%, rgba(176, 141, 87, 0.09) 50%, transparent 60%, transparent 100%)",
           backgroundSize: "200% 200%",
         }}
         animate={{
