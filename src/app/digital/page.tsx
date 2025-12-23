@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { Container } from "@/components/Container";
 import { useRef } from "react";
 import Link from "next/link";
@@ -33,24 +33,51 @@ const wipeInVariant = {
 // =============================================================================
 
 function HeroSection() {
+  const heroRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+
+  // Grid moves at 3-5% slower than content (parallax)
+  const gridY = useTransform(scrollYProgress, [0, 1], ["0%", "5%"]);
+
   return (
-    <section className="relative min-h-[90vh] flex items-center py-20 lg:py-28 overflow-hidden">
+    <section ref={heroRef} className="relative min-h-[90vh] flex items-center py-20 lg:py-28 overflow-hidden">
       {/* Dark navy background */}
       <div className="absolute inset-0 bg-[#0B1220]" />
 
-      {/* Grid background - planning layer */}
-      <div
-        className="absolute inset-0 opacity-[0.35] pointer-events-none"
+      {/* Grid background - static with subtle scroll parallax */}
+      <motion.div
+        className="absolute inset-[-10%] opacity-[0.35] pointer-events-none"
         style={{
           backgroundImage: "url(/grid.png)",
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
+          y: gridY,
         }}
       />
 
-      {/* Soft vignette for text contrast */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_#0B1220_70%)] pointer-events-none" />
+      {/* Slow diagonal light sweep - subtle depth */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: "linear-gradient(135deg, transparent 0%, transparent 40%, rgba(176, 141, 87, 0.06) 50%, transparent 60%, transparent 100%)",
+          backgroundSize: "200% 200%",
+        }}
+        animate={{
+          backgroundPosition: ["0% 0%", "100% 100%", "0% 0%"],
+        }}
+        transition={{
+          duration: 10,
+          ease: "linear",
+          repeat: Infinity,
+        }}
+      />
+
+      {/* Very subtle edge vignette */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_#0B1220_85%)] opacity-50 pointer-events-none" />
 
       <Container>
         <motion.div
