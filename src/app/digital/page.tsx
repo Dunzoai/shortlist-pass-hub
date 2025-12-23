@@ -162,8 +162,13 @@ function HeroSection() {
 // =============================================================================
 
 function HardLineSection() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+
+  const words = ["We", "build", "around", "you."];
+
   return (
-    <section className="relative py-28 lg:py-40 bg-gradient-to-b from-[#a38542] via-[#d4b87f] to-[#c9a46a] overflow-hidden">
+    <section ref={sectionRef} className="relative py-28 lg:py-40 bg-gradient-to-b from-[#a38542] via-[#d4b87f] to-[#c9a46a] overflow-hidden">
       {/* Grain texture - adds material feel */}
       <div
         className="absolute inset-0 opacity-[0.12] pointer-events-none"
@@ -202,16 +207,34 @@ function HardLineSection() {
             </p>
           </div>
 
-          {/* Final line: Brand positioning - dominates */}
+          {/* Final line: Brand positioning - words pop up one by one */}
           <div className="relative inline-block">
-            <p
-              className="text-[1.875rem] md:text-[3rem] lg:text-[3.5rem] font-bold text-[#0B1220] leading-[1.1] whitespace-nowrap"
+            <div
+              className="text-[1.875rem] md:text-[3rem] lg:text-[3.5rem] font-bold text-[#0B1220] leading-[1.1] flex gap-2 md:gap-4"
               style={{ letterSpacing: "-0.005em" }}
             >
-              We build around you.
-            </p>
-            {/* Editorial underline - full text width plus slight overhang */}
-            <div className="mt-3 w-[103%] h-[2px] bg-[#B08D57]" />
+              {words.map((word, index) => (
+                <motion.span
+                  key={word}
+                  initial={{ opacity: 0, y: 30, scale: 0.8 }}
+                  animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+                  transition={{
+                    duration: 0.5,
+                    delay: 0.3 + index * 0.15,
+                    ease: [0.25, 0.46, 0.45, 0.94],
+                  }}
+                >
+                  {word}
+                </motion.span>
+              ))}
+            </div>
+            {/* Editorial underline - animates in after words */}
+            <motion.div
+              className="mt-3 h-[2px] bg-[#B08D57]"
+              initial={{ width: 0 }}
+              animate={isInView ? { width: "103%" } : {}}
+              transition={{ duration: 0.6, delay: 1.0, ease: "easeOut" }}
+            />
           </div>
         </div>
       </Container>
@@ -223,163 +246,58 @@ function HardLineSection() {
 // SECTION 3: THE PROBLEM
 // =============================================================================
 
+function GlowingHeader({ text, isActive }: { text: string; isActive: boolean }) {
+  return (
+    <div className="flex items-center gap-2">
+      <motion.div
+        className="h-2 w-2 rounded-full"
+        style={{ backgroundColor: "rgba(180, 145, 85, 0.35)" }}
+        animate={{
+          opacity: isActive ? [0.4, 0.9, 0.4] : 0.25,
+          scale: isActive ? [1, 1.2, 1] : 1,
+        }}
+        transition={{ duration: 1.5, repeat: isActive ? Infinity : 0, ease: "easeInOut" }}
+      />
+      <motion.span
+        className="text-[8px] uppercase tracking-wider font-medium"
+        animate={{
+          color: isActive ? "#B08D57" : "rgba(176, 141, 87, 0.7)",
+          textShadow: isActive ? "0 0 8px rgba(176, 141, 87, 0.5)" : "none",
+        }}
+        transition={{ duration: 0.3 }}
+      >
+        {text}
+      </motion.span>
+    </div>
+  );
+}
+
 function ProblemVisual() {
+  const [activeHeader, setActiveHeader] = useState(0);
+  const headers = ["Smart Dashboard", "Live Booking", "Real-time Analytics", "One-Click Actions"];
+
+  // Cycle through headers
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveHeader((prev) => (prev + 1) % headers.length);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, [headers.length]);
+
   return (
     <div className="relative w-full max-w-lg mx-auto lg:mx-0">
-      {/* Side-by-side on desktop, stacked on mobile (Custom first on mobile) */}
+      {/* Side-by-side on desktop, stacked on mobile (Template first to show contrast) */}
       <div className="flex flex-col sm:flex-row gap-4">
-        {/* Custom side - ALIVE (shows first on mobile) */}
-        <motion.div
-          initial={{ opacity: 0, y: 20, scale: 0.98 }}
-          whileInView={{ opacity: 1, y: 0, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
-          className="flex-1 order-1 sm:order-2"
-        >
-          <div className="text-[13px] text-[#B08D57] mb-2.5 uppercase tracking-[0.12em] font-semibold">
-            Custom Build
-          </div>
-          {/* Card with inner glow */}
-          <motion.div
-            className="relative"
-            initial={{ opacity: 0.95 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-          >
-            {/* Soft background bloom - dirty brass, warm smoke */}
-            <motion.div
-              className="absolute inset-0 rounded-xl"
-              style={{
-                background: "radial-gradient(ellipse at 50% 50%, rgba(180, 145, 85, 0.08) 0%, transparent 65%)",
-                filter: "blur(25px)",
-                transform: "scale(1.15)",
-              }}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.2, delay: 0.3 }}
-            />
-            {/* Inner border glow */}
-            <div
-              className="relative bg-[#0F1A2B] rounded-xl p-5 space-y-2.5"
-              style={{
-                boxShadow: "inset 0 0 30px rgba(180, 145, 85, 0.06), 0 4px 20px rgba(0, 0, 0, 0.3)",
-                border: "1px solid rgba(180, 145, 85, 0.15)",
-              }}
-            >
-              {/* Smart Dashboard - subtle indicator */}
-              <div className="flex items-center gap-2">
-                <motion.div
-                  className="h-2 w-2 rounded-full"
-                  style={{ backgroundColor: "rgba(180, 145, 85, 0.35)" }}
-                  animate={{ opacity: [0.25, 0.5, 0.25] }}
-                  transition={{ duration: 2.8, delay: 0.2, repeat: Infinity, ease: "easeInOut", repeatDelay: 1.2 }}
-                />
-                <span className="text-[8px] text-[#B08D57]/90 uppercase tracking-wider font-medium">Smart Dashboard</span>
-              </div>
-              <div className="h-8 bg-white/[0.06] rounded" />
-
-              {/* Live Booking */}
-              <div className="flex items-center gap-2">
-                <div className="h-2 w-2 rounded-full bg-[#B08D57]/25" />
-                <span className="text-[8px] text-[#B08D57]/70 uppercase tracking-wider font-medium">Live Booking</span>
-              </div>
-
-              {/* Two blocks with subtle inner glow - dirty brass */}
-              <div className="flex gap-2">
-                <motion.div
-                  className="h-12 rounded flex-1 relative overflow-hidden"
-                  style={{
-                    backgroundColor: "rgba(180, 145, 85, 0.06)",
-                    boxShadow: "inset 0 0 20px rgba(180, 145, 85, 0.04)",
-                  }}
-                >
-                  <motion.div
-                    className="absolute inset-0 rounded"
-                    style={{ backgroundColor: "rgba(180, 145, 85, 0.08)" }}
-                    initial={{ opacity: 0.06 }}
-                    animate={{ opacity: [0.06, 0.14, 0.06] }}
-                    transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut", repeatDelay: 2.1 }}
-                  />
-                </motion.div>
-                <motion.div
-                  className="h-12 rounded flex-1 relative overflow-hidden"
-                  style={{
-                    backgroundColor: "rgba(180, 145, 85, 0.05)",
-                    boxShadow: "inset 0 0 20px rgba(180, 145, 85, 0.03)",
-                  }}
-                >
-                  <motion.div
-                    className="absolute inset-0 rounded"
-                    style={{ backgroundColor: "rgba(180, 145, 85, 0.07)" }}
-                    initial={{ opacity: 0.05 }}
-                    animate={{ opacity: [0.05, 0.12, 0.05] }}
-                    transition={{ duration: 3.8, delay: 1.4, repeat: Infinity, ease: "easeInOut", repeatDelay: 2.6 }}
-                  />
-                </motion.div>
-              </div>
-
-              {/* Real-time Analytics */}
-              <div className="flex items-center gap-2">
-                <div className="h-2 w-2 rounded-full bg-[#B08D57]/25" />
-                <span className="text-[8px] text-[#B08D57]/70 uppercase tracking-wider font-medium">Real-time Analytics</span>
-              </div>
-
-              {/* Third block - full width, subtle breathe */}
-              <motion.div
-                className="h-10 rounded relative overflow-hidden"
-                style={{
-                  backgroundColor: "rgba(180, 145, 85, 0.04)",
-                  boxShadow: "inset 0 0 25px rgba(180, 145, 85, 0.03)",
-                }}
-              >
-                <motion.div
-                  className="absolute inset-0 rounded"
-                  style={{ backgroundColor: "rgba(180, 145, 85, 0.06)" }}
-                  initial={{ opacity: 0.04 }}
-                  animate={{ opacity: [0.04, 0.10, 0.04] }}
-                  transition={{ duration: 4.2, delay: 2.8, repeat: Infinity, ease: "easeInOut", repeatDelay: 3.1 }}
-                />
-              </motion.div>
-
-              {/* One-Click Actions - subtle pulse */}
-              <div className="flex items-center gap-2">
-                <motion.div
-                  className="h-2 w-2 rounded-full"
-                  style={{ backgroundColor: "rgba(180, 145, 85, 0.35)" }}
-                  animate={{ opacity: [0.2, 0.45, 0.2] }}
-                  transition={{ duration: 2.4, delay: 3.5, repeat: Infinity, ease: "easeInOut", repeatDelay: 1.8 }}
-                />
-                <span className="text-[8px] text-[#B08D57]/90 uppercase tracking-wider font-medium">One-Click Actions</span>
-              </div>
-
-              {/* CTA - subtle, rounded */}
-              <div
-                className="h-9 rounded-full w-1/2"
-                style={{ backgroundColor: "rgba(180, 145, 85, 0.12)" }}
-              />
-            </div>
-          </motion.div>
-          <div className="mt-3 text-center">
-            <p className="text-[11px] text-[#B08D57] tracking-wide">
-              Built for how you work.
-            </p>
-            <p className="text-[10px] text-[#A9B4C4]/50 mt-0.5">
-              Not how a template expects you to.
-            </p>
-          </div>
-        </motion.div>
-
-        {/* Template side - DEAD but visible */}
+        {/* Template side - DEAD (shows first) */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7, ease: "easeOut" }}
-          className="flex-1 order-2 sm:order-1"
+          className="flex-1 order-1"
         >
           <div className="text-[10px] text-[#A9B4C4]/50 mb-2.5 uppercase tracking-[0.15em] font-medium">
-            Template
+            Boring Template
           </div>
           <div className="bg-[#0a0f18] border border-white/[0.08] rounded-lg p-5 space-y-2.5 opacity-70">
             {/* Dead labels - instantly recognizable */}
@@ -412,6 +330,126 @@ function ProblemVisual() {
             Rigid. Generic. Looks done.
           </p>
         </motion.div>
+
+        {/* Custom side - ALIVE */}
+        <motion.div
+          initial={{ opacity: 0, y: 20, scale: 0.98 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
+          className="flex-1 order-2"
+        >
+          <div className="text-[13px] text-[#B08D57] mb-2.5 uppercase tracking-[0.12em] font-semibold">
+            Custom Build
+          </div>
+          {/* Card with inner glow */}
+          <motion.div
+            className="relative"
+            initial={{ opacity: 0.95 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+          >
+            {/* Soft background bloom - dirty brass, warm smoke */}
+            <motion.div
+              className="absolute inset-0 rounded-xl"
+              style={{
+                background: "radial-gradient(ellipse at 50% 50%, rgba(180, 145, 85, 0.08) 0%, transparent 65%)",
+                filter: "blur(25px)",
+                transform: "scale(1.15)",
+              }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.2, delay: 0.3 }}
+            />
+            {/* Inner border glow */}
+            <div
+              className="relative bg-[#0F1A2B] rounded-xl p-5 space-y-2.5"
+              style={{
+                boxShadow: "inset 0 0 30px rgba(180, 145, 85, 0.06), 0 4px 20px rgba(0, 0, 0, 0.3)",
+                border: "1px solid rgba(180, 145, 85, 0.15)",
+              }}
+            >
+              {/* Smart Dashboard - glowing header */}
+              <GlowingHeader text="Smart Dashboard" isActive={activeHeader === 0} />
+              <div className="h-8 bg-white/[0.06] rounded" />
+
+              {/* Live Booking */}
+              <GlowingHeader text="Live Booking" isActive={activeHeader === 1} />
+
+              {/* Two blocks with subtle inner glow - dirty brass */}
+              <div className="flex gap-2">
+                <motion.div
+                  className="h-12 rounded flex-1 relative overflow-hidden"
+                  style={{
+                    backgroundColor: "rgba(180, 145, 85, 0.06)",
+                    boxShadow: "inset 0 0 20px rgba(180, 145, 85, 0.04)",
+                  }}
+                >
+                  <motion.div
+                    className="absolute inset-0 rounded"
+                    style={{ backgroundColor: "rgba(180, 145, 85, 0.08)" }}
+                    initial={{ opacity: 0.06 }}
+                    animate={{ opacity: [0.06, 0.14, 0.06] }}
+                    transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut", repeatDelay: 2.1 }}
+                  />
+                </motion.div>
+                <motion.div
+                  className="h-12 rounded flex-1 relative overflow-hidden"
+                  style={{
+                    backgroundColor: "rgba(180, 145, 85, 0.05)",
+                    boxShadow: "inset 0 0 20px rgba(180, 145, 85, 0.03)",
+                  }}
+                >
+                  <motion.div
+                    className="absolute inset-0 rounded"
+                    style={{ backgroundColor: "rgba(180, 145, 87, 0.07)" }}
+                    initial={{ opacity: 0.05 }}
+                    animate={{ opacity: [0.05, 0.12, 0.05] }}
+                    transition={{ duration: 3.8, delay: 1.4, repeat: Infinity, ease: "easeInOut", repeatDelay: 2.6 }}
+                  />
+                </motion.div>
+              </div>
+
+              {/* Real-time Analytics */}
+              <GlowingHeader text="Real-time Analytics" isActive={activeHeader === 2} />
+
+              {/* Third block - full width, subtle breathe */}
+              <motion.div
+                className="h-10 rounded relative overflow-hidden"
+                style={{
+                  backgroundColor: "rgba(180, 145, 85, 0.04)",
+                  boxShadow: "inset 0 0 25px rgba(180, 145, 85, 0.03)",
+                }}
+              >
+                <motion.div
+                  className="absolute inset-0 rounded"
+                  style={{ backgroundColor: "rgba(180, 145, 85, 0.06)" }}
+                  initial={{ opacity: 0.04 }}
+                  animate={{ opacity: [0.04, 0.10, 0.04] }}
+                  transition={{ duration: 4.2, delay: 2.8, repeat: Infinity, ease: "easeInOut", repeatDelay: 3.1 }}
+                />
+              </motion.div>
+
+              {/* One-Click Actions - glowing header */}
+              <GlowingHeader text="One-Click Actions" isActive={activeHeader === 3} />
+
+              {/* CTA - subtle, rounded */}
+              <div
+                className="h-9 rounded-full w-1/2"
+                style={{ backgroundColor: "rgba(180, 145, 85, 0.12)" }}
+              />
+            </div>
+          </motion.div>
+          <div className="mt-3 text-center">
+            <p className="text-[11px] text-[#B08D57] tracking-wide">
+              Built for how you work.
+            </p>
+            <p className="text-[10px] text-[#A9B4C4]/50 mt-0.5">
+              Not how a template expects you to.
+            </p>
+          </div>
+        </motion.div>
       </div>
     </div>
   );
@@ -439,17 +477,11 @@ function ProblemSection() {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            {/* Headline with hierarchy - line 2 creates a pause */}
+            {/* Headline - single impactful line */}
             <div className="mb-8">
-              <h2 className="text-[28px] md:text-[34px] lg:text-[40px] font-bold text-[#F4F6FA] leading-[1.15] mb-3">
-                Most websites look fine.
+              <h2 className="text-[28px] md:text-[34px] lg:text-[40px] font-bold text-[#F4F6FA] leading-[1.15]">
+                Most websites look fine — they just don&apos;t do anything.
               </h2>
-              <p
-                className="text-[22px] md:text-[26px] lg:text-[32px] text-[#A9B4C4]/70 leading-[1.2] font-normal"
-                style={{ letterSpacing: "0.01em" }}
-              >
-                They just don&apos;t do anything.
-              </p>
             </div>
 
             {/* Body copy */}
@@ -519,13 +551,15 @@ interface BuildCardProps {
 }
 
 function BuildCard({ headline, copy, emphasis, punchline, visual, index, highlighted }: BuildCardProps) {
+  // Cards swipe in from opposite sides: left for even index, right for odd
+  const swipeDirection = index % 2 === 0 ? -100 : 100;
+
   return (
     <motion.div
-      variants={fadeUpVariant}
-      initial="hidden"
-      whileInView="visible"
+      initial={{ opacity: 0, x: swipeDirection }}
+      whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
+      transition={{ duration: 0.6, delay: index * 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
       className={`group bg-[#0F1A2B] rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 ${
         highlighted
           ? "border border-[#B08D57]/25 hover:border-[#B08D57]/40 hover:shadow-xl hover:shadow-[#B08D57]/10"
@@ -1237,16 +1271,19 @@ function RealBuildsSection() {
           viewport={{ once: true, margin: "-100px" }}
           variants={staggerContainer}
         >
-          {/* Section header */}
+          {/* Section header - bigger, two lines */}
           <motion.div
             variants={fadeUpVariant}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="mb-16"
+            className="mb-20"
           >
-            <h2 className="text-[28px] md:text-[36px] font-semibold text-[#F4F6FA] leading-tight mb-3">
-              Real problems. Real builds.
+            <h2 className="text-[36px] md:text-[48px] lg:text-[56px] font-bold text-[#F4F6FA] leading-[1.1] mb-2">
+              Real problems.
             </h2>
-            <p className="text-lg text-[#A9B4C4]">
+            <h2 className="text-[36px] md:text-[48px] lg:text-[56px] font-bold text-[#B08D57] leading-[1.1] mb-6">
+              Real builds.
+            </h2>
+            <p className="text-lg md:text-xl text-[#A9B4C4]">
               A few examples of tools we&apos;ve built — and why they exist.
             </p>
           </motion.div>
@@ -1260,7 +1297,19 @@ function RealBuildsSection() {
             <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
               {/* Left column - Copy */}
               <div className="flex-1 min-w-0">
-                <p className="text-[11px] text-[#A9B4C4]/50 uppercase tracking-[0.15em] mb-4">SmartPages</p>
+                <motion.p
+                  className="text-[11px] text-[#B08D57] uppercase tracking-[0.15em] mb-4 font-semibold"
+                  animate={{
+                    textShadow: [
+                      "0 0 0px rgba(176, 141, 87, 0)",
+                      "0 0 12px rgba(176, 141, 87, 0.6)",
+                      "0 0 0px rgba(176, 141, 87, 0)",
+                    ],
+                  }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  SmartPages
+                </motion.p>
                 <h3 className="text-xl md:text-2xl font-semibold text-[#F4F6FA] mb-6 leading-tight">
                   For businesses that don&apos;t need a full website —<br />
                   but still need to be understood.
@@ -1332,7 +1381,19 @@ function RealBuildsSection() {
 
               {/* Copy - on right for desktop */}
               <div className="order-1 lg:order-2 flex-1 min-w-0">
-                <p className="text-sm text-[#B08D57] uppercase tracking-wider mb-3">Family Vault</p>
+                <motion.p
+                  className="text-sm text-[#B08D57] uppercase tracking-wider mb-3 font-semibold"
+                  animate={{
+                    textShadow: [
+                      "0 0 0px rgba(176, 141, 87, 0)",
+                      "0 0 12px rgba(176, 141, 87, 0.6)",
+                      "0 0 0px rgba(176, 141, 87, 0)",
+                    ],
+                  }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                >
+                  Family Vault
+                </motion.p>
                 <h3 className="text-xl md:text-2xl font-semibold text-[#F4F6FA] mb-4">
                   A custom app built around real life — not business
                 </h3>
@@ -1370,7 +1431,19 @@ function RealBuildsSection() {
             <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
               {/* Left column - Copy */}
               <div className="flex-1 min-w-0 order-1">
-                <p className="text-[11px] text-[#B08D57] uppercase tracking-[0.15em] mb-4">Custom Builds</p>
+                <motion.p
+                  className="text-[11px] text-[#B08D57] uppercase tracking-[0.15em] mb-4 font-semibold"
+                  animate={{
+                    textShadow: [
+                      "0 0 0px rgba(176, 141, 87, 0)",
+                      "0 0 12px rgba(176, 141, 87, 0.6)",
+                      "0 0 0px rgba(176, 141, 87, 0)",
+                    ],
+                  }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                >
+                  Custom Builds
+                </motion.p>
                 <h3 className="text-xl md:text-2xl font-semibold text-[#F4F6FA] mb-6 leading-tight">
                   Websites that stop the back-and-forth
                 </h3>
@@ -1408,10 +1481,39 @@ function RealBuildsSection() {
 // SECTION 6: WHAT THIS DOES FOR YOU
 // =============================================================================
 
+function BenefitItem({ title, description, index }: { title: string; description: string; index: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
+
+  return (
+    <motion.div
+      ref={ref}
+      className="flex items-start gap-4"
+      initial={{ opacity: 0, x: -30 }}
+      animate={isInView ? { opacity: 1, x: 0 } : {}}
+      transition={{ duration: 0.5, delay: index * 0.15, ease: "easeOut" }}
+    >
+      <motion.div
+        className="w-2 h-2 rounded-full bg-[#0B1220] mt-2 shrink-0"
+        initial={{ scale: 0 }}
+        animate={isInView ? { scale: 1 } : {}}
+        transition={{ duration: 0.3, delay: index * 0.15 + 0.2 }}
+      />
+      <div>
+        <h3 className="text-lg font-semibold text-[#0B1220] mb-1">
+          {title}
+        </h3>
+        <p className="text-base text-[#0B1220]/70">
+          {description}
+        </p>
+      </div>
+    </motion.div>
+  );
+}
+
 function BenefitsSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
-  const [hoveredBenefit, setHoveredBenefit] = useState<number | null>(null);
 
   const benefits = [
     {
@@ -1429,121 +1531,61 @@ function BenefitsSection() {
   ];
 
   return (
-    <section className="py-20 lg:py-28 bg-[#0B1220]" ref={containerRef}>
+    <section
+      ref={containerRef}
+      className="relative py-20 lg:py-28 bg-gradient-to-b from-[#a38542] via-[#d4b87f] to-[#c9a46a] overflow-hidden"
+    >
+      {/* Grain texture - adds material feel */}
+      <div
+        className="absolute inset-0 opacity-[0.12] pointer-events-none"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+        }}
+      />
+
       <Container>
-        {/* Statement container - frosted glass card */}
-        <motion.div
-          className="relative max-w-3xl mx-auto mb-16 rounded-2xl overflow-hidden"
-          style={{
-            background: "linear-gradient(180deg, rgba(15, 23, 36, 0.6) 0%, rgba(11, 18, 32, 0.4) 100%)",
-            boxShadow: "0 20px 50px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.03)",
-          }}
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-        >
-          {/* Subtle border glow */}
-          <div
-            className="absolute inset-0 rounded-2xl pointer-events-none"
-            style={{
-              border: "1px solid rgba(176, 141, 87, 0.1)",
-            }}
-          />
-
-          <div className="px-8 py-12 md:px-12 md:py-16 text-center">
-            {/* First line - fades in normally */}
-            <motion.p
-              className="text-xl md:text-2xl lg:text-3xl text-[#F4F6FA] font-semibold mb-3"
-              initial={{ opacity: 0 }}
-              animate={isInView ? { opacity: 1 } : {}}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
+        <div className="max-w-3xl mx-auto">
+          {/* Statement header */}
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          >
+            <p className="text-2xl md:text-3xl lg:text-4xl text-[#0B1220] font-semibold mb-3">
               Good digital tools don&apos;t add work.
-            </motion.p>
-
-            {/* Second line - slides up with emphasis */}
-            <motion.div
-              className="relative inline-block"
-              initial={{ opacity: 0, y: 10 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.5 }}
-            >
-              <p className="text-xl md:text-2xl lg:text-3xl font-semibold">
-                <span className="text-[#F4F6FA]">They </span>
-                <span className="relative text-[#B08D57]">
-                  remove it.
-                  {/* Gold underline animation */}
-                  <motion.span
-                    className="absolute -bottom-1 left-0 h-[2px] bg-[#B08D57]"
-                    initial={{ width: 0 }}
-                    animate={isInView ? { width: "100%" } : {}}
-                    transition={{ duration: 0.6, delay: 0.9, ease: "easeOut" }}
-                    style={{
-                      borderRadius: "2px",
-                    }}
-                  />
-                </span>
-              </p>
-            </motion.div>
-          </div>
-        </motion.div>
-
-        {/* Benefits as quiet pillars */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mb-12">
-          {benefits.map((benefit, index) => (
-            <motion.div
-              key={benefit.title}
-              className="text-center cursor-default group"
-              initial={{ opacity: 0, y: 15 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.3 + index * 0.15, ease: "easeOut" }}
-              onMouseEnter={() => setHoveredBenefit(index)}
-              onMouseLeave={() => setHoveredBenefit(null)}
-            >
-              {/* Tiny dot above */}
-              <div className="flex justify-center mb-4">
-                <motion.div
-                  className="w-1.5 h-1.5 rounded-full bg-[#B08D57]/40"
-                  animate={{
-                    backgroundColor: hoveredBenefit === index ? "rgba(176, 141, 87, 0.8)" : "rgba(176, 141, 87, 0.4)",
-                  }}
-                  transition={{ duration: 0.2 }}
+            </p>
+            <p className="text-2xl md:text-3xl lg:text-4xl font-bold text-[#0B1220]">
+              They{" "}
+              <span className="relative">
+                remove it.
+                <motion.span
+                  className="absolute -bottom-1 left-0 h-[3px] bg-[#0B1220]"
+                  initial={{ width: 0 }}
+                  animate={isInView ? { width: "100%" } : {}}
+                  transition={{ duration: 0.6, delay: 0.5, ease: "easeOut" }}
                 />
-              </div>
+              </span>
+            </p>
+          </motion.div>
 
-              <h3
-                className="text-lg font-semibold mb-2 transition-colors duration-200"
-                style={{
-                  color: hoveredBenefit === index ? "#F4F6FA" : "rgba(244, 246, 250, 0.85)",
-                }}
-              >
-                {benefit.title}
-              </h3>
+          {/* Benefits - fade in on scroll */}
+          <div className="space-y-8 mb-12">
+            {benefits.map((benefit, index) => (
+              <BenefitItem key={benefit.title} {...benefit} index={index} />
+            ))}
+          </div>
 
-              <p className="text-base text-[#A9B4C4]/80">
-                {benefit.description}
-              </p>
-
-              {/* Micro underline on hover */}
-              <motion.div
-                className="mt-3 mx-auto h-px bg-[#B08D57]/30"
-                initial={{ width: 0 }}
-                animate={{ width: hoveredBenefit === index ? 40 : 0 }}
-                transition={{ duration: 0.2 }}
-              />
-            </motion.div>
-          ))}
+          {/* Whisper-level closing */}
+          <motion.p
+            className="text-sm text-[#0B1220]/50 text-center"
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.6, delay: 0.8 }}
+          >
+            When your digital setup works, everything else feels lighter.
+          </motion.p>
         </div>
-
-        {/* Whisper-level closing */}
-        <motion.p
-          className="text-sm text-[#A9B4C4]/50 text-center"
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.6, delay: 0.8 }}
-        >
-          When your digital setup works, everything else feels lighter.
-        </motion.p>
       </Container>
     </section>
   );
