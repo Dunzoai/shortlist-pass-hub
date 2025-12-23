@@ -43,7 +43,7 @@ function HeroSection() {
   const gridY = useTransform(scrollYProgress, [0, 1], ["0%", "5%"]);
 
   return (
-    <section ref={heroRef} className="relative min-h-[90vh] flex items-center py-20 lg:py-28 overflow-hidden">
+    <section ref={heroRef} className="relative min-h-[90vh] flex items-center py-20 lg:py-28 overflow-hidden overflow-x-clip">
       {/* Dark navy background */}
       <div className="absolute inset-0 bg-[#0B1220]" />
 
@@ -1779,7 +1779,7 @@ function Footer() {
 
 export default function DigitalPage() {
   return (
-    <main className="pt-16">
+    <main className="pt-16 overflow-x-hidden">
       <HeroSection />
       <HardLineSection />
       <ProblemSection />
