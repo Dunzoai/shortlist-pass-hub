@@ -103,31 +103,31 @@ function HeroSection() {
             Most digital tools weren&apos;t built for real businesses. We design and build custom websites and apps that remove friction, save time, and make running your business easier — not harder.
           </motion.p>
 
-          {/* Emphasis phrases - slap in from left to right */}
+          {/* Emphasis phrases - slap in from left, landing one by one */}
           <div className="flex justify-center gap-x-2 mb-10 whitespace-nowrap">
             <motion.span
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.25, delay: 0.4, ease: "easeOut" }}
+              initial={{ opacity: 0, x: -150, scale: 0.8 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              transition={{ duration: 0.35, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
               className="text-base text-[#B08D57] font-medium"
             >
-              No templates.
+              No guessing.
             </motion.span>
             <motion.span
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.25, delay: 0.55, ease: "easeOut" }}
+              initial={{ opacity: 0, x: -150, scale: 0.8 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              transition={{ duration: 0.35, delay: 0.55, ease: [0.25, 0.46, 0.45, 0.94] }}
               className="text-base text-[#B08D57] font-medium"
             >
               No shortcuts.
             </motion.span>
             <motion.span
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.25, delay: 0.7, ease: "easeOut" }}
+              initial={{ opacity: 0, x: -150, scale: 0.8 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              transition={{ duration: 0.35, delay: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
               className="text-base text-[#B08D57] font-medium"
             >
-              No guessing.
+              No templates.
             </motion.span>
           </div>
 
