@@ -118,17 +118,37 @@ function HeroSection() {
             transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
             className="text-lg md:text-xl text-[#A9B4C4] leading-relaxed max-w-2xl mx-auto mb-4"
           >
-            We create scroll-stopping social content that helps you beat the algorithm, stay top-of-mind, and show up where your customers already are.
+            Get consistent, scroll-stopping social content — without living on Instagram.
           </motion.p>
 
-          {/* Micro-line */}
+          {/* Credibility line */}
           <motion.p
             variants={fadeUpVariant}
             transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-            className="text-sm text-[#A9B4C4]/70 italic"
+            className="text-sm text-[#A9B4C4]/70"
           >
-            No trends-for-trends&apos; sake. No generic posts. Just content that works.
+            Built for real businesses, not influencer accounts.
           </motion.p>
+
+          {/* CTAs */}
+          <motion.div
+            variants={fadeUpVariant}
+            transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
+            className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
+          >
+            <a
+              href="#how-it-works"
+              className="inline-flex items-center justify-center px-7 py-3.5 text-sm font-medium bg-[#B08D57] text-[#0B1220] rounded-full hover:bg-[#c9a46a] transition-all duration-300"
+            >
+              See how it works
+            </a>
+            <a
+              href="#examples"
+              className="text-sm text-[#A9B4C4] hover:text-[#F4F6FA] transition-colors duration-300"
+            >
+              View examples
+            </a>
+          </motion.div>
         </motion.div>
       </Container>
     </section>
@@ -159,24 +179,34 @@ function ProblemSection() {
             Most businesses don&apos;t lose on social — they disappear.
           </motion.h2>
 
-          {/* Stacked lines */}
+          {/* Pain points */}
           <motion.div
             variants={fadeUpVariant}
             transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
             className="space-y-3 text-base md:text-lg text-[#A9B4C4]"
           >
+            <p>You&apos;re too busy running your business to post 3–5x per week.</p>
             <p>Posting randomly doesn&apos;t work.</p>
             <p>Sounding generic doesn&apos;t work.</p>
             <p>And hoping the algorithm is &quot;nice&quot; definitely doesn&apos;t work.</p>
           </motion.div>
 
-          {/* Bottom line */}
+          {/* Cost of inaction */}
           <motion.p
             variants={fadeUpVariant}
             transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-            className="mt-8 text-base md:text-lg text-[#A9B4C4] font-medium"
+            className="mt-8 text-base md:text-lg text-[#A9B4C4]"
           >
-            Social rewards consistency, clarity, and content people actually stop for.
+            And while you&apos;re busy running your business, someone else is showing up consistently.
+          </motion.p>
+
+          {/* Bridge line */}
+          <motion.p
+            variants={fadeUpVariant}
+            transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
+            className="mt-8 text-lg md:text-xl text-[#F4F6FA] font-semibold"
+          >
+            Here&apos;s what actually works.
           </motion.p>
         </motion.div>
       </Container>
@@ -190,15 +220,16 @@ function ProblemSection() {
 
 interface CarouselSlide {
   label: string;
+  industry: string;
   type: "video" | "reel" | "static" | "voice" | "grid";
 }
 
 const carouselSlides: CarouselSlide[] = [
-  { label: "Short-form video", type: "video" },
-  { label: "Reel", type: "reel" },
-  { label: "Static post", type: "static" },
-  { label: "Brand voice", type: "voice" },
-  { label: "Consistency", type: "grid" },
+  { label: "Short-form video", industry: "Restaurant", type: "video" },
+  { label: "Reel", industry: "Service business", type: "reel" },
+  { label: "Static post", industry: "Local brand", type: "static" },
+  { label: "Brand voice", industry: "Salon", type: "voice" },
+  { label: "Content grid", industry: "Food truck", type: "grid" },
 ];
 
 function CarouselPlaceholder({ slide }: { slide: CarouselSlide }) {
@@ -273,11 +304,12 @@ function CarouselPlaceholder({ slide }: { slide: CarouselSlide }) {
     <div className="relative w-[280px] md:w-[320px] h-[380px] md:h-[420px] bg-gradient-to-br from-[#1a2332] to-[#0F1A2B] rounded-2xl border border-white/10 overflow-hidden flex-shrink-0 transition-all duration-300 hover:-translate-y-1 hover:border-[#B08D57]/30 hover:shadow-lg hover:shadow-[#B08D57]/10">
       {getPlaceholderContent()}
 
-      {/* Label badge */}
+      {/* Labels */}
       <div className="absolute bottom-4 left-4 right-4">
-        <span className="inline-block px-3 py-1.5 text-xs font-medium text-[#B08D57] bg-[#B08D57]/10 border border-[#B08D57]/20 rounded-full">
-          {slide.label}
+        <span className="inline-block px-3 py-1.5 text-xs font-medium text-[#F4F6FA] bg-white/10 border border-white/10 rounded-full mb-2">
+          {slide.industry}
         </span>
+        <p className="text-xs text-[#A9B4C4]">{slide.label}</p>
       </div>
     </div>
   );
@@ -307,7 +339,7 @@ function WorkCarousel() {
   };
 
   return (
-    <section className="py-20 lg:py-28 bg-gradient-to-b from-[#0B1220] via-[#0a0f1a] to-[#0B1220]">
+    <section id="examples" className="py-20 lg:py-28 bg-gradient-to-b from-[#0B1220] via-[#0a0f1a] to-[#0B1220]">
       <Container>
         <motion.div
           initial="hidden"
@@ -322,7 +354,7 @@ function WorkCarousel() {
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="text-[28px] md:text-[36px] font-semibold text-[#F4F6FA] leading-tight text-center mb-3"
           >
-            A glimpse at what showing up looks like.
+            What showing up actually looks like.
           </motion.h2>
 
           <motion.p
@@ -401,22 +433,22 @@ const helpCards: HelpCardData[] = [
   {
     icon: <SparkIcon className="w-8 h-8" />,
     headline: "Built to stop the scroll.",
-    copy: "We create content designed to trigger engagement — hooks, pacing, visuals, and tone that give your posts a fighting chance in crowded feeds.",
+    copy: "We design posts that compete with entertainment and big brands — without needing you to post constantly or chase trends.",
   },
   {
     icon: <CalendarRefreshIcon className="w-8 h-8" />,
     headline: "Show up without living on Instagram.",
-    copy: "We plan, create, and manage content so your business stays visible — without you stressing over what to post next.",
+    copy: "We handle planning, creation, and posting. Most clients spend about one hour a month reviewing content — that's it.",
   },
   {
     icon: <VoiceIcon className="w-8 h-8" />,
     headline: "Your voice. Not internet sludge.",
-    copy: "No templates. No AI-sounding captions. Content that actually feels like your brand so customers recognize you instantly.",
+    copy: "AI content all sounds the same. We build a recognizable voice so customers know it's you — instantly.",
   },
   {
     icon: <FlowIcon className="w-8 h-8" />,
-    headline: "Social that feeds the rest of your business.",
-    copy: "Social builds attention. SmartPages and websites turn that attention into action. We design content with the next step in mind — not empty likes.",
+    headline: "Social that feeds the system.",
+    copy: "Social gets attention. SmartPages and websites turn it into action. We design everything to work together — not in silos.",
   },
 ];
 
@@ -445,7 +477,7 @@ function HelpCard({ card, index }: { card: HelpCardData; index: number }) {
 
 function HowWeHelpSection() {
   return (
-    <section className="py-20 lg:py-28">
+    <section id="how-it-works" className="py-20 lg:py-28">
       <Container>
         <motion.div
           initial="hidden"
@@ -473,10 +505,10 @@ function HowWeHelpSection() {
 }
 
 // =============================================================================
-// SECTION 5: POSITIONING CLARIFIER
+// SECTION 5: THE SYSTEM
 // =============================================================================
 
-function PositioningSection() {
+function SystemSection() {
   return (
     <section className="py-20 lg:py-28 bg-gradient-to-b from-[#0B1220] via-[#0d1627] to-[#0B1220]">
       <Container>
@@ -485,22 +517,66 @@ function PositioningSection() {
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
           variants={staggerContainer}
-          className="max-w-2xl mx-auto text-center"
+          className="max-w-3xl mx-auto text-center"
         >
+          {/* Headline */}
           <motion.p
             variants={fadeUpVariant}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="text-xl md:text-2xl text-[#F4F6FA] font-medium leading-relaxed mb-4"
+            className="text-xl md:text-2xl text-[#F4F6FA] font-semibold leading-relaxed mb-12"
           >
-            Social isn&apos;t the whole system — it&apos;s the front door.
+            Social alone doesn&apos;t convert. Systems do.
           </motion.p>
 
-          <motion.p
+          {/* Flow Diagram */}
+          <motion.div
             variants={fadeUpVariant}
             transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+            className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6 mb-12"
+          >
+            {/* Social */}
+            <div className="flex items-center gap-3 md:gap-4">
+              <div className="px-5 py-3 bg-[#0F1A2B] border border-white/10 rounded-xl">
+                <span className="text-sm md:text-base font-medium text-[#F4F6FA]">Social</span>
+              </div>
+              <svg className="w-6 h-6 text-[#B08D57] hidden md:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
+              <svg className="w-6 h-6 text-[#B08D57] md:hidden rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
+            </div>
+
+            {/* SmartPage */}
+            <div className="flex items-center gap-3 md:gap-4">
+              <div className="px-5 py-3 bg-[#B08D57]/20 border border-[#B08D57]/40 rounded-xl">
+                <span className="text-sm md:text-base font-medium text-[#B08D57]">One Clear Page</span>
+              </div>
+              <svg className="w-6 h-6 text-[#B08D57] hidden md:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
+              <svg className="w-6 h-6 text-[#B08D57] md:hidden rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
+            </div>
+
+            {/* Customer Action */}
+            <div className="px-5 py-3 bg-[#0F1A2B] border border-white/10 rounded-xl">
+              <span className="text-sm md:text-base font-medium text-[#F4F6FA]">Customer Action</span>
+            </div>
+          </motion.div>
+
+          {/* Supporting text */}
+          <motion.p
+            variants={fadeUpVariant}
+            transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
             className="text-base md:text-lg text-[#A9B4C4] leading-relaxed"
           >
-            We use social to get attention, then route customers to SmartPages and websites that make choosing you easy.
+            We design everything to work together — not in silos.
           </motion.p>
         </motion.div>
       </Container>
@@ -514,41 +590,48 @@ function PositioningSection() {
 
 function CTASection() {
   return (
-    <section className="py-16 lg:py-20">
+    <section className="py-20 lg:py-28">
       <Container>
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
           variants={staggerContainer}
-          className="text-center"
+          className="max-w-xl mx-auto text-center"
         >
-          <motion.p
-            variants={fadeUpVariant}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="text-lg text-[#A9B4C4] mb-8"
-          >
-            Want to go deeper?
-          </motion.p>
-
+          {/* Primary CTA */}
           <motion.div
             variants={fadeUpVariant}
-            transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4"
+            transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            <Link
-              href="/smartpages"
-              className="inline-flex items-center justify-center px-7 py-3.5 text-sm font-medium bg-transparent text-[#F4F6FA] border border-white/20 rounded-full hover:bg-white/5 hover:border-white/30 transition-all duration-300"
+            <a
+              href="mailto:hello@shortlistpass.com?subject=15-minute strategy call"
+              className="inline-flex items-center justify-center px-8 py-4 text-base font-medium bg-[#B08D57] text-[#0B1220] rounded-full hover:bg-[#c9a46a] transition-all duration-300"
             >
-              Explore SmartPages
-            </Link>
-            <Link
-              href="/digital"
-              className="inline-flex items-center justify-center px-7 py-3.5 text-sm font-medium bg-transparent text-[#F4F6FA] border border-white/20 rounded-full hover:bg-white/5 hover:border-white/30 transition-all duration-300"
-            >
-              See Websites &amp; Apps
-            </Link>
+              Book a 15-minute strategy call
+            </a>
           </motion.div>
+
+          {/* Subtext */}
+          <motion.p
+            variants={fadeUpVariant}
+            transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+            className="mt-4 text-sm text-[#A9B4C4]"
+          >
+            We&apos;ll show you where attention is leaking — and how we&apos;d fix it.
+          </motion.p>
+
+          {/* Secondary link */}
+          <motion.p
+            variants={fadeUpVariant}
+            transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+            className="mt-8 text-sm text-[#A9B4C4]"
+          >
+            Just browsing?{" "}
+            <a href="#examples" className="text-[#B08D57] hover:text-[#c9a46a] transition-colors">
+              See our work →
+            </a>
+          </motion.p>
         </motion.div>
       </Container>
     </section>
@@ -565,9 +648,14 @@ function Footer() {
   return (
     <footer className="border-t border-white/5 py-12">
       <Container>
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[#A9B4C4]">
-          <span>&copy; {year} Shortlist Pass</span>
-          <span>hello@shortlistpass.com</span>
+        <div className="flex flex-col items-center gap-4 text-sm text-[#A9B4C4]">
+          {/* Trust signal */}
+          <span className="text-xs text-[#A9B4C4]/60">Built for real operators.</span>
+
+          <div className="flex flex-col sm:flex-row items-center justify-between w-full gap-4">
+            <span>&copy; {year} Shortlist Pass</span>
+            <span>hello@shortlistpass.com</span>
+          </div>
         </div>
       </Container>
     </footer>
@@ -585,7 +673,7 @@ export default function SocialPage() {
       <ProblemSection />
       <WorkCarousel />
       <HowWeHelpSection />
-      <PositioningSection />
+      <SystemSection />
       <CTASection />
       <Footer />
     </main>
