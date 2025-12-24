@@ -335,25 +335,24 @@ function ShowDontTellSection() {
           {/* DEMO A: Food Truck Timeline (CENTERPIECE) */}
           <div>
             <Container>
-              <div className="text-center mb-10">
-                <h3 className="text-[28px] md:text-[36px] font-bold text-[#F4F6FA] leading-tight mb-6">
-                  Your business isn&apos;t static. Why is your website?
+              <div className="text-center mb-12">
+                <h3 className="text-[32px] md:text-[44px] font-bold text-[#F4F6FA] leading-tight mb-4">
+                  Your business moves. Your website should too.
                 </h3>
-                <div className="space-y-2 text-[#A9B4C4]">
-                  <p>Some businesses move.</p>
-                  <p>Some change daily.</p>
-                  <p>Some don&apos;t fit into boxes.</p>
-                  <p className="text-[#F4F6FA]">So we don&apos;t build boxes.</p>
-                </div>
+                <p className="text-lg text-[#A9B4C4]">
+                  Real schedules change week to week. We build pages that keep up.
+                </p>
               </div>
             </Container>
 
-            {/* Full-width scrollable food truck timeline */}
-            <FoodTruckTimeline />
+            {/* Food truck timeline demo */}
+            <Container>
+              <FoodTruckTimeline />
+            </Container>
 
             <Container>
               <p className="text-center text-sm text-[#A9B4C4]/70 mt-8">
-                This is custom. And yes — your business can have this.
+                Built around your week — not a generic layout.
               </p>
             </Container>
           </div>
