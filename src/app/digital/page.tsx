@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { Container } from "@/components/Container";
 import { DemoFrame } from "@/components/DemoFrame";
@@ -401,7 +401,278 @@ function ShowDontTellSection() {
 }
 
 // =============================================================================
-// SECTION 4: OUTCOMES
+// SECTION 4: AI SCHEDULING DEMO
+// "Customers don't just ask questions. They book."
+// =============================================================================
+
+interface ChatMessage {
+  role: "customer" | "assistant";
+  text: string;
+}
+
+const chatScript: ChatMessage[] = [
+  { role: "customer", text: "Hey — can I book a haircut this Tuesday around 3?" },
+  { role: "assistant", text: "Tuesday's full. I can do Wednesday at 12:00 PM with Emma or Thursday at 4:30 PM with Kelly. Want one?" },
+  { role: "customer", text: "I'll take Wednesday at noon with Emma." },
+  { role: "assistant", text: "Done. You're booked for Wed 12:00 PM (Emma). Want a reminder text the morning of?" },
+];
+
+// Calendar time slots
+const hours = [9, 10, 11, 12, 13, 14, 15, 16];
+const days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+
+// Pre-existing bookings (muted)
+const existingBookings = [
+  { day: "Tue", hour: 10, duration: 2, label: "Booked" },
+  { day: "Tue", hour: 14, duration: 2, label: "Booked" },
+  { day: "Thu", hour: 11, duration: 1, label: "Booked" },
+  { day: "Thu", hour: 15, duration: 2, label: "Booked" },
+];
+
+function AISchedulingDemo() {
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const [step, setStep] = useState(0);
+  const [showToast, setShowToast] = useState(false);
+  const [highlightSlot, setHighlightSlot] = useState(false);
+  const animationStarted = useRef(false);
+
+  // Run animation sequence when in view
+  useEffect(() => {
+    if (isInView && !animationStarted.current) {
+      animationStarted.current = true;
+
+      // Message 1: Customer asks
+      const t1 = setTimeout(() => setStep(1), 800);
+
+      // Message 2: Assistant responds with options
+      const t2 = setTimeout(() => {
+        setStep(2);
+        // Highlight Wed 12:00 slot after assistant mentions it
+        setTimeout(() => setHighlightSlot(true), 400);
+        setTimeout(() => setHighlightSlot(false), 1200);
+      }, 2400);
+
+      // Message 3: Customer confirms
+      const t3 = setTimeout(() => setStep(3), 5000);
+
+      // Message 4: Assistant confirms + calendar updates
+      const t4 = setTimeout(() => {
+        setStep(4);
+        // Show toast after booking appears
+        setTimeout(() => setShowToast(true), 600);
+        setTimeout(() => setShowToast(false), 2500);
+      }, 6500);
+
+      return () => {
+        clearTimeout(t1);
+        clearTimeout(t2);
+        clearTimeout(t3);
+        clearTimeout(t4);
+      };
+    }
+  }, [isInView]);
+
+  const getHourLabel = (hour: number) => {
+    if (hour === 12) return "12 PM";
+    if (hour > 12) return `${hour - 12} PM`;
+    return `${hour} AM`;
+  };
+
+  const isSlotBooked = (day: string, hour: number) => {
+    return existingBookings.some(
+      (b) => b.day === day && hour >= b.hour && hour < b.hour + b.duration
+    );
+  };
+
+  const isBookingStart = (day: string, hour: number) => {
+    return existingBookings.find((b) => b.day === day && b.hour === hour);
+  };
+
+  return (
+    <section ref={sectionRef} className="py-24 lg:py-32 bg-[#0B1220]">
+      <Container>
+        {/* Section header */}
+        <motion.div
+          className="text-center mb-12 lg:mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5 }}
+        >
+          <p className="text-[11px] text-[#B08D57] uppercase tracking-[0.25em] mb-4 font-medium">
+            AI That Actually Does Something
+          </p>
+          <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-bold text-[#F4F6FA] leading-tight mb-6">
+            Customers don&apos;t just ask questions. They book.
+          </h2>
+          <p className="text-lg text-[#A9B4C4] max-w-2xl mx-auto">
+            Give your business an assistant that answers like a pro and handles the next step — scheduling, requests, and follow-ups — in one smooth flow.
+          </p>
+        </motion.div>
+
+        {/* Glass super-card */}
+        <motion.div
+          className="relative rounded-[28px] overflow-hidden"
+          style={{
+            background: "linear-gradient(180deg, rgba(15, 23, 36, 0.9) 0%, rgba(11, 18, 32, 0.95) 100%)",
+            border: "1px solid rgba(255, 255, 255, 0.06)",
+            boxShadow: "0 40px 80px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.03)",
+          }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-2">
+            {/* LEFT PANEL: Chat */}
+            <div className="p-6 md:p-8 lg:border-r border-white/5">
+              <div className="flex items-center gap-2 mb-6">
+                <div className="w-2 h-2 rounded-full bg-[#B08D57]" />
+                <span className="text-xs text-[#A9B4C4]/60 uppercase tracking-wider">Live Chat</span>
+              </div>
+
+              <div className="space-y-4 min-h-[280px]">
+                {chatScript.map((msg, i) => {
+                  const messageIndex = i + 1;
+                  const isVisible = step >= messageIndex;
+
+                  return (
+                    <motion.div
+                      key={i}
+                      className={`flex ${msg.role === "customer" ? "justify-end" : "justify-start"}`}
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      animate={isVisible ? { opacity: 1, y: 0, scale: 1 } : {}}
+                      transition={{ duration: 0.4, ease: "easeOut" }}
+                    >
+                      <div
+                        className={`max-w-[85%] rounded-2xl px-4 py-3 ${
+                          msg.role === "customer"
+                            ? "bg-[#B08D57] text-[#0B1220]"
+                            : "bg-white/5 text-[#F4F6FA] border border-white/5"
+                        }`}
+                      >
+                        <p className="text-sm leading-relaxed">{msg.text}</p>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* RIGHT PANEL: Calendar */}
+            <div className="p-6 md:p-8 bg-[#080c14]/50 relative">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-[#B08D57]" />
+                  <span className="text-xs text-[#A9B4C4]/60 uppercase tracking-wider">This Week</span>
+                </div>
+              </div>
+
+              {/* Calendar grid */}
+              <div className="overflow-x-auto">
+                <div className="min-w-[400px]">
+                  {/* Day headers */}
+                  <div className="grid grid-cols-[50px_repeat(5,1fr)] gap-1 mb-2">
+                    <div /> {/* Empty corner */}
+                    {days.map((day) => (
+                      <div
+                        key={day}
+                        className="text-center text-xs font-medium text-[#A9B4C4]/70 py-2"
+                      >
+                        {day}
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Time slots */}
+                  <div className="grid grid-cols-[50px_repeat(5,1fr)] gap-1">
+                    {hours.map((hour) => (
+                      <div key={hour} className="contents">
+                        {/* Hour label */}
+                        <div className="text-[10px] text-[#A9B4C4]/50 text-right pr-2 py-2">
+                          {getHourLabel(hour)}
+                        </div>
+
+                        {/* Day cells for this hour */}
+                        {days.map((day) => {
+                          const isBooked = isSlotBooked(day, hour);
+                          const bookingStart = isBookingStart(day, hour);
+                          const isNewBooking = day === "Wed" && hour === 12 && step >= 4;
+                          const isHighlighted = day === "Wed" && hour === 12 && highlightSlot;
+
+                          return (
+                            <div
+                              key={`${day}-${hour}`}
+                              className="relative h-10 rounded-md border border-white/5 bg-white/[0.02]"
+                            >
+                              {/* Existing bookings (muted) */}
+                              {bookingStart && (
+                                <div
+                                  className="absolute inset-x-0.5 top-0.5 rounded bg-white/10 flex items-center justify-center"
+                                  style={{ height: `calc(${bookingStart.duration * 100}% + ${(bookingStart.duration - 1) * 4}px - 4px)` }}
+                                >
+                                  <span className="text-[9px] text-[#A9B4C4]/50">{bookingStart.label}</span>
+                                </div>
+                              )}
+
+                              {/* Highlight pulse on Wed 12:00 */}
+                              {isHighlighted && !isNewBooking && (
+                                <motion.div
+                                  className="absolute inset-0 rounded-md border-2 border-[#B08D57]"
+                                  initial={{ opacity: 0 }}
+                                  animate={{ opacity: [0, 1, 1, 0] }}
+                                  transition={{ duration: 0.8, times: [0, 0.2, 0.8, 1] }}
+                                />
+                              )}
+
+                              {/* New booking animation */}
+                              {isNewBooking && (
+                                <motion.div
+                                  className="absolute inset-x-0.5 top-0.5 bottom-0.5 rounded bg-[#B08D57] flex items-center justify-center"
+                                  initial={{ scale: 0.8, opacity: 0 }}
+                                  animate={{ scale: 1, opacity: 1 }}
+                                  transition={{ duration: 0.4, ease: "easeOut" }}
+                                >
+                                  <span className="text-[9px] font-medium text-[#0B1220]">Emma</span>
+                                </motion.div>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Toast notification */}
+              <motion.div
+                className="absolute bottom-4 right-4 bg-[#B08D57] text-[#0B1220] px-4 py-2 rounded-lg text-sm font-medium shadow-lg"
+                initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                animate={showToast ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 10, scale: 0.9 }}
+                transition={{ duration: 0.3 }}
+              >
+                Appointment added
+              </motion.div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Tiny line under demo */}
+        <motion.p
+          className="text-center text-sm text-[#A9B4C4]/60 mt-8"
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.4, delay: 0.5 }}
+        >
+          This is a real interaction pattern we build — not a concept slide.
+        </motion.p>
+      </Container>
+    </section>
+  );
+}
+
+// =============================================================================
+// SECTION 5: OUTCOMES
 // "This is how businesses start feeling established."
 // =============================================================================
 
@@ -585,6 +856,7 @@ export default function DigitalPage() {
       <HeroSection />
       <TemplatesSuckSection />
       <ShowDontTellSection />
+      <AISchedulingDemo />
       <OutcomesSection />
       <ScopeSection />
       <FinalCTASection />
