@@ -278,49 +278,8 @@ function TemplatesSuckSection() {
 
 // =============================================================================
 // SECTION 3: SHOW DON'T TELL
-// Demo rail with 3 interactive panels
+// Demo rail with interactive panels
 // =============================================================================
-
-function LiveAnswersDemo() {
-  const questions = [
-    "What do you offer?",
-    "How does this work?",
-    "What should I do next?",
-  ];
-
-  return (
-    <div className="space-y-6">
-      {/* Questions */}
-      <div className="space-y-3">
-        {questions.map((q, i) => (
-          <motion.div
-            key={q}
-            className="flex items-start gap-3"
-            initial={{ opacity: 0, x: -10 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.3, delay: 0.1 * i }}
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-[#B08D57] mt-2.5 shrink-0" />
-            <span className="text-[#A9B4C4]">{q}</span>
-          </motion.div>
-        ))}
-      </div>
-
-      {/* Response */}
-      <motion.div
-        className="mt-6 pt-6 border-t border-white/5"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.4, delay: 0.4 }}
-      >
-        <p className="text-lg text-[#F4F6FA] mb-1">Clear answers.</p>
-        <p className="text-lg text-[#F4F6FA]">Clear next steps.</p>
-      </motion.div>
-    </div>
-  );
-}
 
 function ShowDontTellSection() {
   const sectionRef = useRef(null);
@@ -372,80 +331,59 @@ function ShowDontTellSection() {
 
       {/* Demo panels section */}
       <div className="py-24 lg:py-32">
-      <Container>
-
-        {/* Demo panels */}
         <div className="space-y-20 lg:space-y-28">
-          {/* DEMO A: Live Answers */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-            <div className="order-2 lg:order-1">
-              <p className="text-[11px] text-[#B08D57] uppercase tracking-[0.2em] mb-4 font-medium">
-                Live answers
+          {/* DEMO A: Food Truck Timeline (CENTERPIECE) */}
+          <div>
+            <Container>
+              <div className="text-center mb-10">
+                <h3 className="text-[28px] md:text-[36px] font-bold text-[#F4F6FA] leading-tight mb-6">
+                  Your business isn&apos;t static. Why is your website?
+                </h3>
+                <div className="space-y-2 text-[#A9B4C4]">
+                  <p>Some businesses move.</p>
+                  <p>Some change daily.</p>
+                  <p>Some don&apos;t fit into boxes.</p>
+                  <p className="text-[#F4F6FA]">So we don&apos;t build boxes.</p>
+                </div>
+              </div>
+            </Container>
+
+            {/* Full-width scrollable food truck timeline */}
+            <FoodTruckTimeline />
+
+            <Container>
+              <p className="text-center text-sm text-[#A9B4C4]/70 mt-8">
+                This is custom. And yes — your business can have this.
               </p>
-              <DemoFrame>
-                <LiveAnswersDemo />
-              </DemoFrame>
-            </div>
-            <div className="order-1 lg:order-2">
-              <p className="text-base text-[#A9B4C4] leading-relaxed">
-                Customers still reach out.
-                <br />
-                They just show up informed.
-              </p>
-            </div>
+            </Container>
           </div>
 
-          {/* DEMO B: Food Truck Timeline (CENTERPIECE) */}
-          <div className="max-w-3xl mx-auto">
-            <div className="text-center mb-10">
-              <p className="text-[11px] text-[#B08D57] uppercase tracking-[0.2em] mb-4 font-medium">
-                Your business isn&apos;t static
-              </p>
-              <h3 className="text-[28px] md:text-[36px] font-bold text-[#F4F6FA] leading-tight mb-6">
-                Your business isn&apos;t static. Why is your website?
-              </h3>
-              <div className="space-y-2 text-[#A9B4C4]">
-                <p>Some businesses move.</p>
-                <p>Some change daily.</p>
-                <p>Some don&apos;t fit into boxes.</p>
-                <p className="text-[#F4F6FA]">So we don&apos;t build boxes.</p>
+          {/* DEMO B: Experiences */}
+          <Container>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+              <div>
+                <p className="text-[11px] text-[#B08D57] uppercase tracking-[0.2em] mb-4 font-medium">
+                  Experiences aren&apos;t boring
+                </p>
+                <h3 className="text-[28px] md:text-[36px] font-bold text-[#F4F6FA] leading-tight mb-6">
+                  Static pages are boring. Experiences aren&apos;t.
+                </h3>
+                <p className="text-[#A9B4C4]">
+                  Your site can guide, highlight, and draw attention — without
+                  being loud.
+                </p>
+              </div>
+              <div>
+                <DemoFrame className="mb-4">
+                  <ShowcaseMotionTiles />
+                </DemoFrame>
+                <p className="text-sm text-[#A9B4C4]/70">
+                  This isn&apos;t decoration. It&apos;s intention.
+                </p>
               </div>
             </div>
-
-            <DemoFrame className="mb-6">
-              <FoodTruckTimeline />
-            </DemoFrame>
-
-            <p className="text-center text-sm text-[#A9B4C4]/70">
-              This is custom. And yes — your business can have this.
-            </p>
-          </div>
-
-          {/* DEMO C: Experiences */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-            <div>
-              <p className="text-[11px] text-[#B08D57] uppercase tracking-[0.2em] mb-4 font-medium">
-                Experiences aren&apos;t boring
-              </p>
-              <h3 className="text-[28px] md:text-[36px] font-bold text-[#F4F6FA] leading-tight mb-6">
-                Static pages are boring. Experiences aren&apos;t.
-              </h3>
-              <p className="text-[#A9B4C4]">
-                Your site can guide, highlight, and draw attention — without
-                being loud.
-              </p>
-            </div>
-            <div>
-              <DemoFrame className="mb-4">
-                <ShowcaseMotionTiles />
-              </DemoFrame>
-              <p className="text-sm text-[#A9B4C4]/70">
-                This isn&apos;t decoration. It&apos;s intention.
-              </p>
-            </div>
-          </div>
+          </Container>
         </div>
-      </Container>
       </div>
     </section>
   );

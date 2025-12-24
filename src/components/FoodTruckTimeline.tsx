@@ -1,124 +1,191 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import Image from "next/image";
 
 interface DayData {
   day: string;
+  fullDay: string;
   location: string;
-  cta: string;
+  details: string;
 }
 
 const scheduleData: DayData[] = [
-  { day: "Mon", location: "Downtown Lunch", cta: "Order ahead" },
-  { day: "Tue", location: "Brewery Night", cta: "Get directions" },
-  { day: "Wed", location: "Private Event", cta: "See details" },
-  { day: "Thu", location: "Market Pop-Up", cta: "See menu" },
-  { day: "Fri", location: "Food Truck Friday", cta: "Get directions" },
-  { day: "Sat", location: "Festival", cta: "Order ahead" },
-  { day: "Sun", location: "Closed / Prep", cta: "See next week" },
+  { day: "Mon", fullDay: "MONDAY", location: "Downtown Lunch", details: "11am - 2pm at Main St Plaza" },
+  { day: "Tue", fullDay: "TUESDAY", location: "Brewery Night", details: "5pm - 9pm at Coastal Brewing" },
+  { day: "Wed", fullDay: "WEDNESDAY", location: "Private Event", details: "Booked for corporate catering" },
+  { day: "Thu", fullDay: "THURSDAY", location: "Market Pop-Up", details: "4pm - 8pm at Farmer's Market" },
+  { day: "Fri", fullDay: "FRIDAY", location: "Food Truck Friday", details: "11am - 10pm at Waterfront Park" },
+  { day: "Sat", fullDay: "SATURDAY", location: "Festival", details: "All day at Summer Fest" },
+  { day: "Sun", fullDay: "SUNDAY", location: "Closed", details: "Back Monday!" },
 ];
 
 export function FoodTruckTimeline() {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const currentDay = scheduleData[selectedIndex];
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [truckPosition, setTruckPosition] = useState(0);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  // Track scroll position and update active card + truck position
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const containerRect = container.getBoundingClientRect();
+      const containerCenter = containerRect.left + containerRect.width / 2;
+
+      let closestIndex = 0;
+      let closestDistance = Infinity;
+
+      cardRefs.current.forEach((card, index) => {
+        if (card) {
+          const cardRect = card.getBoundingClientRect();
+          const cardCenter = cardRect.left + cardRect.width / 2;
+          const distance = Math.abs(containerCenter - cardCenter);
+
+          if (distance < closestDistance) {
+            closestDistance = distance;
+            closestIndex = index;
+          }
+        }
+      });
+
+      setActiveIndex(closestIndex);
+
+      // Calculate truck position based on active card
+      const activeCard = cardRefs.current[closestIndex];
+      if (activeCard) {
+        const cardRect = activeCard.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+        const cardCenterRelative = cardRect.left - containerRect.left + cardRect.width / 2;
+        setTruckPosition(cardCenterRelative);
+      }
+    };
+
+    container.addEventListener("scroll", handleScroll);
+    // Initial calculation
+    setTimeout(handleScroll, 100);
+
+    return () => container.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Scroll to card when clicked
+  const scrollToCard = (index: number) => {
+    const card = cardRefs.current[index];
+    const container = scrollContainerRef.current;
+    if (card && container) {
+      const cardRect = card.getBoundingClientRect();
+      const containerRect = container.getBoundingClientRect();
+      const scrollLeft = container.scrollLeft + (cardRect.left - containerRect.left) - (containerRect.width / 2) + (cardRect.width / 2);
+      container.scrollTo({ left: scrollLeft, behavior: "smooth" });
+    }
+  };
 
   return (
-    <div className="space-y-8">
-      {/* Day chips with truck indicator */}
-      <div className="relative">
-        {/* Track line */}
-        <div className="absolute top-1/2 left-0 right-0 h-px bg-white/10 -translate-y-1/2" />
+    <div className="relative">
+      {/* Header */}
+      <div className="text-center mb-8">
+        <p className="text-[11px] text-[#B08D57] uppercase tracking-[0.2em] mb-3 font-medium">
+          Nito&apos;s Empanadas
+        </p>
+        <h3 className="text-2xl md:text-3xl font-bold text-[#F4F6FA]">
+          Follow the truck this week.
+        </h3>
+      </div>
 
-        {/* Day chips */}
-        <div className="relative flex justify-between items-center">
-          {scheduleData.map((day, index) => (
-            <button
-              key={day.day}
-              onClick={() => setSelectedIndex(index)}
-              className={`relative z-10 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
-                index === selectedIndex
-                  ? "bg-[#B08D57] text-[#0B1220]"
-                  : "bg-[#0F1724] text-[#A9B4C4] hover:bg-[#151d2e] border border-white/5"
-              }`}
-            >
-              {day.day}
-            </button>
-          ))}
-        </div>
-
-        {/* Food truck indicator */}
+      {/* Truck that follows scroll */}
+      <div className="relative h-16 mb-4">
         <motion.div
-          className="absolute -bottom-8 flex flex-col items-center"
-          initial={false}
+          className="absolute top-0"
           animate={{
-            left: `${(selectedIndex / (scheduleData.length - 1)) * 100}%`,
-            x: "-50%",
+            x: truckPosition - 40,
+            scaleX: truckPosition > 0 ? 1 : -1
           }}
-          transition={{
-            type: "spring",
-            stiffness: 300,
-            damping: 30,
-          }}
+          transition={{ type: "spring", stiffness: 300, damping: 30 }}
         >
-          {/* Truck SVG */}
-          <svg
-            width="32"
-            height="20"
-            viewBox="0 0 32 20"
-            fill="none"
-            className="text-[#B08D57]"
-          >
-            {/* Truck body */}
-            <rect x="0" y="4" width="20" height="12" rx="2" fill="currentColor" />
-            {/* Truck cabin */}
-            <path
-              d="M20 8H26C28 8 30 10 30 12V16H20V8Z"
-              fill="currentColor"
-              opacity="0.8"
-            />
-            {/* Window */}
-            <rect x="22" y="9" width="6" height="4" rx="1" fill="#0B1220" opacity="0.5" />
-            {/* Wheels */}
-            <circle cx="6" cy="16" r="3" fill="#0B1220" />
-            <circle cx="6" cy="16" r="1.5" fill="currentColor" opacity="0.4" />
-            <circle cx="24" cy="16" r="3" fill="#0B1220" />
-            <circle cx="24" cy="16" r="1.5" fill="currentColor" opacity="0.4" />
-            {/* Serving window */}
-            <rect x="3" y="6" width="6" height="5" rx="1" fill="#0B1220" opacity="0.4" />
-          </svg>
+          <Image
+            src="/nitos-truck.png"
+            alt="Nito's Food Truck"
+            width={80}
+            height={48}
+            className="object-contain"
+          />
         </motion.div>
       </div>
 
-      {/* Location and CTA display */}
-      <div className="pt-8 text-center">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={selectedIndex}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.25 }}
-            className="space-y-4"
+      {/* Scrollable cards container */}
+      <div
+        ref={scrollContainerRef}
+        className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide"
+        style={{
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+          WebkitOverflowScrolling: "touch",
+        }}
+      >
+        {/* Left padding for centering first card */}
+        <div className="shrink-0 w-[calc(50%-140px)]" />
+
+        {scheduleData.map((day, index) => (
+          <div
+            key={day.day}
+            ref={(el) => { cardRefs.current[index] = el; }}
+            onClick={() => scrollToCard(index)}
+            className={`shrink-0 w-[280px] snap-center cursor-pointer transition-all duration-300 ${
+              index === activeIndex ? "scale-100" : "scale-95 opacity-70"
+            }`}
           >
-            <p className="text-xl md:text-2xl font-semibold text-[#F4F6FA]">
-              {currentDay.location}
-            </p>
-            <button className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#B08D57]/10 border border-[#B08D57]/30 text-[#B08D57] text-sm font-medium hover:bg-[#B08D57]/20 transition-colors">
-              {currentDay.cta}
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 14 14"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
+            <div
+              className={`rounded-2xl p-6 h-[180px] flex flex-col justify-between transition-all duration-300 ${
+                index === activeIndex
+                  ? "bg-[#F4F6FA] border-l-4 border-[#B08D57]"
+                  : "bg-[#0F1724] border border-white/10"
+              }`}
+            >
+              <div>
+                <p
+                  className={`text-[11px] uppercase tracking-wider mb-2 font-medium ${
+                    index === activeIndex ? "text-[#0B1220]/60" : "text-[#A9B4C4]/60"
+                  }`}
+                >
+                  {day.fullDay}
+                </p>
+                <h4
+                  className={`text-xl font-bold italic ${
+                    index === activeIndex ? "text-[#0B1220]" : "text-[#F4F6FA]"
+                  }`}
+                >
+                  {day.location}
+                </h4>
+              </div>
+              <p
+                className={`text-sm ${
+                  index === activeIndex ? "text-[#0B1220]/70" : "text-[#A9B4C4]/70"
+                }`}
               >
-                <path d="M1 7h12M8 2l5 5-5 5" />
-              </svg>
-            </button>
-          </motion.div>
-        </AnimatePresence>
+                {day.details}
+              </p>
+            </div>
+          </div>
+        ))}
+
+        {/* Right padding for centering last card */}
+        <div className="shrink-0 w-[calc(50%-140px)]" />
+      </div>
+
+      {/* Scroll indicator dots */}
+      <div className="flex justify-center gap-2 mt-4">
+        {scheduleData.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => scrollToCard(index)}
+            className={`w-2 h-2 rounded-full transition-all duration-300 ${
+              index === activeIndex ? "bg-[#B08D57] w-4" : "bg-white/20"
+            }`}
+          />
+        ))}
       </div>
     </div>
   );
