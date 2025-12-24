@@ -504,7 +504,7 @@ function AISchedulingDemo() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <div className="relative h-[520px] md:h-[480px]">
+          <div className="relative h-[580px] md:h-[480px]">
             {/* CHAT VIEW */}
             <motion.div
               className="p-6 md:p-8"
