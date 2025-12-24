@@ -329,24 +329,50 @@ function ShowDontTellSection() {
   return (
     <section
       ref={sectionRef}
-      className="py-24 lg:py-32 bg-gradient-to-b from-[#0B1220] to-[#0d1627]"
+      className="bg-gradient-to-b from-[#0B1220] to-[#0d1627]"
     >
+      {/* Brass gradient strip with noise behind header */}
+      <div className="relative py-20 lg:py-28">
+        {/* Brass gradient background */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(135deg, #8B7355 0%, #B08D57 25%, #D4B87F 50%, #B08D57 75%, #8B7355 100%)",
+          }}
+        />
+        {/* Noise texture overlay */}
+        <div
+          className="absolute inset-0 opacity-[0.15] pointer-events-none"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+          }}
+        />
+        {/* Subtle darkening overlay for depth */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/10" />
+
+        <Container>
+          {/* Section header */}
+          <motion.div
+            className="relative z-10 text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5 }}
+          >
+            <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-bold text-[#0B1220] leading-tight mb-6">
+              So instead of explaining it — we&apos;ll show you.
+            </h2>
+            <p className="text-lg text-[#0B1220]/70 max-w-2xl mx-auto">
+              Here&apos;s what becomes possible when your website or app is built
+              around how your business actually works.
+            </p>
+          </motion.div>
+        </Container>
+      </div>
+
+      {/* Demo panels section */}
+      <div className="py-24 lg:py-32">
       <Container>
-        {/* Section header */}
-        <motion.div
-          className="text-center mb-16 lg:mb-20"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5 }}
-        >
-          <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-bold text-[#F4F6FA] leading-tight mb-6">
-            So instead of explaining it — we&apos;ll show you.
-          </h2>
-          <p className="text-lg text-[#A9B4C4] max-w-2xl mx-auto">
-            Here&apos;s what becomes possible when your website or app is built
-            around how your business actually works.
-          </p>
-        </motion.div>
 
         {/* Demo panels */}
         <div className="space-y-20 lg:space-y-28">
@@ -420,6 +446,7 @@ function ShowDontTellSection() {
           </div>
         </div>
       </Container>
+      </div>
     </section>
   );
 }
