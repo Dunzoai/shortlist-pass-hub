@@ -410,15 +410,17 @@ interface ChatMessage {
   text: string;
 }
 
-const chatScript: ChatMessage[] = [
-  // First client - Haircut
+// Two separate conversations
+const conversation1: ChatMessage[] = [
   { role: "customer", text: "Hey — can I book a haircut this Tuesday around 3?" },
   { role: "assistant", text: "Tuesday's full. I can do Wednesday at 12:00 PM with Emma or Thursday at 4:30 PM with Kelly. Want one?" },
   { role: "customer", text: "I'll take Wednesday at noon with Emma." },
   { role: "assistant", text: "Got it. What name should I put the appointment under?" },
   { role: "customer", text: "Destiny" },
   { role: "assistant", text: "Done. You're booked for Wed 12:00 PM with Emma. See you then!" },
-  // Second client - Nails
+];
+
+const conversation2: ChatMessage[] = [
   { role: "customer", text: "Hi! Do you have any openings for nails this week?" },
   { role: "assistant", text: "We do! I can fit you in Thursday at 2:00 PM or Friday at 11:00 AM. Which works?" },
   { role: "customer", text: "Thursday at 2 please" },
@@ -442,9 +444,12 @@ const existingBookings = [
 function AISchedulingDemo() {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
-  const [step, setStep] = useState(0);
+  const [activeConvo, setActiveConvo] = useState(1); // 1 or 2
+  const [messageStep, setMessageStep] = useState(0); // 0-6 within each convo
   const [showToast, setShowToast] = useState<string | null>(null);
   const [highlightSlot, setHighlightSlot] = useState<"wed" | "thu" | null>(null);
+  const [destinyBooked, setDestinyBooked] = useState(false);
+  const [mayaBooked, setMayaBooked] = useState(false);
   const animationStarted = useRef(false);
 
   // Run animation sequence when in view
@@ -454,65 +459,57 @@ function AISchedulingDemo() {
 
       const timers: ReturnType<typeof setTimeout>[] = [];
 
-      // === FIRST CLIENT: HAIRCUT ===
-      // Message 1: Customer asks about haircut
-      timers.push(setTimeout(() => setStep(1), 800));
+      // === FIRST CONVERSATION: HAIRCUT ===
+      timers.push(setTimeout(() => setMessageStep(1), 800));
 
-      // Message 2: Assistant responds with options
       timers.push(setTimeout(() => {
-        setStep(2);
-        // Highlight Wed 12:00 slot
+        setMessageStep(2);
         setTimeout(() => setHighlightSlot("wed"), 400);
         setTimeout(() => setHighlightSlot(null), 1200);
       }, 2400));
 
-      // Message 3: Customer picks Wednesday
-      timers.push(setTimeout(() => setStep(3), 4500));
+      timers.push(setTimeout(() => setMessageStep(3), 4500));
+      timers.push(setTimeout(() => setMessageStep(4), 6000));
+      timers.push(setTimeout(() => setMessageStep(5), 7500));
 
-      // Message 4: Assistant asks for name
-      timers.push(setTimeout(() => setStep(4), 6000));
-
-      // Message 5: Customer says "Destiny"
-      timers.push(setTimeout(() => setStep(5), 7500));
-
-      // Message 6: Assistant confirms + calendar updates with Destiny
       timers.push(setTimeout(() => {
-        setStep(6);
+        setMessageStep(6);
+        setDestinyBooked(true);
         setTimeout(() => setShowToast("Destiny — Haircut added"), 600);
         setTimeout(() => setShowToast(null), 2500);
       }, 9000));
 
-      // === SECOND CLIENT: NAILS ===
-      // Message 7: New customer asks about nails
-      timers.push(setTimeout(() => setStep(7), 12000));
-
-      // Message 8: Assistant responds with options
+      // === RESET & START SECOND CONVERSATION ===
       timers.push(setTimeout(() => {
-        setStep(8);
-        // Highlight Thu 2:00 slot
+        setMessageStep(0); // Clear messages
+        setActiveConvo(2); // Switch to conversation 2
+      }, 12000));
+
+      // === SECOND CONVERSATION: NAILS ===
+      timers.push(setTimeout(() => setMessageStep(1), 13000));
+
+      timers.push(setTimeout(() => {
+        setMessageStep(2);
         setTimeout(() => setHighlightSlot("thu"), 400);
         setTimeout(() => setHighlightSlot(null), 1200);
-      }, 13500));
+      }, 14500));
 
-      // Message 9: Customer picks Thursday
-      timers.push(setTimeout(() => setStep(9), 15500));
+      timers.push(setTimeout(() => setMessageStep(3), 16500));
+      timers.push(setTimeout(() => setMessageStep(4), 18000));
+      timers.push(setTimeout(() => setMessageStep(5), 19500));
 
-      // Message 10: Assistant asks for name
-      timers.push(setTimeout(() => setStep(10), 17000));
-
-      // Message 11: Customer says "Maya"
-      timers.push(setTimeout(() => setStep(11), 18500));
-
-      // Message 12: Assistant confirms + calendar updates with Maya
       timers.push(setTimeout(() => {
-        setStep(12);
+        setMessageStep(6);
+        setMayaBooked(true);
         setTimeout(() => setShowToast("Maya — Nails added"), 600);
         setTimeout(() => setShowToast(null), 2500);
-      }, 20000));
+      }, 21000));
 
       return () => timers.forEach(clearTimeout);
     }
   }, [isInView]);
+
+  const currentConvo = activeConvo === 1 ? conversation1 : conversation2;
 
   const getHourLabel = (hour: number) => {
     if (hour === 12) return "12 PM";
@@ -558,43 +555,8 @@ function AISchedulingDemo() {
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           <div className="grid grid-cols-1 lg:grid-cols-2">
-            {/* LEFT PANEL: Chat */}
-            <div className="p-6 md:p-8 lg:border-r border-white/5">
-              <div className="flex items-center gap-2 mb-6">
-                <div className="w-2 h-2 rounded-full bg-[#B08D57]" />
-                <span className="text-xs text-[#A9B4C4]/60 uppercase tracking-wider">Live Chat</span>
-              </div>
-
-              <div className="space-y-4 min-h-[480px]">
-                {chatScript.map((msg, i) => {
-                  const messageIndex = i + 1;
-                  const isVisible = step >= messageIndex;
-
-                  return (
-                    <motion.div
-                      key={i}
-                      className={`flex ${msg.role === "customer" ? "justify-end" : "justify-start"}`}
-                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                      animate={isVisible ? { opacity: 1, y: 0, scale: 1 } : {}}
-                      transition={{ duration: 0.4, ease: "easeOut" }}
-                    >
-                      <div
-                        className={`max-w-[85%] rounded-2xl px-4 py-3 ${
-                          msg.role === "customer"
-                            ? "bg-[#B08D57] text-[#0B1220]"
-                            : "bg-white/5 text-[#F4F6FA] border border-white/5"
-                        }`}
-                      >
-                        <p className="text-sm leading-relaxed">{msg.text}</p>
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* RIGHT PANEL: Calendar */}
-            <div className="p-6 md:p-8 bg-[#080c14]/50 relative">
+            {/* CALENDAR PANEL - First on mobile so it's visible as messages appear */}
+            <div className="p-6 md:p-8 bg-[#080c14]/50 relative order-1 lg:order-2 border-b lg:border-b-0 lg:border-l border-white/5">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-[#B08D57]" />
@@ -632,11 +594,11 @@ function AISchedulingDemo() {
                           const bookingStart = isBookingStart(day, hour);
 
                           // First booking: Destiny - Haircut on Wed 12:00
-                          const isDestinyBooking = day === "Wed" && hour === 12 && step >= 6;
+                          const isDestinyBookingSlot = day === "Wed" && hour === 12 && destinyBooked;
                           const isWedHighlighted = day === "Wed" && hour === 12 && highlightSlot === "wed";
 
                           // Second booking: Maya - Nails on Thu 14:00 (2 PM)
-                          const isMayaBooking = day === "Thu" && hour === 14 && step >= 12;
+                          const isMayaBookingSlot = day === "Thu" && hour === 14 && mayaBooked;
                           const isThuHighlighted = day === "Thu" && hour === 14 && highlightSlot === "thu";
 
                           return (
@@ -655,7 +617,7 @@ function AISchedulingDemo() {
                               )}
 
                               {/* Highlight pulse on Wed 12:00 */}
-                              {isWedHighlighted && !isDestinyBooking && (
+                              {isWedHighlighted && !isDestinyBookingSlot && (
                                 <motion.div
                                   className="absolute inset-0 rounded-md border-2 border-[#B08D57]"
                                   initial={{ opacity: 0 }}
@@ -665,7 +627,7 @@ function AISchedulingDemo() {
                               )}
 
                               {/* Highlight pulse on Thu 2:00 */}
-                              {isThuHighlighted && !isMayaBooking && (
+                              {isThuHighlighted && !isMayaBookingSlot && (
                                 <motion.div
                                   className="absolute inset-0 rounded-md border-2 border-[#B08D57]"
                                   initial={{ opacity: 0 }}
@@ -675,7 +637,7 @@ function AISchedulingDemo() {
                               )}
 
                               {/* Destiny booking animation */}
-                              {isDestinyBooking && (
+                              {isDestinyBookingSlot && (
                                 <motion.div
                                   className="absolute inset-x-0.5 top-0.5 bottom-0.5 rounded bg-[#B08D57] flex flex-col items-center justify-center"
                                   initial={{ scale: 0.8, opacity: 0 }}
@@ -688,7 +650,7 @@ function AISchedulingDemo() {
                               )}
 
                               {/* Maya booking animation */}
-                              {isMayaBooking && (
+                              {isMayaBookingSlot && (
                                 <motion.div
                                   className="absolute inset-x-0.5 top-0.5 bottom-0.5 rounded bg-[#B08D57] flex flex-col items-center justify-center"
                                   initial={{ scale: 0.8, opacity: 0 }}
@@ -717,6 +679,41 @@ function AISchedulingDemo() {
               >
                 {showToast}
               </motion.div>
+            </div>
+
+            {/* CHAT PANEL - Second on mobile, first on desktop */}
+            <div className="p-6 md:p-8 order-2 lg:order-1">
+              <div className="flex items-center gap-2 mb-6">
+                <div className="w-2 h-2 rounded-full bg-[#B08D57]" />
+                <span className="text-xs text-[#A9B4C4]/60 uppercase tracking-wider">Live Chat</span>
+              </div>
+
+              <div className="space-y-3 min-h-[280px]">
+                {currentConvo.map((msg, i) => {
+                  const messageIndex = i + 1;
+                  const isVisible = messageStep >= messageIndex;
+
+                  return (
+                    <motion.div
+                      key={`${activeConvo}-${i}`}
+                      className={`flex ${msg.role === "customer" ? "justify-end" : "justify-start"}`}
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      animate={isVisible ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 10, scale: 0.95 }}
+                      transition={{ duration: 0.4, ease: "easeOut" }}
+                    >
+                      <div
+                        className={`max-w-[85%] rounded-2xl px-4 py-3 ${
+                          msg.role === "customer"
+                            ? "bg-[#B08D57] text-[#0B1220]"
+                            : "bg-white/5 text-[#F4F6FA] border border-white/5"
+                        }`}
+                      >
+                        <p className="text-sm leading-relaxed">{msg.text}</p>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </motion.div>
