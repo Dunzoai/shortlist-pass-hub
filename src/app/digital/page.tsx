@@ -454,14 +454,13 @@ function AISchedulingDemo() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
         >
-          <p className="text-[11px] text-[#B08D57] uppercase tracking-[0.25em] mb-4 font-medium">
-            AI That Actually Does Something
-          </p>
           <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-bold text-[#F4F6FA] leading-tight mb-6">
-            Customers don&apos;t just ask questions. They book.
+            Most websites answer questions.
+            <br />
+            <span className="text-[#B08D57]">The better ones book the appointment.</span>
           </h2>
           <p className="text-lg text-[#A9B4C4] max-w-2xl mx-auto">
-            Give your business an assistant that answers like a pro and handles the next step — scheduling, requests, and follow-ups — in one smooth flow.
+            This is what happens when your site is built to guide customers — not just inform them.
           </p>
         </motion.div>
 
@@ -597,12 +596,12 @@ function AISchedulingDemo() {
 
         {/* Tiny line under demo */}
         <motion.p
-          className="text-center text-sm text-[#A9B4C4]/60 mt-8"
+          className="text-center text-sm text-[#A9B4C4]/70 mt-8"
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
           transition={{ duration: 0.4, delay: 0.5 }}
         >
-          This is a real interaction pattern we build — not a concept slide.
+          This isn&apos;t a concept. This is how our builds actually work.
         </motion.p>
       </Container>
     </section>
