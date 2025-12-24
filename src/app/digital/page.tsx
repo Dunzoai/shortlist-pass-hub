@@ -3,9 +3,7 @@
 import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { Container } from "@/components/Container";
-import { DemoFrame } from "@/components/DemoFrame";
 import { FoodTruckTimeline } from "@/components/FoodTruckTimeline";
-import { ShowcaseMotionTiles } from "@/components/ShowcaseMotionTiles";
 
 // =============================================================================
 // SECTION 1: HERO
@@ -369,31 +367,6 @@ function ShowDontTellSection() {
             </Container>
           </div>
 
-          {/* DEMO B: Experiences */}
-          <Container>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-              <div>
-                <p className="text-[11px] text-[#B08D57] uppercase tracking-[0.2em] mb-4 font-medium">
-                  Experiences aren&apos;t boring
-                </p>
-                <h3 className="text-[28px] md:text-[36px] font-bold text-[#F4F6FA] leading-tight mb-6">
-                  Static pages are boring. Experiences aren&apos;t.
-                </h3>
-                <p className="text-[#A9B4C4]">
-                  Your site can guide, highlight, and draw attention — without
-                  being loud.
-                </p>
-              </div>
-              <div>
-                <DemoFrame className="mb-4">
-                  <ShowcaseMotionTiles />
-                </DemoFrame>
-                <p className="text-sm text-[#A9B4C4]/70">
-                  This isn&apos;t decoration. It&apos;s intention.
-                </p>
-              </div>
-            </div>
-          </Container>
         </div>
       </div>
     </section>
