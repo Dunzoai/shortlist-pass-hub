@@ -105,28 +105,11 @@ export function FoodTruckTimeline() {
           </p>
         </div>
 
-        {/* Day chips */}
-        <div className="flex justify-center gap-2 mb-8">
-          {scheduleData.map((day, index) => (
-            <button
-              key={day.day}
-              onClick={() => scrollToCard(index)}
-              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 ${
-                index === activeIndex
-                  ? "bg-[#B08D57] text-[#0B1220]"
-                  : "bg-white/5 text-[#A9B4C4]/70 hover:bg-white/10 hover:text-[#A9B4C4]"
-              }`}
-            >
-              {day.day}
-            </button>
-          ))}
-        </div>
-
-        {/* Truck riding BETWEEN dates and cards */}
-        <div className="relative h-28 mb-6 overflow-visible">
+        {/* Truck sitting above cards */}
+        <div className="relative h-24 flex justify-center">
           <motion.div
             className="absolute"
-            style={{ left: 0, top: "50%", transform: "translateY(-50%)" }}
+            style={{ left: 0 }}
             animate={{ x: truckX - 80 }}
             transition={{
               type: "spring",
@@ -148,7 +131,7 @@ export function FoodTruckTimeline() {
         {/* Horizontal scrollable cards */}
         <div
           ref={scrollContainerRef}
-          className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory"
+          className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory -mt-2"
           style={{
             scrollbarWidth: "none",
             msOverflowStyle: "none",
@@ -206,16 +189,20 @@ export function FoodTruckTimeline() {
           <div className="shrink-0 w-[calc(50%-140px)]" />
         </div>
 
-        {/* Dot pagination */}
+        {/* Day chips at bottom (replacing dots) */}
         <div className="flex justify-center gap-2 mt-4">
-          {scheduleData.map((_, index) => (
+          {scheduleData.map((day, index) => (
             <button
-              key={index}
+              key={day.day}
               onClick={() => scrollToCard(index)}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                index === activeIndex ? "bg-[#B08D57] w-6" : "bg-white/15 hover:bg-white/25"
+              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 ${
+                index === activeIndex
+                  ? "bg-[#B08D57] text-[#0B1220]"
+                  : "bg-white/5 text-[#A9B4C4]/70 hover:bg-white/10 hover:text-[#A9B4C4]"
               }`}
-            />
+            >
+              {day.day}
+            </button>
           ))}
         </div>
       </div>
