@@ -4,6 +4,7 @@ import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { Container } from "@/components/Container";
 import { FoodTruckTimeline } from "@/components/FoodTruckTimeline";
+import { CupcakeShowcaseSection } from "@/components/digital/CupcakeShowcaseSection";
 
 // =============================================================================
 // SECTION 1: HERO
@@ -794,6 +795,7 @@ export default function DigitalPage() {
       <TemplatesSuckSection />
       <ShowDontTellSection />
       <AISchedulingDemo />
+      <CupcakeShowcaseSection />
       <OutcomesSection />
       <ScopeSection />
       <FinalCTASection />
