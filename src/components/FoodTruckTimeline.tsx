@@ -105,10 +105,10 @@ export function FoodTruckTimeline() {
           </p>
         </div>
 
-        {/* Truck sitting above cards */}
-        <div className="relative h-24 flex justify-center">
+        {/* Truck sitting above cards - pushed up 35% */}
+        <div className="relative h-28 flex justify-center mb-4">
           <motion.div
-            className="absolute"
+            className="absolute top-0"
             style={{ left: 0 }}
             animate={{ x: truckX - 80 }}
             transition={{
@@ -131,7 +131,7 @@ export function FoodTruckTimeline() {
         {/* Horizontal scrollable cards */}
         <div
           ref={scrollContainerRef}
-          className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory -mt-2"
+          className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory"
           style={{
             scrollbarWidth: "none",
             msOverflowStyle: "none",
