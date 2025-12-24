@@ -169,17 +169,16 @@ function HeroSection() {
 function FrownFace() {
   return (
     <motion.span
-      className="inline-block ml-3"
-      style={{ verticalAlign: "middle" }}
-      initial={{ x: 100, rotate: 720 }}
-      whileInView={{ x: 0, rotate: -6 }}
-      viewport={{ once: true }}
+      className="inline-block ml-2 md:ml-3"
+      style={{ verticalAlign: "middle", display: "inline-block" }}
+      initial={{ x: 60, rotate: 540, opacity: 0 }}
+      whileInView={{ x: 0, rotate: -6, opacity: 1 }}
+      viewport={{ once: true, margin: "0px" }}
       transition={{
         type: "spring",
-        stiffness: 100,
-        damping: 15,
+        stiffness: 80,
+        damping: 12,
         mass: 1,
-        duration: 1.2,
       }}
     >
       <svg
@@ -245,12 +244,12 @@ function TemplatesSuckSection() {
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
   return (
-    <section ref={sectionRef} className="py-24 lg:py-32 bg-[#0B1220]">
+    <section ref={sectionRef} className="py-24 lg:py-32 bg-[#0B1220] overflow-x-clip">
       <Container>
-        <div className="max-w-2xl mx-auto">
-          {/* Headline - snaps in with tilted frown face */}
+        <div className="max-w-2xl mx-auto overflow-visible">
+          {/* Headline - snaps in with rolling frown face */}
           <motion.h2
-            className="text-[36px] md:text-[48px] lg:text-[56px] font-bold text-[#F4F6FA] leading-tight mb-10"
+            className="text-[36px] md:text-[48px] lg:text-[56px] font-bold text-[#F4F6FA] leading-tight mb-10 overflow-visible"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={isInView ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 0.3, ease: "easeOut" }}

@@ -106,7 +106,7 @@ export function FoodTruckTimeline() {
         </div>
 
         {/* Day chips */}
-        <div className="flex justify-center gap-2 mb-6">
+        <div className="flex justify-center gap-2 mb-8">
           {scheduleData.map((day, index) => (
             <button
               key={day.day}
@@ -122,11 +122,11 @@ export function FoodTruckTimeline() {
           ))}
         </div>
 
-        {/* Truck riding above cards - separate layer */}
-        <div className="relative h-24 mb-4">
+        {/* Truck riding BETWEEN dates and cards */}
+        <div className="relative h-28 mb-6 overflow-visible">
           <motion.div
-            className="absolute bottom-0"
-            style={{ left: 0 }}
+            className="absolute"
+            style={{ left: 0, top: "50%", transform: "translateY(-50%)" }}
             animate={{ x: truckX - 80 }}
             transition={{
               type: "spring",
