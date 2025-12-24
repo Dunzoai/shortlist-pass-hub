@@ -165,6 +165,68 @@ function HeroSection() {
 // "Templates suck."
 // =============================================================================
 
+// Hand-drawn frown face SVG - tilted slightly
+function FrownFace() {
+  return (
+    <svg
+      width="32"
+      height="32"
+      viewBox="0 0 32 32"
+      fill="none"
+      className="inline-block ml-3 -rotate-6"
+      style={{ verticalAlign: "middle" }}
+    >
+      {/* Face circle - slightly imperfect */}
+      <path
+        d="M16 3C8.5 3.2 3.2 8.8 3 16c-.2 7.5 5.8 13.2 13 13.5 7.5.3 13.5-5.5 13.5-13C29.5 9 24 2.8 16 3z"
+        stroke="#A9B4C4"
+        strokeWidth="2"
+        strokeLinecap="round"
+        fill="none"
+      />
+      {/* Left eye - dot */}
+      <circle cx="11" cy="12" r="1.5" fill="#A9B4C4" />
+      {/* Right eye - dot */}
+      <circle cx="21" cy="12" r="1.5" fill="#A9B4C4" />
+      {/* Frown - hand-drawn curve */}
+      <path
+        d="M10 22c1.5-3 3.5-4.5 6-4.5s4.5 1.5 6 4.5"
+        stroke="#A9B4C4"
+        strokeWidth="2"
+        strokeLinecap="round"
+        fill="none"
+      />
+    </svg>
+  );
+}
+
+// Hand-drawn underline SVG - wavy and imperfect
+function HandDrawnUnderline() {
+  return (
+    <motion.svg
+      className="absolute -bottom-2 left-0 w-full h-3"
+      viewBox="0 0 200 12"
+      preserveAspectRatio="none"
+      initial={{ pathLength: 0, opacity: 0 }}
+      whileInView={{ pathLength: 1, opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8, delay: 0.7, ease: "easeOut" }}
+    >
+      <motion.path
+        d="M2 8c20-4 40 2 60-1s40 3 60 0 40-2 60 1 15 2 16 0"
+        stroke="#B08D57"
+        strokeWidth="3"
+        strokeLinecap="round"
+        fill="none"
+        initial={{ pathLength: 0 }}
+        whileInView={{ pathLength: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, delay: 0.7, ease: "easeOut" }}
+      />
+    </motion.svg>
+  );
+}
+
 function TemplatesSuckSection() {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
@@ -173,7 +235,7 @@ function TemplatesSuckSection() {
     <section ref={sectionRef} className="py-24 lg:py-32 bg-[#0B1220]">
       <Container>
         <div className="max-w-2xl mx-auto">
-          {/* Headline - snaps in */}
+          {/* Headline - snaps in with tilted frown face */}
           <motion.h2
             className="text-[36px] md:text-[48px] lg:text-[56px] font-bold text-[#F4F6FA] leading-tight mb-10"
             initial={{ opacity: 0, scale: 0.95 }}
@@ -181,6 +243,7 @@ function TemplatesSuckSection() {
             transition={{ duration: 0.3, ease: "easeOut" }}
           >
             Templates suck.
+            <FrownFace />
           </motion.h2>
 
           {/* Body copy */}
@@ -190,22 +253,21 @@ function TemplatesSuckSection() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: 0.15 }}
           >
-            <p>Templates are built on assumptions.</p>
+            <p>They&apos;re built on assumptions.</p>
             <p>
-              They guess what your business does, how customers think, and what
-              matters most.
+              They guess what your business does, how your customers think, and
+              what matters most.
             </p>
-            <p>That&apos;s why so many sites look fine — but don&apos;t feel right.</p>
-            <p className="text-[#F4F6FA]">We don&apos;t guess.</p>
-            <p className="relative inline-block text-[#F4F6FA] font-medium">
-              We build around you.
-              {/* Animated underline */}
-              <motion.span
-                className="absolute -bottom-1 left-0 h-[3px] bg-[#B08D57] rounded-full"
-                initial={{ width: 0 }}
-                animate={isInView ? { width: "100%" } : {}}
-                transition={{ duration: 0.6, delay: 0.7, ease: "easeOut" }}
-              />
+            <p>That&apos;s why so many sites and apps look the same.</p>
+            <p className="text-[#F4F6FA]">You&apos;re unique.</p>
+
+            {/* Final line - bold, one line, hand-drawn underline on "We build for you" */}
+            <p className="text-[#F4F6FA] text-xl md:text-2xl font-bold pt-2">
+              We build around you.{" "}
+              <span className="relative inline-block">
+                We build for you.
+                <HandDrawnUnderline />
+              </span>
             </p>
           </motion.div>
         </div>
