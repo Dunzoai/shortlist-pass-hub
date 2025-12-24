@@ -10,7 +10,41 @@ import { ShowcaseMotionTiles } from "@/components/ShowcaseMotionTiles";
 // =============================================================================
 // SECTION 1: HERO
 // "Make your business look like it belongs."
+// Letter-by-letter brass fill on "your", "business", "belongs"
+// Then strikethrough on "Templates aren't built for you"
+// Then "Yes — this is possible for you" fades in
 // =============================================================================
+
+// Helper component for letter-by-letter brass fill animation
+function AnimatedWord({
+  word,
+  startDelay,
+  letterDelay = 0.06,
+}: {
+  word: string;
+  startDelay: number;
+  letterDelay?: number;
+}) {
+  return (
+    <span className="inline-block">
+      {word.split("").map((letter, i) => (
+        <motion.span
+          key={i}
+          className="inline-block"
+          initial={{ color: "#F4F6FA" }}
+          animate={{ color: "#B08D57" }}
+          transition={{
+            duration: 0.15,
+            delay: startDelay + i * letterDelay,
+            ease: "easeOut",
+          }}
+        >
+          {letter}
+        </motion.span>
+      ))}
+    </span>
+  );
+}
 
 function HeroSection() {
   const heroRef = useRef(null);
@@ -20,6 +54,19 @@ function HeroSection() {
   });
 
   const gridY = useTransform(scrollYProgress, [0, 1], ["0%", "10%"]);
+
+  // Animation timing
+  // "your" = 4 letters * 0.06 = 0.24s, starts at 0.3s, ends ~0.54s
+  // "business" = 8 letters * 0.06 = 0.48s, starts at 0.6s, ends ~1.08s
+  // "belongs" = 7 letters * 0.06 = 0.42s, starts at 1.2s, ends ~1.62s
+  // Strikethrough starts at 1.8s, takes 0.4s
+  // "Yes — this is possible" fades in at 2.4s
+
+  const yourStart = 0.3;
+  const businessStart = 0.6;
+  const belongsStart = 1.2;
+  const strikethroughStart = 1.8;
+  const microLineStart = 2.4;
 
   return (
     <section
@@ -51,17 +98,21 @@ function HeroSection() {
 
       <Container>
         <div className="relative z-10 max-w-3xl mx-auto text-center">
-          {/* H1 - fast fade-in */}
+          {/* H1 with letter-by-letter brass animation */}
           <motion.h1
             className="text-[40px] md:text-[56px] lg:text-[68px] font-bold text-[#F4F6FA] leading-[1.05] mb-8"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
           >
-            Make your business look like it belongs.
+            Make <AnimatedWord word="your" startDelay={yourStart} />{" "}
+            <AnimatedWord word="business" startDelay={businessStart} />
+            <br className="hidden md:block" />
+            <span className="md:hidden"> </span>
+            look like it <AnimatedWord word="belongs." startDelay={belongsStart} />
           </motion.h1>
 
-          {/* Subhead - slide up */}
+          {/* Subhead with strikethrough animation on first line */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -69,19 +120,32 @@ function HeroSection() {
             className="max-w-2xl mx-auto mb-6"
           >
             <p className="text-lg md:text-xl text-[#A9B4C4] leading-relaxed">
-              Templates aren&apos;t built for you.
+              {/* Strikethrough line */}
+              <span className="relative inline-block">
+                <span>Templates aren&apos;t built for you.</span>
+                <motion.span
+                  className="absolute left-0 top-1/2 h-[2px] bg-[#B08D57]"
+                  initial={{ width: 0 }}
+                  animate={{ width: "100%" }}
+                  transition={{
+                    duration: 0.4,
+                    delay: strikethroughStart,
+                    ease: "easeInOut",
+                  }}
+                />
+              </span>
               <br />
               We build websites and apps that make small businesses feel
               established, confident, and taken seriously.
             </p>
           </motion.div>
 
-          {/* Micro-line */}
+          {/* Micro-line - fades in after strikethrough */}
           <motion.p
             className="text-sm text-[#B08D57]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.4, delay: 0.5 }}
+            transition={{ duration: 0.5, delay: microLineStart }}
           >
             Yes — this is possible for you.
           </motion.p>
