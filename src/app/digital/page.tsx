@@ -444,12 +444,13 @@ const existingBookings = [
 function AISchedulingDemo() {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
-  const [activeConvo, setActiveConvo] = useState(1); // 1 or 2
-  const [messageStep, setMessageStep] = useState(0); // 0-6 within each convo
+  const [activeConvo, setActiveConvo] = useState(1);
+  const [messageStep, setMessageStep] = useState(0);
   const [showToast, setShowToast] = useState<string | null>(null);
   const [highlightSlot, setHighlightSlot] = useState<"wed" | "thu" | null>(null);
   const [destinyBooked, setDestinyBooked] = useState(false);
   const [mayaBooked, setMayaBooked] = useState(false);
+  const [calendarExpanded, setCalendarExpanded] = useState(false);
   const animationStarted = useRef(false);
 
   // Run animation sequence when in view
@@ -475,14 +476,16 @@ function AISchedulingDemo() {
       timers.push(setTimeout(() => {
         setMessageStep(6);
         setDestinyBooked(true);
-        setTimeout(() => setShowToast("Destiny — Haircut added"), 600);
-        setTimeout(() => setShowToast(null), 2500);
+        setCalendarExpanded(true); // Expand on mobile
+        setTimeout(() => setShowToast("Destiny — Haircut added"), 400);
+        setTimeout(() => setShowToast(null), 2000);
+        setTimeout(() => setCalendarExpanded(false), 2200); // Collapse after
       }, 9000));
 
       // === RESET & START SECOND CONVERSATION ===
       timers.push(setTimeout(() => {
-        setMessageStep(0); // Clear messages
-        setActiveConvo(2); // Switch to conversation 2
+        setMessageStep(0);
+        setActiveConvo(2);
       }, 12000));
 
       // === SECOND CONVERSATION: NAILS ===
@@ -501,8 +504,10 @@ function AISchedulingDemo() {
       timers.push(setTimeout(() => {
         setMessageStep(6);
         setMayaBooked(true);
-        setTimeout(() => setShowToast("Maya — Nails added"), 600);
-        setTimeout(() => setShowToast(null), 2500);
+        setCalendarExpanded(true); // Expand on mobile
+        setTimeout(() => setShowToast("Maya — Nails added"), 400);
+        setTimeout(() => setShowToast(null), 2000);
+        setTimeout(() => setCalendarExpanded(false), 2200); // Collapse after
       }, 21000));
 
       return () => timers.forEach(clearTimeout);
@@ -520,6 +525,118 @@ function AISchedulingDemo() {
   const isBookingStart = (day: string, hour: number) => {
     return existingBookings.find((b) => b.day === day && b.hour === hour);
   };
+
+  // Get latest booking caption for mini calendar
+  const getLatestBookingCaption = () => {
+    if (mayaBooked) return "Thu 2:00 — Maya";
+    if (destinyBooked) return "Wed 12:00 — Destiny";
+    return "Live schedule";
+  };
+
+  // Calendar grid component (reused for desktop and mobile)
+  const CalendarGrid = ({ compact = false }: { compact?: boolean }) => (
+    <div className={compact ? "overflow-hidden" : "overflow-x-auto"}>
+      <div className={compact ? "min-w-0" : "min-w-[400px]"}>
+        {/* Day headers */}
+        <div className={`grid ${compact ? "grid-cols-[30px_repeat(5,1fr)]" : "grid-cols-[50px_repeat(5,1fr)]"} gap-1 mb-1`}>
+          <div />
+          {days.map((day) => (
+            <div
+              key={day}
+              className={`text-center font-medium text-[#A9B4C4]/70 py-1 ${compact ? "text-[9px]" : "text-xs py-2"}`}
+            >
+              {day}
+            </div>
+          ))}
+        </div>
+
+        {/* Time slots - show fewer hours in compact mode */}
+        <div className={`grid ${compact ? "grid-cols-[30px_repeat(5,1fr)]" : "grid-cols-[50px_repeat(5,1fr)]"} gap-1`}>
+          {(compact ? [11, 12, 13, 14, 15] : hours).map((hour) => (
+            <div key={hour} className="contents">
+              <div className={`text-[#A9B4C4]/50 text-right pr-1 ${compact ? "text-[8px] py-1" : "text-[10px] py-2 pr-2"}`}>
+                {getHourLabel(hour)}
+              </div>
+
+              {days.map((day) => {
+                const bookingStart = isBookingStart(day, hour);
+                const isDestinyBookingSlot = day === "Wed" && hour === 12 && destinyBooked;
+                const isWedHighlighted = day === "Wed" && hour === 12 && highlightSlot === "wed";
+                const isMayaBookingSlot = day === "Thu" && hour === 14 && mayaBooked;
+                const isThuHighlighted = day === "Thu" && hour === 14 && highlightSlot === "thu";
+
+                return (
+                  <div
+                    key={`${day}-${hour}`}
+                    className={`relative rounded-md border border-white/5 bg-white/[0.02] ${compact ? "h-6" : "h-10"}`}
+                  >
+                    {bookingStart && (
+                      <div
+                        className="absolute inset-x-0.5 top-0.5 rounded bg-white/10 flex items-center justify-center"
+                        style={{ height: `calc(${bookingStart.duration * 100}% + ${(bookingStart.duration - 1) * 4}px - 4px)` }}
+                      >
+                        <span className={`text-[#A9B4C4]/50 ${compact ? "text-[7px]" : "text-[9px]"}`}>{bookingStart.label}</span>
+                      </div>
+                    )}
+
+                    {isWedHighlighted && !isDestinyBookingSlot && (
+                      <motion.div
+                        className="absolute inset-0 rounded-md border-2 border-[#B08D57]"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: [0, 1, 1, 0] }}
+                        transition={{ duration: 0.8, times: [0, 0.2, 0.8, 1] }}
+                      />
+                    )}
+
+                    {isThuHighlighted && !isMayaBookingSlot && (
+                      <motion.div
+                        className="absolute inset-0 rounded-md border-2 border-[#B08D57]"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: [0, 1, 1, 0] }}
+                        transition={{ duration: 0.8, times: [0, 0.2, 0.8, 1] }}
+                      />
+                    )}
+
+                    {isDestinyBookingSlot && (
+                      <motion.div
+                        className="absolute inset-x-0.5 top-0.5 bottom-0.5 rounded bg-[#B08D57] flex flex-col items-center justify-center"
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ duration: 0.4, ease: "easeOut" }}
+                      >
+                        {!compact && (
+                          <>
+                            <span className="text-[8px] font-semibold text-[#0B1220] leading-tight">Destiny</span>
+                            <span className="text-[7px] text-[#0B1220]/70 leading-tight">Haircut</span>
+                          </>
+                        )}
+                      </motion.div>
+                    )}
+
+                    {isMayaBookingSlot && (
+                      <motion.div
+                        className="absolute inset-x-0.5 top-0.5 bottom-0.5 rounded bg-[#B08D57] flex flex-col items-center justify-center"
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ duration: 0.4, ease: "easeOut" }}
+                      >
+                        {!compact && (
+                          <>
+                            <span className="text-[8px] font-semibold text-[#0B1220] leading-tight">Maya</span>
+                            <span className="text-[7px] text-[#0B1220]/70 leading-tight">Nails</span>
+                          </>
+                        )}
+                      </motion.div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <section ref={sectionRef} className="py-24 lg:py-32 bg-[#0B1220]">
@@ -544,7 +661,7 @@ function AISchedulingDemo() {
 
         {/* Glass super-card */}
         <motion.div
-          className="relative rounded-[28px] overflow-hidden"
+          className="relative rounded-[28px] overflow-visible"
           style={{
             background: "linear-gradient(180deg, rgba(15, 23, 36, 0.9) 0%, rgba(11, 18, 32, 0.95) 100%)",
             border: "1px solid rgba(255, 255, 255, 0.06)",
@@ -554,148 +671,21 @@ function AISchedulingDemo() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <div className="grid grid-cols-1 lg:grid-cols-2">
-            {/* CALENDAR PANEL - First on mobile so it's visible as messages appear */}
-            <div className="p-6 md:p-8 bg-[#080c14]/50 relative order-1 lg:order-2 border-b lg:border-b-0 lg:border-l border-white/5">
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-[#B08D57]" />
-                  <span className="text-xs text-[#A9B4C4]/60 uppercase tracking-wider">This Week</span>
-                </div>
-              </div>
-
-              {/* Calendar grid */}
-              <div className="overflow-x-auto">
-                <div className="min-w-[400px]">
-                  {/* Day headers */}
-                  <div className="grid grid-cols-[50px_repeat(5,1fr)] gap-1 mb-2">
-                    <div /> {/* Empty corner */}
-                    {days.map((day) => (
-                      <div
-                        key={day}
-                        className="text-center text-xs font-medium text-[#A9B4C4]/70 py-2"
-                      >
-                        {day}
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Time slots */}
-                  <div className="grid grid-cols-[50px_repeat(5,1fr)] gap-1">
-                    {hours.map((hour) => (
-                      <div key={hour} className="contents">
-                        {/* Hour label */}
-                        <div className="text-[10px] text-[#A9B4C4]/50 text-right pr-2 py-2">
-                          {getHourLabel(hour)}
-                        </div>
-
-                        {/* Day cells for this hour */}
-                        {days.map((day) => {
-                          const bookingStart = isBookingStart(day, hour);
-
-                          // First booking: Destiny - Haircut on Wed 12:00
-                          const isDestinyBookingSlot = day === "Wed" && hour === 12 && destinyBooked;
-                          const isWedHighlighted = day === "Wed" && hour === 12 && highlightSlot === "wed";
-
-                          // Second booking: Maya - Nails on Thu 14:00 (2 PM)
-                          const isMayaBookingSlot = day === "Thu" && hour === 14 && mayaBooked;
-                          const isThuHighlighted = day === "Thu" && hour === 14 && highlightSlot === "thu";
-
-                          return (
-                            <div
-                              key={`${day}-${hour}`}
-                              className="relative h-10 rounded-md border border-white/5 bg-white/[0.02]"
-                            >
-                              {/* Existing bookings (muted) */}
-                              {bookingStart && (
-                                <div
-                                  className="absolute inset-x-0.5 top-0.5 rounded bg-white/10 flex items-center justify-center"
-                                  style={{ height: `calc(${bookingStart.duration * 100}% + ${(bookingStart.duration - 1) * 4}px - 4px)` }}
-                                >
-                                  <span className="text-[9px] text-[#A9B4C4]/50">{bookingStart.label}</span>
-                                </div>
-                              )}
-
-                              {/* Highlight pulse on Wed 12:00 */}
-                              {isWedHighlighted && !isDestinyBookingSlot && (
-                                <motion.div
-                                  className="absolute inset-0 rounded-md border-2 border-[#B08D57]"
-                                  initial={{ opacity: 0 }}
-                                  animate={{ opacity: [0, 1, 1, 0] }}
-                                  transition={{ duration: 0.8, times: [0, 0.2, 0.8, 1] }}
-                                />
-                              )}
-
-                              {/* Highlight pulse on Thu 2:00 */}
-                              {isThuHighlighted && !isMayaBookingSlot && (
-                                <motion.div
-                                  className="absolute inset-0 rounded-md border-2 border-[#B08D57]"
-                                  initial={{ opacity: 0 }}
-                                  animate={{ opacity: [0, 1, 1, 0] }}
-                                  transition={{ duration: 0.8, times: [0, 0.2, 0.8, 1] }}
-                                />
-                              )}
-
-                              {/* Destiny booking animation */}
-                              {isDestinyBookingSlot && (
-                                <motion.div
-                                  className="absolute inset-x-0.5 top-0.5 bottom-0.5 rounded bg-[#B08D57] flex flex-col items-center justify-center"
-                                  initial={{ scale: 0.8, opacity: 0 }}
-                                  animate={{ scale: 1, opacity: 1 }}
-                                  transition={{ duration: 0.4, ease: "easeOut" }}
-                                >
-                                  <span className="text-[8px] font-semibold text-[#0B1220] leading-tight">Destiny</span>
-                                  <span className="text-[7px] text-[#0B1220]/70 leading-tight">Haircut</span>
-                                </motion.div>
-                              )}
-
-                              {/* Maya booking animation */}
-                              {isMayaBookingSlot && (
-                                <motion.div
-                                  className="absolute inset-x-0.5 top-0.5 bottom-0.5 rounded bg-[#B08D57] flex flex-col items-center justify-center"
-                                  initial={{ scale: 0.8, opacity: 0 }}
-                                  animate={{ scale: 1, opacity: 1 }}
-                                  transition={{ duration: 0.4, ease: "easeOut" }}
-                                >
-                                  <span className="text-[8px] font-semibold text-[#0B1220] leading-tight">Maya</span>
-                                  <span className="text-[7px] text-[#0B1220]/70 leading-tight">Nails</span>
-                                </motion.div>
-                              )}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Toast notification */}
-              <motion.div
-                className="absolute bottom-4 right-4 bg-[#B08D57] text-[#0B1220] px-4 py-2 rounded-lg text-sm font-medium shadow-lg"
-                initial={{ opacity: 0, y: 10, scale: 0.9 }}
-                animate={showToast ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 10, scale: 0.9 }}
-                transition={{ duration: 0.3 }}
-              >
-                {showToast}
-              </motion.div>
-            </div>
-
-            {/* CHAT PANEL - Second on mobile, first on desktop */}
-            <div className="p-6 md:p-8 order-2 lg:order-1">
+          {/* DESKTOP LAYOUT: Side by side */}
+          <div className="hidden lg:grid lg:grid-cols-2">
+            {/* Chat Panel - Desktop */}
+            <div className="p-8">
               <div className="flex items-center gap-2 mb-6">
                 <div className="w-2 h-2 rounded-full bg-[#B08D57]" />
                 <span className="text-xs text-[#A9B4C4]/60 uppercase tracking-wider">Live Chat</span>
               </div>
 
-              <div className="space-y-3 min-h-[280px]">
+              <div className="space-y-3 min-h-[320px]">
                 {currentConvo.map((msg, i) => {
-                  const messageIndex = i + 1;
-                  const isVisible = messageStep >= messageIndex;
-
+                  const isVisible = messageStep >= i + 1;
                   return (
                     <motion.div
-                      key={`${activeConvo}-${i}`}
+                      key={`desktop-${activeConvo}-${i}`}
                       className={`flex ${msg.role === "customer" ? "justify-end" : "justify-start"}`}
                       initial={{ opacity: 0, y: 10, scale: 0.95 }}
                       animate={isVisible ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 10, scale: 0.95 }}
@@ -715,6 +705,129 @@ function AISchedulingDemo() {
                 })}
               </div>
             </div>
+
+            {/* Calendar Panel - Desktop */}
+            <div className="p-8 bg-[#080c14]/50 relative border-l border-white/5">
+              <div className="flex items-center gap-2 mb-6">
+                <div className="w-2 h-2 rounded-full bg-[#B08D57]" />
+                <span className="text-xs text-[#A9B4C4]/60 uppercase tracking-wider">This Week</span>
+              </div>
+
+              <CalendarGrid />
+
+              {/* Toast notification - Desktop */}
+              <motion.div
+                className="absolute bottom-4 right-4 bg-[#B08D57] text-[#0B1220] px-4 py-2 rounded-lg text-sm font-medium shadow-lg"
+                initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                animate={showToast ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 10, scale: 0.9 }}
+                transition={{ duration: 0.3 }}
+              >
+                {showToast}
+              </motion.div>
+            </div>
+          </div>
+
+          {/* MOBILE LAYOUT: Chat full width + floating calendar */}
+          <div className="lg:hidden relative">
+            {/* Chat Panel - Mobile */}
+            <div className="p-6 pb-32">
+              <div className="flex items-center gap-2 mb-6">
+                <div className="w-2 h-2 rounded-full bg-[#B08D57]" />
+                <span className="text-xs text-[#A9B4C4]/60 uppercase tracking-wider">Live Chat</span>
+              </div>
+
+              <div className="space-y-3 min-h-[280px]">
+                {currentConvo.map((msg, i) => {
+                  const isVisible = messageStep >= i + 1;
+                  return (
+                    <motion.div
+                      key={`mobile-${activeConvo}-${i}`}
+                      className={`flex ${msg.role === "customer" ? "justify-end" : "justify-start"}`}
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      animate={isVisible ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 10, scale: 0.95 }}
+                      transition={{ duration: 0.4, ease: "easeOut" }}
+                    >
+                      <div
+                        className={`max-w-[85%] rounded-2xl px-4 py-3 ${
+                          msg.role === "customer"
+                            ? "bg-[#B08D57] text-[#0B1220]"
+                            : "bg-white/5 text-[#F4F6FA] border border-white/5"
+                        }`}
+                      >
+                        <p className="text-sm leading-relaxed">{msg.text}</p>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Floating Mini Calendar - Mobile */}
+            <motion.div
+              className="absolute bottom-4 right-4 rounded-xl overflow-hidden"
+              style={{
+                background: "linear-gradient(180deg, rgba(8, 12, 20, 0.98) 0%, rgba(11, 18, 32, 0.98) 100%)",
+                border: "1px solid rgba(176, 141, 87, 0.2)",
+                boxShadow: "0 20px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(176, 141, 87, 0.1)",
+              }}
+              initial={{ width: 140, height: "auto" }}
+              animate={{
+                width: calendarExpanded ? "85%" : 140,
+                x: calendarExpanded ? "-50%" : 0,
+                left: calendarExpanded ? "50%" : "auto",
+                right: calendarExpanded ? "auto" : 16,
+              }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            >
+              <div className="p-3">
+                {/* Header */}
+                <div className="flex items-center gap-1.5 mb-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#B08D57]" />
+                  <span className="text-[9px] text-[#A9B4C4]/60 uppercase tracking-wider">
+                    {calendarExpanded ? "This Week" : "Schedule"}
+                  </span>
+                </div>
+
+                {/* Calendar content */}
+                <motion.div
+                  initial={false}
+                  animate={{ height: calendarExpanded ? "auto" : 0, opacity: calendarExpanded ? 1 : 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden"
+                >
+                  <CalendarGrid compact />
+                </motion.div>
+
+                {/* Mini state: just show caption */}
+                <motion.div
+                  initial={false}
+                  animate={{ height: calendarExpanded ? 0 : "auto", opacity: calendarExpanded ? 0 : 1 }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden"
+                >
+                  <p className="text-[10px] text-[#A9B4C4]/80 text-center py-1">
+                    {getLatestBookingCaption()}
+                  </p>
+                  {/* Mini indicators */}
+                  <div className="flex justify-center gap-1 mt-1">
+                    <div className={`w-2 h-2 rounded-sm ${destinyBooked ? "bg-[#B08D57]" : "bg-white/10"}`} />
+                    <div className={`w-2 h-2 rounded-sm ${mayaBooked ? "bg-[#B08D57]" : "bg-white/10"}`} />
+                  </div>
+                </motion.div>
+
+                {/* Toast in expanded state */}
+                {calendarExpanded && showToast && (
+                  <motion.div
+                    className="mt-3 bg-[#B08D57] text-[#0B1220] px-3 py-1.5 rounded-lg text-xs font-medium text-center"
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 5 }}
+                  >
+                    {showToast}
+                  </motion.div>
+                )}
+              </div>
+            </motion.div>
           </div>
         </motion.div>
 
