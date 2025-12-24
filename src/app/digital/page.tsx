@@ -16,10 +16,11 @@ import { ShowcaseMotionTiles } from "@/components/ShowcaseMotionTiles";
 // =============================================================================
 
 // Helper component for letter-by-letter brass fill animation
+// Slow, intentional — like we're saying "YOUR. BUSINESS. BELONGS."
 function AnimatedWord({
   word,
   startDelay,
-  letterDelay = 0.06,
+  letterDelay = 0.12,
 }: {
   word: string;
   startDelay: number;
@@ -34,7 +35,7 @@ function AnimatedWord({
           initial={{ color: "#F4F6FA" }}
           animate={{ color: "#B08D57" }}
           transition={{
-            duration: 0.15,
+            duration: 0.25,
             delay: startDelay + i * letterDelay,
             ease: "easeOut",
           }}
@@ -55,18 +56,22 @@ function HeroSection() {
 
   const gridY = useTransform(scrollYProgress, [0, 1], ["0%", "10%"]);
 
-  // Animation timing
-  // "your" = 4 letters * 0.06 = 0.24s, starts at 0.3s, ends ~0.54s
-  // "business" = 8 letters * 0.06 = 0.48s, starts at 0.6s, ends ~1.08s
-  // "belongs" = 7 letters * 0.06 = 0.42s, starts at 1.2s, ends ~1.62s
-  // Strikethrough starts at 1.8s, takes 0.4s
-  // "Yes — this is possible" fades in at 2.4s
+  // Animation timing — SLOW and INTENTIONAL
+  // "your" = 4 letters * 0.12 = ~0.5s
+  // "business" = 8 letters * 0.12 = ~1s
+  // "belongs." = 8 letters * 0.12 = ~1s
+  // Then PAUSE to let them read "Templates aren't built for you"
+  // Then HARSH red strikethrough
+  // Then PAUSE
+  // Then "Yes — this is possible for you" fades in
 
-  const yourStart = 0.3;
-  const businessStart = 0.6;
-  const belongsStart = 1.2;
-  const strikethroughStart = 1.8;
-  const microLineStart = 2.4;
+  const yourStart = 0.5;
+  const businessStart = 1.3; // after "your" + pause
+  const belongsStart = 2.8; // after "business" + pause
+  // belongs ends ~3.8s, then pause to read templates line
+  const strikethroughStart = 5.2; // let them read it first
+  // strikethrough completes ~5.5s, then pause
+  const microLineStart = 6.5;
 
   return (
     <section
@@ -120,17 +125,17 @@ function HeroSection() {
             className="max-w-2xl mx-auto mb-6"
           >
             <p className="text-lg md:text-xl text-[#A9B4C4] leading-relaxed">
-              {/* Strikethrough line */}
+              {/* Strikethrough line — HARSH red */}
               <span className="relative inline-block">
                 <span>Templates aren&apos;t built for you.</span>
                 <motion.span
-                  className="absolute left-0 top-1/2 h-[2px] bg-[#B08D57]"
+                  className="absolute left-0 top-1/2 h-[3px] bg-[#C94A4A]"
                   initial={{ width: 0 }}
                   animate={{ width: "100%" }}
                   transition={{
-                    duration: 0.4,
+                    duration: 0.25,
                     delay: strikethroughStart,
-                    ease: "easeInOut",
+                    ease: [0.4, 0, 0.2, 1],
                   }}
                 />
               </span>
