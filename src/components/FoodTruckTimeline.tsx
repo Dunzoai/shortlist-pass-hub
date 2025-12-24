@@ -122,10 +122,10 @@ export function FoodTruckTimeline() {
           ))}
         </div>
 
-        {/* Truck hovering above cards */}
-        <div className="relative h-20 mb-2">
+        {/* Truck riding above cards - separate layer */}
+        <div className="relative h-24 mb-4">
           <motion.div
-            className="absolute"
+            className="absolute bottom-0"
             style={{ left: 0 }}
             animate={{ x: truckX - 80 }}
             transition={{

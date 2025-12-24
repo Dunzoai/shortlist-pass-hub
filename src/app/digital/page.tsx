@@ -165,38 +165,51 @@ function HeroSection() {
 // "Templates suck."
 // =============================================================================
 
-// Hand-drawn frown face SVG - tilted slightly
+// Hand-drawn frown face SVG - rolls in from the right
 function FrownFace() {
   return (
-    <svg
-      width="32"
-      height="32"
-      viewBox="0 0 32 32"
-      fill="none"
-      className="inline-block ml-3 -rotate-6"
+    <motion.span
+      className="inline-block ml-3"
       style={{ verticalAlign: "middle" }}
+      initial={{ x: 100, rotate: 720 }}
+      whileInView={{ x: 0, rotate: -6 }}
+      viewport={{ once: true }}
+      transition={{
+        type: "spring",
+        stiffness: 100,
+        damping: 15,
+        mass: 1,
+        duration: 1.2,
+      }}
     >
-      {/* Face circle - slightly imperfect */}
-      <path
-        d="M16 3C8.5 3.2 3.2 8.8 3 16c-.2 7.5 5.8 13.2 13 13.5 7.5.3 13.5-5.5 13.5-13C29.5 9 24 2.8 16 3z"
-        stroke="#A9B4C4"
-        strokeWidth="2"
-        strokeLinecap="round"
+      <svg
+        width="32"
+        height="32"
+        viewBox="0 0 32 32"
         fill="none"
-      />
-      {/* Left eye - dot */}
-      <circle cx="11" cy="12" r="1.5" fill="#A9B4C4" />
-      {/* Right eye - dot */}
-      <circle cx="21" cy="12" r="1.5" fill="#A9B4C4" />
-      {/* Frown - hand-drawn curve */}
-      <path
-        d="M10 22c1.5-3 3.5-4.5 6-4.5s4.5 1.5 6 4.5"
-        stroke="#A9B4C4"
-        strokeWidth="2"
-        strokeLinecap="round"
-        fill="none"
-      />
-    </svg>
+      >
+        {/* Face circle - slightly imperfect */}
+        <path
+          d="M16 3C8.5 3.2 3.2 8.8 3 16c-.2 7.5 5.8 13.2 13 13.5 7.5.3 13.5-5.5 13.5-13C29.5 9 24 2.8 16 3z"
+          stroke="#A9B4C4"
+          strokeWidth="2"
+          strokeLinecap="round"
+          fill="none"
+        />
+        {/* Left eye - dot */}
+        <circle cx="11" cy="12" r="1.5" fill="#A9B4C4" />
+        {/* Right eye - dot */}
+        <circle cx="21" cy="12" r="1.5" fill="#A9B4C4" />
+        {/* Frown - hand-drawn curve */}
+        <path
+          d="M10 22c1.5-3 3.5-4.5 6-4.5s4.5 1.5 6 4.5"
+          stroke="#A9B4C4"
+          strokeWidth="2"
+          strokeLinecap="round"
+          fill="none"
+        />
+      </svg>
+    </motion.span>
   );
 }
 
