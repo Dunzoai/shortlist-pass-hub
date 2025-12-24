@@ -105,8 +105,8 @@ export function FoodTruckTimeline() {
           </p>
         </div>
 
-        {/* Truck sitting above cards - pushed up 35% */}
-        <div className="relative h-28 flex justify-center mb-4">
+        {/* Truck sitting above cards */}
+        <div className="relative h-32 flex justify-center mb-2">
           <motion.div
             className="absolute top-0"
             style={{ left: 0 }}
