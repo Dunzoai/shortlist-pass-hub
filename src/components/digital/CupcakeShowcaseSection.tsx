@@ -7,6 +7,12 @@ import { WhyBlock } from "@/components/WhyBlock";
 
 // --- EDITABLE COPY ---
 const CUPCAKE_COPY = {
+  // Hero above cupcake
+  hero: {
+    headline: "Stop making customers imagine it.",
+    sub: "We turn your offer into a simple visual flow that builds as they scroll — and lands the decision.",
+  },
+  // Build sequence copy
   states: [
     "Start with the base.",
     "Add the cake.",
@@ -14,8 +20,7 @@ const CUPCAKE_COPY = {
     "That's it.",
     "Ready to order.",
   ],
-  headline: "Ordering doesn't have to feel like a form.",
-  subline: "We let customers see their order come together as they scroll.",
+  // Why block (after cupcake)
   why: {
     heading: "Why we built it this way",
     lines: [
@@ -188,76 +193,107 @@ export function CupcakeShowcaseSection() {
   // Reduced motion: simple static layout
   if (prefersReducedMotion) {
     return (
-      <section className="bg-[#0B1220] py-24 lg:py-32">
-        <div className="max-w-[800px] mx-auto px-6">
-          <div className="flex flex-col items-center mb-16">
-            <div className="relative w-[280px] h-[320px] md:w-[340px] md:h-[400px]">
-              {CUPCAKE_IMAGES.map((src, index) => (
-                <div
-                  key={src}
-                  className="absolute inset-0 transition-opacity duration-300"
-                  style={{ opacity: index <= activeIndex ? 1 : 0 }}
-                >
-                  <Image
-                    src={src}
-                    alt={`Cupcake stage ${index + 1}`}
-                    fill
-                    className="object-contain"
-                    priority={index === 0}
-                  />
-                </div>
-              ))}
-            </div>
-            <p className="mt-6 text-lg md:text-xl text-[#F4F6FA] font-medium text-center">
-              {CUPCAKE_COPY.states[activeIndex]}
-            </p>
-            <div className="flex items-center gap-2 mt-6">
-              {CUPCAKE_IMAGES.map((_, index) => (
-                <div
-                  key={index}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${
-                    index === activeIndex
-                      ? "w-6 bg-[#B08D57]"
-                      : index < activeIndex
-                      ? "w-1.5 bg-[#B08D57]/50"
-                      : "w-1.5 bg-white/20"
-                  }`}
-                />
-              ))}
-            </div>
-            <div className="flex justify-center gap-4 mt-6">
-              <button
-                onClick={handlePrev}
-                disabled={activeIndex === 0}
-                className="px-4 py-2 text-sm text-[#A9B4C4] border border-white/10 rounded-lg disabled:opacity-30"
-              >
-                Previous
-              </button>
-              <button
-                onClick={handleNext}
-                disabled={activeIndex === TOTAL_STATES - 1}
-                className="px-4 py-2 text-sm bg-[#B08D57] text-[#0B1220] font-medium rounded-lg disabled:opacity-30"
-              >
-                Next
-              </button>
-            </div>
-          </div>
-          <div className="text-center mb-8">
-            <h2 className="text-[28px] md:text-[36px] lg:text-[44px] font-bold text-[#F4F6FA] leading-tight mb-4">
-              {CUPCAKE_COPY.headline}
+      <>
+        {/* Hero */}
+        <section className="bg-[#0B1220] pt-16 pb-8 lg:pt-24 lg:pb-12">
+          <div className="max-w-[800px] mx-auto px-6 text-center">
+            <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-bold text-[#F4F6FA] leading-tight mb-6">
+              {CUPCAKE_COPY.hero.headline}
             </h2>
-            <p className="text-base md:text-lg text-[#A9B4C4]">
-              {CUPCAKE_COPY.subline}
+            <p className="text-lg md:text-xl text-[#A9B4C4] max-w-2xl mx-auto">
+              {CUPCAKE_COPY.hero.sub}
             </p>
           </div>
-          <WhyBlock heading={CUPCAKE_COPY.why.heading} lines={CUPCAKE_COPY.why.lines} />
-        </div>
-      </section>
+        </section>
+
+        {/* Cupcake with manual controls */}
+        <section className="bg-[#0B1220] py-16 lg:py-24">
+          <div className="max-w-[800px] mx-auto px-6">
+            <div className="flex flex-col items-center mb-16">
+              <div className="relative w-[280px] h-[320px] md:w-[340px] md:h-[400px]">
+                {CUPCAKE_IMAGES.map((src, index) => (
+                  <div
+                    key={src}
+                    className="absolute inset-0 transition-opacity duration-300"
+                    style={{ opacity: index <= activeIndex ? 1 : 0 }}
+                  >
+                    <Image
+                      src={src}
+                      alt={`Cupcake stage ${index + 1}`}
+                      fill
+                      className="object-contain"
+                      priority={index === 0}
+                    />
+                  </div>
+                ))}
+              </div>
+              <p className="mt-6 text-lg md:text-xl text-[#F4F6FA] font-medium text-center">
+                {CUPCAKE_COPY.states[activeIndex]}
+              </p>
+              <div className="flex items-center gap-2 mt-6">
+                {CUPCAKE_IMAGES.map((_, index) => (
+                  <div
+                    key={index}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                      index === activeIndex
+                        ? "w-6 bg-[#B08D57]"
+                        : index < activeIndex
+                        ? "w-1.5 bg-[#B08D57]/50"
+                        : "w-1.5 bg-white/20"
+                    }`}
+                  />
+                ))}
+              </div>
+              <div className="flex justify-center gap-4 mt-6">
+                <button
+                  onClick={handlePrev}
+                  disabled={activeIndex === 0}
+                  className="px-4 py-2 text-sm text-[#A9B4C4] border border-white/10 rounded-lg disabled:opacity-30"
+                >
+                  Previous
+                </button>
+                <button
+                  onClick={handleNext}
+                  disabled={activeIndex === TOTAL_STATES - 1}
+                  className="px-4 py-2 text-sm bg-[#B08D57] text-[#0B1220] font-medium rounded-lg disabled:opacity-30"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+            <WhyBlock heading={CUPCAKE_COPY.why.heading} lines={CUPCAKE_COPY.why.lines} />
+          </div>
+        </section>
+      </>
     );
   }
 
   return (
     <>
+      {/* Hero Section - above cupcake */}
+      <section className="bg-[#0B1220] pt-16 pb-8 lg:pt-24 lg:pb-12">
+        <div className="max-w-[800px] mx-auto px-6 text-center">
+          <motion.h2
+            className="text-[32px] md:text-[44px] lg:text-[52px] font-bold text-[#F4F6FA] leading-tight mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.5 }}
+          >
+            {CUPCAKE_COPY.hero.headline}
+          </motion.h2>
+          <motion.p
+            className="text-lg md:text-xl text-[#A9B4C4] max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            {CUPCAKE_COPY.hero.sub}
+          </motion.p>
+        </div>
+      </section>
+
       {/* Cupcake Build Section */}
       <section
         ref={sectionRef}
@@ -334,23 +370,9 @@ export function CupcakeShowcaseSection() {
         </div>
       </section>
 
-      {/* Section copy - after the build */}
+      {/* Why block - after the build */}
       <div className="bg-[#0B1220] py-16 lg:py-24">
         <div className="max-w-[800px] mx-auto px-6">
-          <motion.div
-            className="text-center mb-8"
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.5 }}
-          >
-            <h2 className="text-[28px] md:text-[36px] lg:text-[44px] font-bold text-[#F4F6FA] leading-tight mb-4">
-              {CUPCAKE_COPY.headline}
-            </h2>
-            <p className="text-base md:text-lg text-[#A9B4C4]">
-              {CUPCAKE_COPY.subline}
-            </p>
-          </motion.div>
           <WhyBlock heading={CUPCAKE_COPY.why.heading} lines={CUPCAKE_COPY.why.lines} />
         </div>
       </div>
