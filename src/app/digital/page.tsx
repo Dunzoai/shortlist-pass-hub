@@ -845,7 +845,7 @@ function Footer() {
 
 export default function DigitalPage() {
   return (
-    <main className="pt-16 overflow-x-hidden">
+    <main className="pt-16 overflow-x-clip">
       <HeroSection />
       <TemplatesSuckSection />
       <ShowDontTellSection />

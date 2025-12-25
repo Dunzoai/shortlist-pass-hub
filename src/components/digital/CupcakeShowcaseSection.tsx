@@ -41,10 +41,13 @@ export function CupcakeShowcaseSection() {
   const prefersReducedMotion = useReducedMotion();
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // Scroll progress within the WRAPPER (not the cupcake)
+  // Scroll progress within the WRAPPER
+  // "start start" = progress 0 when wrapper top hits viewport top
+  // "end start" = progress 1 when wrapper BOTTOM hits viewport TOP
+  // This gives us the full wrapper height as scroll distance
   const { scrollYProgress } = useScroll({
     target: wrapperRef,
-    offset: ["start start", "end end"],
+    offset: ["start start", "end start"],
   });
 
   // Map scroll progress to discrete states
@@ -168,7 +171,7 @@ export function CupcakeShowcaseSection() {
       <div
         ref={wrapperRef}
         className="relative bg-[#0B1220]"
-        style={{ height: "250vh" }} // Scroll distance for the pin
+        style={{ height: "400vh" }} // Tall scroll container - cupcake pins inside
       >
         {/* ============================================
             STICKY CUPCAKE - Pins to viewport while wrapper scrolls
