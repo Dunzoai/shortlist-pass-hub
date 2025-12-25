@@ -49,32 +49,41 @@ export function CupcakeShowcaseSection() {
   const SCROLL_THRESHOLD = 150; // Pixels of scroll to advance one state
   const TOTAL_STATES = CUPCAKE_IMAGES.length;
 
-  // Lock scroll when section enters viewport center
+  // Lock scroll when section enters viewport
   useEffect(() => {
     if (prefersReducedMotion || isComplete) return;
 
     const section = sectionRef.current;
     if (!section) return;
 
+    let isScrolling = false;
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
-            // Section is more than 50% visible - lock it
-            if (!isComplete) {
-              setIsLocked(true);
-              // Scroll section to center
-              section.scrollIntoView({ behavior: "instant", block: "center" });
+          // Lock when 25% visible (triggers earlier on desktop)
+          if (entry.isIntersecting && entry.intersectionRatio > 0.25 && !isScrolling) {
+            if (!isComplete && !isLocked) {
+              isScrolling = true;
+
+              // Smooth scroll to center
+              section.scrollIntoView({ behavior: "smooth", block: "center" });
+
+              // Wait for smooth scroll to complete, then lock
+              setTimeout(() => {
+                setIsLocked(true);
+                isScrolling = false;
+              }, 400); // Enough time for smooth scroll
             }
           }
         });
       },
-      { threshold: [0.5] }
+      { threshold: [0.25] }
     );
 
     observer.observe(section);
     return () => observer.disconnect();
-  }, [prefersReducedMotion, isComplete]);
+  }, [prefersReducedMotion, isComplete, isLocked]);
 
   // Handle wheel events when locked
   const handleWheel = useCallback(

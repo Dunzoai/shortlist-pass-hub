@@ -849,8 +849,8 @@ export default function DigitalPage() {
       <HeroSection />
       <TemplatesSuckSection />
       <ShowDontTellSection />
-      <AISchedulingDemo />
       <CupcakeShowcaseSection />
+      <AISchedulingDemo />
       <OutcomesSection />
       <ScopeSection />
       <FinalCTASection />
