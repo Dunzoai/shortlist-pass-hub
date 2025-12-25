@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { Container } from "@/components/Container";
 import { FoodTruckTimeline } from "@/components/FoodTruckTimeline";
 import { CupcakeShowcaseSection } from "@/components/digital/CupcakeShowcaseSection";
+import { WhyBlock } from "@/components/WhyBlock";
 
 // =============================================================================
 // SECTION 1: HERO
@@ -359,12 +360,17 @@ function ShowDontTellSection() {
             {/* Food truck timeline demo */}
             <Container>
               <FoodTruckTimeline />
-            </Container>
 
-            <Container>
-              <p className="text-center text-sm text-[#A9B4C4]/70 mt-8">
-                Built around your week — not a generic layout.
-              </p>
+              {/* Why block - owner-to-owner explanation */}
+              <WhyBlock
+                heading="Why we didn't just list the dates"
+                lines={[
+                  "Anyone can post a list.",
+                  "But when something is fun to interact with, people remember it —",
+                  "and they come back when they're ready to buy.",
+                  "That's what this does.",
+                ]}
+              />
             </Container>
           </div>
 
