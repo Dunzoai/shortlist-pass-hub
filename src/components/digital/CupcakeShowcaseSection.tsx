@@ -9,23 +9,32 @@ import { WhyBlock } from "@/components/WhyBlock";
 const CUPCAKE_COPY = {
   // Hero above cupcake
   hero: {
-    headline: "Stop making customers imagine it.",
-    sub: "We turn your offer into a simple visual flow that builds as they scroll — and lands the decision.",
+    headline: "Stop asking customers to imagine it.",
+    headlineLine2: "Show them what they're getting.",
+    sub: "As they scroll, the offer comes together — step by step — until the decision is obvious.",
   },
-  // Build sequence copy
+  // Build sequence copy (industry-agnostic progress labels)
   states: [
-    "Start with the base.",
-    "Add the cake.",
-    "Top it off.",
-    "That's it.",
-    "Ready to order.",
+    "Foundation",
+    "Options",
+    "Details",
+    "Finish",
+    "Ready to move forward.",
   ],
   // Why block (after cupcake)
   why: {
     heading: "Why we built it this way",
     lines: [
-      "When people can see the result, they decide faster — and with more confidence.",
+      "Most websites explain. The better ones show.",
+      "When customers can see how something comes together — instead of reading about it — they understand faster, feel more confident, and decide sooner.",
+      "This turns your offer into a visual flow: one step at a time, no guessing, no friction.",
+      "Whether you're selling a product, a service, or a custom job — people don't have to imagine it anymore.",
     ],
+  },
+  // Optional closer
+  closer: {
+    line1: "Clarity sells.",
+    line2: "Confidence closes.",
   },
 };
 
@@ -208,10 +217,12 @@ export function CupcakeShowcaseSection() {
           <div className="max-w-[800px] mx-auto px-6">
             {/* Hero text */}
             <div className="text-center mb-8 lg:mb-10">
-              <h2 className="text-[28px] md:text-[36px] lg:text-[44px] font-bold text-[#F4F6FA] leading-tight mb-4">
+              <h2 className="text-[26px] md:text-[34px] lg:text-[42px] font-bold text-[#F4F6FA] leading-tight mb-2">
                 {CUPCAKE_COPY.hero.headline}
+                <br />
+                <span className="text-[#B08D57]">{CUPCAKE_COPY.hero.headlineLine2}</span>
               </h2>
-              <p className="text-base md:text-lg text-[#A9B4C4] max-w-xl mx-auto">
+              <p className="text-sm md:text-base text-[#A9B4C4]/80 max-w-lg mx-auto">
                 {CUPCAKE_COPY.hero.sub}
               </p>
             </div>
@@ -270,6 +281,16 @@ export function CupcakeShowcaseSection() {
               </div>
             </div>
             <WhyBlock heading={CUPCAKE_COPY.why.heading} lines={CUPCAKE_COPY.why.lines} />
+
+            {/* Closer */}
+            <div className="mt-10 text-center">
+              <p className="text-lg md:text-xl font-semibold text-[#F4F6FA]">
+                {CUPCAKE_COPY.closer.line1}
+              </p>
+              <p className="text-lg md:text-xl font-semibold text-[#B08D57]">
+                {CUPCAKE_COPY.closer.line2}
+              </p>
+            </div>
           </div>
         </section>
       </>
@@ -286,10 +307,12 @@ export function CupcakeShowcaseSection() {
         <div className="w-full max-w-[800px] mx-auto px-6">
           {/* Hero text - stays visible during build */}
           <div className="text-center mb-8 lg:mb-10">
-            <h2 className="text-[28px] md:text-[36px] lg:text-[44px] font-bold text-[#F4F6FA] leading-tight mb-4">
+            <h2 className="text-[26px] md:text-[34px] lg:text-[42px] font-bold text-[#F4F6FA] leading-tight mb-2">
               {CUPCAKE_COPY.hero.headline}
+              <br />
+              <span className="text-[#B08D57]">{CUPCAKE_COPY.hero.headlineLine2}</span>
             </h2>
-            <p className="text-base md:text-lg text-[#A9B4C4] max-w-xl mx-auto">
+            <p className="text-sm md:text-base text-[#A9B4C4]/80 max-w-lg mx-auto">
               {CUPCAKE_COPY.hero.sub}
             </p>
           </div>
@@ -369,6 +392,16 @@ export function CupcakeShowcaseSection() {
       <div className="bg-[#0B1220] py-16 lg:py-24">
         <div className="max-w-[800px] mx-auto px-6">
           <WhyBlock heading={CUPCAKE_COPY.why.heading} lines={CUPCAKE_COPY.why.lines} />
+
+          {/* Closer */}
+          <div className="mt-10 text-center">
+            <p className="text-lg md:text-xl font-semibold text-[#F4F6FA]">
+              {CUPCAKE_COPY.closer.line1}
+            </p>
+            <p className="text-lg md:text-xl font-semibold text-[#B08D57]">
+              {CUPCAKE_COPY.closer.line2}
+            </p>
+          </div>
         </div>
       </div>
     </>
