@@ -382,8 +382,36 @@ function ShowDontTellSection() {
 
 // =============================================================================
 // SECTION 4: AI SCHEDULING DEMO
-// "Customers don't just ask questions. They book."
+// "Most websites answer questions. The better ones book the appointment."
 // =============================================================================
+
+// --- EDITABLE COPY ---
+const AI_DEMO_COPY = {
+  headline: "Most websites answer questions.",
+  headlineBrass: "The better ones book the appointment.",
+  subhead: "This is what happens when your site is built to guide customers — not just inform them.",
+  chatLabel: "Live Chat",
+  confirmedLabel: "Appointment Confirmed",
+  // Appointment details
+  appointment: {
+    name: "Destiny",
+    service: "Haircut",
+    day: "Wednesday",
+    dayShort: "WED",
+    dayNumber: "12",
+    time: "12:00 PM",
+    stylist: "Emma",
+  },
+  // Why block
+  why: {
+    heading: "Why we built it this way",
+    lines: [
+      "Missed messages = missed money.",
+      "This flow checks real availability and books the slot on the spot.",
+      "You wake up to confirmed appointments — not DMs to chase.",
+    ],
+  },
+};
 
 interface ChatMessage {
   role: "customer" | "assistant";
@@ -400,17 +428,23 @@ const chatScript: ChatMessage[] = [
   { role: "assistant", text: "Done. You're booked for Wed 12:00 PM with Emma. See you then!" },
 ];
 
-// Calendar days for mini preview
-const days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+// Calendar week row for booked view
+const weekDays = [
+  { day: "Mon", date: 10 },
+  { day: "Tue", date: 11 },
+  { day: "Wed", date: 12 },
+  { day: "Thu", date: 13 },
+  { day: "Fri", date: 14 },
+];
 
 function AISchedulingDemo() {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
   const [messageStep, setMessageStep] = useState(0);
   const [showCalendar, setShowCalendar] = useState(false);
-  const [loopKey, setLoopKey] = useState(0); // Forces re-render on loop
+  const [loopKey, setLoopKey] = useState(0);
 
-  // Single looping animation sequence
+  // Single looping animation sequence with deliberate pause before transition
   useEffect(() => {
     if (!isInView) return;
 
@@ -435,21 +469,23 @@ function AISchedulingDemo() {
     // Message 5: Customer says "Destiny"
     timers.push(setTimeout(() => setMessageStep(5), 7500));
 
-    // Message 6: Confirmation
+    // Message 6: Confirmation - "Done. You're booked..."
     timers.push(setTimeout(() => setMessageStep(6), 9000));
 
-    // Show calendar takeover with booking
+    // PAUSE: Let it breathe ~1100ms after final message, then transition
     timers.push(setTimeout(() => {
       setShowCalendar(true);
-    }, 10000));
+    }, 10100));
 
-    // Hold for 2 seconds, then loop
+    // Hold booked view for 3 seconds, then loop
     timers.push(setTimeout(() => {
-      setLoopKey(k => k + 1); // Trigger re-run
-    }, 13000));
+      setLoopKey(k => k + 1);
+    }, 14100));
 
     return () => timers.forEach(clearTimeout);
   }, [isInView, loopKey]);
+
+  const { appointment } = AI_DEMO_COPY;
 
   return (
     <section ref={sectionRef} className="py-24 lg:py-32 bg-[#0B1220]">
@@ -462,12 +498,12 @@ function AISchedulingDemo() {
           transition={{ duration: 0.5 }}
         >
           <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-bold text-[#F4F6FA] leading-tight mb-6">
-            Most websites answer questions.
+            {AI_DEMO_COPY.headline}
             <br />
-            <span className="text-[#B08D57]">The better ones book the appointment.</span>
+            <span className="text-[#B08D57]">{AI_DEMO_COPY.headlineBrass}</span>
           </h2>
           <p className="text-lg text-[#A9B4C4] max-w-2xl mx-auto">
-            This is what happens when your site is built to guide customers — not just inform them.
+            {AI_DEMO_COPY.subhead}
           </p>
         </motion.div>
 
@@ -489,12 +525,12 @@ function AISchedulingDemo() {
               className="p-6 md:p-8"
               initial={false}
               animate={{ opacity: showCalendar ? 0 : 1 }}
-              transition={{ duration: 0.4 }}
+              transition={{ duration: 0.5, ease: "easeInOut" }}
               style={{ display: showCalendar ? "none" : "block" }}
             >
               <div className="flex items-center gap-2 mb-6">
                 <div className="w-2 h-2 rounded-full bg-[#B08D57]" />
-                <span className="text-xs text-[#A9B4C4]/60 uppercase tracking-wider">Live Chat</span>
+                <span className="text-xs text-[#A9B4C4]/60 uppercase tracking-wider">{AI_DEMO_COPY.chatLabel}</span>
               </div>
 
               <div className="space-y-3 max-w-lg mx-auto">
@@ -506,7 +542,7 @@ function AISchedulingDemo() {
                       className={`flex ${msg.role === "customer" ? "justify-end" : "justify-start"}`}
                       initial={{ opacity: 0, y: 10, scale: 0.95 }}
                       animate={isVisible ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 10, scale: 0.95 }}
-                      transition={{ duration: 0.4, ease: "easeOut" }}
+                      transition={{ duration: 0.35, ease: "easeOut" }}
                     >
                       <div
                         className={`max-w-[85%] rounded-2xl px-4 py-3 ${
@@ -523,7 +559,7 @@ function AISchedulingDemo() {
               </div>
             </motion.div>
 
-            {/* CALENDAR TAKEOVER VIEW */}
+            {/* APPOINTMENT CONFIRMED VIEW */}
             <motion.div
               className="absolute inset-0 p-6 md:p-8 flex flex-col"
               initial={{ opacity: 0, scale: 0.95 }}
@@ -531,85 +567,98 @@ function AISchedulingDemo() {
                 opacity: showCalendar ? 1 : 0,
                 scale: showCalendar ? 1 : 0.95
               }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
+              transition={{ duration: 0.45, ease: "easeInOut" }}
               style={{ pointerEvents: showCalendar ? "auto" : "none" }}
             >
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-2 h-2 rounded-full bg-[#B08D57]" />
-                <span className="text-xs text-[#A9B4C4]/60 uppercase tracking-wider">Booked</span>
+                <svg className="w-4 h-4 text-[#B08D57]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                <span className="text-xs text-[#A9B4C4]/60 uppercase tracking-wider">{AI_DEMO_COPY.confirmedLabel}</span>
               </div>
 
-              {/* Booking confirmation */}
-              <div className="flex-1 flex flex-col items-center justify-center text-center">
+              {/* Calendar-style appointment card */}
+              <div className="flex-1 flex flex-col items-center justify-center">
                 <motion.div
-                  initial={{ scale: 0.8, opacity: 0 }}
+                  className="w-full max-w-sm"
+                  initial={{ scale: 0.9, opacity: 0 }}
                   animate={showCalendar ? { scale: 1, opacity: 1 } : {}}
-                  transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
+                  transition={{ duration: 0.45, delay: 0.1, ease: "easeOut" }}
                 >
-                  <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-[#B08D57]/20 flex items-center justify-center mb-4 mx-auto">
-                    <svg className="w-8 h-8 md:w-10 md:h-10 text-[#B08D57]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
+                  {/* Week row with selected date */}
+                  <div className="flex justify-center gap-2 mb-4">
+                    {weekDays.map((d) => {
+                      const isSelected = d.day === "Wed";
+                      return (
+                        <div
+                          key={d.day}
+                          className={`flex flex-col items-center px-3 py-2 rounded-xl transition-all ${
+                            isSelected
+                              ? "bg-[#B08D57] text-[#0B1220]"
+                              : "bg-white/5 text-[#A9B4C4]/60"
+                          }`}
+                        >
+                          <span className={`text-[10px] uppercase tracking-wider font-medium ${isSelected ? "text-[#0B1220]/70" : ""}`}>
+                            {d.day}
+                          </span>
+                          <span className={`text-lg font-bold ${isSelected ? "" : "text-[#F4F6FA]/40"}`}>
+                            {d.date}
+                          </span>
+                        </div>
+                      );
+                    })}
                   </div>
 
-                  <h3 className="text-2xl md:text-3xl font-bold text-[#F4F6FA] mb-2">
-                    Destiny — Haircut
-                  </h3>
-                  <p className="text-lg text-[#B08D57] font-medium mb-1">
-                    Wednesday at 12:00 PM
-                  </p>
-                  <p className="text-sm text-[#A9B4C4]/70">
-                    with Emma
-                  </p>
-                </motion.div>
+                  {/* Appointment card */}
+                  <motion.div
+                    className="rounded-2xl p-5 md:p-6"
+                    style={{
+                      background: "rgba(255, 255, 255, 0.04)",
+                      border: "1px solid rgba(176, 141, 87, 0.2)",
+                      boxShadow: "0 8px 32px rgba(0, 0, 0, 0.2)",
+                    }}
+                    initial={{ y: 15, opacity: 0 }}
+                    animate={showCalendar ? { y: 0, opacity: 1 } : {}}
+                    transition={{ duration: 0.4, delay: 0.25, ease: "easeOut" }}
+                  >
+                    {/* Time badge */}
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="px-2.5 py-1 rounded-md bg-[#B08D57]/20 text-[#B08D57] text-xs font-semibold">
+                        {appointment.time}
+                      </div>
+                      <div className="w-1 h-1 rounded-full bg-[#A9B4C4]/30" />
+                      <span className="text-xs text-[#A9B4C4]/60">{appointment.day}</span>
+                    </div>
 
-                {/* Mini calendar preview */}
-                <motion.div
-                  className="mt-6 bg-white/5 rounded-xl p-4 max-w-xs w-full"
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={showCalendar ? { y: 0, opacity: 1 } : {}}
-                  transition={{ duration: 0.4, delay: 0.4 }}
-                >
-                  <div className="grid grid-cols-5 gap-1 text-center mb-2">
-                    {days.map((day) => (
-                      <div key={day} className="text-[10px] text-[#A9B4C4]/50 font-medium">
-                        {day}
+                    {/* Service & Name */}
+                    <h3 className="text-xl md:text-2xl font-bold text-[#F4F6FA] mb-1">
+                      {appointment.service}
+                    </h3>
+                    <p className="text-base text-[#A9B4C4]/80 mb-3">
+                      {appointment.name}
+                    </p>
+
+                    {/* Stylist */}
+                    <div className="flex items-center gap-2 pt-3 border-t border-white/5">
+                      <div className="w-7 h-7 rounded-full bg-[#B08D57]/20 flex items-center justify-center">
+                        <span className="text-xs font-semibold text-[#B08D57]">
+                          {appointment.stylist.charAt(0)}
+                        </span>
                       </div>
-                    ))}
-                  </div>
-                  <div className="grid grid-cols-5 gap-1">
-                    {days.map((day) => (
-                      <div
-                        key={day}
-                        className={`h-8 rounded-md flex items-center justify-center ${
-                          day === "Wed"
-                            ? "bg-[#B08D57] text-[#0B1220]"
-                            : day === "Tue" || day === "Thu"
-                            ? "bg-white/10"
-                            : "bg-white/5"
-                        }`}
-                      >
-                        {day === "Wed" && (
-                          <span className="text-[9px] font-semibold">12PM</span>
-                        )}
-                      </div>
-                    ))}
-                  </div>
+                      <span className="text-sm text-[#A9B4C4]/70">with {appointment.stylist}</span>
+                    </div>
+                  </motion.div>
                 </motion.div>
               </div>
             </motion.div>
           </div>
         </motion.div>
 
-        {/* Tiny line under demo */}
-        <motion.p
-          className="text-center text-sm text-[#A9B4C4]/70 mt-8"
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.4, delay: 0.5 }}
-        >
-          This isn&apos;t a concept. This is how our builds actually work.
-        </motion.p>
+        {/* Why block */}
+        <WhyBlock
+          heading={AI_DEMO_COPY.why.heading}
+          lines={AI_DEMO_COPY.why.lines}
+        />
       </Container>
     </section>
   );
