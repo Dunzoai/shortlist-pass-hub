@@ -203,23 +203,22 @@ export function CupcakeShowcaseSection() {
   if (prefersReducedMotion) {
     return (
       <>
-        {/* Hero */}
-        <section className="bg-[#0B1220] pt-16 pb-8 lg:pt-24 lg:pb-12">
-          <div className="max-w-[800px] mx-auto px-6 text-center">
-            <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-bold text-[#F4F6FA] leading-tight mb-6">
-              {CUPCAKE_COPY.hero.headline}
-            </h2>
-            <p className="text-lg md:text-xl text-[#A9B4C4] max-w-2xl mx-auto">
-              {CUPCAKE_COPY.hero.sub}
-            </p>
-          </div>
-        </section>
-
-        {/* Cupcake with manual controls */}
+        {/* Combined Hero + Cupcake with manual controls */}
         <section className="bg-[#0B1220] py-16 lg:py-24">
           <div className="max-w-[800px] mx-auto px-6">
+            {/* Hero text */}
+            <div className="text-center mb-8 lg:mb-10">
+              <h2 className="text-[28px] md:text-[36px] lg:text-[44px] font-bold text-[#F4F6FA] leading-tight mb-4">
+                {CUPCAKE_COPY.hero.headline}
+              </h2>
+              <p className="text-base md:text-lg text-[#A9B4C4] max-w-xl mx-auto">
+                {CUPCAKE_COPY.hero.sub}
+              </p>
+            </div>
+
+            {/* Cupcake */}
             <div className="flex flex-col items-center mb-16">
-              <div className="relative w-[280px] h-[320px] md:w-[340px] md:h-[400px]">
+              <div className="relative w-[220px] h-[260px] md:w-[280px] md:h-[340px]">
                 {CUPCAKE_IMAGES.map((src, index) => (
                   <div
                     key={src}
@@ -236,10 +235,10 @@ export function CupcakeShowcaseSection() {
                   </div>
                 ))}
               </div>
-              <p className="mt-6 text-lg md:text-xl text-[#F4F6FA] font-medium text-center">
+              <p className="mt-4 text-base md:text-lg text-[#F4F6FA] font-medium text-center">
                 {CUPCAKE_COPY.states[activeIndex]}
               </p>
-              <div className="flex items-center gap-2 mt-6">
+              <div className="flex items-center gap-2 mt-4">
                 {CUPCAKE_IMAGES.map((_, index) => (
                   <div
                     key={index}
@@ -279,39 +278,26 @@ export function CupcakeShowcaseSection() {
 
   return (
     <>
-      {/* Hero Section - above cupcake */}
-      <section className="bg-[#0B1220] pt-16 pb-8 lg:pt-24 lg:pb-12">
-        <div className="max-w-[800px] mx-auto px-6 text-center">
-          <motion.h2
-            className="text-[32px] md:text-[44px] lg:text-[52px] font-bold text-[#F4F6FA] leading-tight mb-6"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.5 }}
-          >
-            {CUPCAKE_COPY.hero.headline}
-          </motion.h2>
-          <motion.p
-            className="text-lg md:text-xl text-[#A9B4C4] max-w-2xl mx-auto"
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
-            {CUPCAKE_COPY.hero.sub}
-          </motion.p>
-        </div>
-      </section>
-
-      {/* Cupcake Build Section */}
+      {/* Combined Hero + Cupcake Section - all visible when locked */}
       <section
         ref={sectionRef}
-        className="relative bg-[#0B1220] min-h-screen flex flex-col items-center justify-center py-16"
+        className="relative bg-[#0B1220] min-h-screen flex flex-col items-center justify-center py-12 lg:py-16"
       >
         <div className="w-full max-w-[800px] mx-auto px-6">
+          {/* Hero text - stays visible during build */}
+          <div className="text-center mb-8 lg:mb-10">
+            <h2 className="text-[28px] md:text-[36px] lg:text-[44px] font-bold text-[#F4F6FA] leading-tight mb-4">
+              {CUPCAKE_COPY.hero.headline}
+            </h2>
+            <p className="text-base md:text-lg text-[#A9B4C4] max-w-xl mx-auto">
+              {CUPCAKE_COPY.hero.sub}
+            </p>
+          </div>
+
+          {/* Cupcake build area */}
           <div className="flex flex-col items-center">
             {/* Stacked cupcake images */}
-            <div className="relative w-[280px] h-[320px] md:w-[340px] md:h-[400px]">
+            <div className="relative w-[220px] h-[260px] md:w-[280px] md:h-[340px]">
               {CUPCAKE_IMAGES.map((src, index) => (
                 <motion.div
                   key={src}
@@ -338,7 +324,7 @@ export function CupcakeShowcaseSection() {
             <AnimatePresence mode="wait">
               <motion.p
                 key={activeIndex}
-                className="mt-6 text-lg md:text-xl text-[#F4F6FA] font-medium text-center"
+                className="mt-4 text-base md:text-lg text-[#F4F6FA] font-medium text-center"
                 initial={{ opacity: 0, y: 3 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -3 }}
@@ -349,7 +335,7 @@ export function CupcakeShowcaseSection() {
             </AnimatePresence>
 
             {/* Progress dots */}
-            <div className="flex items-center gap-2 mt-6">
+            <div className="flex items-center gap-2 mt-4">
               {CUPCAKE_IMAGES.map((_, index) => (
                 <div
                   key={index}
@@ -367,7 +353,7 @@ export function CupcakeShowcaseSection() {
             {/* Scroll hint */}
             {isLocked && activeIndex < TOTAL_STATES - 1 && (
               <motion.p
-                className="mt-8 text-xs text-[#A9B4C4]/50"
+                className="mt-6 text-xs text-[#A9B4C4]/50"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
