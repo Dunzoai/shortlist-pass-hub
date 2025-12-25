@@ -289,59 +289,42 @@ function TemplatesSuckSection() {
 }
 
 // =============================================================================
-// SECTION 3: SHOW DON'T TELL
-// Demo rail with interactive panels
+// SECTION 3: TALK VS WALK (Intro before demos)
+// Static, calm pause before the interactive demos
 // =============================================================================
 
-function ShowDontTellSection() {
-  const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
-
+function TalkVsWalkSection() {
   return (
-    <section
-      ref={sectionRef}
-      className="bg-gradient-to-b from-[#0B1220] to-[#0d1627]"
-    >
-      {/* Brass gradient strip with noise behind header */}
-      <div className="relative py-20 lg:py-28">
-        {/* Brass gradient background */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(135deg, #8B7355 0%, #B08D57 25%, #D4B87F 50%, #B08D57 75%, #8B7355 100%)",
-          }}
-        />
-        {/* Noise texture overlay */}
-        <div
-          className="absolute inset-0 opacity-[0.15] pointer-events-none"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-          }}
-        />
-        {/* Subtle darkening overlay for depth */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/10" />
+    <section className="py-20 lg:py-28 bg-[#0d1627]">
+      <Container>
+        <div className="max-w-2xl mx-auto text-center">
+          {/* Headline - Two lines, static, no animation */}
+          <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-bold text-[#F4F6FA] leading-tight mb-6">
+            Everyone explains.
+            <br />
+            <span className="text-[#B08D57]">Very few execute.</span>
+          </h2>
 
-        <Container>
-          {/* Section header */}
-          <motion.div
-            className="relative z-10 text-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5 }}
-          >
-            <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-bold text-[#0B1220] leading-tight mb-6">
-              So instead of explaining it — we&apos;ll show you.
-            </h2>
-            <p className="text-lg text-[#0B1220]/70 max-w-2xl mx-auto">
-              Here&apos;s what becomes possible when your website or app is built
-              around how your business actually works.
-            </p>
-          </motion.div>
-        </Container>
-      </div>
+          {/* Subhead */}
+          <p className="text-lg md:text-xl text-[#A9B4C4] mb-4">
+            So instead of telling you what we do, we&apos;ll show you what your business can have.
+          </p>
 
-      {/* Demo panels section */}
+          {/* Optional clarifier */}
+          <p className="text-sm text-[#A9B4C4]/60">
+            Built around how real businesses actually work — not templates or assumptions.
+          </p>
+        </div>
+      </Container>
+    </section>
+  );
+}
+
+// Demo panels container (follows TalkVsWalk intro)
+function ShowDontTellSection() {
+  return (
+    <section className="bg-[#0B1220]">
+      {/* Demo panels */}
       <div className="py-24 lg:py-32">
         <div className="space-y-20 lg:space-y-28">
           {/* DEMO A: Food Truck Timeline (CENTERPIECE) */}
@@ -848,6 +831,7 @@ export default function DigitalPage() {
     <main className="pt-16 overflow-x-clip">
       <HeroSection />
       <TemplatesSuckSection />
+      <TalkVsWalkSection />
       <ShowDontTellSection />
       <CupcakeShowcaseSection />
       <AISchedulingDemo />

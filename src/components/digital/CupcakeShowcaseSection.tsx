@@ -392,16 +392,6 @@ export function CupcakeShowcaseSection() {
       <div className="bg-[#0B1220] py-16 lg:py-24">
         <div className="max-w-[800px] mx-auto px-6">
           <WhyBlock heading={CUPCAKE_COPY.why.heading} lines={CUPCAKE_COPY.why.lines} />
-
-          {/* Closer */}
-          <div className="mt-10 text-center">
-            <p className="text-lg md:text-xl font-semibold text-[#F4F6FA]">
-              {CUPCAKE_COPY.closer.line1}
-            </p>
-            <p className="text-lg md:text-xl font-semibold text-[#B08D57]">
-              {CUPCAKE_COPY.closer.line2}
-            </p>
-          </div>
         </div>
       </div>
     </>
