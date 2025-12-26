@@ -32,7 +32,7 @@ function HeroSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
-            className="text-[28px] md:text-[36px] lg:text-[44px] font-medium text-[#1A1F24] leading-[1.4] md:leading-[1.45]"
+            className="text-[32px] md:text-[42px] lg:text-[52px] font-semibold text-[#1A1F24] leading-[1.12] tracking-[-0.02em]"
           >
             We build websites and apps for small businesses that help customers trust you and choose you, not cookie cutter, not like everyone else, because your business deserves to stand out.
           </motion.h1>
