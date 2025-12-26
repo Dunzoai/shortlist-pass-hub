@@ -35,15 +35,15 @@ function ScrollingBelt() {
   }, []);
 
   return (
-    <div className="relative overflow-hidden h-14 bg-gradient-to-r from-[#b39347] via-[#d4b87f] to-[#b39347] flex items-center">
+    <div className="relative overflow-hidden h-14 bg-gradient-to-r from-[#2B3A44] via-[#3A4D5A] to-[#2B3A44] flex items-center">
       <div
         className="flex items-center whitespace-nowrap animate-scroll"
         style={{
           animationDuration: isMobile ? '16s' : '17.25s'
         }}
       >
-        <span className="px-4 text-xl font-black tracking-[0.1em] text-[#1a2332] uppercase leading-none">{beltText} •</span>
-        <span className="px-4 text-xl font-black tracking-[0.1em] text-[#1a2332] uppercase leading-none">{beltText} •</span>
+        <span className="px-4 text-xl font-black tracking-[0.1em] text-[#1A1F24] uppercase leading-none">{beltText} •</span>
+        <span className="px-4 text-xl font-black tracking-[0.1em] text-[#1A1F24] uppercase leading-none">{beltText} •</span>
       </div>
     </div>
   );
@@ -67,10 +67,10 @@ function ServiceTile({ title, subhead, description, href, index }: ServiceTilePr
       transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
     >
       <Link href={href} className="group block h-full">
-        <div className="h-full p-8 bg-[#0F1A2B] border border-white/10 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#B08D57]/30 hover:shadow-lg hover:shadow-[#B08D57]/5 hover:bg-[#B08D57]">
-          <h3 className="text-2xl font-semibold text-[#F4F6FA] mb-2 transition-colors duration-300 group-hover:text-[#0B1220]">{title}</h3>
-          <p className="text-sm font-medium text-[#B08D57] mb-4 transition-colors duration-300 group-hover:text-[#0B1220]">{subhead}</p>
-          <p className="text-base text-[#A9B4C4] leading-relaxed transition-colors duration-300 group-hover:text-[#0B1220]">{description}</p>
+        <div className="h-full p-8 bg-[#E0DCD7] border border-white/10 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#2B3A44]/30 hover:shadow-lg hover:shadow-[#2B3A44]/5 hover:bg-[#2B3A44]">
+          <h3 className="text-2xl font-semibold text-[#1A1F24] mb-2 transition-colors duration-300 group-hover:text-[#F4F1EC]">{title}</h3>
+          <p className="text-sm font-medium text-[#2B3A44] mb-4 transition-colors duration-300 group-hover:text-[#F4F1EC]">{subhead}</p>
+          <p className="text-base text-[#5A6570] leading-relaxed transition-colors duration-300 group-hover:text-[#F4F1EC]">{description}</p>
         </div>
       </Link>
     </motion.div>
@@ -92,11 +92,11 @@ function HelpCard({ icon, title, description, index }: HelpCardProps) {
       whileInView="visible"
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
-      className="group p-6 bg-[#0F1A2B] border border-[#1a2332]/30 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#0B1220] hover:shadow-lg hover:shadow-[#0B1220]/20"
+      className="group p-6 bg-[#E0DCD7] border border-[#1A1F24]/30 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#F4F1EC] hover:shadow-lg hover:shadow-[#F4F1EC]/20"
     >
-      <div className="mb-4 text-[#d4b87f]">{icon}</div>
-      <h3 className="text-xl font-semibold text-[#F4F6FA] mb-3">{title}</h3>
-      <p className="text-base text-[#A9B4C4] leading-relaxed">{description}</p>
+      <div className="mb-4 text-[#3A4D5A]">{icon}</div>
+      <h3 className="text-xl font-semibold text-[#1A1F24] mb-3">{title}</h3>
+      <p className="text-base text-[#5A6570] leading-relaxed">{description}</p>
     </motion.div>
   );
 }
@@ -142,7 +142,7 @@ function HowWeHelp() {
   ];
 
   return (
-    <section className="py-24 bg-gradient-to-b from-[#b39347] via-[#d4b87f] to-[#b39347]">
+    <section className="py-24 bg-gradient-to-b from-[#2B3A44] via-[#3A4D5A] to-[#2B3A44]">
       <Container>
         <motion.div
           variants={staggerContainer}
@@ -153,7 +153,7 @@ function HowWeHelp() {
           <motion.h2
             variants={fadeUpVariant}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="text-[32px] md:text-[40px] lg:text-[48px] font-semibold text-[#0B1220] leading-[1.05] mb-12 text-center"
+            className="text-[32px] md:text-[40px] lg:text-[48px] font-semibold text-[#F4F1EC] leading-[1.05] mb-12 text-center"
           >
             How we help
           </motion.h2>
@@ -167,7 +167,7 @@ function HowWeHelp() {
           <motion.p
             variants={fadeUpVariant}
             transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
-            className="text-center text-sm text-[#1a2332] font-medium"
+            className="text-center text-sm text-[#1A1F24] font-medium"
           >
             Each service dives deeper — start where you need help most.
           </motion.p>
@@ -193,7 +193,7 @@ function ProofStrip() {
           <motion.h2
             variants={fadeUpVariant}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="text-3xl font-semibold text-[#F4F6FA] mb-8"
+            className="text-3xl font-semibold text-[#1A1F24] mb-8"
           >
             Built for real business owners.
           </motion.h2>
@@ -207,7 +207,7 @@ function ProofStrip() {
             {chips.map((chip) => (
               <span
                 key={chip}
-                className="px-3 py-1.5 text-xs text-[#A9B4C4]/70 bg-[#0F1A2B] border border-white/5 rounded-full"
+                className="px-3 py-1.5 text-xs text-[#5A6570]/70 bg-[#E0DCD7] border border-white/5 rounded-full"
               >
                 {chip}
               </span>
@@ -218,7 +218,7 @@ function ProofStrip() {
           <motion.p
             variants={fadeUpVariant}
             transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
-            className="text-base text-[#A9B4C4]/80"
+            className="text-base text-[#5A6570]/80"
           >
             Designed around how customers actually behave.
           </motion.p>
@@ -234,7 +234,7 @@ function Footer() {
   return (
     <footer className="border-t border-white/5 py-12">
       <Container>
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[#A9B4C4]">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[#5A6570]">
           <span>&copy; {year} Shortlist Pass</span>
           <span>hello@shortlistpass.com</span>
         </div>
@@ -278,7 +278,7 @@ export default function Home() {
         }}
       >
         {/* Dark overlay for text readability */}
-        <div className="absolute inset-0 bg-[#0B1220]/70 -z-5" />
+        <div className="absolute inset-0 bg-[#F4F1EC]/70 -z-5" />
         <Container>
           <div className="relative z-10">
             <motion.div
@@ -290,7 +290,7 @@ export default function Home() {
               <motion.h1
                 variants={fadeUpVariant}
                 transition={{ duration: 0.5, ease: "easeOut" }}
-                className="text-[40px] md:text-[56px] lg:text-[64px] font-semibold text-[#F4F6FA] leading-[1.05] mb-6"
+                className="text-[40px] md:text-[56px] lg:text-[64px] font-semibold text-[#1A1F24] leading-[1.05] mb-6"
               >
                 <span className="block">Look legit.</span>
                 <span className="block">
@@ -318,7 +318,7 @@ export default function Home() {
                         cy="40"
                         rx="115"
                         ry="42"
-                        stroke="#B08D57"
+                        stroke="#2B3A44"
                         strokeWidth="3.5"
                         strokeLinecap="round"
                         fill="none"
@@ -334,7 +334,7 @@ export default function Home() {
               <motion.p
                 variants={fadeUpVariant}
                 transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-                className="text-lg lg:text-xl text-[#A9B4C4] max-w-[720px] mx-auto"
+                className="text-lg lg:text-xl text-[#5A6570] max-w-[720px] mx-auto"
               >
                 Websites, social media, SmartPages, and custom apps that make customers pick you — not the place down the street.
               </motion.p>

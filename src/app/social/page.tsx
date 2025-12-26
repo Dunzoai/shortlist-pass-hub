@@ -51,7 +51,7 @@ function HeroSection() {
   return (
     <section className="relative py-28 lg:py-36 overflow-hidden">
       {/* Dark navy background */}
-      <div className="absolute inset-0 bg-[#0B1220]" />
+      <div className="absolute inset-0 bg-[#F4F1EC]" />
 
       {/* Animated grain/noise layer */}
       <div
@@ -89,7 +89,7 @@ function HeroSection() {
           <motion.h1
             variants={fadeUpVariant}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="text-[42px] md:text-[56px] lg:text-[64px] font-semibold text-[#F4F6FA] leading-[1.08] mb-6"
+            className="text-[42px] md:text-[56px] lg:text-[64px] font-semibold text-[#1A1F24] leading-[1.08] mb-6"
           >
             Social that actually shows up.
           </motion.h1>
@@ -98,7 +98,7 @@ function HeroSection() {
           <motion.p
             variants={fadeUpVariant}
             transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-            className="text-lg md:text-xl text-[#A9B4C4] leading-relaxed max-w-2xl mx-auto"
+            className="text-lg md:text-xl text-[#5A6570] leading-relaxed max-w-2xl mx-auto"
           >
             Get consistent, scroll-stopping content — without living on social media.
           </motion.p>
@@ -111,13 +111,13 @@ function HeroSection() {
           >
             <a
               href="#how-it-works"
-              className="inline-flex items-center justify-center px-7 py-3.5 text-sm font-medium bg-[#B08D57] text-[#0B1220] rounded-full hover:bg-[#c9a46a] transition-all duration-300"
+              className="inline-flex items-center justify-center px-7 py-3.5 text-sm font-medium bg-[#2B3A44] text-[#F4F1EC] rounded-full hover:bg-[#1F2D35] transition-all duration-300"
             >
               See how it works
             </a>
             <a
               href="#examples"
-              className="text-sm text-[#A9B4C4] hover:text-[#F4F6FA] transition-colors duration-300"
+              className="text-sm text-[#5A6570] hover:text-[#1A1F24] transition-colors duration-300"
             >
               View examples
             </a>
@@ -136,20 +136,20 @@ function MovingBelt() {
   const beltText = "SCROLL-STOPPING CONTENT • POSTS THAT SOUND LIKE YOU • SHOW UP WHERE IT MATTERS • BUILT FOR REAL BUSINESSES • NO TREND CHASING • CONSISTENT VISIBILITY • CONTENT WITH A POINT";
 
   return (
-    <div className="relative overflow-hidden h-14 bg-gradient-to-r from-[#b39347] via-[#d4b87f] to-[#b39347] flex items-center">
+    <div className="relative overflow-hidden h-14 bg-gradient-to-r from-[#2B3A44] via-[#3A4D5A] to-[#2B3A44] flex items-center">
       <div
         className="flex items-center whitespace-nowrap animate-scroll-social"
         style={{
           animation: "scroll-social 20s linear infinite",
         }}
       >
-        <span className="px-4 text-base font-bold tracking-[0.15em] text-[#0B1220] uppercase leading-none">
+        <span className="px-4 text-base font-bold tracking-[0.15em] text-[#F4F1EC] uppercase leading-none">
           {beltText} •
         </span>
-        <span className="px-4 text-base font-bold tracking-[0.15em] text-[#0B1220] uppercase leading-none">
+        <span className="px-4 text-base font-bold tracking-[0.15em] text-[#F4F1EC] uppercase leading-none">
           {beltText} •
         </span>
-        <span className="px-4 text-base font-bold tracking-[0.15em] text-[#0B1220] uppercase leading-none">
+        <span className="px-4 text-base font-bold tracking-[0.15em] text-[#F4F1EC] uppercase leading-none">
           {beltText} •
         </span>
       </div>
@@ -184,13 +184,13 @@ function AnimatedFeedVisualization() {
   return (
     <div className="relative h-[320px] w-full max-w-[280px] mx-auto overflow-hidden">
       {/* Feed container */}
-      <div className="absolute inset-0 rounded-xl bg-[#0F1A2B]/50 border border-white/5">
+      <div className="absolute inset-0 rounded-xl bg-[#E0DCD7]/50 border border-white/5">
         {posts.map((post) => (
           <motion.div
             key={post.id}
             className={`absolute left-4 right-4 h-16 rounded-lg ${
               post.highlight
-                ? "bg-gradient-to-r from-[#B08D57]/30 to-[#B08D57]/10 border border-[#B08D57]/40"
+                ? "bg-gradient-to-r from-[#2B3A44]/30 to-[#2B3A44]/10 border border-[#2B3A44]/40"
                 : "bg-white/5 border border-white/5"
             }`}
             initial={{ y: 280, opacity: 0 }}
@@ -208,14 +208,14 @@ function AnimatedFeedVisualization() {
             {/* Post content placeholder */}
             <div className="p-3 h-full flex items-center gap-3">
               <div className={`w-8 h-8 rounded-full flex-shrink-0 ${
-                post.highlight ? "bg-[#B08D57]/40" : "bg-white/10"
+                post.highlight ? "bg-[#2B3A44]/40" : "bg-white/10"
               }`} />
               <div className="flex-1 space-y-2">
                 <div className={`h-2 rounded ${
-                  post.highlight ? "bg-[#B08D57]/40 w-3/4" : "bg-white/10 w-2/3"
+                  post.highlight ? "bg-[#2B3A44]/40 w-3/4" : "bg-white/10 w-2/3"
                 }`} />
                 <div className={`h-2 rounded ${
-                  post.highlight ? "bg-[#B08D57]/20 w-1/2" : "bg-white/5 w-1/2"
+                  post.highlight ? "bg-[#2B3A44]/20 w-1/2" : "bg-white/5 w-1/2"
                 }`} />
               </div>
             </div>
@@ -224,9 +224,9 @@ function AnimatedFeedVisualization() {
       </div>
 
       {/* Gradient fade at top */}
-      <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-[#0B1220] to-transparent pointer-events-none z-10" />
+      <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-[#F4F1EC] to-transparent pointer-events-none z-10" />
       {/* Gradient fade at bottom */}
-      <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#0B1220] to-transparent pointer-events-none z-10" />
+      <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#F4F1EC] to-transparent pointer-events-none z-10" />
     </div>
   );
 }
@@ -245,7 +245,7 @@ function ProblemSection() {
           <motion.h2
             variants={fadeUpVariant}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="text-[28px] md:text-[36px] lg:text-[42px] font-semibold text-[#F4F6FA] leading-tight mb-12 text-center"
+            className="text-[28px] md:text-[36px] lg:text-[42px] font-semibold text-[#1A1F24] leading-tight mb-12 text-center"
           >
             Most businesses don&apos;t lose on social — they disappear.
           </motion.h2>
@@ -258,12 +258,12 @@ function ProblemSection() {
               transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
               className="space-y-4"
             >
-              <p className="text-base md:text-lg text-[#A9B4C4]">Posting when you remember.</p>
-              <p className="text-base md:text-lg text-[#A9B4C4]">Guessing what works.</p>
-              <p className="text-base md:text-lg text-[#A9B4C4]">Getting buried by the algorithm.</p>
-              <p className="text-base md:text-lg text-[#A9B4C4]">Too busy to do this right.</p>
+              <p className="text-base md:text-lg text-[#5A6570]">Posting when you remember.</p>
+              <p className="text-base md:text-lg text-[#5A6570]">Guessing what works.</p>
+              <p className="text-base md:text-lg text-[#5A6570]">Getting buried by the algorithm.</p>
+              <p className="text-base md:text-lg text-[#5A6570]">Too busy to do this right.</p>
 
-              <p className="text-base md:text-lg text-[#F4F6FA] font-medium pt-4">
+              <p className="text-base md:text-lg text-[#1A1F24] font-medium pt-4">
                 And while you&apos;re busy running your business, someone else is showing up consistently.
               </p>
             </motion.div>
@@ -345,8 +345,8 @@ function CarouselPlaceholder({ slide }: { slide: CarouselSlide }) {
             <div className="w-full h-12 bg-white/10 rounded mb-4 flex items-center justify-center text-white/40 text-xs">
               Generic template text...
             </div>
-            <div className="text-sm text-[#B08D57] mb-2">AFTER</div>
-            <div className="w-full h-12 bg-[#B08D57]/20 rounded flex items-center justify-center text-[#B08D57] text-xs font-medium">
+            <div className="text-sm text-[#2B3A44] mb-2">AFTER</div>
+            <div className="w-full h-12 bg-[#2B3A44]/20 rounded flex items-center justify-center text-[#2B3A44] text-xs font-medium">
               Your authentic voice
             </div>
           </div>
@@ -369,15 +369,15 @@ function CarouselPlaceholder({ slide }: { slide: CarouselSlide }) {
   };
 
   return (
-    <div className="relative w-[280px] md:w-[320px] h-[380px] md:h-[420px] bg-gradient-to-br from-[#1a2332] to-[#0F1A2B] rounded-2xl border border-white/10 overflow-hidden flex-shrink-0 transition-all duration-300 hover:-translate-y-1 hover:border-[#B08D57]/30 hover:shadow-lg hover:shadow-[#B08D57]/10">
+    <div className="relative w-[280px] md:w-[320px] h-[380px] md:h-[420px] bg-gradient-to-br from-[#1A1F24] to-[#E0DCD7] rounded-2xl border border-white/10 overflow-hidden flex-shrink-0 transition-all duration-300 hover:-translate-y-1 hover:border-[#2B3A44]/30 hover:shadow-lg hover:shadow-[#2B3A44]/10">
       {getPlaceholderContent()}
 
       {/* Labels */}
       <div className="absolute bottom-4 left-4 right-4">
-        <span className="inline-block px-3 py-1.5 text-xs font-medium text-[#F4F6FA] bg-white/10 border border-white/10 rounded-full mb-2">
+        <span className="inline-block px-3 py-1.5 text-xs font-medium text-[#1A1F24] bg-white/10 border border-white/10 rounded-full mb-2">
           {slide.industry}
         </span>
-        <p className="text-sm text-[#A9B4C4]">{slide.caption}</p>
+        <p className="text-sm text-[#5A6570]">{slide.caption}</p>
       </div>
     </div>
   );
@@ -407,7 +407,7 @@ function WorkCarousel() {
   };
 
   return (
-    <section id="examples" className="py-20 lg:py-28 bg-gradient-to-b from-[#0B1220] via-[#0a0f1a] to-[#0B1220]">
+    <section id="examples" className="py-20 lg:py-28 bg-gradient-to-b from-[#F4F1EC] via-[#E0DCD7] to-[#F4F1EC]">
       <Container>
         <motion.div
           initial="hidden"
@@ -420,7 +420,7 @@ function WorkCarousel() {
           <motion.p
             variants={fadeUpVariant}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="text-sm font-medium text-[#B08D57] uppercase tracking-wider text-center mb-3"
+            className="text-sm font-medium text-[#2B3A44] uppercase tracking-wider text-center mb-3"
           >
             A glimpse at what showing up looks like
           </motion.p>
@@ -428,7 +428,7 @@ function WorkCarousel() {
           <motion.h2
             variants={fadeUpVariant}
             transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-            className="text-[28px] md:text-[36px] font-semibold text-[#F4F6FA] leading-tight text-center"
+            className="text-[28px] md:text-[36px] font-semibold text-[#1A1F24] leading-tight text-center"
           >
             Content that actually gets seen.
           </motion.h2>
@@ -442,10 +442,10 @@ function WorkCarousel() {
           <button
             onClick={() => scroll("left")}
             disabled={!canScrollLeft}
-            className={`absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-[#0F1A2B] border border-white/10 flex items-center justify-center transition-all duration-300 ${
+            className={`absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-[#E0DCD7] border border-white/10 flex items-center justify-center transition-all duration-300 ${
               canScrollLeft
-                ? "hover:bg-[#B08D57] hover:border-[#B08D57] text-[#A9B4C4] hover:text-[#0B1220]"
-                : "opacity-30 cursor-not-allowed text-[#A9B4C4]/50"
+                ? "hover:bg-[#2B3A44] hover:border-[#2B3A44] text-[#5A6570] hover:text-[#F4F1EC]"
+                : "opacity-30 cursor-not-allowed text-[#5A6570]/50"
             }`}
           >
             <ChevronLeftIcon className="w-5 h-5" />
@@ -453,10 +453,10 @@ function WorkCarousel() {
           <button
             onClick={() => scroll("right")}
             disabled={!canScrollRight}
-            className={`absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-[#0F1A2B] border border-white/10 flex items-center justify-center transition-all duration-300 ${
+            className={`absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-[#E0DCD7] border border-white/10 flex items-center justify-center transition-all duration-300 ${
               canScrollRight
-                ? "hover:bg-[#B08D57] hover:border-[#B08D57] text-[#A9B4C4] hover:text-[#0B1220]"
-                : "opacity-30 cursor-not-allowed text-[#A9B4C4]/50"
+                ? "hover:bg-[#2B3A44] hover:border-[#2B3A44] text-[#5A6570] hover:text-[#F4F1EC]"
+                : "opacity-30 cursor-not-allowed text-[#5A6570]/50"
             }`}
           >
             <ChevronRightIcon className="w-5 h-5" />
@@ -573,15 +573,15 @@ function HelpCard({ card, index }: { card: HelpCardData; index: number }) {
       whileInView="visible"
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
-      className="group p-7 bg-[#0B1220] border border-[#0B1220]/50 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#0B1220]/20"
+      className="group p-7 bg-[#F4F1EC] border border-[#F4F1EC]/50 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#F4F1EC]/20"
     >
-      <div className="mb-5 text-[#d4b87f] transition-colors duration-300 group-hover:text-[#B08D57]">
+      <div className="mb-5 text-[#3A4D5A] transition-colors duration-300 group-hover:text-[#2B3A44]">
         {card.icon}
       </div>
-      <h3 className="text-xl font-semibold text-[#F4F6FA] mb-3">
+      <h3 className="text-xl font-semibold text-[#1A1F24] mb-3">
         {card.headline}
       </h3>
-      <p className="text-base text-[#A9B4C4] leading-relaxed">
+      <p className="text-base text-[#5A6570] leading-relaxed">
         {card.copy}
       </p>
     </motion.div>
@@ -590,7 +590,7 @@ function HelpCard({ card, index }: { card: HelpCardData; index: number }) {
 
 function HowWeHelpSection() {
   return (
-    <section id="how-it-works" className="relative py-20 lg:py-28 bg-gradient-to-b from-[#a38542] via-[#d4b87f] to-[#c9a46a]">
+    <section id="how-it-works" className="relative py-20 lg:py-28 bg-gradient-to-b from-[#2B3A44] via-[#3A4D5A] to-[#1F2D35]">
       {/* Soft shadow at top for separation */}
       <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-black/10 to-transparent pointer-events-none" />
 
@@ -604,7 +604,7 @@ function HowWeHelpSection() {
           <motion.h2
             variants={fadeUpVariant}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="text-[28px] md:text-[36px] font-semibold text-[#0B1220] leading-tight text-center mb-12"
+            className="text-[28px] md:text-[36px] font-semibold text-[#F4F1EC] leading-tight text-center mb-12"
           >
             How we actually help
           </motion.h2>
@@ -626,7 +626,7 @@ function HowWeHelpSection() {
 
 function SystemSection() {
   return (
-    <section className="py-20 lg:py-28 bg-[#0B1220]">
+    <section className="py-20 lg:py-28 bg-[#F4F1EC]">
       <Container>
         <motion.div
           initial="hidden"
@@ -643,14 +643,14 @@ function SystemSection() {
           >
             {/* Social */}
             <div className="flex items-center">
-              <div className="px-6 py-3 bg-[#0F1A2B] border border-white/10 rounded-xl">
-                <span className="text-base font-semibold text-[#F4F6FA] uppercase tracking-wide">Social</span>
+              <div className="px-6 py-3 bg-[#E0DCD7] border border-white/10 rounded-xl">
+                <span className="text-base font-semibold text-[#1A1F24] uppercase tracking-wide">Social</span>
               </div>
-              <svg className="w-12 h-6 text-[#B08D57] hidden md:block" viewBox="0 0 48 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg className="w-12 h-6 text-[#2B3A44] hidden md:block" viewBox="0 0 48 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="0" y1="12" x2="40" y2="12" />
                 <polyline points="32 6 40 12 32 18" />
               </svg>
-              <svg className="w-6 h-12 text-[#B08D57] md:hidden" viewBox="0 0 24 48" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg className="w-6 h-12 text-[#2B3A44] md:hidden" viewBox="0 0 24 48" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="12" y1="0" x2="12" y2="40" />
                 <polyline points="6 32 12 40 18 32" />
               </svg>
@@ -658,22 +658,22 @@ function SystemSection() {
 
             {/* One Clear Page */}
             <div className="flex items-center">
-              <div className="px-6 py-3 bg-[#B08D57]/20 border border-[#B08D57]/40 rounded-xl">
-                <span className="text-base font-semibold text-[#B08D57] uppercase tracking-wide">One Clear Page</span>
+              <div className="px-6 py-3 bg-[#2B3A44]/20 border border-[#2B3A44]/40 rounded-xl">
+                <span className="text-base font-semibold text-[#2B3A44] uppercase tracking-wide">One Clear Page</span>
               </div>
-              <svg className="w-12 h-6 text-[#B08D57] hidden md:block" viewBox="0 0 48 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg className="w-12 h-6 text-[#2B3A44] hidden md:block" viewBox="0 0 48 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="0" y1="12" x2="40" y2="12" />
                 <polyline points="32 6 40 12 32 18" />
               </svg>
-              <svg className="w-6 h-12 text-[#B08D57] md:hidden" viewBox="0 0 24 48" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg className="w-6 h-12 text-[#2B3A44] md:hidden" viewBox="0 0 24 48" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="12" y1="0" x2="12" y2="40" />
                 <polyline points="6 32 12 40 18 32" />
               </svg>
             </div>
 
             {/* Customer Action */}
-            <div className="px-6 py-3 bg-[#0F1A2B] border border-white/10 rounded-xl">
-              <span className="text-base font-semibold text-[#F4F6FA] uppercase tracking-wide">Customer Action</span>
+            <div className="px-6 py-3 bg-[#E0DCD7] border border-white/10 rounded-xl">
+              <span className="text-base font-semibold text-[#1A1F24] uppercase tracking-wide">Customer Action</span>
             </div>
           </motion.div>
 
@@ -681,7 +681,7 @@ function SystemSection() {
           <motion.p
             variants={fadeUpVariant}
             transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-            className="text-base md:text-lg text-[#A9B4C4] leading-relaxed"
+            className="text-base md:text-lg text-[#5A6570] leading-relaxed"
           >
             Social isn&apos;t the whole system. It&apos;s the front door.
           </motion.p>
@@ -697,7 +697,7 @@ function SystemSection() {
 
 function CTASection() {
   return (
-    <section className="py-20 lg:py-28 bg-[#0B1220]">
+    <section className="py-20 lg:py-28 bg-[#F4F1EC]">
       <Container>
         <motion.div
           initial="hidden"
@@ -710,7 +710,7 @@ function CTASection() {
           <motion.p
             variants={fadeUpVariant}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="text-xl md:text-2xl text-[#F4F6FA] font-medium mb-8"
+            className="text-xl md:text-2xl text-[#1A1F24] font-medium mb-8"
           >
             Want to see what this would look like for your business?
           </motion.p>
@@ -722,7 +722,7 @@ function CTASection() {
           >
             <a
               href="mailto:hello@shortlistpass.com?subject=15-minute strategy call"
-              className="inline-flex items-center justify-center px-8 py-4 text-base font-medium bg-[#B08D57] text-[#0B1220] rounded-full hover:bg-[#c9a46a] transition-all duration-300"
+              className="inline-flex items-center justify-center px-8 py-4 text-base font-medium bg-[#2B3A44] text-[#F4F1EC] rounded-full hover:bg-[#1F2D35] transition-all duration-300"
             >
               Book a 15-minute strategy call
             </a>
@@ -732,7 +732,7 @@ function CTASection() {
           <motion.p
             variants={fadeUpVariant}
             transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-            className="mt-4 text-sm text-[#A9B4C4]"
+            className="mt-4 text-sm text-[#5A6570]"
           >
             We&apos;ll show you where attention is leaking — and how we&apos;d fix it.
           </motion.p>
@@ -741,9 +741,9 @@ function CTASection() {
           <motion.p
             variants={fadeUpVariant}
             transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
-            className="mt-8 text-sm text-[#A9B4C4]"
+            className="mt-8 text-sm text-[#5A6570]"
           >
-            <a href="#examples" className="text-[#B08D57] hover:text-[#c9a46a] transition-colors">
+            <a href="#examples" className="text-[#2B3A44] hover:text-[#1F2D35] transition-colors">
               Or just browse examples →
             </a>
           </motion.p>
@@ -763,9 +763,9 @@ function Footer() {
   return (
     <footer className="border-t border-white/5 py-12">
       <Container>
-        <div className="flex flex-col items-center gap-4 text-sm text-[#A9B4C4]">
+        <div className="flex flex-col items-center gap-4 text-sm text-[#5A6570]">
           {/* Trust signal */}
-          <span className="text-xs text-[#A9B4C4]/60">Built for real operators.</span>
+          <span className="text-xs text-[#5A6570]/60">Built for real operators.</span>
 
           <div className="flex flex-col sm:flex-row items-center justify-between w-full gap-4">
             <span>&copy; {year} Shortlist Pass</span>

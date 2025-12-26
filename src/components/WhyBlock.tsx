@@ -22,16 +22,16 @@ export function WhyBlock({ heading, lines }: WhyBlockProps) {
     >
       {/* Heading with brass left border */}
       <h4
-        className="text-sm md:text-base font-semibold text-[#F4F6FA] mb-3 pl-3"
+        className="text-sm md:text-base font-semibold text-[#1A1F24] mb-3 pl-3"
         style={{
-          borderLeft: "2px solid #B08D57",
+          borderLeft: "2px solid #2B3A44",
         }}
       >
         {heading}
       </h4>
 
       {/* Body lines - relaxed spacing, reduced opacity */}
-      <div className="space-y-2 text-sm md:text-base text-[#A9B4C4]/85 leading-relaxed">
+      <div className="space-y-2 text-sm md:text-base text-[#5A6570]/85 leading-relaxed">
         {lines.map((line, i) => (
           <p key={i}>{line}</p>
         ))}

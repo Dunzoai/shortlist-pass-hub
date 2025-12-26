@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${sora.variable} font-sans antialiased bg-[#0B1220] text-[#F4F6FA]`}>
+      <body className={`${sora.variable} font-sans antialiased bg-[#F4F1EC] text-[#1A1F24]`}>
         <Nav />
         {children}
       </body>

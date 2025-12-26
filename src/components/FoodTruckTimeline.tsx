@@ -94,13 +94,13 @@ export function FoodTruckTimeline() {
       >
         {/* Header */}
         <div className="text-center mb-6">
-          <p className="text-[10px] text-[#B08D57] uppercase tracking-[0.25em] mb-2 font-medium">
+          <p className="text-[10px] text-[#2B3A44] uppercase tracking-[0.25em] mb-2 font-medium">
             Nito&apos;s Empanadas (Real Example)
           </p>
-          <h3 className="text-2xl md:text-3xl font-bold text-[#F4F6FA] mb-2">
+          <h3 className="text-2xl md:text-3xl font-bold text-[#1A1F24] mb-2">
             Follow the truck this week.
           </h3>
-          <p className="text-sm text-[#A9B4C4]/70">
+          <p className="text-sm text-[#5A6570]/70">
             Tap a day. Watch the truck move. Get the details instantly.
           </p>
         </div>
@@ -166,18 +166,18 @@ export function FoodTruckTimeline() {
               >
                 <div>
                   <p className={`text-[10px] uppercase tracking-[0.2em] mb-2 font-medium ${
-                    index === activeIndex ? "text-[#B08D57]" : "text-[#A9B4C4]/40"
+                    index === activeIndex ? "text-[#2B3A44]" : "text-[#5A6570]/40"
                   }`}>
                     {day.fullDay}
                   </p>
                   <h4 className={`text-xl font-bold italic ${
-                    index === activeIndex ? "text-[#F4F6FA]" : "text-[#F4F6FA]/50"
+                    index === activeIndex ? "text-[#1A1F24]" : "text-[#1A1F24]/50"
                   }`}>
                     {day.location}
                   </h4>
                 </div>
                 <p className={`text-sm ${
-                  index === activeIndex ? "text-[#A9B4C4]" : "text-[#A9B4C4]/40"
+                  index === activeIndex ? "text-[#5A6570]" : "text-[#5A6570]/40"
                 }`}>
                   {day.details}
                 </p>
@@ -197,8 +197,8 @@ export function FoodTruckTimeline() {
               onClick={() => scrollToCard(index)}
               className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 ${
                 index === activeIndex
-                  ? "bg-[#B08D57] text-[#0B1220]"
-                  : "bg-white/5 text-[#A9B4C4]/70 hover:bg-white/10 hover:text-[#A9B4C4]"
+                  ? "bg-[#2B3A44] text-[#F4F1EC]"
+                  : "bg-white/5 text-[#5A6570]/70 hover:bg-white/10 hover:text-[#5A6570]"
               }`}
             >
               {day.day}
