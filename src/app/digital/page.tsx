@@ -119,44 +119,107 @@ function HeroSection() {
 
 // =============================================================================
 // SECTION 2: VALUE PROPOSITION
-// Micro-wow moment: subtle "settling into place" motion
-// No decorative animation — just care, craft, intentional design
+// Editorial conviction section with subtle texture and micro-motion
+// Proves "not templated" via restrained animation, not gimmicks
 // =============================================================================
+
+// Hand-drawn underline SVG - draws left to right once
+function DrawUnderline({ isVisible }: { isVisible: boolean }) {
+  return (
+    <motion.svg
+      className="absolute -bottom-1 md:-bottom-2 left-0 w-full h-2 md:h-3"
+      viewBox="0 0 200 10"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      <motion.path
+        d="M0 6c30-2 60 2 90 0s60 2 90 1c20-0.5 18 1 20 0"
+        stroke="#2E8B57"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        fill="none"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={isVisible ? { pathLength: 1, opacity: 1 } : {}}
+        transition={{ duration: 0.7, ease: "easeOut", delay: 0.4 }}
+      />
+    </motion.svg>
+  );
+}
 
 function ValuePropositionSection() {
   const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: false, margin: "-10%" });
+  const isInView = useInView(sectionRef, { once: true, margin: "-15%" });
 
   return (
     <section
       ref={sectionRef}
-      className="py-24 lg:py-32 bg-[#F4F1EC]"
+      className="relative py-28 lg:py-36 bg-[#F4F1EC] overflow-hidden"
     >
+      {/* Subtle paper grain texture overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[0.05]"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+          mixBlendMode: "multiply",
+        }}
+      />
+
+      {/* Soft vignette gradient */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: "radial-gradient(ellipse at center, transparent 0%, rgba(26, 31, 36, 0.03) 100%)",
+        }}
+      />
+
+      {/* Hairline framing rules */}
+      <div className="absolute top-12 left-8 md:left-16 w-16 md:w-24 h-px bg-[#1A1F24] opacity-[0.1]" />
+      <div className="absolute bottom-12 right-8 md:right-16 w-16 md:w-24 h-px bg-[#1A1F24] opacity-[0.1]" />
+
       <Container>
         <motion.div
-          className="max-w-[800px] mx-auto text-center px-4"
-          initial={{ opacity: 0.9, y: 6 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0.9, y: 6 }}
+          className="relative max-w-[820px] mx-auto text-center px-4"
+          initial={{ opacity: 0.85, y: 10 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0.85, y: 10 }}
           transition={{
-            duration: 0.75,
+            duration: 0.8,
             ease: [0.25, 0.1, 0.25, 1] as const,
           }}
         >
-          {/* Opening statement - Serif */}
-          <h2
-            className="text-[24px] md:text-[36px] lg:text-[44px] font-normal text-[#1A1F24] leading-[1.25] tracking-[-0.01em] mb-6 md:mb-8"
+          {/* Headline with letter-spacing animation */}
+          <motion.h2
+            className="text-[24px] md:text-[36px] lg:text-[44px] font-normal text-[#1A1F24] leading-[1.22] mb-6 md:mb-8"
             style={{ fontFamily: "var(--font-libre-baskerville)" }}
+            initial={{ letterSpacing: "0.02em" }}
+            animate={isInView ? { letterSpacing: "-0.01em" } : { letterSpacing: "0.02em" }}
+            transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] as const }}
           >
-            Most small businesses don&apos;t get custom websites. They get dressed-up templates. We don&apos;t do that.
-          </h2>
+            Most small businesses don&apos;t get custom websites. They get{" "}
+            <motion.span
+              className="relative"
+              initial={{ opacity: 0.85 }}
+              animate={isInView ? { opacity: 1 } : { opacity: 0.85 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <span className="italic">dressed-up templates</span>
+            </motion.span>
+            .{" "}
+            <span className="relative inline-block whitespace-nowrap">
+              We don&apos;t do that.
+              <DrawUnderline isVisible={isInView} />
+            </span>
+          </motion.h2>
 
-          {/* Main statement - Serif */}
-          <p
-            className="text-[18px] md:text-[24px] lg:text-[28px] font-normal text-[#1A1F24] leading-[1.4]"
+          {/* Body copy */}
+          <motion.p
+            className="text-[17px] md:text-[22px] lg:text-[26px] font-normal text-[#1A1F24]/85 leading-[1.45]"
             style={{ fontFamily: "var(--font-libre-baskerville)" }}
+            initial={{ opacity: 0.8, y: 6 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0.8, y: 6 }}
+            transition={{ duration: 0.7, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] as const }}
           >
             We build websites and apps from the ground up — so your online presence feels intentional, confident, and unmistakably yours.
-          </p>
+          </motion.p>
         </motion.div>
       </Container>
     </section>
