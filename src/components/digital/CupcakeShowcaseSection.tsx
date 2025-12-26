@@ -229,40 +229,46 @@ export function CupcakeShowcaseSection() {
 
             {/* Cupcake */}
             <div className="flex flex-col items-center mb-16">
-              <div className="relative w-[220px] h-[260px] md:w-[280px] md:h-[340px]">
-                {CUPCAKE_IMAGES.map((src, index) => (
-                  <div
-                    key={src}
-                    className="absolute inset-0 transition-opacity duration-300"
-                    style={{ opacity: index <= activeIndex ? 1 : 0 }}
-                  >
-                    <Image
-                      src={src}
-                      alt={`Cupcake stage ${index + 1}`}
-                      fill
-                      className="object-contain"
-                      priority={index === 0}
+              {/* Cupcake + vertical progress dots */}
+              <div className="flex items-center gap-6 md:gap-8">
+                {/* Vertical progress dots - left side */}
+                <div className="flex flex-col items-center gap-2">
+                  {CUPCAKE_IMAGES.map((_, index) => (
+                    <div
+                      key={index}
+                      className={`w-1.5 rounded-full transition-all duration-300 ${
+                        index === activeIndex
+                          ? "h-6 bg-[#2B3A44]"
+                          : index < activeIndex
+                          ? "h-1.5 bg-[#2B3A44]/50"
+                          : "h-1.5 bg-[#2B3A44]/20"
+                      }`}
                     />
-                  </div>
-                ))}
+                  ))}
+                </div>
+
+                <div className="relative w-[220px] h-[260px] md:w-[280px] md:h-[340px]">
+                  {CUPCAKE_IMAGES.map((src, index) => (
+                    <div
+                      key={src}
+                      className="absolute inset-0 transition-opacity duration-300"
+                      style={{ opacity: index <= activeIndex ? 1 : 0 }}
+                    >
+                      <Image
+                        src={src}
+                        alt={`Cupcake stage ${index + 1}`}
+                        fill
+                        className="object-contain"
+                        priority={index === 0}
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
-              <p className="mt-4 text-base md:text-lg text-[#1A1F24] font-medium text-center">
+
+              <p className="mt-6 text-base md:text-lg text-[#1A1F24] font-medium text-center">
                 {CUPCAKE_COPY.states[activeIndex]}
               </p>
-              <div className="flex items-center gap-2 mt-4">
-                {CUPCAKE_IMAGES.map((_, index) => (
-                  <div
-                    key={index}
-                    className={`h-1.5 rounded-full transition-all duration-300 ${
-                      index === activeIndex
-                        ? "w-6 bg-[#2B3A44]"
-                        : index < activeIndex
-                        ? "w-1.5 bg-[#2B3A44]/50"
-                        : "w-1.5 bg-white/20"
-                    }`}
-                  />
-                ))}
-              </div>
               <div className="flex justify-center gap-4 mt-6">
                 <button
                   onClick={handlePrev}
@@ -319,35 +325,54 @@ export function CupcakeShowcaseSection() {
 
           {/* Cupcake build area */}
           <div className="flex flex-col items-center">
-            {/* Stacked cupcake images */}
-            <div className="relative w-[220px] h-[260px] md:w-[280px] md:h-[340px]">
-              {CUPCAKE_IMAGES.map((src, index) => (
-                <motion.div
-                  key={src}
-                  className="absolute inset-0"
-                  initial={false}
-                  animate={{
-                    opacity: index <= activeIndex ? 1 : 0,
-                    y: index <= activeIndex ? 0 : 4,
-                  }}
-                  transition={{ duration: 0.4, ease: "easeOut" }}
-                >
-                  <Image
-                    src={src}
-                    alt={`Cupcake stage ${index + 1}`}
-                    fill
-                    className="object-contain"
-                    priority={index === 0}
+            {/* Cupcake + vertical progress dots */}
+            <div className="flex items-center gap-6 md:gap-8">
+              {/* Vertical progress dots - left side */}
+              <div className="flex flex-col items-center gap-2">
+                {CUPCAKE_IMAGES.map((_, index) => (
+                  <div
+                    key={index}
+                    className={`w-1.5 rounded-full transition-all duration-300 ${
+                      index === activeIndex
+                        ? "h-6 bg-[#2B3A44]"
+                        : index < activeIndex
+                        ? "h-1.5 bg-[#2B3A44]/50"
+                        : "h-1.5 bg-[#2B3A44]/20"
+                    }`}
                   />
-                </motion.div>
-              ))}
+                ))}
+              </div>
+
+              {/* Stacked cupcake images */}
+              <div className="relative w-[220px] h-[260px] md:w-[280px] md:h-[340px]">
+                {CUPCAKE_IMAGES.map((src, index) => (
+                  <motion.div
+                    key={src}
+                    className="absolute inset-0"
+                    initial={false}
+                    animate={{
+                      opacity: index <= activeIndex ? 1 : 0,
+                      y: index <= activeIndex ? 0 : 4,
+                    }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                  >
+                    <Image
+                      src={src}
+                      alt={`Cupcake stage ${index + 1}`}
+                      fill
+                      className="object-contain"
+                      priority={index === 0}
+                    />
+                  </motion.div>
+                ))}
+              </div>
             </div>
 
-            {/* State copy */}
+            {/* State copy - below cupcake */}
             <AnimatePresence mode="wait">
               <motion.p
                 key={activeIndex}
-                className="mt-4 text-base md:text-lg text-[#1A1F24] font-medium text-center"
+                className="mt-6 text-base md:text-lg text-[#1A1F24] font-medium text-center"
                 initial={{ opacity: 0, y: 3 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -3 }}
@@ -357,26 +382,10 @@ export function CupcakeShowcaseSection() {
               </motion.p>
             </AnimatePresence>
 
-            {/* Progress dots */}
-            <div className="flex items-center gap-2 mt-4">
-              {CUPCAKE_IMAGES.map((_, index) => (
-                <div
-                  key={index}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${
-                    index === activeIndex
-                      ? "w-6 bg-[#2B3A44]"
-                      : index < activeIndex
-                      ? "w-1.5 bg-[#2B3A44]/50"
-                      : "w-1.5 bg-white/20"
-                  }`}
-                />
-              ))}
-            </div>
-
             {/* Scroll hint */}
             {isLocked && activeIndex < TOTAL_STATES - 1 && (
               <motion.p
-                className="mt-6 text-xs text-[#5A6570]/50"
+                className="mt-4 text-xs text-[#5A6570]/50"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
