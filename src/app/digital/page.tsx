@@ -195,7 +195,7 @@ function ValuePropositionSection() {
       />
 
       {/* Floating clouds - subtle continuous drift like hero images */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden z-[1]">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-[1] section-2-clouds">
         {/* Cloud 1 - top left, large */}
         <motion.img
           src="/cloud.png"

@@ -95,3 +95,10 @@ html {
     background-size: 90% !important; /* Desktop size */
   }
 }
+
+/* Section 2 clouds - shift down on mobile */
+@media (max-width: 767px) {
+  .section-2-clouds {
+    transform: translateY(5%);
+  }
+}

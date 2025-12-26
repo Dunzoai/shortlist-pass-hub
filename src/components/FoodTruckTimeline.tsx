@@ -83,12 +83,12 @@ export function FoodTruckTimeline() {
 
   return (
     <div className="relative">
-      {/* Glass panel container - bone color */}
+      {/* Glass panel container - light slate blue */}
       <div
         className="relative rounded-[28px] p-6 md:p-8 overflow-hidden"
         style={{
-          background: "linear-gradient(180deg, rgba(244, 241, 236, 0.95) 0%, rgba(232, 229, 224, 0.98) 100%)",
-          border: "1px solid rgba(43, 58, 68, 0.1)",
+          background: "linear-gradient(180deg, rgba(213, 222, 230, 0.95) 0%, rgba(200, 212, 222, 0.98) 100%)",
+          border: "1px solid rgba(43, 58, 68, 0.15)",
           boxShadow: "0 40px 80px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.5)",
         }}
       >

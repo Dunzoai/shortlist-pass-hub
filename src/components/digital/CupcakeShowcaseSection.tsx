@@ -213,16 +213,16 @@ export function CupcakeShowcaseSection() {
     return (
       <>
         {/* Combined Hero + Cupcake with manual controls */}
-        <section className="bg-[#F4F1EC] py-16 lg:py-24">
+        <section className="bg-[#2B3A44] py-16 lg:py-24">
           <div className="max-w-[800px] mx-auto px-6">
             {/* Hero text */}
             <div className="text-center mb-8 lg:mb-10">
-              <h2 className="text-[26px] md:text-[34px] lg:text-[42px] font-bold text-[#1A1F24] leading-tight mb-2">
+              <h2 className="text-[26px] md:text-[34px] lg:text-[42px] font-bold text-[#F4F1EC] leading-tight mb-2">
                 {CUPCAKE_COPY.hero.headline}
                 <br />
-                <span className="text-[#2B3A44]">{CUPCAKE_COPY.hero.headlineLine2}</span>
+                <span className="text-[#F4F1EC]/70">{CUPCAKE_COPY.hero.headlineLine2}</span>
               </h2>
-              <p className="text-sm md:text-base text-[#5A6570]/80 max-w-lg mx-auto">
+              <p className="text-sm md:text-base text-[#F4F1EC]/60 max-w-lg mx-auto">
                 {CUPCAKE_COPY.hero.sub}
               </p>
             </div>
@@ -238,10 +238,10 @@ export function CupcakeShowcaseSection() {
                       key={index}
                       className={`w-1.5 rounded-full transition-all duration-300 ${
                         index === activeIndex
-                          ? "h-6 bg-[#2B3A44]"
+                          ? "h-6 bg-[#F4F1EC]"
                           : index < activeIndex
-                          ? "h-1.5 bg-[#2B3A44]/50"
-                          : "h-1.5 bg-[#2B3A44]/20"
+                          ? "h-1.5 bg-[#F4F1EC]/50"
+                          : "h-1.5 bg-[#F4F1EC]/20"
                       }`}
                     />
                   ))}
@@ -266,21 +266,21 @@ export function CupcakeShowcaseSection() {
                 </div>
               </div>
 
-              <p className="mt-6 text-base md:text-lg text-[#1A1F24] font-medium text-center">
+              <p className="mt-6 text-base md:text-lg text-[#F4F1EC] font-medium text-center">
                 {CUPCAKE_COPY.states[activeIndex]}
               </p>
               <div className="flex justify-center gap-4 mt-6">
                 <button
                   onClick={handlePrev}
                   disabled={activeIndex === 0}
-                  className="px-4 py-2 text-sm text-[#5A6570] border border-white/10 rounded-lg disabled:opacity-30"
+                  className="px-4 py-2 text-sm text-[#F4F1EC]/70 border border-[#F4F1EC]/20 rounded-lg disabled:opacity-30"
                 >
                   Previous
                 </button>
                 <button
                   onClick={handleNext}
                   disabled={activeIndex === TOTAL_STATES - 1}
-                  className="px-4 py-2 text-sm bg-[#2B3A44] text-[#F4F1EC] font-medium rounded-lg disabled:opacity-30"
+                  className="px-4 py-2 text-sm bg-[#F4F1EC] text-[#2B3A44] font-medium rounded-lg disabled:opacity-30"
                 >
                   Next
                 </button>
@@ -290,10 +290,10 @@ export function CupcakeShowcaseSection() {
 
             {/* Closer */}
             <div className="mt-10 text-center">
-              <p className="text-lg md:text-xl font-semibold text-[#1A1F24]">
+              <p className="text-lg md:text-xl font-semibold text-[#F4F1EC]">
                 {CUPCAKE_COPY.closer.line1}
               </p>
-              <p className="text-lg md:text-xl font-semibold text-[#2B3A44]">
+              <p className="text-lg md:text-xl font-semibold text-[#F4F1EC]/70">
                 {CUPCAKE_COPY.closer.line2}
               </p>
             </div>
@@ -308,17 +308,17 @@ export function CupcakeShowcaseSection() {
       {/* Combined Hero + Cupcake Section - all visible when locked */}
       <section
         ref={sectionRef}
-        className="relative bg-[#F4F1EC] min-h-screen flex flex-col items-center justify-center py-12 lg:py-16"
+        className="relative bg-[#2B3A44] min-h-screen flex flex-col items-center justify-center py-12 lg:py-16"
       >
         <div className="w-full max-w-[800px] mx-auto px-6">
           {/* Hero text - stays visible during build */}
           <div className="text-center mb-8 lg:mb-10">
-            <h2 className="text-[26px] md:text-[34px] lg:text-[42px] font-bold text-[#1A1F24] leading-tight mb-2">
+            <h2 className="text-[26px] md:text-[34px] lg:text-[42px] font-bold text-[#F4F1EC] leading-tight mb-2">
               {CUPCAKE_COPY.hero.headline}
               <br />
-              <span className="text-[#2B3A44]">{CUPCAKE_COPY.hero.headlineLine2}</span>
+              <span className="text-[#F4F1EC]/70">{CUPCAKE_COPY.hero.headlineLine2}</span>
             </h2>
-            <p className="text-sm md:text-base text-[#5A6570]/80 max-w-lg mx-auto">
+            <p className="text-sm md:text-base text-[#F4F1EC]/60 max-w-lg mx-auto">
               {CUPCAKE_COPY.hero.sub}
             </p>
           </div>
@@ -334,10 +334,10 @@ export function CupcakeShowcaseSection() {
                     key={index}
                     className={`w-1.5 rounded-full transition-all duration-300 ${
                       index === activeIndex
-                        ? "h-6 bg-[#2B3A44]"
+                        ? "h-6 bg-[#F4F1EC]"
                         : index < activeIndex
-                        ? "h-1.5 bg-[#2B3A44]/50"
-                        : "h-1.5 bg-[#2B3A44]/20"
+                        ? "h-1.5 bg-[#F4F1EC]/50"
+                        : "h-1.5 bg-[#F4F1EC]/20"
                     }`}
                   />
                 ))}
@@ -372,7 +372,7 @@ export function CupcakeShowcaseSection() {
             <AnimatePresence mode="wait">
               <motion.p
                 key={activeIndex}
-                className="mt-6 text-base md:text-lg text-[#1A1F24] font-medium text-center"
+                className="mt-6 text-base md:text-lg text-[#F4F1EC] font-medium text-center"
                 initial={{ opacity: 0, y: 3 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -3 }}
@@ -385,7 +385,7 @@ export function CupcakeShowcaseSection() {
             {/* Scroll hint */}
             {isLocked && activeIndex < TOTAL_STATES - 1 && (
               <motion.p
-                className="mt-4 text-xs text-[#5A6570]/50"
+                className="mt-4 text-xs text-[#F4F1EC]/50"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
