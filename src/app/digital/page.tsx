@@ -22,7 +22,7 @@ function HeroSection() {
           src="/laptop-website.png"
           alt=""
           className="absolute w-44 md:w-[400px] lg:w-[530px] mobile-corner-1 md:opacity-[0.65]"
-          style={{ left: "-3%", top: "18%" }}
+          style={{ left: "-3%", top: "5%" }}
           animate={{
             x: [0, 8, 0, -6, 0],
             y: [0, -8, 0, 6, 0],
@@ -39,7 +39,7 @@ function HeroSection() {
           src="/business.png"
           alt=""
           className="absolute w-48 md:w-[450px] lg:w-[620px] mobile-corner-2 md:opacity-[0.65]"
-          style={{ right: "-8%", top: "12%" }}
+          style={{ right: "-8%", top: "0%" }}
           animate={{
             x: [0, -10, 0, 12, 0],
             y: [0, -6, 0, 10, 0],
