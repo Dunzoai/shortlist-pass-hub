@@ -165,12 +165,9 @@ function ValuePropositionSection() {
         }}
       />
 
-      {/* Soft vignette gradient */}
+      {/* Light grey overlay */}
       <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: "radial-gradient(ellipse at center, transparent 0%, rgba(26, 31, 36, 0.03) 100%)",
-        }}
+        className="absolute inset-0 pointer-events-none bg-[#E8E5E0]/70"
       />
 
       {/* Hairline framing rules */}
