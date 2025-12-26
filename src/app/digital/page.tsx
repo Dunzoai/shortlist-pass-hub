@@ -317,11 +317,11 @@ function ValuePropositionSection() {
               animate={isInView ? { opacity: 1 } : { opacity: 0.85 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <span className="italic">dressed-up templates</span>
+              <span className="italic">templates</span>
             </motion.span>
             .
             <br />
-            <span ref={underlineRef} className="relative inline-block whitespace-nowrap mt-2">
+            <span ref={underlineRef} className="relative inline-block whitespace-nowrap mt-4 md:mt-6">
               We don&apos;t do that.
               <DrawUnderline isVisible={underlineInView} />
             </span>
