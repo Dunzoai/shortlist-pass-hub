@@ -181,64 +181,64 @@ function ValuePropositionSection() {
         }}
       />
 
-      {/* Floating clouds - animate in with subtle drift */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      {/* Light grey overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none bg-[#E8E5E0]/70"
+      />
+
+      {/* Floating clouds - animate in with subtle drift (above overlay) */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-[1]">
         {/* Cloud 1 - top left */}
         <motion.img
           src="/cloud.png"
           alt=""
-          className="absolute w-24 md:w-40 lg:w-52 opacity-40"
+          className="absolute w-24 md:w-40 lg:w-52"
           style={{ left: "5%", top: "8%" }}
           initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 0.4, y: 0 } : { opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 0.5, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
         />
         {/* Cloud 2 - top right */}
         <motion.img
           src="/cloud.png"
           alt=""
-          className="absolute w-20 md:w-32 lg:w-44 opacity-35"
+          className="absolute w-20 md:w-32 lg:w-44"
           style={{ right: "8%", top: "12%" }}
           initial={{ opacity: 0, y: 25 }}
-          animate={isInView ? { opacity: 0.35, y: 0 } : { opacity: 0, y: 25 }}
+          animate={isInView ? { opacity: 0.45, y: 0 } : { opacity: 0, y: 25 }}
           transition={{ duration: 1.4, delay: 0.5, ease: "easeOut" }}
         />
         {/* Cloud 3 - left side middle */}
         <motion.img
           src="/cloud.png"
           alt=""
-          className="absolute w-16 md:w-28 lg:w-36 opacity-30"
+          className="absolute w-16 md:w-28 lg:w-36"
           style={{ left: "-2%", top: "45%" }}
           initial={{ opacity: 0, x: -20 }}
-          animate={isInView ? { opacity: 0.3, x: 0 } : { opacity: 0, x: -20 }}
+          animate={isInView ? { opacity: 0.4, x: 0 } : { opacity: 0, x: -20 }}
           transition={{ duration: 1.3, delay: 0.6, ease: "easeOut" }}
         />
         {/* Cloud 4 - right side middle */}
         <motion.img
           src="/cloud.png"
           alt=""
-          className="absolute w-18 md:w-32 lg:w-40 opacity-35"
+          className="absolute w-18 md:w-32 lg:w-40"
           style={{ right: "-3%", top: "50%" }}
           initial={{ opacity: 0, x: 20 }}
-          animate={isInView ? { opacity: 0.35, x: 0 } : { opacity: 0, x: 20 }}
+          animate={isInView ? { opacity: 0.45, x: 0 } : { opacity: 0, x: 20 }}
           transition={{ duration: 1.2, delay: 0.4, ease: "easeOut" }}
         />
         {/* Cloud 5 - bottom area */}
         <motion.img
           src="/cloud.png"
           alt=""
-          className="absolute w-20 md:w-36 lg:w-48 opacity-30"
+          className="absolute w-20 md:w-36 lg:w-48"
           style={{ left: "15%", bottom: "15%" }}
           initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 0.3, y: 0 } : { opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 0.4, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 1.5, delay: 0.7, ease: "easeOut" }}
         />
       </div>
-
-      {/* Light grey overlay */}
-      <div
-        className="absolute inset-0 pointer-events-none bg-[#E8E5E0]/70"
-      />
 
       {/* Hairline framing rules */}
       <div className="absolute top-12 left-8 md:left-16 w-16 md:w-24 h-px bg-[#1A1F24] opacity-[0.1]" />
