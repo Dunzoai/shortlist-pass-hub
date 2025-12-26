@@ -21,8 +21,8 @@ function HeroSection() {
         <motion.img
           src="/business.png"
           alt=""
-          className="absolute w-24 md:w-36 lg:w-44 opacity-[0.025] md:opacity-[0.045]"
-          style={{ left: "8%", top: "25%" }}
+          className="absolute w-32 md:w-48 lg:w-60 opacity-[0.035] md:opacity-[0.06]"
+          style={{ left: "5%", top: "20%" }}
           animate={{
             x: [0, 12, 0, -8, 0],
             y: [0, -10, 0, 8, 0],
@@ -38,8 +38,8 @@ function HeroSection() {
         <motion.img
           src="/calendar.png"
           alt=""
-          className="absolute w-20 md:w-32 lg:w-40 opacity-[0.025] md:opacity-[0.05] hidden md:block"
-          style={{ right: "10%", top: "30%" }}
+          className="absolute w-28 md:w-44 lg:w-56 opacity-[0.03] md:opacity-[0.055]"
+          style={{ right: "5%", top: "25%" }}
           animate={{
             x: [0, -10, 0, 14, 0],
             y: [0, 8, 0, -12, 0],
@@ -56,8 +56,8 @@ function HeroSection() {
         <motion.img
           src="/message-bubble.png"
           alt=""
-          className="absolute w-16 md:w-28 lg:w-36 opacity-[0.025] md:opacity-[0.04] hidden md:block"
-          style={{ right: "20%", bottom: "15%" }}
+          className="absolute w-24 md:w-40 lg:w-52 opacity-[0.025] md:opacity-[0.045]"
+          style={{ right: "15%", bottom: "12%" }}
           animate={{
             x: [0, 8, 0, -6, 0],
             y: [0, -8, 0, 10, 0],
@@ -89,9 +89,9 @@ function HeroSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
-            className="text-base md:text-lg text-[#5A6570] max-w-[600px] mx-auto"
+            className="text-base md:text-lg text-[#5A6570] whitespace-nowrap"
           >
-            Not cookie-cutter. Not like everyone else. Because your business deserves to stand out.
+            Not cookie-cutter. Because your business deserves to stand out.
           </motion.p>
         </div>
       </Container>
