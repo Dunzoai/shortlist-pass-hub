@@ -14,9 +14,65 @@ import { WhyBlock } from "@/components/WhyBlock";
 
 function HeroSection() {
   return (
-    <section className="relative min-h-[85vh] flex items-center justify-center bg-[#F4F1EC]">
+    <section className="relative min-h-[85vh] flex items-center justify-center bg-[#F4F1EC] overflow-hidden">
+      {/* Floating background icons - editorial polish */}
+      <div className="absolute inset-0 pointer-events-none">
+        {/* Left icon - business */}
+        <motion.img
+          src="/business.png"
+          alt=""
+          className="absolute w-24 md:w-36 lg:w-44 opacity-[0.025] md:opacity-[0.045]"
+          style={{ left: "8%", top: "25%" }}
+          animate={{
+            x: [0, 12, 0, -8, 0],
+            y: [0, -10, 0, 8, 0],
+          }}
+          transition={{
+            duration: 18,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+
+        {/* Right icon - calendar */}
+        <motion.img
+          src="/calendar.png"
+          alt=""
+          className="absolute w-20 md:w-32 lg:w-40 opacity-[0.025] md:opacity-[0.05] hidden md:block"
+          style={{ right: "10%", top: "30%" }}
+          animate={{
+            x: [0, -10, 0, 14, 0],
+            y: [0, 8, 0, -12, 0],
+          }}
+          transition={{
+            duration: 16,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 2,
+          }}
+        />
+
+        {/* Bottom icon - message bubble */}
+        <motion.img
+          src="/message-bubble.png"
+          alt=""
+          className="absolute w-16 md:w-28 lg:w-36 opacity-[0.025] md:opacity-[0.04] hidden md:block"
+          style={{ right: "20%", bottom: "15%" }}
+          animate={{
+            x: [0, 8, 0, -6, 0],
+            y: [0, -8, 0, 10, 0],
+          }}
+          transition={{
+            duration: 14,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 4,
+          }}
+        />
+      </div>
+
       <Container>
-        <div className="max-w-[1000px] mx-auto text-center px-4">
+        <div className="relative z-10 max-w-[1000px] mx-auto text-center px-4 -mt-16 md:-mt-8 lg:mt-0">
           {/* H1 - Serif */}
           <motion.h1
             initial={{ opacity: 0 }}
