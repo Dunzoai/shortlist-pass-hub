@@ -149,25 +149,35 @@ function DrawUnderline({ isVisible }: { isVisible: boolean }) {
 function ValuePropositionSection() {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-15%" });
+  const underlineRef = useRef(null);
+  const underlineInView = useInView(underlineRef, { once: true, margin: "-30%" });
+
+  // Scroll-based reveal for background
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+
+  // Map scroll progress to clip inset (100% -> 0%)
+  const clipInset = useTransform(scrollYProgress, [0, 0.6], [100, 0]);
 
   return (
     <section
       ref={sectionRef}
       className="relative py-28 lg:py-36 bg-[#F4F1EC] overflow-hidden"
     >
-      {/* Background texture image - anchored to bottom, reveals from bottom up */}
+      {/* Background texture image - anchored to bottom, scroll-based reveal */}
       <motion.div
         className="absolute inset-x-0 bottom-0 pointer-events-none opacity-[0.37]"
         style={{
           backgroundImage: `url("/section-2-background.png")`,
-          backgroundSize: "cover",
+          backgroundSize: "90%",
           backgroundPosition: "center bottom",
+          backgroundRepeat: "no-repeat",
           height: "100%",
           transformOrigin: "bottom",
+          clipPath: useTransform(clipInset, (v) => `inset(${v}% 0 0 0)`),
         }}
-        initial={{ clipPath: "inset(100% 0 0 0)" }}
-        animate={isInView ? { clipPath: "inset(0% 0 0 0)" } : { clipPath: "inset(100% 0 0 0)" }}
-        transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1] as const, delay: 0.2 }}
       />
 
       {/* Light grey overlay */}
@@ -208,9 +218,9 @@ function ValuePropositionSection() {
             </motion.span>
             .
             <br />
-            <span className="relative inline-block whitespace-nowrap mt-2">
+            <span ref={underlineRef} className="relative inline-block whitespace-nowrap mt-2">
               We don&apos;t do that.
-              <DrawUnderline isVisible={isInView} />
+              <DrawUnderline isVisible={underlineInView} />
             </span>
           </motion.h2>
 
