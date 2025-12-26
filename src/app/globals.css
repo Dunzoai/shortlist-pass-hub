@@ -53,44 +53,27 @@ html {
   }
 }
 
-/* Sequential corner rotation for hero icons */
-/* Each icon takes a turn with soft fade in/out */
-@keyframes cornerFade1 {
-  0% { opacity: 0; }
-  5%, 18% { opacity: 0.55; }
-  25%, 100% { opacity: 0; }
+/* Independent fade cycles for hero icons - organic, overlapping */
+@keyframes softFade {
+  0%, 100% { opacity: 0; }
+  15%, 85% { opacity: 0.55; }
 }
 
-@keyframes cornerFade2 {
-  0%, 25% { opacity: 0; }
-  32%, 43% { opacity: 0.55; }
-  50%, 100% { opacity: 0; }
-}
-
-@keyframes cornerFade3 {
-  0%, 50% { opacity: 0; }
-  57%, 68% { opacity: 0.55; }
-  75%, 100% { opacity: 0; }
-}
-
-@keyframes cornerFade4 {
-  0%, 75% { opacity: 0; }
-  82%, 93% { opacity: 0.55; }
-  100% { opacity: 0; }
-}
-
-/* Apply sequential fade on mobile - slower, softer */
+/* Apply independent fade on mobile - different durations for organic feel */
 @media (max-width: 767px) {
   .mobile-corner-1 {
-    animation: cornerFade1 12s ease-in-out infinite;
+    animation: softFade 7s ease-in-out infinite;
   }
   .mobile-corner-2 {
-    animation: cornerFade2 12s ease-in-out infinite;
+    animation: softFade 9s ease-in-out infinite;
+    animation-delay: 1.5s;
   }
   .mobile-corner-3 {
-    animation: cornerFade3 12s ease-in-out infinite;
+    animation: softFade 8s ease-in-out infinite;
+    animation-delay: 3s;
   }
   .mobile-corner-4 {
-    animation: cornerFade4 12s ease-in-out infinite;
+    animation: softFade 10s ease-in-out infinite;
+    animation-delay: 0.5s;
   }
 }

@@ -39,7 +39,7 @@ function HeroSection() {
           src="/business.png"
           alt=""
           className="absolute w-48 md:w-[450px] lg:w-[620px] mobile-corner-2 md:opacity-[0.65]"
-          style={{ right: "-8%", top: "0%" }}
+          style={{ right: "-8%", top: "-8%" }}
           animate={{
             x: [0, -10, 0, 12, 0],
             y: [0, -6, 0, 10, 0],
