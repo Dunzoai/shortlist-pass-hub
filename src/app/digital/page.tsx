@@ -16,27 +16,27 @@ function HeroSection() {
   return (
     <section className="relative min-h-[85vh] flex items-center justify-center bg-[#F4F1EC]">
       <Container>
-        <div className="max-w-[900px] mx-auto text-center px-4">
-          {/* Eyebrow */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="text-xs tracking-[0.25em] text-[#5A6570] uppercase mb-8 md:mb-12"
-          >
-            Custom digital builds for small businesses
-          </motion.p>
-
-          {/* Main statement */}
+        <div className="max-w-[1000px] mx-auto text-center px-4">
+          {/* H1 - Serif */}
           <motion.h1
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
-            className="text-[32px] md:text-[42px] lg:text-[52px] font-normal text-[#1A1F24] leading-[1.15] tracking-[-0.01em]"
-            style={{ fontFamily: "var(--font-libre-baskerville)" }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="text-[28px] md:text-[44px] lg:text-[56px] font-normal text-[#1A1F24] leading-[1.15] tracking-[-0.01em] mb-6 md:mb-8"
+            style={{ fontFamily: "var(--font-libre-baskerville)", textWrap: "balance" }}
           >
-            We build websites and apps for small businesses that help customers trust you and choose you, not cookie cutter, not like everyone else, because your business deserves to stand out.
+            We build websites and apps for small businesses that help customers choose you.
           </motion.h1>
+
+          {/* Anchor - Sans */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
+            className="text-base md:text-lg text-[#5A6570] max-w-[600px] mx-auto"
+          >
+            Not cookie-cutter. Not like everyone else. Because your business deserves to stand out.
+          </motion.p>
         </div>
       </Container>
     </section>
