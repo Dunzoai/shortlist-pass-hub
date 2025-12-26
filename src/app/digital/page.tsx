@@ -16,12 +16,12 @@ function HeroSection() {
   return (
     <section className="relative min-h-[85vh] flex items-center justify-center bg-[#F4F1EC] overflow-hidden">
       {/* Floating background icons - editorial polish */}
-      <div className="absolute inset-0 pointer-events-none">
+      <div className="absolute inset-0 pointer-events-none z-0">
         {/* Top left icon - laptop */}
         <motion.img
           src="/laptop-website.png"
           alt=""
-          className="absolute w-40 md:w-[345px] lg:w-[460px] opacity-[0.05] md:opacity-[0.7]"
+          className="absolute w-40 md:w-[345px] lg:w-[460px] opacity-[0.05] md:opacity-[0.65]"
           style={{ left: "2%", top: "-10%" }}
           animate={{
             x: [0, 8, 0, -6, 0],
@@ -38,8 +38,8 @@ function HeroSection() {
         <motion.img
           src="/business.png"
           alt=""
-          className="absolute w-44 md:w-[390px] lg:w-[540px] opacity-[0.06] md:opacity-[0.7]"
-          style={{ left: "-10%", top: "38%" }}
+          className="absolute w-44 md:w-[390px] lg:w-[540px] opacity-[0.06] md:opacity-[0.65]"
+          style={{ left: "-10%", top: "12%" }}
           animate={{
             x: [0, 10, 0, -12, 0],
             y: [0, -6, 0, 10, 0],
@@ -56,7 +56,7 @@ function HeroSection() {
         <motion.img
           src="/calendar.png"
           alt=""
-          className="absolute w-40 md:w-[370px] lg:w-[490px] opacity-[0.05] md:opacity-[0.7]"
+          className="absolute w-40 md:w-[370px] lg:w-[490px] opacity-[0.05] md:opacity-[0.65]"
           style={{ right: "0%", top: "-18%" }}
           animate={{
             x: [0, -14, 0, 10, 0],
@@ -74,8 +74,8 @@ function HeroSection() {
         <motion.img
           src="/message-bubble.png"
           alt=""
-          className="absolute w-32 md:w-[345px] lg:w-[440px] opacity-[0.045] md:opacity-[0.7]"
-          style={{ right: "8%", bottom: "-5%" }}
+          className="absolute w-32 md:w-[345px] lg:w-[440px] opacity-[0.045] md:opacity-[0.65]"
+          style={{ right: "3%", bottom: "-10%" }}
           animate={{
             x: [0, 6, 0, -10, 0],
             y: [0, -12, 0, 8, 0],
@@ -90,7 +90,7 @@ function HeroSection() {
       </div>
 
       <Container>
-        <div className="relative z-10 max-w-[1000px] mx-auto text-center px-4 -mt-16 md:-mt-8 lg:mt-0">
+        <div className="relative z-20 max-w-[1000px] mx-auto text-center px-4 -mt-16 md:-mt-8 lg:mt-0">
           {/* H1 - Serif */}
           <motion.h1
             initial={{ opacity: 0 }}
