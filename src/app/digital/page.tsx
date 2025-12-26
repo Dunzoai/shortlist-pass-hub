@@ -818,15 +818,20 @@ function OutcomesSection() {
   ];
 
   return (
-    <section ref={sectionRef} className="py-24 lg:py-32 bg-[#F4F1EC]">
-      <Container>
+    <section ref={sectionRef} className="py-12 lg:py-16 bg-[#F4F1EC] overflow-hidden">
+      <motion.div
+        className="bg-[#2B3A44] py-16 lg:py-24 px-6 md:px-12 lg:px-20"
+        initial={{ x: "-100%", opacity: 0 }}
+        animate={isInView ? { x: 0, opacity: 1 } : {}}
+        transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+      >
         <div className="max-w-2xl mx-auto">
           <motion.h2
-            className="text-[32px] md:text-[44px] font-normal text-[#1A1F24] leading-tight mb-10"
+            className="text-[32px] md:text-[44px] font-normal text-[#F4F1EC] leading-tight mb-10"
             style={{ fontFamily: "var(--font-libre-baskerville)" }}
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
           >
             This is how businesses start feeling established.
           </motion.h2>
@@ -835,27 +840,27 @@ function OutcomesSection() {
             {bullets.map((bullet, i) => (
               <motion.li
                 key={bullet}
-                className="flex items-start gap-4 text-lg text-[#5A6570]"
+                className="flex items-start gap-4 text-lg text-[#F4F1EC]/80"
                 initial={{ opacity: 0, x: -15 }}
                 animate={isInView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.4, delay: 0.2 + i * 0.1 }}
+                transition={{ duration: 0.4, delay: 0.4 + i * 0.1 }}
               >
-                <span className="w-1.5 h-1.5 rounded-full bg-[#2B3A44] mt-2.5 shrink-0" />
+                <span className="w-1.5 h-1.5 rounded-full bg-[#F4F1EC] mt-2.5 shrink-0" />
                 {bullet}
               </motion.li>
             ))}
           </ul>
 
           <motion.p
-            className="text-sm text-[#5A6570]/60"
+            className="text-sm text-[#F4F1EC]/50"
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.4, delay: 0.6 }}
+            transition={{ duration: 0.4, delay: 0.8 }}
           >
             You don&apos;t need to know how it works. You just need it to work.
           </motion.p>
         </div>
-      </Container>
+      </motion.div>
     </section>
   );
 }
@@ -872,16 +877,21 @@ function ScopeSection() {
   return (
     <section
       ref={sectionRef}
-      className="py-24 lg:py-32 bg-gradient-to-b from-[#F4F1EC] to-[#F4F1EC]"
+      className="py-12 lg:py-16 bg-[#2B3A44] overflow-hidden"
     >
-      <Container>
+      <motion.div
+        className="bg-[#F4F1EC] py-16 lg:py-24 px-6 md:px-12 lg:px-20"
+        initial={{ x: "100%", opacity: 0 }}
+        animate={isInView ? { x: 0, opacity: 1 } : {}}
+        transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+      >
         <div className="max-w-2xl mx-auto text-center">
           <motion.h2
             className="text-[32px] md:text-[44px] font-normal text-[#1A1F24] leading-tight mb-8"
             style={{ fontFamily: "var(--font-libre-baskerville)" }}
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
           >
             Websites. Apps. Custom tools.
           </motion.h2>
@@ -890,7 +900,7 @@ function ScopeSection() {
             className="space-y-3 text-lg text-[#5A6570] mb-8"
             initial={{ opacity: 0, y: 15 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.15 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
           >
             <p>Sometimes you need a simple site.</p>
             <p>Sometimes you need something more.</p>
@@ -903,12 +913,12 @@ function ScopeSection() {
             className="text-sm text-[#2B3A44]"
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.4, delay: 0.4 }}
+            transition={{ duration: 0.4, delay: 0.6 }}
           >
             Built for real businesses. Not big budgets.
           </motion.p>
         </div>
-      </Container>
+      </motion.div>
     </section>
   );
 }
