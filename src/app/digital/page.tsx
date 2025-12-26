@@ -155,11 +155,11 @@ function ValuePropositionSection() {
   // Scroll-based reveal for background
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start end", "end start"]
+    offset: ["start end", "center center"]
   });
 
   // Map scroll progress to clip inset (100% -> 0%)
-  const clipInset = useTransform(scrollYProgress, [0, 0.6], [100, 0]);
+  const clipPath = useTransform(scrollYProgress, [0, 0.7], ["inset(100% 0 0 0)", "inset(0% 0 0 0)"]);
 
   return (
     <section
@@ -176,7 +176,7 @@ function ValuePropositionSection() {
           backgroundRepeat: "no-repeat",
           height: "100%",
           transformOrigin: "bottom",
-          clipPath: useTransform(clipInset, (v) => `inset(${v}% 0 0 0)`),
+          clipPath,
         }}
       />
 
