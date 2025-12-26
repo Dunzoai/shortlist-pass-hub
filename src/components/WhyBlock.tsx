@@ -24,7 +24,7 @@ export function WhyBlock({ heading, lines }: WhyBlockProps) {
       <h4
         className="text-sm md:text-base font-semibold text-[#1A1F24] mb-3 pl-3"
         style={{
-          borderLeft: "2px solid #2E8B57",
+          borderLeft: "2px solid #2B3A44",
         }}
       >
         {heading}

@@ -207,24 +207,6 @@ function ValuePropositionSection() {
             y: { duration: 20, repeat: Infinity, ease: "easeInOut" },
           }}
         />
-        {/* Cloud 2 - top center, medium */}
-        <motion.img
-          src="/cloud.png"
-          alt=""
-          className="absolute w-20 md:w-32 lg:w-40"
-          style={{ left: "42%", top: "8%" }}
-          initial={{ opacity: 0 }}
-          animate={isInView ? {
-            opacity: 0.6,
-            x: [0, -10, 0, 12, 0],
-            y: [0, 8, 0, -6, 0],
-          } : { opacity: 0 }}
-          transition={{
-            opacity: { duration: 1, delay: 0.5 },
-            x: { duration: 22, repeat: Infinity, ease: "easeInOut" },
-            y: { duration: 16, repeat: Infinity, ease: "easeInOut" },
-          }}
-        />
         {/* Cloud 3 - top right, small */}
         <motion.img
           src="/cloud.png"
@@ -556,13 +538,13 @@ function AISchedulingDemo() {
           </p>
         </motion.div>
 
-        {/* Glass super-card */}
+        {/* Glass super-card - bone color */}
         <motion.div
           className="relative rounded-[28px] overflow-hidden"
           style={{
-            background: "linear-gradient(180deg, rgba(15, 23, 36, 0.9) 0%, rgba(11, 18, 32, 0.95) 100%)",
-            border: "1px solid rgba(255, 255, 255, 0.06)",
-            boxShadow: "0 40px 80px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.03)",
+            background: "linear-gradient(180deg, rgba(244, 241, 236, 0.95) 0%, rgba(232, 229, 224, 0.98) 100%)",
+            border: "1px solid rgba(43, 58, 68, 0.1)",
+            boxShadow: "0 40px 80px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.5)",
           }}
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -597,7 +579,7 @@ function AISchedulingDemo() {
                         className={`max-w-[85%] rounded-2xl px-4 py-3 ${
                           msg.role === "customer"
                             ? "bg-[#2B3A44] text-[#F4F1EC]"
-                            : "bg-white/5 text-[#1A1F24] border border-white/5"
+                            : "bg-white/90 text-[#1A1F24] border border-[#2B3A44]/10"
                         }`}
                       >
                         <p className="text-sm leading-relaxed">{msg.text}</p>
@@ -644,7 +626,7 @@ function AISchedulingDemo() {
                           className={`flex flex-col items-center px-3 py-2 rounded-xl transition-all ${
                             isSelected
                               ? "bg-[#2B3A44] text-[#F4F1EC]"
-                              : "bg-white/5 text-[#5A6570]/60"
+                              : "bg-white/60 text-[#5A6570]/60"
                           }`}
                         >
                           <span className={`text-[10px] uppercase tracking-wider font-medium ${isSelected ? "text-[#F4F1EC]/70" : ""}`}>
@@ -662,9 +644,9 @@ function AISchedulingDemo() {
                   <motion.div
                     className="rounded-2xl p-5 md:p-6"
                     style={{
-                      background: "rgba(255, 255, 255, 0.04)",
-                      border: "1px solid rgba(176, 141, 87, 0.2)",
-                      boxShadow: "0 8px 32px rgba(0, 0, 0, 0.2)",
+                      background: "rgba(255, 255, 255, 0.9)",
+                      border: "1px solid rgba(43, 58, 68, 0.15)",
+                      boxShadow: "0 8px 32px rgba(0, 0, 0, 0.06)",
                     }}
                     initial={{ y: 15, opacity: 0 }}
                     animate={showCalendar ? { y: 0, opacity: 1 } : {}}
@@ -688,7 +670,7 @@ function AISchedulingDemo() {
                     </p>
 
                     {/* Stylist */}
-                    <div className="flex items-center gap-2 pt-3 border-t border-white/5">
+                    <div className="flex items-center gap-2 pt-3 border-t border-[#2B3A44]/10">
                       <div className="w-7 h-7 rounded-full bg-[#2B3A44]/20 flex items-center justify-center">
                         <span className="text-xs font-semibold text-[#2B3A44]">
                           {appointment.stylist.charAt(0)}
