@@ -52,3 +52,26 @@ html {
     transform: translateX(-50%);
   }
 }
+
+/* Mobile alternating fade for hero icons */
+@keyframes fadeAltA {
+  0%, 10% { opacity: 0.5; }
+  45%, 55% { opacity: 0; }
+  90%, 100% { opacity: 0.5; }
+}
+
+@keyframes fadeAltB {
+  0%, 10% { opacity: 0; }
+  45%, 55% { opacity: 0.5; }
+  90%, 100% { opacity: 0; }
+}
+
+/* Apply alternating fade only on mobile */
+@media (max-width: 767px) {
+  .mobile-fade-a {
+    animation: fadeAltA 6s ease-in-out infinite;
+  }
+  .mobile-fade-b {
+    animation: fadeAltB 6s ease-in-out infinite;
+  }
+}
