@@ -387,7 +387,7 @@ function ShowDontTellSection() {
             <Container>
               <div className="text-center mb-12">
                 <h3 className="text-[32px] md:text-[44px] font-normal text-[#1A1F24] leading-tight mb-4" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
-                  Your business moves. Your website should too.
+                  Your business moves.<br className="md:hidden" /> Your website should too.
                 </h3>
                 <p className="text-lg text-[#5A6570]">
                   Real schedules change week to week. We build pages that keep up.
@@ -480,6 +480,7 @@ function AISchedulingDemo() {
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
   const [messageStep, setMessageStep] = useState(0);
   const [showCalendar, setShowCalendar] = useState(false);
+  const [showBooked, setShowBooked] = useState(false);
   const [loopKey, setLoopKey] = useState(0);
 
   // Single looping animation sequence with deliberate pause before transition
@@ -489,6 +490,7 @@ function AISchedulingDemo() {
     // Reset for new loop
     setMessageStep(0);
     setShowCalendar(false);
+    setShowBooked(false);
 
     const timers: ReturnType<typeof setTimeout>[] = [];
 
@@ -510,15 +512,20 @@ function AISchedulingDemo() {
     // Message 6: Confirmation - "Done. You're booked..."
     timers.push(setTimeout(() => setMessageStep(6), 9000));
 
-    // PAUSE: Let it breathe ~1100ms after final message, then transition
+    // PAUSE: Let it breathe ~1100ms after final message, then show calendar
     timers.push(setTimeout(() => {
       setShowCalendar(true);
     }, 10100));
 
-    // Hold booked view for 3 seconds, then loop
+    // After 2.5 seconds on calendar, show the celebration checkmark
+    timers.push(setTimeout(() => {
+      setShowBooked(true);
+    }, 12600));
+
+    // Hold celebration for 2.5 seconds, then loop
     timers.push(setTimeout(() => {
       setLoopKey(k => k + 1);
-    }, 14100));
+    }, 15100));
 
     return () => timers.forEach(clearTimeout);
   }, [isInView, loopKey]);
@@ -535,7 +542,7 @@ function AISchedulingDemo() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-normal text-[#1A1F24] leading-tight mb-6" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
+          <h2 className="text-[24px] md:text-[44px] lg:text-[52px] font-normal text-[#1A1F24] leading-tight mb-6" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
             {AI_DEMO_COPY.headline}
             <br />
             <span className="text-[#2B3A44]">{AI_DEMO_COPY.headlineBrass}</span>
@@ -602,11 +609,11 @@ function AISchedulingDemo() {
               className="absolute inset-0 p-6 md:p-8 flex flex-col"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{
-                opacity: showCalendar ? 1 : 0,
-                scale: showCalendar ? 1 : 0.95
+                opacity: showCalendar && !showBooked ? 1 : 0,
+                scale: showCalendar && !showBooked ? 1 : 0.95
               }}
               transition={{ duration: 0.45, ease: "easeInOut" }}
-              style={{ pointerEvents: showCalendar ? "auto" : "none" }}
+              style={{ pointerEvents: showCalendar && !showBooked ? "auto" : "none" }}
             >
               <div className="flex items-center gap-2 mb-4">
                 <svg className="w-4 h-4 text-[#2B3A44]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -688,6 +695,100 @@ function AISchedulingDemo() {
                   </motion.div>
                 </motion.div>
               </div>
+            </motion.div>
+
+            {/* BOOKED CELEBRATION VIEW - Checkmark pop */}
+            <motion.div
+              className="absolute inset-0 flex flex-col items-center justify-center"
+              initial={{ opacity: 0 }}
+              animate={{
+                opacity: showBooked ? 1 : 0,
+              }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              style={{ pointerEvents: showBooked ? "auto" : "none" }}
+            >
+              {/* Slate blue circle with checkmark */}
+              <motion.div
+                className="relative w-28 h-28 md:w-36 md:h-36 rounded-full bg-[#2B3A44] flex items-center justify-center mb-6"
+                initial={{ scale: 0, rotate: -20 }}
+                animate={showBooked ? { scale: 1, rotate: 0 } : { scale: 0, rotate: -20 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 400,
+                  damping: 15,
+                  mass: 0.8,
+                }}
+              >
+                {/* Inner glow ring */}
+                <div className="absolute inset-2 rounded-full border border-[#F4F1EC]/20" />
+
+                {/* Checkmark that draws in */}
+                <motion.svg
+                  className="w-14 h-14 md:w-18 md:h-18 text-[#F4F1EC]"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  initial={{ scale: 0.5, opacity: 0 }}
+                  animate={showBooked ? { scale: 1, opacity: 1 } : { scale: 0.5, opacity: 0 }}
+                  transition={{ delay: 0.15, duration: 0.3, ease: "easeOut" }}
+                >
+                  <motion.path
+                    d="M5 13l4 4L19 7"
+                    stroke="currentColor"
+                    strokeWidth={3}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    initial={{ pathLength: 0 }}
+                    animate={showBooked ? { pathLength: 1 } : { pathLength: 0 }}
+                    transition={{ delay: 0.2, duration: 0.4, ease: "easeOut" }}
+                  />
+                </motion.svg>
+
+                {/* Burst particles */}
+                {showBooked && (
+                  <>
+                    {[...Array(8)].map((_, i) => (
+                      <motion.div
+                        key={i}
+                        className="absolute w-2 h-2 rounded-full bg-[#2B3A44]/30"
+                        style={{
+                          top: "50%",
+                          left: "50%",
+                        }}
+                        initial={{ x: "-50%", y: "-50%", scale: 0 }}
+                        animate={{
+                          x: `calc(-50% + ${Math.cos((i * Math.PI * 2) / 8) * 80}px)`,
+                          y: `calc(-50% + ${Math.sin((i * Math.PI * 2) / 8) * 80}px)`,
+                          scale: [0, 1, 0],
+                          opacity: [0, 1, 0],
+                        }}
+                        transition={{
+                          duration: 0.6,
+                          delay: 0.1,
+                          ease: "easeOut",
+                        }}
+                      />
+                    ))}
+                  </>
+                )}
+              </motion.div>
+
+              {/* Text */}
+              <motion.h3
+                className="text-2xl md:text-3xl font-bold text-[#1A1F24] mb-2"
+                initial={{ opacity: 0, y: 10 }}
+                animate={showBooked ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+                transition={{ delay: 0.25, duration: 0.35, ease: "easeOut" }}
+              >
+                Appointment Booked
+              </motion.h3>
+              <motion.p
+                className="text-base text-[#5A6570]"
+                initial={{ opacity: 0, y: 8 }}
+                animate={showBooked ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
+                transition={{ delay: 0.35, duration: 0.3, ease: "easeOut" }}
+              >
+                No follow-up needed.
+              </motion.p>
             </motion.div>
           </div>
         </motion.div>
