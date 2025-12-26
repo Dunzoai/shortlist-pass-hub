@@ -155,14 +155,19 @@ function ValuePropositionSection() {
       ref={sectionRef}
       className="relative py-28 lg:py-36 bg-[#F4F1EC] overflow-hidden"
     >
-      {/* Background texture image */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.25]"
+      {/* Background texture image - anchored to bottom, reveals from bottom up */}
+      <motion.div
+        className="absolute inset-x-0 bottom-0 pointer-events-none opacity-[0.37]"
         style={{
           backgroundImage: `url("/section-2-background.png")`,
           backgroundSize: "cover",
-          backgroundPosition: "center",
+          backgroundPosition: "center bottom",
+          height: "100%",
+          transformOrigin: "bottom",
         }}
+        initial={{ clipPath: "inset(100% 0 0 0)" }}
+        animate={isInView ? { clipPath: "inset(0% 0 0 0)" } : { clipPath: "inset(100% 0 0 0)" }}
+        transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1] as const, delay: 0.2 }}
       />
 
       {/* Light grey overlay */}
@@ -201,8 +206,9 @@ function ValuePropositionSection() {
             >
               <span className="italic">dressed-up templates</span>
             </motion.span>
-            .{" "}
-            <span className="relative inline-block whitespace-nowrap">
+            .
+            <br />
+            <span className="relative inline-block whitespace-nowrap mt-2">
               We don&apos;t do that.
               <DrawUnderline isVisible={isInView} />
             </span>
