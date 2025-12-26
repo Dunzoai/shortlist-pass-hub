@@ -53,27 +53,12 @@ html {
   }
 }
 
-/* Independent fade cycles for hero icons - organic, overlapping */
-@keyframes softFade {
-  0%, 100% { opacity: 0; }
-  15%, 85% { opacity: 0.55; }
-}
-
-/* Apply independent fade on mobile - different durations for organic feel */
+/* Static visibility for hero icons on mobile */
 @media (max-width: 767px) {
-  .mobile-corner-1 {
-    animation: softFade 7s ease-in-out infinite;
-  }
-  .mobile-corner-2 {
-    animation: softFade 9s ease-in-out infinite;
-    animation-delay: 1.5s;
-  }
-  .mobile-corner-3 {
-    animation: softFade 8s ease-in-out infinite;
-    animation-delay: 3s;
-  }
+  .mobile-corner-1,
+  .mobile-corner-2,
+  .mobile-corner-3,
   .mobile-corner-4 {
-    animation: softFade 10s ease-in-out infinite;
-    animation-delay: 0.5s;
+    opacity: 0.5;
   }
 }
