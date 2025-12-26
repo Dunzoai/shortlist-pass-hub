@@ -302,21 +302,25 @@ function ValuePropositionSection() {
             Most small businesses don&apos;t get custom websites. They get{" "}
             <span className="italic">templates</span>.
             <br />
-            {/* "We don't do that." slams in from above */}
-            <motion.span
-              ref={underlineRef}
-              className="relative inline-block whitespace-nowrap mt-4 md:mt-6"
-              initial={{ scale: 1.8, y: -40, opacity: 0 }}
-              animate={isInView ? { scale: 1, y: 0, opacity: 1 } : {}}
-              transition={{
-                duration: 0.5,
-                delay: 0.3,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-            >
-              We don&apos;t do that.
+            {/* "We don't do that." - each word slams in from above */}
+            <span ref={underlineRef} className="relative inline-block whitespace-nowrap mt-4 md:mt-6">
+              {["We", "don't", "do", "that."].map((word, i) => (
+                <motion.span
+                  key={word}
+                  className="inline-block mr-[0.3em]"
+                  initial={{ scale: 2, y: -50, opacity: 0 }}
+                  animate={isInView ? { scale: 1, y: 0, opacity: 1 } : {}}
+                  transition={{
+                    duration: 0.4,
+                    delay: 0.3 + i * 0.12,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                >
+                  {word}
+                </motion.span>
+              ))}
               <DrawUnderline isVisible={underlineInView} />
-            </motion.span>
+            </span>
           </h2>
 
           {/* Body copy */}
@@ -341,93 +345,26 @@ function ValuePropositionSection() {
 // =============================================================================
 
 function TalkVsWalkSection() {
-  const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
-  const [line1, setLine1] = useState("");
-  const [line2, setLine2] = useState("");
-  const [showCursor, setShowCursor] = useState(true);
-  const [cursorLine, setCursorLine] = useState(1);
-  const [showSubtext, setShowSubtext] = useState(false);
-
-  const fullLine1 = "Everyone explains.";
-  const fullLine2 = "Very few execute.";
-
-  useEffect(() => {
-    if (!isInView) return;
-
-    let i = 0;
-    let j = 0;
-
-    // Type line 1
-    const typeInterval1 = setInterval(() => {
-      if (i < fullLine1.length) {
-        setLine1(fullLine1.slice(0, i + 1));
-        i++;
-      } else {
-        clearInterval(typeInterval1);
-        // Dramatic pause before line 2
-        setTimeout(() => {
-          setCursorLine(2);
-          // Type line 2 slower
-          const typeInterval2 = setInterval(() => {
-            if (j < fullLine2.length) {
-              setLine2(fullLine2.slice(0, j + 1));
-              j++;
-            } else {
-              clearInterval(typeInterval2);
-              // Hide cursor and show subtext
-              setTimeout(() => {
-                setShowCursor(false);
-                setShowSubtext(true);
-              }, 400);
-            }
-          }, 80); // Slower typing for line 2
-        }, 800); // Pause between lines
-      }
-    }, 50); // Fast typing for line 1
-
-    return () => clearInterval(typeInterval1);
-  }, [isInView]);
-
   return (
-    <section ref={sectionRef} className="py-20 lg:py-28 bg-[#2B3A44]">
+    <section className="py-20 lg:py-28 bg-[#2B3A44]">
       <Container>
         <div className="max-w-2xl mx-auto text-center">
-          {/* Headline with typewriter effect */}
-          <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-normal text-[#F4F1EC] leading-tight mb-6 min-h-[140px] md:min-h-[160px]" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
-            <span>
-              {line1}
-              {showCursor && cursorLine === 1 && (
-                <span className="animate-pulse">|</span>
-              )}
-            </span>
-            {line2 && (
-              <>
-                <br />
-                <span className="text-[#F4F1EC]/70">
-                  {line2}
-                  {showCursor && cursorLine === 2 && (
-                    <span className="animate-pulse">|</span>
-                  )}
-                </span>
-              </>
-            )}
+          {/* Headline - static */}
+          <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-normal text-[#F4F1EC] leading-tight mb-6" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
+            Everyone explains.
+            <br />
+            <span className="text-[#F4F1EC]/70">Very few execute.</span>
           </h2>
 
-          {/* Subhead - fades in after typing */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={showSubtext ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5 }}
-          >
-            <p className="text-lg md:text-xl text-[#F4F1EC]/80 mb-4">
-              So instead of telling you what we do, we&apos;ll show you what your business can have.
-            </p>
+          {/* Subhead */}
+          <p className="text-lg md:text-xl text-[#F4F1EC]/80 mb-4">
+            So instead of telling you what we do, we&apos;ll show you what your business can have.
+          </p>
 
-            <p className="text-sm text-[#F4F1EC]/50">
-              Built around how real businesses actually work — not templates or assumptions.
-            </p>
-          </motion.div>
+          {/* Clarifier */}
+          <p className="text-sm text-[#F4F1EC]/50">
+            Built around how real businesses actually work — not templates or assumptions.
+          </p>
         </div>
       </Container>
     </section>
