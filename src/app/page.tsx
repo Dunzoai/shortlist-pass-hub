@@ -235,7 +235,7 @@ function Footer() {
     <footer className="border-t border-white/5 py-12">
       <Container>
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[#5A6570]">
-          <span>&copy; {year} Shortlist Pass</span>
+          <span>&copy; {year} The Shortlist Co</span>
           <span>hello@shortlistpass.com</span>
         </div>
       </Container>

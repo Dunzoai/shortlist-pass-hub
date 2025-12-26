@@ -1017,7 +1017,7 @@ function FinalCTASection() {
 
             {/* Trust line */}
             <p className="text-sm text-[#F4F1EC]/50 max-w-lg mx-auto">
-              Shortlist Pass builds digital experiences that make small businesses
+              The Shortlist Co builds digital experiences that make small businesses
               feel established — without the big-agency baggage.
             </p>
           </div>
@@ -1036,7 +1036,7 @@ function Footer() {
     <footer className="border-t border-white/5 py-12 bg-[#F4F1EC]">
       <Container>
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[#5A6570]/60">
-          <span>&copy; {new Date().getFullYear()} Shortlist Pass</span>
+          <span>&copy; {new Date().getFullYear()} The Shortlist Co</span>
           <span>hello@shortlistpass.com</span>
         </div>
       </Container>

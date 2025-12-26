@@ -401,7 +401,7 @@ function ShortyModal() {
           />
         </div>
         {/* Title */}
-        <h2 className="text-xs md:text-sm font-semibold text-white">Shortlist Pass</h2>
+        <h2 className="text-xs md:text-sm font-semibold text-white">The Shortlist Co</h2>
         <p className="text-[9px] md:text-[10px] text-slate-400 text-center mt-0.5">
           Shorty handles the questions. You handle the business.
         </p>
@@ -512,7 +512,7 @@ function ShortyModal() {
             Hours & location?
           </span>
           <span className="px-1.5 py-0.5 text-[8px] rounded-full bg-white/5 text-slate-300 border border-white/10">
-            Why Shortlist Pass?
+            Why The Shortlist Co?
           </span>
         </div>
       )}

@@ -108,7 +108,7 @@ export function FoodTruckTimeline() {
         {/* Truck sitting above cards */}
         <div className="relative h-32 flex justify-center mb-2">
           <motion.div
-            className="absolute top-0"
+            className="absolute -top-3"
             style={{ left: 0 }}
             animate={{ x: truckX - 80 }}
             transition={{

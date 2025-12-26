@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 
 export function Nav() {
@@ -12,28 +13,35 @@ export function Nav() {
         {/* Logo */}
         <Link
           href="/"
-          className="text-lg font-semibold text-[#1A1F24] hover:text-[#2E8B57] transition-colors duration-300"
+          className="flex items-center gap-2 text-lg font-semibold text-[#1A1F24] hover:text-[#2B3A44] transition-colors duration-300"
         >
-          Shortlist Pass
+          <Image
+            src="/shortlist-logo-slate-blue.png"
+            alt="The Shortlist Co"
+            width={28}
+            height={28}
+            className="w-7 h-7"
+          />
+          The Shortlist Co
         </Link>
 
         {/* Desktop Nav Links */}
         <div className="hidden md:flex items-center gap-4">
           <Link
             href="/social"
-            className="text-sm text-[#5A6570] px-4 py-2 rounded-full transition-all duration-300 hover:bg-[#2E8B57] hover:text-[#F4F1EC]"
+            className="text-sm text-[#5A6570] px-4 py-2 rounded-full transition-all duration-300 hover:bg-[#2B3A44] hover:text-[#F4F1EC]"
           >
             Social
           </Link>
           <Link
             href="/smartpages"
-            className="text-sm text-[#5A6570] px-4 py-2 rounded-full transition-all duration-300 hover:bg-[#2E8B57] hover:text-[#F4F1EC]"
+            className="text-sm text-[#5A6570] px-4 py-2 rounded-full transition-all duration-300 hover:bg-[#2B3A44] hover:text-[#F4F1EC]"
           >
             SmartPages
           </Link>
           <Link
             href="/digital"
-            className="text-sm text-[#5A6570] px-4 py-2 rounded-full transition-all duration-300 hover:bg-[#2E8B57] hover:text-[#F4F1EC]"
+            className="text-sm text-[#5A6570] px-4 py-2 rounded-full transition-all duration-300 hover:bg-[#2B3A44] hover:text-[#F4F1EC]"
           >
             Digital
           </Link>

@@ -768,7 +768,7 @@ function Footer() {
           <span className="text-xs text-[#5A6570]/60">Built for real operators.</span>
 
           <div className="flex flex-col sm:flex-row items-center justify-between w-full gap-4">
-            <span>&copy; {year} Shortlist Pass</span>
+            <span>&copy; {year} The Shortlist Co</span>
             <span>hello@shortlistpass.com</span>
           </div>
         </div>

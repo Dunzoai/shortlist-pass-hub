@@ -18,7 +18,7 @@ const libreBaskerville = Libre_Baskerville({
 });
 
 export const metadata: Metadata = {
-  title: "Shortlist Pass | Small Business Tools That Get Used",
+  title: "The Shortlist Co | Small Business Tools That Get Used",
   description: "Social, SmartPages, and custom builds — designed to keep customers engaged and moving.",
 };
 
