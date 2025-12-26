@@ -344,129 +344,159 @@ function ValuePropositionSection() {
 // Static, calm pause before the interactive demos
 // =============================================================================
 
-// Hand-drawn curved arrow SVG that draws itself
-function HandDrawnArrow({ isVisible }: { isVisible: boolean }) {
+// Sweeping hand-drawn arrow that spans across sections
+function SweepingArrow({ isVisible }: { isVisible: boolean }) {
   return (
     <motion.svg
-      className="w-16 h-32 md:w-20 md:h-40"
-      viewBox="0 0 60 120"
+      className="w-[200px] h-[280px] md:w-[280px] md:h-[380px] lg:w-[320px] lg:h-[440px]"
+      viewBox="0 0 200 280"
       fill="none"
       aria-hidden="true"
+      style={{ transform: "scaleX(-1)" }} // Flip horizontally to arch to the right
     >
-      {/* Main curved line - hand-drawn wobbly path */}
+      {/* Main sweeping curve - starts top left, arches out, curves down */}
       <motion.path
-        d="M30 0 C32 15, 28 25, 30 40 C33 55, 26 70, 30 85 C32 95, 28 105, 30 110"
-        stroke="#F4F1EC"
-        strokeWidth="2.5"
+        d="M20 0
+           C 25 40, 180 60, 185 140
+           C 190 200, 120 240, 80 270"
+        stroke="#5A6570"
+        strokeWidth="3"
         strokeLinecap="round"
         fill="none"
         initial={{ pathLength: 0, opacity: 0 }}
-        animate={isVisible ? { pathLength: 1, opacity: 0.7 } : {}}
-        transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+        animate={isVisible ? { pathLength: 1, opacity: 0.6 } : {}}
+        transition={{ duration: 1.2, ease: "easeInOut", delay: 0.3 }}
       />
-      {/* Arrow head - left stroke */}
+      {/* Arrowhead - outer sweep stroke */}
       <motion.path
-        d="M30 110 L22 98"
-        stroke="#F4F1EC"
-        strokeWidth="2.5"
+        d="M80 270 C 60 250, 40 260, 30 240"
+        stroke="#5A6570"
+        strokeWidth="3"
         strokeLinecap="round"
         fill="none"
         initial={{ pathLength: 0, opacity: 0 }}
-        animate={isVisible ? { pathLength: 1, opacity: 0.7 } : {}}
-        transition={{ duration: 0.3, ease: "easeOut", delay: 0.9 }}
+        animate={isVisible ? { pathLength: 1, opacity: 0.6 } : {}}
+        transition={{ duration: 0.4, ease: "easeOut", delay: 1.4 }}
       />
-      {/* Arrow head - right stroke */}
+      {/* Arrowhead - inner stroke */}
       <motion.path
-        d="M30 110 L38 98"
-        stroke="#F4F1EC"
+        d="M80 270 C 70 255, 55 250, 50 235"
+        stroke="#5A6570"
+        strokeWidth="3"
+        strokeLinecap="round"
+        fill="none"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={isVisible ? { pathLength: 1, opacity: 0.6 } : {}}
+        transition={{ duration: 0.35, ease: "easeOut", delay: 1.5 }}
+      />
+      {/* Arrowhead - tip accent */}
+      <motion.path
+        d="M80 270 C 85 260, 95 255, 100 245"
+        stroke="#5A6570"
         strokeWidth="2.5"
         strokeLinecap="round"
         fill="none"
         initial={{ pathLength: 0, opacity: 0 }}
-        animate={isVisible ? { pathLength: 1, opacity: 0.7 } : {}}
-        transition={{ duration: 0.3, ease: "easeOut", delay: 1.0 }}
+        animate={isVisible ? { pathLength: 1, opacity: 0.6 } : {}}
+        transition={{ duration: 0.3, ease: "easeOut", delay: 1.55 }}
       />
     </motion.svg>
   );
 }
 
-function TalkVsWalkSection() {
+// Wrapper component for sections with spanning arrow
+function TalkVsWalkWithArrow() {
   const arrowRef = useRef(null);
-  const arrowInView = useInView(arrowRef, { once: true, margin: "-20%" });
+  const arrowInView = useInView(arrowRef, { once: true, margin: "-10%" });
 
   return (
-    <section className="py-20 lg:py-28 bg-[#2B3A44] relative">
-      <Container>
-        <div className="max-w-2xl mx-auto text-center">
-          {/* Headline - static */}
-          <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-normal text-[#F4F1EC] leading-tight mb-6" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
-            Everyone explains.
-            <br />
-            <span className="text-[#F4F1EC]/70">Very few execute.</span>
-          </h2>
+    <div ref={arrowRef} className="relative">
+      {/* TalkVsWalk Section */}
+      <section className="py-20 lg:py-28 bg-[#2B3A44] relative">
+        <Container>
+          <div className="max-w-2xl mx-auto text-center">
+            {/* Headline - static */}
+            <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-normal text-[#F4F1EC] leading-tight mb-6" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
+              Everyone explains.
+              <br />
+              <span className="text-[#F4F1EC]/70">Very few execute.</span>
+            </h2>
 
-          {/* Subhead */}
-          <p className="text-lg md:text-xl text-[#F4F1EC]/80 mb-4">
-            So instead of telling you what we do, we&apos;ll show you what your business can have.
-          </p>
+            {/* Subhead */}
+            <p className="text-lg md:text-xl text-[#F4F1EC]/80 mb-4">
+              So instead of telling you what we do, we&apos;ll show you what your business can have.
+            </p>
 
-          {/* Clarifier */}
-          <p className="text-sm text-[#F4F1EC]/50">
-            Built around how real businesses actually work — not templates or assumptions.
-          </p>
+            {/* Clarifier */}
+            <p className="text-sm text-[#F4F1EC]/50">
+              Built around how real businesses actually work — not templates or assumptions.
+            </p>
+          </div>
+        </Container>
+      </section>
 
-          {/* Hand-drawn arrow pointing to next section */}
-          <div ref={arrowRef} className="flex justify-center mt-10">
-            <HandDrawnArrow isVisible={arrowInView} />
+      {/* ShowDontTell Section */}
+      <section className="bg-[#F4F1EC]">
+        {/* Demo panels */}
+        <div className="py-24 lg:py-32">
+          <div className="space-y-20 lg:space-y-28">
+            {/* DEMO A: Food Truck Timeline (CENTERPIECE) */}
+            <div>
+              <Container>
+                <div className="text-center mb-12">
+                  <h3 className="text-[32px] md:text-[44px] font-normal text-[#1A1F24] leading-tight mb-4" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
+                    <span className="block">You move.</span>
+                    <span className="block text-[#1A1F24]/70">Your site should too.</span>
+                  </h3>
+                  <p className="text-lg text-[#5A6570]">
+                    Real schedules change week to week. We build pages that keep up.
+                  </p>
+                </div>
+              </Container>
+
+              {/* Food truck timeline demo */}
+              <Container>
+                <FoodTruckTimeline />
+
+                {/* Why block - owner-to-owner explanation */}
+                <WhyBlock
+                  heading="Why we didn't just list the dates"
+                  lines={[
+                    "Anyone can post a list.",
+                    "But when something is fun to interact with, people remember it —",
+                    "and they come back when they're ready to buy.",
+                    "That's what this does.",
+                  ]}
+                />
+              </Container>
+            </div>
+
           </div>
         </div>
-      </Container>
-    </section>
+      </section>
+
+      {/* Sweeping arrow - positioned to span both sections */}
+      <div
+        className="absolute pointer-events-none z-10"
+        style={{
+          top: "45%",
+          right: "5%",
+          transform: "translateY(-50%)",
+        }}
+      >
+        <SweepingArrow isVisible={arrowInView} />
+      </div>
+    </div>
   );
 }
 
-// Demo panels container (follows TalkVsWalk intro)
+// Keep original functions for reference but they're now merged above
+function TalkVsWalkSection() {
+  return null; // Merged into TalkVsWalkWithArrow
+}
+
 function ShowDontTellSection() {
-  return (
-    <section className="bg-[#F4F1EC]">
-      {/* Demo panels */}
-      <div className="py-24 lg:py-32">
-        <div className="space-y-20 lg:space-y-28">
-          {/* DEMO A: Food Truck Timeline (CENTERPIECE) */}
-          <div>
-            <Container>
-              <div className="text-center mb-12">
-                <h3 className="text-[32px] md:text-[44px] font-normal text-[#1A1F24] leading-tight mb-4" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
-                  <span className="block">You move.</span>
-                  <span className="block text-[#1A1F24]/70">Your site should too.</span>
-                </h3>
-                <p className="text-lg text-[#5A6570]">
-                  Real schedules change week to week. We build pages that keep up.
-                </p>
-              </div>
-            </Container>
-
-            {/* Food truck timeline demo */}
-            <Container>
-              <FoodTruckTimeline />
-
-              {/* Why block - owner-to-owner explanation */}
-              <WhyBlock
-                heading="Why we didn't just list the dates"
-                lines={[
-                  "Anyone can post a list.",
-                  "But when something is fun to interact with, people remember it —",
-                  "and they come back when they're ready to buy.",
-                  "That's what this does.",
-                ]}
-              />
-            </Container>
-          </div>
-
-        </div>
-      </div>
-    </section>
-  );
+  return null; // Merged into TalkVsWalkWithArrow
 }
 
 // =============================================================================
@@ -1036,8 +1066,7 @@ export default function DigitalPage() {
     <main className="pt-16 overflow-x-clip">
       <HeroSection />
       <ValuePropositionSection />
-      <TalkVsWalkSection />
-      <ShowDontTellSection />
+      <TalkVsWalkWithArrow />
       <CupcakeShowcaseSection />
       <AISchedulingDemo />
       <OutcomesSection />
