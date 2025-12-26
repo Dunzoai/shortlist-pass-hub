@@ -542,10 +542,9 @@ function AISchedulingDemo() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-[24px] md:text-[44px] lg:text-[52px] font-normal text-[#1A1F24] leading-tight mb-6" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
-            {AI_DEMO_COPY.headline}
-            <br />
-            <span className="text-[#2B3A44]">{AI_DEMO_COPY.headlineBrass}</span>
+          <h2 className="text-[20px] md:text-[44px] lg:text-[52px] font-normal text-[#1A1F24] leading-tight mb-6" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
+            <span className="block">{AI_DEMO_COPY.headline}</span>
+            <span className="block text-[#2B3A44]">{AI_DEMO_COPY.headlineBrass}</span>
           </h2>
           <p className="text-lg text-[#5A6570] max-w-2xl mx-auto">
             {AI_DEMO_COPY.subhead}
