@@ -49,12 +49,6 @@ function AnimatedWord({
 
 function HeroSection() {
   const heroRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-
-  const gridY = useTransform(scrollYProgress, [0, 1], ["0%", "10%"]);
 
   // Animation timing — SLOW and INTENTIONAL
   // "your" = 4 letters * 0.12 = ~0.5s
@@ -81,25 +75,6 @@ function HeroSection() {
       {/* Dark background */}
       <div className="absolute inset-0 bg-[#F4F1EC]" />
 
-      {/* Grid texture with parallax */}
-      <motion.div
-        className="absolute inset-[-10%] opacity-[0.4] pointer-events-none"
-        style={{
-          backgroundImage: "url(/grid.png)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          y: gridY,
-        }}
-      />
-
-      {/* Subtle radial glow */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse at 50% 40%, rgba(176, 141, 87, 0.04) 0%, transparent 50%)",
-        }}
-      />
 
       <Container>
         <div className="relative z-10 max-w-3xl mx-auto text-center">
