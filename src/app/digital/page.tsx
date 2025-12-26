@@ -349,26 +349,79 @@ function ValuePropositionSection() {
 // =============================================================================
 
 function TalkVsWalkSection() {
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+
   return (
-    <section className="py-20 lg:py-28 bg-[#2B3A44]">
+    <section ref={sectionRef} className="py-20 lg:py-28 bg-[#2B3A44]">
       <Container>
         <div className="max-w-2xl mx-auto text-center">
-          {/* Headline - Two lines, static, no animation */}
+          {/* Headline with animated words */}
           <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-normal text-[#F4F1EC] leading-tight mb-6" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
-            Everyone explains.
+            <motion.span
+              className="inline-block"
+              initial={{ scale: 0.7, opacity: 0 }}
+              animate={isInView ? { scale: 1.15, opacity: 1 } : {}}
+              transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+            >
+              Everyone
+            </motion.span>{" "}
+            <motion.span
+              className="inline-block"
+              initial={{ opacity: 0 }}
+              animate={isInView ? { opacity: 1 } : {}}
+              transition={{ duration: 0.4, delay: 0.5 }}
+            >
+              explains.
+            </motion.span>
             <br />
-            <span className="text-[#F4F1EC]/70">Very few execute.</span>
+            <span className="text-[#F4F1EC]/70">
+              <motion.span
+                className="inline-block"
+                initial={{ opacity: 0 }}
+                animate={isInView ? { opacity: 1 } : {}}
+                transition={{ duration: 0.4, delay: 0.7 }}
+              >
+                Very
+              </motion.span>{" "}
+              <motion.span
+                className="inline-block"
+                initial={{ scale: 1.3, opacity: 0 }}
+                animate={isInView ? { scale: 0.9, opacity: 1 } : {}}
+                transition={{ duration: 0.6, delay: 0.9, ease: "easeOut" }}
+              >
+                few
+              </motion.span>{" "}
+              <motion.span
+                className="inline-block"
+                initial={{ opacity: 0 }}
+                animate={isInView ? { opacity: 1 } : {}}
+                transition={{ duration: 0.4, delay: 1.1 }}
+              >
+                execute.
+              </motion.span>
+            </span>
           </h2>
 
           {/* Subhead */}
-          <p className="text-lg md:text-xl text-[#F4F1EC]/80 mb-4">
+          <motion.p
+            className="text-lg md:text-xl text-[#F4F1EC]/80 mb-4"
+            initial={{ opacity: 0, y: 10 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: 1.3 }}
+          >
             So instead of telling you what we do, we&apos;ll show you what your business can have.
-          </p>
+          </motion.p>
 
           {/* Optional clarifier */}
-          <p className="text-sm text-[#F4F1EC]/50">
+          <motion.p
+            className="text-sm text-[#F4F1EC]/50"
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.4, delay: 1.5 }}
+          >
             Built around how real businesses actually work — not templates or assumptions.
-          </p>
+          </motion.p>
         </div>
       </Container>
     </section>
@@ -877,10 +930,10 @@ function ScopeSection() {
   return (
     <section
       ref={sectionRef}
-      className="py-12 lg:py-16 bg-[#2B3A44] overflow-hidden"
+      className="bg-[#F4F1EC] overflow-hidden"
     >
       <motion.div
-        className="bg-[#F4F1EC] py-16 lg:py-24 px-6 md:px-12 lg:px-20"
+        className="py-20 lg:py-28 px-6 md:px-12 lg:px-20"
         initial={{ x: "100%", opacity: 0 }}
         animate={isInView ? { x: 0, opacity: 1 } : {}}
         transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
@@ -933,41 +986,48 @@ function FinalCTASection() {
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
   return (
-    <section ref={sectionRef} className="py-28 lg:py-40 bg-[#F4F1EC]">
-      <Container>
-        <motion.div
-          className="max-w-2xl mx-auto text-center"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-        >
-          <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-normal text-[#1A1F24] leading-tight mb-10" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
-            If you want your business to look like it belongs — we should talk.
-          </h2>
+    <section ref={sectionRef} className="bg-[#F4F1EC] overflow-hidden">
+      <motion.div
+        className="py-28 lg:py-40"
+        initial={{ y: "100%", opacity: 0 }}
+        animate={isInView ? { y: 0, opacity: 1 } : {}}
+        transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+      >
+        <Container>
+          <motion.div
+            className="max-w-2xl mx-auto text-center"
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-normal text-[#1A1F24] leading-tight mb-10" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
+              If you want your business to look like it belongs — we should talk.
+            </h2>
 
-          {/* Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
-            <a
-              href="mailto:hello@shortlistpass.com?subject=Let's talk"
-              className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold bg-[#2B3A44] text-[#F4F1EC] rounded-full hover:bg-[#1E2A32] transition-colors"
-            >
-              Start a conversation
-            </a>
-            <a
-              href="#demos"
-              className="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-[#5A6570] border border-white/10 rounded-full hover:border-white/20 hover:text-[#1A1F24] transition-colors"
-            >
-              See what&apos;s possible
-            </a>
-          </div>
+            {/* Buttons */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
+              <a
+                href="mailto:hello@shortlistpass.com?subject=Let's talk"
+                className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold bg-[#2B3A44] text-[#F4F1EC] rounded-full hover:bg-[#1E2A32] transition-colors"
+              >
+                Start a conversation
+              </a>
+              <a
+                href="#demos"
+                className="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-[#5A6570] border border-[#2B3A44]/20 rounded-full hover:border-[#2B3A44]/40 hover:text-[#1A1F24] transition-colors"
+              >
+                See what&apos;s possible
+              </a>
+            </div>
 
-          {/* Trust line */}
-          <p className="text-sm text-[#5A6570]/50 max-w-lg mx-auto">
-            Shortlist Pass builds digital experiences that make small businesses
-            feel established — without the big-agency baggage.
-          </p>
-        </motion.div>
-      </Container>
+            {/* Trust line */}
+            <p className="text-sm text-[#5A6570]/50 max-w-lg mx-auto">
+              Shortlist Pass builds digital experiences that make small businesses
+              feel established — without the big-agency baggage.
+            </p>
+          </motion.div>
+        </Container>
+      </motion.div>
     </section>
   );
 }
