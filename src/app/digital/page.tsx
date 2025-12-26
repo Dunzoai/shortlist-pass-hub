@@ -293,51 +293,43 @@ function ValuePropositionSection() {
       <div className="absolute bottom-12 right-8 md:right-16 w-16 md:w-24 h-px bg-[#1A1F24] opacity-[0.1]" />
 
       <Container>
-        <motion.div
-          className="relative max-w-[820px] mx-auto text-center px-4"
-          initial={{ opacity: 0.85, y: 10 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0.85, y: 10 }}
-          transition={{
-            duration: 0.8,
-            ease: [0.25, 0.1, 0.25, 1] as const,
-          }}
-        >
-          {/* Headline with letter-spacing animation */}
-          <motion.h2
+        <div className="relative max-w-[820px] mx-auto text-center px-4">
+          {/* Headline - static, no animation */}
+          <h2
             className="text-[24px] md:text-[36px] lg:text-[44px] font-normal text-[#1A1F24] leading-[1.22] mb-6 md:mb-8"
             style={{ fontFamily: "var(--font-libre-baskerville)" }}
-            initial={{ letterSpacing: "0.02em" }}
-            animate={isInView ? { letterSpacing: "-0.01em" } : { letterSpacing: "0.02em" }}
-            transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] as const }}
           >
             Most small businesses don&apos;t get custom websites. They get{" "}
-            <motion.span
-              className="relative"
-              initial={{ opacity: 0.85 }}
-              animate={isInView ? { opacity: 1 } : { opacity: 0.85 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <span className="italic">templates</span>
-            </motion.span>
-            .
+            <span className="italic">templates</span>.
             <br />
-            <span ref={underlineRef} className="relative inline-block whitespace-nowrap mt-4 md:mt-6">
+            {/* "We don't do that." slams in from above */}
+            <motion.span
+              ref={underlineRef}
+              className="relative inline-block whitespace-nowrap mt-4 md:mt-6"
+              initial={{ scale: 1.8, y: -40, opacity: 0 }}
+              animate={isInView ? { scale: 1, y: 0, opacity: 1 } : {}}
+              transition={{
+                duration: 0.5,
+                delay: 0.3,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+            >
               We don&apos;t do that.
               <DrawUnderline isVisible={underlineInView} />
-            </span>
-          </motion.h2>
+            </motion.span>
+          </h2>
 
           {/* Body copy */}
           <motion.p
             className="text-[17px] md:text-[22px] lg:text-[26px] font-normal text-[#1A1F24]/85 leading-[1.45]"
             style={{ fontFamily: "var(--font-libre-baskerville)" }}
-            initial={{ opacity: 0.8, y: 6 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0.8, y: 6 }}
-            transition={{ duration: 0.7, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] as const }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.8 }}
           >
             We build websites and apps from the ground up — so your online presence feels intentional, confident, and unmistakably yours.
           </motion.p>
-        </motion.div>
+        </div>
       </Container>
     </section>
   );

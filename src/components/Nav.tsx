@@ -18,9 +18,9 @@ export function Nav() {
           <Image
             src="/shortlist-logo-slate-blue.png"
             alt="The Shortlist Co"
-            width={28}
-            height={28}
-            className="w-7 h-7"
+            width={32}
+            height={32}
+            className="w-8 h-8"
           />
           The Shortlist Co
         </Link>
