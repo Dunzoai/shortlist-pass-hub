@@ -21,8 +21,8 @@ function HeroSection() {
         <motion.img
           src="/business.png"
           alt=""
-          className="absolute w-48 md:w-72 lg:w-[360px] opacity-[0.06] md:opacity-[0.09]"
-          style={{ left: "2%", top: "18%" }}
+          className="absolute w-48 md:w-[400px] lg:w-[550px] opacity-[0.06] md:opacity-[0.8]"
+          style={{ left: "-5%", top: "15%" }}
           animate={{
             x: [0, 12, 0, -8, 0],
             y: [0, -10, 0, 8, 0],
@@ -34,12 +34,12 @@ function HeroSection() {
           }}
         />
 
-        {/* Right icon - calendar */}
+        {/* Top right icon - calendar */}
         <motion.img
           src="/calendar.png"
           alt=""
-          className="absolute w-44 md:w-64 lg:w-80 opacity-[0.05] md:opacity-[0.08]"
-          style={{ right: "2%", top: "22%" }}
+          className="absolute w-44 md:w-[380px] lg:w-[500px] opacity-[0.05] md:opacity-[0.8]"
+          style={{ right: "-5%", top: "5%" }}
           animate={{
             x: [0, -10, 0, 14, 0],
             y: [0, 8, 0, -12, 0],
@@ -52,12 +52,12 @@ function HeroSection() {
           }}
         />
 
-        {/* Bottom icon - message bubble */}
+        {/* Bottom right icon - message bubble */}
         <motion.img
           src="/message-bubble.png"
           alt=""
-          className="absolute w-36 md:w-60 lg:w-72 opacity-[0.045] md:opacity-[0.07]"
-          style={{ right: "10%", bottom: "10%" }}
+          className="absolute w-36 md:w-[350px] lg:w-[450px] opacity-[0.045] md:opacity-[0.8]"
+          style={{ right: "0%", bottom: "5%" }}
           animate={{
             x: [0, 8, 0, -6, 0],
             y: [0, -8, 0, 10, 0],
