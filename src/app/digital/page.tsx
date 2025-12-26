@@ -15,14 +15,14 @@ import { WhyBlock } from "@/components/WhyBlock";
 function HeroSection() {
   return (
     <section className="relative min-h-[85vh] flex items-center justify-center bg-[#F4F1EC] overflow-hidden">
-      {/* Floating background icons - top-left and bottom-right only */}
+      {/* Floating background icons - one per corner, sequential rotation on mobile */}
       <div className="absolute inset-0 pointer-events-none z-0">
-        {/* Top left - laptop (alternates with business) */}
+        {/* Top left - laptop */}
         <motion.img
           src="/laptop-website.png"
           alt=""
-          className="absolute w-36 md:w-[345px] lg:w-[460px] mobile-fade-a md:opacity-[0.65]"
-          style={{ left: "-5%", top: "5%" }}
+          className="absolute w-44 md:w-[400px] lg:w-[530px] mobile-corner-1 md:opacity-[0.65]"
+          style={{ left: "-3%", top: "18%" }}
           animate={{
             x: [0, 8, 0, -6, 0],
             y: [0, -8, 0, 6, 0],
@@ -34,14 +34,14 @@ function HeroSection() {
           }}
         />
 
-        {/* Top left - business (alternates with laptop) */}
+        {/* Top right - business */}
         <motion.img
           src="/business.png"
           alt=""
-          className="absolute w-40 md:w-[390px] lg:w-[540px] mobile-fade-b md:opacity-[0.65]"
-          style={{ left: "-8%", top: "2%" }}
+          className="absolute w-48 md:w-[450px] lg:w-[620px] mobile-corner-2 md:opacity-[0.65]"
+          style={{ right: "-8%", top: "12%" }}
           animate={{
-            x: [0, 10, 0, -12, 0],
+            x: [0, -10, 0, 12, 0],
             y: [0, -6, 0, 10, 0],
           }}
           transition={{
@@ -52,12 +52,12 @@ function HeroSection() {
           }}
         />
 
-        {/* Bottom right - calendar (alternates with message) */}
+        {/* Bottom right - calendar */}
         <motion.img
           src="/calendar.png"
           alt=""
-          className="absolute w-36 md:w-[370px] lg:w-[490px] mobile-fade-a md:opacity-[0.65]"
-          style={{ right: "-5%", bottom: "5%" }}
+          className="absolute w-44 md:w-[425px] lg:w-[565px] mobile-corner-3 md:opacity-[0.65]"
+          style={{ right: "-5%", bottom: "15%" }}
           animate={{
             x: [0, -14, 0, 10, 0],
             y: [0, 10, 0, -8, 0],
@@ -70,12 +70,12 @@ function HeroSection() {
           }}
         />
 
-        {/* Bottom right - message (alternates with calendar) */}
+        {/* Bottom left - message */}
         <motion.img
           src="/message-bubble.png"
           alt=""
-          className="absolute w-32 md:w-[345px] lg:w-[440px] mobile-fade-b md:opacity-[0.65]"
-          style={{ right: "-3%", bottom: "8%" }}
+          className="absolute w-40 md:w-[400px] lg:w-[505px] mobile-corner-4 md:opacity-[0.65]"
+          style={{ left: "-2%", bottom: "18%" }}
           animate={{
             x: [0, 6, 0, -10, 0],
             y: [0, -12, 0, 8, 0],
