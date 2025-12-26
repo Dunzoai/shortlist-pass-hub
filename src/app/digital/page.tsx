@@ -937,19 +937,13 @@ function FinalCTASection() {
               If you want your business to look like it belongs — we should talk.
             </h2>
 
-            {/* Buttons */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
+            {/* Button */}
+            <div className="flex justify-center mb-10">
               <a
                 href="mailto:hello@shortlistpass.com?subject=Let's talk"
                 className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold bg-[#F4F1EC] text-[#2B3A44] rounded-full hover:bg-white transition-colors"
               >
                 Start a conversation
-              </a>
-              <a
-                href="#demos"
-                className="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-[#F4F1EC]/70 border border-[#F4F1EC]/20 rounded-full hover:border-[#F4F1EC]/40 hover:text-[#F4F1EC] transition-colors"
-              >
-                See what&apos;s possible
               </a>
             </div>
 
