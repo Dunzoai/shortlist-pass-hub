@@ -83,18 +83,18 @@ export function FoodTruckTimeline() {
 
   return (
     <div className="relative">
-      {/* Glass panel container */}
+      {/* Glass panel container - bone color */}
       <div
         className="relative rounded-[28px] p-6 md:p-8 overflow-hidden"
         style={{
-          background: "linear-gradient(180deg, rgba(15, 23, 36, 0.9) 0%, rgba(11, 18, 32, 0.95) 100%)",
-          border: "1px solid rgba(255, 255, 255, 0.06)",
-          boxShadow: "0 40px 80px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.03)",
+          background: "linear-gradient(180deg, rgba(244, 241, 236, 0.95) 0%, rgba(232, 229, 224, 0.98) 100%)",
+          border: "1px solid rgba(43, 58, 68, 0.1)",
+          boxShadow: "0 40px 80px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.5)",
         }}
       >
         {/* Header */}
         <div className="text-center mb-6">
-          <p className="text-[10px] text-[#2E8B57] uppercase tracking-[0.25em] mb-2 font-medium">
+          <p className="text-[10px] text-[#2B3A44] uppercase tracking-[0.25em] mb-2 font-medium">
             Nito&apos;s Empanadas (Real Example)
           </p>
           <h3 className="text-2xl md:text-3xl font-bold text-[#1A1F24] mb-2">
@@ -157,16 +157,16 @@ export function FoodTruckTimeline() {
                 transition={{ duration: 0.3 }}
                 style={{
                   background: index === activeIndex
-                    ? "rgba(255, 255, 255, 0.08)"
-                    : "rgba(255, 255, 255, 0.02)",
+                    ? "rgba(255, 255, 255, 0.9)"
+                    : "rgba(255, 255, 255, 0.4)",
                   border: index === activeIndex
-                    ? "1px solid rgba(176, 141, 87, 0.3)"
-                    : "1px solid rgba(255, 255, 255, 0.05)",
+                    ? "1px solid rgba(43, 58, 68, 0.2)"
+                    : "1px solid rgba(43, 58, 68, 0.08)",
                 }}
               >
                 <div>
                   <p className={`text-[10px] uppercase tracking-[0.2em] mb-2 font-medium ${
-                    index === activeIndex ? "text-[#2E8B57]" : "text-[#5A6570]/40"
+                    index === activeIndex ? "text-[#2B3A44]" : "text-[#5A6570]/40"
                   }`}>
                     {day.fullDay}
                   </p>
@@ -197,8 +197,8 @@ export function FoodTruckTimeline() {
               onClick={() => scrollToCard(index)}
               className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 ${
                 index === activeIndex
-                  ? "bg-[#2E8B57] text-[#F4F1EC]"
-                  : "bg-white/5 text-[#5A6570]/70 hover:bg-white/10 hover:text-[#5A6570]"
+                  ? "bg-[#2B3A44] text-[#F4F1EC]"
+                  : "bg-[#2B3A44]/10 text-[#5A6570]/70 hover:bg-[#2B3A44]/20 hover:text-[#5A6570]"
               }`}
             >
               {day.day}

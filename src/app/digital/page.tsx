@@ -160,7 +160,8 @@ function ValuePropositionSection() {
 
   // Map scroll progress to Y translation (starts off-screen, slides up)
   const bgY = useTransform(scrollYProgress, [0, 0.5], ["100%", "0%"]);
-  const bgOpacity = useTransform(scrollYProgress, [0.1, 0.5], [0, 0.37]);
+  // Start darker (0.55) and transition to current opacity (0.37)
+  const bgOpacity = useTransform(scrollYProgress, [0.1, 0.5], [0.55, 0.37]);
 
   return (
     <section
@@ -242,12 +243,12 @@ function ValuePropositionSection() {
             y: { duration: 19, repeat: Infinity, ease: "easeInOut" },
           }}
         />
-        {/* Cloud 4 - left side lower, medium-large */}
+        {/* Cloud 4 - left side mid, medium-large */}
         <motion.img
           src="/cloud.png"
           alt=""
           className="absolute w-24 md:w-36 lg:w-48"
-          style={{ left: "-5%", top: "55%" }}
+          style={{ left: "-5%", top: "25%" }}
           initial={{ opacity: 0 }}
           animate={isInView ? {
             opacity: 0.6,
@@ -260,12 +261,12 @@ function ValuePropositionSection() {
             y: { duration: 17, repeat: Infinity, ease: "easeInOut" },
           }}
         />
-        {/* Cloud 5 - right side middle, small */}
+        {/* Cloud 5 - right side mid, small */}
         <motion.img
           src="/cloud.png"
           alt=""
           className="absolute w-14 md:w-20 lg:w-28"
-          style={{ right: "5%", top: "40%" }}
+          style={{ right: "5%", top: "22%" }}
           initial={{ opacity: 0 }}
           animate={isInView ? {
             opacity: 0.5,
@@ -278,12 +279,12 @@ function ValuePropositionSection() {
             y: { duration: 21, repeat: Infinity, ease: "easeInOut" },
           }}
         />
-        {/* Cloud 6 - bottom left, large */}
+        {/* Cloud 6 - center bottom row, large */}
         <motion.img
           src="/cloud.png"
           alt=""
           className="absolute w-24 md:w-40 lg:w-52"
-          style={{ left: "10%", bottom: "8%" }}
+          style={{ left: "35%", top: "28%" }}
           initial={{ opacity: 0 }}
           animate={isInView ? {
             opacity: 0.55,

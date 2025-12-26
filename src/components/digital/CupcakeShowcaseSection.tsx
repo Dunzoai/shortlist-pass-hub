@@ -220,7 +220,7 @@ export function CupcakeShowcaseSection() {
               <h2 className="text-[26px] md:text-[34px] lg:text-[42px] font-bold text-[#1A1F24] leading-tight mb-2">
                 {CUPCAKE_COPY.hero.headline}
                 <br />
-                <span className="text-[#2E8B57]">{CUPCAKE_COPY.hero.headlineLine2}</span>
+                <span className="text-[#2B3A44]">{CUPCAKE_COPY.hero.headlineLine2}</span>
               </h2>
               <p className="text-sm md:text-base text-[#5A6570]/80 max-w-lg mx-auto">
                 {CUPCAKE_COPY.hero.sub}
@@ -255,9 +255,9 @@ export function CupcakeShowcaseSection() {
                     key={index}
                     className={`h-1.5 rounded-full transition-all duration-300 ${
                       index === activeIndex
-                        ? "w-6 bg-[#2E8B57]"
+                        ? "w-6 bg-[#2B3A44]"
                         : index < activeIndex
-                        ? "w-1.5 bg-[#2E8B57]/50"
+                        ? "w-1.5 bg-[#2B3A44]/50"
                         : "w-1.5 bg-white/20"
                     }`}
                   />
@@ -274,7 +274,7 @@ export function CupcakeShowcaseSection() {
                 <button
                   onClick={handleNext}
                   disabled={activeIndex === TOTAL_STATES - 1}
-                  className="px-4 py-2 text-sm bg-[#2E8B57] text-[#F4F1EC] font-medium rounded-lg disabled:opacity-30"
+                  className="px-4 py-2 text-sm bg-[#2B3A44] text-[#F4F1EC] font-medium rounded-lg disabled:opacity-30"
                 >
                   Next
                 </button>
@@ -287,7 +287,7 @@ export function CupcakeShowcaseSection() {
               <p className="text-lg md:text-xl font-semibold text-[#1A1F24]">
                 {CUPCAKE_COPY.closer.line1}
               </p>
-              <p className="text-lg md:text-xl font-semibold text-[#2E8B57]">
+              <p className="text-lg md:text-xl font-semibold text-[#2B3A44]">
                 {CUPCAKE_COPY.closer.line2}
               </p>
             </div>
@@ -310,7 +310,7 @@ export function CupcakeShowcaseSection() {
             <h2 className="text-[26px] md:text-[34px] lg:text-[42px] font-bold text-[#1A1F24] leading-tight mb-2">
               {CUPCAKE_COPY.hero.headline}
               <br />
-              <span className="text-[#2E8B57]">{CUPCAKE_COPY.hero.headlineLine2}</span>
+              <span className="text-[#2B3A44]">{CUPCAKE_COPY.hero.headlineLine2}</span>
             </h2>
             <p className="text-sm md:text-base text-[#5A6570]/80 max-w-lg mx-auto">
               {CUPCAKE_COPY.hero.sub}
@@ -364,9 +364,9 @@ export function CupcakeShowcaseSection() {
                   key={index}
                   className={`h-1.5 rounded-full transition-all duration-300 ${
                     index === activeIndex
-                      ? "w-6 bg-[#2E8B57]"
+                      ? "w-6 bg-[#2B3A44]"
                       : index < activeIndex
-                      ? "w-1.5 bg-[#2E8B57]/50"
+                      ? "w-1.5 bg-[#2B3A44]/50"
                       : "w-1.5 bg-white/20"
                   }`}
                 />
