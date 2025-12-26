@@ -425,8 +425,8 @@ function ShowDontTellSection() {
 
 // --- EDITABLE COPY ---
 const AI_DEMO_COPY = {
-  headline: "Most websites answer questions.",
-  headlineBrass: "The better ones book the appointment.",
+  headline: "Websites inform.",
+  headlineBrass: "Ours convert.",
   subhead: "This is what happens when your site is built to guide customers — not just inform them.",
   chatLabel: "Live Chat",
   confirmedLabel: "Appointment Confirmed",
@@ -542,7 +542,7 @@ function AISchedulingDemo() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-[20px] md:text-[44px] lg:text-[52px] font-normal text-[#1A1F24] leading-tight mb-6" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
+          <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-normal text-[#1A1F24] leading-tight mb-6" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
             <span className="block">{AI_DEMO_COPY.headline}</span>
             <span className="block text-[#2B3A44]">{AI_DEMO_COPY.headlineBrass}</span>
           </h2>

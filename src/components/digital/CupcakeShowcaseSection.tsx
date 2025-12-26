@@ -9,8 +9,8 @@ import { WhyBlock } from "@/components/WhyBlock";
 const CUPCAKE_COPY = {
   // Hero above cupcake
   hero: {
-    headline: "Stop asking customers to imagine it.",
-    headlineLine2: "Show them what they're getting.",
+    headline: "Don't explain it.",
+    headlineLine2: "Show it.",
     sub: "As they scroll, the offer comes together — step by step — until the decision is obvious.",
   },
   // Build sequence copy (industry-agnostic progress labels)
@@ -217,7 +217,7 @@ export function CupcakeShowcaseSection() {
           <div className="max-w-[800px] mx-auto px-6">
             {/* Hero text */}
             <div className="text-center mb-8 lg:mb-10">
-              <h2 className="text-[22px] md:text-[34px] lg:text-[42px] font-bold text-[#F4F1EC] leading-tight mb-2">
+              <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-bold text-[#F4F1EC] leading-tight mb-2">
                 <span className="block">{CUPCAKE_COPY.hero.headline}</span>
                 <span className="block text-[#F4F1EC]/70">{CUPCAKE_COPY.hero.headlineLine2}</span>
               </h2>
@@ -312,7 +312,7 @@ export function CupcakeShowcaseSection() {
         <div className="w-full max-w-[800px] mx-auto px-6">
           {/* Hero text - stays visible during build */}
           <div className="text-center mb-8 lg:mb-10">
-            <h2 className="text-[22px] md:text-[34px] lg:text-[42px] font-normal text-[#F4F1EC] leading-tight mb-2" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
+            <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-normal text-[#F4F1EC] leading-tight mb-2" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
               <span className="block">{CUPCAKE_COPY.hero.headline}</span>
               <span className="block text-[#F4F1EC]/70">{CUPCAKE_COPY.hero.headlineLine2}</span>
             </h2>
