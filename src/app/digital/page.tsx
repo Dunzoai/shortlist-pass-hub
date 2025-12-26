@@ -349,6 +349,9 @@ function ValuePropositionSection() {
 // =============================================================================
 
 function TalkVsWalkSection() {
+  const bubblesRef = useRef(null);
+  const bubblesInView = useInView(bubblesRef, { once: true, margin: "-100px" });
+
   return (
     <section className="py-20 lg:py-28 bg-[#2B3A44]">
       <Container>
@@ -369,6 +372,51 @@ function TalkVsWalkSection() {
           <p className="text-sm text-[#F4F1EC]/50">
             Built around how real businesses actually work — not templates or assumptions.
           </p>
+        </div>
+
+        {/* Message Bubble Contrast Section */}
+        <div ref={bubblesRef} className="max-w-[720px] mx-auto mt-16 lg:mt-24 px-4">
+          <div className="flex flex-col gap-6 md:gap-8">
+            {/* Bubble 1 - Muted / Left-aligned */}
+            <motion.div
+              className="self-start max-w-[85%] md:max-w-[70%]"
+              initial={{ opacity: 0, y: 8 }}
+              animate={bubblesInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+            >
+              <div
+                className="rounded-2xl px-5 py-4 md:px-6 md:py-5"
+                style={{
+                  background: "rgba(244, 241, 236, 0.08)",
+                  border: "1px solid rgba(244, 241, 236, 0.06)",
+                }}
+              >
+                <p className="text-base md:text-lg text-[#F4F1EC]/50 leading-relaxed">
+                  &ldquo;Fully custom website.&rdquo;
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Bubble 2 - Clearer / Right-aligned */}
+            <motion.div
+              className="self-end max-w-[85%] md:max-w-[70%]"
+              initial={{ opacity: 0, y: 8 }}
+              animate={bubblesInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
+            >
+              <div
+                className="rounded-2xl px-5 py-4 md:px-6 md:py-5"
+                style={{
+                  background: "rgba(244, 241, 236, 0.12)",
+                  border: "1px solid rgba(244, 241, 236, 0.1)",
+                }}
+              >
+                <p className="text-base md:text-lg text-[#F4F1EC]/80 leading-relaxed font-medium">
+                  &ldquo;Built on the same template as everyone else.&rdquo;
+                </p>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </Container>
     </section>
