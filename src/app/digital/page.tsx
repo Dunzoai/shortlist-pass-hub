@@ -344,75 +344,172 @@ function ValuePropositionSection() {
 // Static, calm pause before the interactive demos
 // =============================================================================
 
-function TalkVsWalkSection() {
+// Hand-drawn sweeping arrow that spans across sections
+function SpanningArrow({ isVisible }: { isVisible: boolean }) {
   return (
-    <section className="py-20 lg:py-28 bg-[#2B3A44]">
-      <Container>
-        <div className="max-w-2xl mx-auto text-center">
-          {/* Headline - static */}
-          <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-normal text-[#F4F1EC] leading-tight mb-6" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
-            Everyone explains.
-            <br />
-            <span className="text-[#F4F1EC]/70">Very few execute.</span>
-          </h2>
-
-          {/* Subhead */}
-          <p className="text-lg md:text-xl text-[#F4F1EC]/80 mb-4">
-            So instead of telling you what we do, we&apos;ll show you what your business can have.
-          </p>
-
-          {/* Clarifier */}
-          <p className="text-sm text-[#F4F1EC]/50">
-            Built around how real businesses actually work — not templates or assumptions.
-          </p>
-        </div>
-      </Container>
-    </section>
+    <motion.svg
+      className="w-[120px] h-[300px] md:w-[160px] md:h-[400px] lg:w-[200px] lg:h-[500px]"
+      viewBox="0 0 120 300"
+      fill="none"
+      aria-hidden="true"
+    >
+      {/* Main sweeping curve - starts top, curves down and left */}
+      <motion.path
+        d="M100 0
+           C 105 30, 110 60, 105 100
+           C 100 140, 90 180, 70 220
+           C 55 250, 40 270, 30 285"
+        stroke="#9CA3AF"
+        strokeWidth="3"
+        strokeLinecap="round"
+        fill="none"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={isVisible ? { pathLength: 1, opacity: 0.7 } : {}}
+        transition={{ duration: 1.0, ease: "easeOut", delay: 0.3 }}
+      />
+      {/* Secondary line for hand-drawn effect */}
+      <motion.path
+        d="M98 5
+           C 103 35, 108 65, 103 105
+           C 98 145, 88 185, 68 225
+           C 53 255, 38 275, 28 290"
+        stroke="#9CA3AF"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        fill="none"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={isVisible ? { pathLength: 1, opacity: 0.4 } : {}}
+        transition={{ duration: 1.0, ease: "easeOut", delay: 0.4 }}
+      />
+      {/* Arrowhead - left feather */}
+      <motion.path
+        d="M30 285 C 15 270, 5 260, 0 245"
+        stroke="#9CA3AF"
+        strokeWidth="3"
+        strokeLinecap="round"
+        fill="none"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={isVisible ? { pathLength: 1, opacity: 0.7 } : {}}
+        transition={{ duration: 0.3, ease: "easeOut", delay: 1.2 }}
+      />
+      {/* Arrowhead - center feather */}
+      <motion.path
+        d="M30 285 C 20 275, 15 265, 12 250"
+        stroke="#9CA3AF"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        fill="none"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={isVisible ? { pathLength: 1, opacity: 0.6 } : {}}
+        transition={{ duration: 0.25, ease: "easeOut", delay: 1.3 }}
+      />
+      {/* Arrowhead - right feather */}
+      <motion.path
+        d="M30 285 C 45 280, 55 275, 65 265"
+        stroke="#9CA3AF"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        fill="none"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={isVisible ? { pathLength: 1, opacity: 0.6 } : {}}
+        transition={{ duration: 0.25, ease: "easeOut", delay: 1.35 }}
+      />
+    </motion.svg>
   );
 }
 
-// Demo panels container (follows TalkVsWalk intro)
-function ShowDontTellSection() {
+// Wrapper combining both sections with spanning arrow
+function TalkVsWalkWithArrow() {
+  const wrapperRef = useRef(null);
+  const arrowInView = useInView(wrapperRef, { once: true, margin: "-20%" });
+
   return (
-    <section className="bg-[#F4F1EC]">
-      {/* Demo panels */}
-      <div className="py-24 lg:py-32">
-        <div className="space-y-20 lg:space-y-28">
-          {/* DEMO A: Food Truck Timeline (CENTERPIECE) */}
-          <div>
-            <Container>
-              <div className="text-center mb-12">
-                <h3 className="text-[32px] md:text-[44px] font-normal text-[#1A1F24] leading-tight mb-4" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
-                  <span className="block">You move.</span>
-                  <span className="block text-[#1A1F24]/70">Your site should too.</span>
-                </h3>
-                <p className="text-lg text-[#5A6570]">
-                  Real schedules change week to week. We build pages that keep up.
-                </p>
-              </div>
-            </Container>
+    <div ref={wrapperRef} className="relative">
+      {/* TalkVsWalk Section */}
+      <section className="py-20 lg:py-28 bg-[#2B3A44]">
+        <Container>
+          <div className="max-w-2xl mx-auto text-center">
+            {/* Headline - static */}
+            <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-normal text-[#F4F1EC] leading-tight mb-6" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
+              Everyone explains.
+              <br />
+              <span className="text-[#F4F1EC]/70">Very few execute.</span>
+            </h2>
 
-            {/* Food truck timeline demo */}
-            <Container>
-              <FoodTruckTimeline />
+            {/* Subhead */}
+            <p className="text-lg md:text-xl text-[#F4F1EC]/80 mb-4">
+              So instead of telling you what we do, we&apos;ll show you what your business can have.
+            </p>
 
-              {/* Why block - owner-to-owner explanation */}
-              <WhyBlock
-                heading="Why we didn't just list the dates"
-                lines={[
-                  "Anyone can post a list.",
-                  "But when something is fun to interact with, people remember it —",
-                  "and they come back when they're ready to buy.",
-                  "That's what this does.",
-                ]}
-              />
-            </Container>
+            {/* Clarifier */}
+            <p className="text-sm text-[#F4F1EC]/50">
+              Built around how real businesses actually work — not templates or assumptions.
+            </p>
           </div>
+        </Container>
+      </section>
 
+      {/* ShowDontTell Section */}
+      <section className="bg-[#F4F1EC]">
+        {/* Demo panels */}
+        <div className="py-24 lg:py-32">
+          <div className="space-y-20 lg:space-y-28">
+            {/* DEMO A: Food Truck Timeline (CENTERPIECE) */}
+            <div>
+              <Container>
+                <div className="text-center mb-12">
+                  <h3 className="text-[32px] md:text-[44px] font-normal text-[#1A1F24] leading-tight mb-4" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
+                    <span className="block">You move.</span>
+                    <span className="block text-[#1A1F24]/70">Your site should too.</span>
+                  </h3>
+                  <p className="text-lg text-[#5A6570]">
+                    Real schedules change week to week. We build pages that keep up.
+                  </p>
+                </div>
+              </Container>
+
+              {/* Food truck timeline demo */}
+              <Container>
+                <FoodTruckTimeline />
+
+                {/* Why block - owner-to-owner explanation */}
+                <WhyBlock
+                  heading="Why we didn't just list the dates"
+                  lines={[
+                    "Anyone can post a list.",
+                    "But when something is fun to interact with, people remember it —",
+                    "and they come back when they're ready to buy.",
+                    "That's what this does.",
+                  ]}
+                />
+              </Container>
+            </div>
+
+          </div>
         </div>
+      </section>
+
+      {/* Spanning arrow - positioned to cross both sections */}
+      <div
+        className="absolute pointer-events-none z-10 hidden md:block"
+        style={{
+          top: "15%",
+          right: "8%",
+        }}
+      >
+        <SpanningArrow isVisible={arrowInView} />
       </div>
-    </section>
+    </div>
   );
+}
+
+// Keep original functions as fallbacks (not used directly anymore)
+function TalkVsWalkSection() {
+  return null;
+}
+
+function ShowDontTellSection() {
+  return null;
 }
 
 // =============================================================================
@@ -982,8 +1079,7 @@ export default function DigitalPage() {
     <main className="pt-16 overflow-x-clip">
       <HeroSection />
       <ValuePropositionSection />
-      <TalkVsWalkSection />
-      <ShowDontTellSection />
+      <TalkVsWalkWithArrow />
       <CupcakeShowcaseSection />
       <AISchedulingDemo />
       <OutcomesSection />

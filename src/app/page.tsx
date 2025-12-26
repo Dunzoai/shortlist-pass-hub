@@ -270,17 +270,7 @@ export default function Home() {
   return (
     <main className="pt-16">
       {/* Hero Section */}
-      <section
-        className="relative py-20 lg:py-28"
-        style={{
-          backgroundImage: 'url(/hero-bg.png)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}
-      >
-        {/* Dark overlay for text readability */}
-        <div className="absolute inset-0 bg-[#F4F1EC]/70 -z-5" />
+      <section className="relative py-20 lg:py-28 bg-[#F4F1EC]">
         <Container>
           <div className="relative z-10">
             <motion.div
