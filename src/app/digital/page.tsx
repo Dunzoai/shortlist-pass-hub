@@ -9,126 +9,33 @@ import { WhyBlock } from "@/components/WhyBlock";
 
 // =============================================================================
 // SECTION 1: HERO
-// "Make your business look like it belongs."
-// Letter-by-letter brass fill on "your", "business", "belongs"
-// Then strikethrough on "Templates aren't built for you"
-// Then "Yes — this is possible for you" fades in
+// Bold, editorial, confident. The text is the star.
 // =============================================================================
 
-// Helper component for letter-by-letter brass fill animation
-// Slow, intentional — like we're saying "YOUR. BUSINESS. BELONGS."
-function AnimatedWord({
-  word,
-  startDelay,
-  letterDelay = 0.12,
-}: {
-  word: string;
-  startDelay: number;
-  letterDelay?: number;
-}) {
-  return (
-    <span className="inline-block">
-      {word.split("").map((letter, i) => (
-        <motion.span
-          key={i}
-          className="inline-block"
-          initial={{ color: "#1A1F24" }}
-          animate={{ color: "#2E8B57" }}
-          transition={{
-            duration: 0.25,
-            delay: startDelay + i * letterDelay,
-            ease: "easeOut",
-          }}
-        >
-          {letter}
-        </motion.span>
-      ))}
-    </span>
-  );
-}
-
 function HeroSection() {
-  const heroRef = useRef(null);
-
-  // Animation timing — SLOW and INTENTIONAL
-  // "your" = 4 letters * 0.12 = ~0.5s
-  // "business" = 8 letters * 0.12 = ~1s
-  // "belongs." = 8 letters * 0.12 = ~1s
-  // Then PAUSE to let them read "Templates aren't built for you"
-  // Then HARSH red strikethrough
-  // Then PAUSE
-  // Then "Yes — this is possible for you" fades in
-
-  const yourStart = 0.5;
-  const businessStart = 1.3; // after "your" + pause
-  const belongsStart = 2.8; // after "business" + pause
-  // belongs ends ~3.8s, then pause to read templates line
-  const strikethroughStart = 5.2; // let them read it first
-  // strikethrough completes ~5.5s, then pause
-  const microLineStart = 6.5;
-
   return (
-    <section
-      ref={heroRef}
-      className="relative min-h-[85vh] flex items-center justify-center py-24 lg:py-32 overflow-hidden"
-    >
-      {/* Dark background */}
-      <div className="absolute inset-0 bg-[#F4F1EC]" />
-
-
+    <section className="relative min-h-[85vh] flex items-center justify-center bg-[#F4F1EC]">
       <Container>
-        <div className="relative z-10 max-w-3xl mx-auto text-center">
-          {/* H1 with letter-by-letter brass animation */}
-          <motion.h1
-            className="text-[40px] md:text-[56px] lg:text-[68px] font-bold text-[#1A1F24] leading-[1.05] mb-8"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-          >
-            Make <AnimatedWord word="your" startDelay={yourStart} />{" "}
-            <AnimatedWord word="business" startDelay={businessStart} />
-            <br className="hidden md:block" />
-            <span className="md:hidden"> </span>
-            look like it <AnimatedWord word="belongs." startDelay={belongsStart} />
-          </motion.h1>
-
-          {/* Subhead with strikethrough animation on first line */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
-            className="max-w-2xl mx-auto mb-6"
-          >
-            <p className="text-lg md:text-xl text-[#5A6570] leading-relaxed">
-              {/* Strikethrough line — HARSH red */}
-              <span className="relative inline-block">
-                <span>Templates aren&apos;t built for you.</span>
-                <motion.span
-                  className="absolute left-0 top-1/2 h-[3px] bg-[#C94A4A]"
-                  initial={{ width: 0 }}
-                  animate={{ width: "100%" }}
-                  transition={{
-                    duration: 0.25,
-                    delay: strikethroughStart,
-                    ease: [0.4, 0, 0.2, 1],
-                  }}
-                />
-              </span>
-              <br />
-              We build websites and apps that make small businesses feel
-              established, confident, and taken seriously.
-            </p>
-          </motion.div>
-
-          {/* Micro-line - fades in after strikethrough */}
+        <div className="max-w-[900px] mx-auto text-center px-4">
+          {/* Eyebrow */}
           <motion.p
-            className="text-sm text-[#2E8B57]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: microLineStart }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="text-xs tracking-[0.25em] text-[#5A6570] uppercase mb-8 md:mb-12"
           >
-            Yes — this is possible for you.
+            Custom digital builds for small businesses
           </motion.p>
+
+          {/* Main statement */}
+          <motion.h1
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+            className="text-[28px] md:text-[36px] lg:text-[44px] font-medium text-[#1A1F24] leading-[1.4] md:leading-[1.45]"
+          >
+            We build websites and apps for small businesses that help customers trust you and choose you, not cookie cutter, not like everyone else, because your business deserves to stand out.
+          </motion.h1>
         </div>
       </Container>
     </section>
