@@ -21,8 +21,8 @@ function HeroSection() {
         <motion.img
           src="/laptop-website.png"
           alt=""
-          className="absolute w-36 md:w-[300px] lg:w-[400px] opacity-[0.05] md:opacity-[0.7]"
-          style={{ left: "-3%", top: "-5%" }}
+          className="absolute w-40 md:w-[345px] lg:w-[460px] opacity-[0.05] md:opacity-[0.7]"
+          style={{ left: "2%", top: "-10%" }}
           animate={{
             x: [0, 8, 0, -6, 0],
             y: [0, -8, 0, 6, 0],
@@ -34,12 +34,12 @@ function HeroSection() {
           }}
         />
 
-        {/* Left icon - business (below laptop) */}
+        {/* Left icon - business (below laptop, staggered left) */}
         <motion.img
           src="/business.png"
           alt=""
-          className="absolute w-40 md:w-[340px] lg:w-[470px] opacity-[0.06] md:opacity-[0.7]"
-          style={{ left: "-5%", top: "25%" }}
+          className="absolute w-44 md:w-[390px] lg:w-[540px] opacity-[0.06] md:opacity-[0.7]"
+          style={{ left: "-10%", top: "38%" }}
           animate={{
             x: [0, 10, 0, -12, 0],
             y: [0, -6, 0, 10, 0],
@@ -52,12 +52,12 @@ function HeroSection() {
           }}
         />
 
-        {/* Top right icon - calendar */}
+        {/* Top right icon - calendar (staggered higher) */}
         <motion.img
           src="/calendar.png"
           alt=""
-          className="absolute w-36 md:w-[320px] lg:w-[425px] opacity-[0.05] md:opacity-[0.7]"
-          style={{ right: "-5%", top: "-15%" }}
+          className="absolute w-40 md:w-[370px] lg:w-[490px] opacity-[0.05] md:opacity-[0.7]"
+          style={{ right: "0%", top: "-18%" }}
           animate={{
             x: [0, -14, 0, 10, 0],
             y: [0, 10, 0, -8, 0],
@@ -70,12 +70,12 @@ function HeroSection() {
           }}
         />
 
-        {/* Bottom right icon - message bubble */}
+        {/* Bottom right icon - message bubble (staggered inward) */}
         <motion.img
           src="/message-bubble.png"
           alt=""
-          className="absolute w-28 md:w-[300px] lg:w-[380px] opacity-[0.045] md:opacity-[0.7]"
-          style={{ right: "0%", bottom: "-10%" }}
+          className="absolute w-32 md:w-[345px] lg:w-[440px] opacity-[0.045] md:opacity-[0.7]"
+          style={{ right: "8%", bottom: "-5%" }}
           animate={{
             x: [0, 6, 0, -10, 0],
             y: [0, -12, 0, 8, 0],
