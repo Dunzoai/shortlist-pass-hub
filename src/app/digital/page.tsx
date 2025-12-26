@@ -33,7 +33,7 @@ function AnimatedWord({
           key={i}
           className="inline-block"
           initial={{ color: "#1A1F24" }}
-          animate={{ color: "#2B3A44" }}
+          animate={{ color: "#2E8B57" }}
           transition={{
             duration: 0.25,
             delay: startDelay + i * letterDelay,
@@ -147,7 +147,7 @@ function HeroSection() {
 
           {/* Micro-line - fades in after strikethrough */}
           <motion.p
-            className="text-sm text-[#2B3A44]"
+            className="text-sm text-[#2E8B57]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: microLineStart }}
@@ -226,7 +226,7 @@ function HandDrawnUnderline() {
     >
       <motion.path
         d="M2 8c20-4 40 2 60-1s40 3 60 0 40-2 60 1 15 2 16 0"
-        stroke="#2B3A44"
+        stroke="#2E8B57"
         strokeWidth="3"
         strokeLinecap="round"
         fill="none"
@@ -295,14 +295,14 @@ function TemplatesSuckSection() {
 
 function TalkVsWalkSection() {
   return (
-    <section className="py-20 lg:py-28 bg-[#E8E4DF]">
+    <section className="py-20 lg:py-28 bg-[#F4F1EC]">
       <Container>
         <div className="max-w-2xl mx-auto text-center">
           {/* Headline - Two lines, static, no animation */}
           <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-bold text-[#1A1F24] leading-tight mb-6">
             Everyone explains.
             <br />
-            <span className="text-[#2B3A44]">Very few execute.</span>
+            <span className="text-[#2E8B57]">Very few execute.</span>
           </h2>
 
           {/* Subhead */}
@@ -483,7 +483,7 @@ function AISchedulingDemo() {
           <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-bold text-[#1A1F24] leading-tight mb-6">
             {AI_DEMO_COPY.headline}
             <br />
-            <span className="text-[#2B3A44]">{AI_DEMO_COPY.headlineBrass}</span>
+            <span className="text-[#2E8B57]">{AI_DEMO_COPY.headlineBrass}</span>
           </h2>
           <p className="text-lg text-[#5A6570] max-w-2xl mx-auto">
             {AI_DEMO_COPY.subhead}
@@ -512,7 +512,7 @@ function AISchedulingDemo() {
               style={{ display: showCalendar ? "none" : "block" }}
             >
               <div className="flex items-center gap-2 mb-6">
-                <div className="w-2 h-2 rounded-full bg-[#2B3A44]" />
+                <div className="w-2 h-2 rounded-full bg-[#2E8B57]" />
                 <span className="text-xs text-[#5A6570]/60 uppercase tracking-wider">{AI_DEMO_COPY.chatLabel}</span>
               </div>
 
@@ -530,7 +530,7 @@ function AISchedulingDemo() {
                       <div
                         className={`max-w-[85%] rounded-2xl px-4 py-3 ${
                           msg.role === "customer"
-                            ? "bg-[#2B3A44] text-[#F4F1EC]"
+                            ? "bg-[#2E8B57] text-[#F4F1EC]"
                             : "bg-white/5 text-[#1A1F24] border border-white/5"
                         }`}
                       >
@@ -554,7 +554,7 @@ function AISchedulingDemo() {
               style={{ pointerEvents: showCalendar ? "auto" : "none" }}
             >
               <div className="flex items-center gap-2 mb-4">
-                <svg className="w-4 h-4 text-[#2B3A44]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <svg className="w-4 h-4 text-[#2E8B57]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
                 <span className="text-xs text-[#5A6570]/60 uppercase tracking-wider">{AI_DEMO_COPY.confirmedLabel}</span>
@@ -577,7 +577,7 @@ function AISchedulingDemo() {
                           key={d.day}
                           className={`flex flex-col items-center px-3 py-2 rounded-xl transition-all ${
                             isSelected
-                              ? "bg-[#2B3A44] text-[#F4F1EC]"
+                              ? "bg-[#2E8B57] text-[#F4F1EC]"
                               : "bg-white/5 text-[#5A6570]/60"
                           }`}
                         >
@@ -606,7 +606,7 @@ function AISchedulingDemo() {
                   >
                     {/* Time badge */}
                     <div className="flex items-center gap-2 mb-3">
-                      <div className="px-2.5 py-1 rounded-md bg-[#2B3A44]/20 text-[#2B3A44] text-xs font-semibold">
+                      <div className="px-2.5 py-1 rounded-md bg-[#2E8B57]/20 text-[#2E8B57] text-xs font-semibold">
                         {appointment.time}
                       </div>
                       <div className="w-1 h-1 rounded-full bg-[#5A6570]/30" />
@@ -623,8 +623,8 @@ function AISchedulingDemo() {
 
                     {/* Stylist */}
                     <div className="flex items-center gap-2 pt-3 border-t border-white/5">
-                      <div className="w-7 h-7 rounded-full bg-[#2B3A44]/20 flex items-center justify-center">
-                        <span className="text-xs font-semibold text-[#2B3A44]">
+                      <div className="w-7 h-7 rounded-full bg-[#2E8B57]/20 flex items-center justify-center">
+                        <span className="text-xs font-semibold text-[#2E8B57]">
                           {appointment.stylist.charAt(0)}
                         </span>
                       </div>
@@ -684,7 +684,7 @@ function OutcomesSection() {
                 animate={isInView ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.4, delay: 0.2 + i * 0.1 }}
               >
-                <span className="w-1.5 h-1.5 rounded-full bg-[#2B3A44] mt-2.5 shrink-0" />
+                <span className="w-1.5 h-1.5 rounded-full bg-[#2E8B57] mt-2.5 shrink-0" />
                 {bullet}
               </motion.li>
             ))}
@@ -716,7 +716,7 @@ function ScopeSection() {
   return (
     <section
       ref={sectionRef}
-      className="py-24 lg:py-32 bg-gradient-to-b from-[#F4F1EC] to-[#E8E4DF]"
+      className="py-24 lg:py-32 bg-gradient-to-b from-[#F4F1EC] to-[#F4F1EC]"
     >
       <Container>
         <div className="max-w-2xl mx-auto text-center">
@@ -743,7 +743,7 @@ function ScopeSection() {
           </motion.div>
 
           <motion.p
-            className="text-sm text-[#2B3A44]"
+            className="text-sm text-[#2E8B57]"
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
             transition={{ duration: 0.4, delay: 0.4 }}
@@ -782,7 +782,7 @@ function FinalCTASection() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
             <a
               href="mailto:hello@shortlistpass.com?subject=Let's talk"
-              className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold bg-[#2B3A44] text-[#F4F1EC] rounded-full hover:bg-[#1F2D35] transition-colors"
+              className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold bg-[#2E8B57] text-[#F4F1EC] rounded-full hover:bg-[#236B43] transition-colors"
             >
               Start a conversation
             </a>

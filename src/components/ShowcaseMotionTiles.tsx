@@ -25,7 +25,7 @@ export function ShowcaseMotionTiles() {
             key={tile.title}
             className="group relative w-full md:w-[180px] h-[140px] rounded-xl overflow-hidden cursor-pointer"
             style={{
-              background: "linear-gradient(135deg, #E8E4DF 0%, #E0DCD7 100%)",
+              background: "linear-gradient(135deg, #F4F1EC 0%, #F4F1EC 100%)",
               border: "1px solid rgba(255, 255, 255, 0.06)",
             }}
             initial={{ opacity: 0, x: direction * 40 }}
@@ -43,18 +43,18 @@ export function ShowcaseMotionTiles() {
             }}
           >
             {/* Inner glow on hover */}
-            <div className="absolute inset-0 bg-gradient-to-br from-[#2B3A44]/0 to-[#2B3A44]/0 group-hover:from-[#2B3A44]/5 group-hover:to-transparent transition-all duration-300" />
+            <div className="absolute inset-0 bg-gradient-to-br from-[#2E8B57]/0 to-[#2E8B57]/0 group-hover:from-[#2E8B57]/5 group-hover:to-transparent transition-all duration-300" />
 
             {/* Content */}
             <div className="relative h-full flex flex-col justify-between p-4">
               {/* Label chip */}
-              <span className="inline-block self-start px-2 py-1 text-[10px] uppercase tracking-wider font-medium text-[#2B3A44] bg-[#2B3A44]/10 rounded">
+              <span className="inline-block self-start px-2 py-1 text-[10px] uppercase tracking-wider font-medium text-[#2E8B57] bg-[#2E8B57]/10 rounded">
                 {tile.label}
               </span>
 
               {/* Placeholder visual */}
               <div className="flex-1 flex items-center justify-center">
-                <div className="w-12 h-12 rounded-lg bg-white/5 group-hover:bg-[#2B3A44]/10 transition-colors" />
+                <div className="w-12 h-12 rounded-lg bg-white/5 group-hover:bg-[#2E8B57]/10 transition-colors" />
               </div>
 
               {/* Title */}

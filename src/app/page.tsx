@@ -35,7 +35,7 @@ function ScrollingBelt() {
   }, []);
 
   return (
-    <div className="relative overflow-hidden h-14 bg-gradient-to-r from-[#2B3A44] via-[#3A4D5A] to-[#2B3A44] flex items-center">
+    <div className="relative overflow-hidden h-14 bg-gradient-to-r from-[#2E8B57] via-[#2E8B57] to-[#2E8B57] flex items-center">
       <div
         className="flex items-center whitespace-nowrap animate-scroll"
         style={{
@@ -67,9 +67,9 @@ function ServiceTile({ title, subhead, description, href, index }: ServiceTilePr
       transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
     >
       <Link href={href} className="group block h-full">
-        <div className="h-full p-8 bg-[#E0DCD7] border border-white/10 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#2B3A44]/30 hover:shadow-lg hover:shadow-[#2B3A44]/5 hover:bg-[#2B3A44]">
+        <div className="h-full p-8 bg-[#F4F1EC] border border-white/10 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#2E8B57]/30 hover:shadow-lg hover:shadow-[#2E8B57]/5 hover:bg-[#2E8B57]">
           <h3 className="text-2xl font-semibold text-[#1A1F24] mb-2 transition-colors duration-300 group-hover:text-[#F4F1EC]">{title}</h3>
-          <p className="text-sm font-medium text-[#2B3A44] mb-4 transition-colors duration-300 group-hover:text-[#F4F1EC]">{subhead}</p>
+          <p className="text-sm font-medium text-[#2E8B57] mb-4 transition-colors duration-300 group-hover:text-[#F4F1EC]">{subhead}</p>
           <p className="text-base text-[#5A6570] leading-relaxed transition-colors duration-300 group-hover:text-[#F4F1EC]">{description}</p>
         </div>
       </Link>
@@ -92,9 +92,9 @@ function HelpCard({ icon, title, description, index }: HelpCardProps) {
       whileInView="visible"
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
-      className="group p-6 bg-[#E0DCD7] border border-[#1A1F24]/30 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#F4F1EC] hover:shadow-lg hover:shadow-[#F4F1EC]/20"
+      className="group p-6 bg-[#F4F1EC] border border-[#1A1F24]/30 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#F4F1EC] hover:shadow-lg hover:shadow-[#F4F1EC]/20"
     >
-      <div className="mb-4 text-[#3A4D5A]">{icon}</div>
+      <div className="mb-4 text-[#2E8B57]">{icon}</div>
       <h3 className="text-xl font-semibold text-[#1A1F24] mb-3">{title}</h3>
       <p className="text-base text-[#5A6570] leading-relaxed">{description}</p>
     </motion.div>
@@ -142,7 +142,7 @@ function HowWeHelp() {
   ];
 
   return (
-    <section className="py-24 bg-gradient-to-b from-[#2B3A44] via-[#3A4D5A] to-[#2B3A44]">
+    <section className="py-24 bg-gradient-to-b from-[#2E8B57] via-[#2E8B57] to-[#2E8B57]">
       <Container>
         <motion.div
           variants={staggerContainer}
@@ -207,7 +207,7 @@ function ProofStrip() {
             {chips.map((chip) => (
               <span
                 key={chip}
-                className="px-3 py-1.5 text-xs text-[#5A6570]/70 bg-[#E0DCD7] border border-white/5 rounded-full"
+                className="px-3 py-1.5 text-xs text-[#5A6570]/70 bg-[#F4F1EC] border border-white/5 rounded-full"
               >
                 {chip}
               </span>
@@ -318,7 +318,7 @@ export default function Home() {
                         cy="40"
                         rx="115"
                         ry="42"
-                        stroke="#2B3A44"
+                        stroke="#2E8B57"
                         strokeWidth="3.5"
                         strokeLinecap="round"
                         fill="none"

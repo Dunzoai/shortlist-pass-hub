@@ -94,7 +94,7 @@ export function FoodTruckTimeline() {
       >
         {/* Header */}
         <div className="text-center mb-6">
-          <p className="text-[10px] text-[#2B3A44] uppercase tracking-[0.25em] mb-2 font-medium">
+          <p className="text-[10px] text-[#2E8B57] uppercase tracking-[0.25em] mb-2 font-medium">
             Nito&apos;s Empanadas (Real Example)
           </p>
           <h3 className="text-2xl md:text-3xl font-bold text-[#1A1F24] mb-2">
@@ -166,7 +166,7 @@ export function FoodTruckTimeline() {
               >
                 <div>
                   <p className={`text-[10px] uppercase tracking-[0.2em] mb-2 font-medium ${
-                    index === activeIndex ? "text-[#2B3A44]" : "text-[#5A6570]/40"
+                    index === activeIndex ? "text-[#2E8B57]" : "text-[#5A6570]/40"
                   }`}>
                     {day.fullDay}
                   </p>
@@ -197,7 +197,7 @@ export function FoodTruckTimeline() {
               onClick={() => scrollToCard(index)}
               className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 ${
                 index === activeIndex
-                  ? "bg-[#2B3A44] text-[#F4F1EC]"
+                  ? "bg-[#2E8B57] text-[#F4F1EC]"
                   : "bg-white/5 text-[#5A6570]/70 hover:bg-white/10 hover:text-[#5A6570]"
               }`}
             >
