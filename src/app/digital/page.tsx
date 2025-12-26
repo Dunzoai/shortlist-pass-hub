@@ -134,7 +134,7 @@ function DrawUnderline({ isVisible }: { isVisible: boolean }) {
     >
       <motion.path
         d="M0 6c30-2 60 2 90 0s60 2 90 1c20-0.5 18 1 20 0"
-        stroke="#2E8B57"
+        stroke="#2B3A44"
         strokeWidth="2.5"
         strokeLinecap="round"
         fill="none"
@@ -155,11 +155,12 @@ function ValuePropositionSection() {
   // Scroll-based reveal for background
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start end", "center center"]
+    offset: ["start end", "end start"]
   });
 
-  // Map scroll progress to clip inset (100% -> 0%)
-  const clipPath = useTransform(scrollYProgress, [0, 0.7], ["inset(100% 0 0 0)", "inset(0% 0 0 0)"]);
+  // Map scroll progress to Y translation (starts off-screen, slides up)
+  const bgY = useTransform(scrollYProgress, [0, 0.5], ["100%", "0%"]);
+  const bgOpacity = useTransform(scrollYProgress, [0.1, 0.5], [0, 0.37]);
 
   return (
     <section
@@ -168,15 +169,15 @@ function ValuePropositionSection() {
     >
       {/* Background texture image - anchored to bottom, scroll-based reveal */}
       <motion.div
-        className="absolute inset-x-0 bottom-0 pointer-events-none opacity-[0.37]"
+        className="absolute inset-x-0 bottom-0 pointer-events-none"
         style={{
           backgroundImage: `url("/section-2-background.png")`,
           backgroundSize: "90%",
           backgroundPosition: "center bottom",
           backgroundRepeat: "no-repeat",
           height: "100%",
-          transformOrigin: "bottom",
-          clipPath,
+          y: bgY,
+          opacity: bgOpacity,
         }}
       />
 
@@ -247,23 +248,23 @@ function ValuePropositionSection() {
 
 function TalkVsWalkSection() {
   return (
-    <section className="py-20 lg:py-28 bg-[#F4F1EC]">
+    <section className="py-20 lg:py-28 bg-[#2B3A44]">
       <Container>
         <div className="max-w-2xl mx-auto text-center">
           {/* Headline - Two lines, static, no animation */}
-          <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-bold text-[#1A1F24] leading-tight mb-6">
+          <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-bold text-[#F4F1EC] leading-tight mb-6">
             Everyone explains.
             <br />
-            <span className="text-[#2E8B57]">Very few execute.</span>
+            <span className="text-[#F4F1EC]/70">Very few execute.</span>
           </h2>
 
           {/* Subhead */}
-          <p className="text-lg md:text-xl text-[#5A6570] mb-4">
+          <p className="text-lg md:text-xl text-[#F4F1EC]/80 mb-4">
             So instead of telling you what we do, we&apos;ll show you what your business can have.
           </p>
 
           {/* Optional clarifier */}
-          <p className="text-sm text-[#5A6570]/60">
+          <p className="text-sm text-[#F4F1EC]/50">
             Built around how real businesses actually work — not templates or assumptions.
           </p>
         </div>
@@ -435,7 +436,7 @@ function AISchedulingDemo() {
           <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-bold text-[#1A1F24] leading-tight mb-6">
             {AI_DEMO_COPY.headline}
             <br />
-            <span className="text-[#2E8B57]">{AI_DEMO_COPY.headlineBrass}</span>
+            <span className="text-[#2B3A44]">{AI_DEMO_COPY.headlineBrass}</span>
           </h2>
           <p className="text-lg text-[#5A6570] max-w-2xl mx-auto">
             {AI_DEMO_COPY.subhead}
@@ -464,7 +465,7 @@ function AISchedulingDemo() {
               style={{ display: showCalendar ? "none" : "block" }}
             >
               <div className="flex items-center gap-2 mb-6">
-                <div className="w-2 h-2 rounded-full bg-[#2E8B57]" />
+                <div className="w-2 h-2 rounded-full bg-[#2B3A44]" />
                 <span className="text-xs text-[#5A6570]/60 uppercase tracking-wider">{AI_DEMO_COPY.chatLabel}</span>
               </div>
 
@@ -482,7 +483,7 @@ function AISchedulingDemo() {
                       <div
                         className={`max-w-[85%] rounded-2xl px-4 py-3 ${
                           msg.role === "customer"
-                            ? "bg-[#2E8B57] text-[#F4F1EC]"
+                            ? "bg-[#2B3A44] text-[#F4F1EC]"
                             : "bg-white/5 text-[#1A1F24] border border-white/5"
                         }`}
                       >
@@ -506,7 +507,7 @@ function AISchedulingDemo() {
               style={{ pointerEvents: showCalendar ? "auto" : "none" }}
             >
               <div className="flex items-center gap-2 mb-4">
-                <svg className="w-4 h-4 text-[#2E8B57]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <svg className="w-4 h-4 text-[#2B3A44]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
                 <span className="text-xs text-[#5A6570]/60 uppercase tracking-wider">{AI_DEMO_COPY.confirmedLabel}</span>
@@ -529,7 +530,7 @@ function AISchedulingDemo() {
                           key={d.day}
                           className={`flex flex-col items-center px-3 py-2 rounded-xl transition-all ${
                             isSelected
-                              ? "bg-[#2E8B57] text-[#F4F1EC]"
+                              ? "bg-[#2B3A44] text-[#F4F1EC]"
                               : "bg-white/5 text-[#5A6570]/60"
                           }`}
                         >
@@ -558,7 +559,7 @@ function AISchedulingDemo() {
                   >
                     {/* Time badge */}
                     <div className="flex items-center gap-2 mb-3">
-                      <div className="px-2.5 py-1 rounded-md bg-[#2E8B57]/20 text-[#2E8B57] text-xs font-semibold">
+                      <div className="px-2.5 py-1 rounded-md bg-[#2B3A44]/20 text-[#2B3A44] text-xs font-semibold">
                         {appointment.time}
                       </div>
                       <div className="w-1 h-1 rounded-full bg-[#5A6570]/30" />
@@ -575,8 +576,8 @@ function AISchedulingDemo() {
 
                     {/* Stylist */}
                     <div className="flex items-center gap-2 pt-3 border-t border-white/5">
-                      <div className="w-7 h-7 rounded-full bg-[#2E8B57]/20 flex items-center justify-center">
-                        <span className="text-xs font-semibold text-[#2E8B57]">
+                      <div className="w-7 h-7 rounded-full bg-[#2B3A44]/20 flex items-center justify-center">
+                        <span className="text-xs font-semibold text-[#2B3A44]">
                           {appointment.stylist.charAt(0)}
                         </span>
                       </div>
@@ -636,7 +637,7 @@ function OutcomesSection() {
                 animate={isInView ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.4, delay: 0.2 + i * 0.1 }}
               >
-                <span className="w-1.5 h-1.5 rounded-full bg-[#2E8B57] mt-2.5 shrink-0" />
+                <span className="w-1.5 h-1.5 rounded-full bg-[#2B3A44] mt-2.5 shrink-0" />
                 {bullet}
               </motion.li>
             ))}
@@ -695,7 +696,7 @@ function ScopeSection() {
           </motion.div>
 
           <motion.p
-            className="text-sm text-[#2E8B57]"
+            className="text-sm text-[#2B3A44]"
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
             transition={{ duration: 0.4, delay: 0.4 }}
@@ -734,7 +735,7 @@ function FinalCTASection() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
             <a
               href="mailto:hello@shortlistpass.com?subject=Let's talk"
-              className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold bg-[#2E8B57] text-[#F4F1EC] rounded-full hover:bg-[#236B43] transition-colors"
+              className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold bg-[#2B3A44] text-[#F4F1EC] rounded-full hover:bg-[#1E2A32] transition-colors"
             >
               Start a conversation
             </a>
