@@ -17,20 +17,38 @@ function HeroSection() {
     <section className="relative min-h-[85vh] flex items-center justify-center bg-[#F4F1EC] overflow-hidden">
       {/* Floating background icons - editorial polish */}
       <div className="absolute inset-0 pointer-events-none">
-        {/* Left icon - business */}
+        {/* Top left icon - laptop */}
+        <motion.img
+          src="/laptop-website.png"
+          alt=""
+          className="absolute w-36 md:w-[300px] lg:w-[400px] opacity-[0.05] md:opacity-[0.7]"
+          style={{ left: "-3%", top: "-5%" }}
+          animate={{
+            x: [0, 8, 0, -6, 0],
+            y: [0, -8, 0, 6, 0],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+
+        {/* Left icon - business (below laptop) */}
         <motion.img
           src="/business.png"
           alt=""
           className="absolute w-40 md:w-[340px] lg:w-[470px] opacity-[0.06] md:opacity-[0.7]"
-          style={{ left: "-5%", top: "15%" }}
+          style={{ left: "-5%", top: "25%" }}
           animate={{
-            x: [0, 12, 0, -8, 0],
-            y: [0, -10, 0, 8, 0],
+            x: [0, 10, 0, -12, 0],
+            y: [0, -6, 0, 10, 0],
           }}
           transition={{
             duration: 18,
             repeat: Infinity,
             ease: "easeInOut",
+            delay: 1,
           }}
         />
 
@@ -41,14 +59,14 @@ function HeroSection() {
           className="absolute w-36 md:w-[320px] lg:w-[425px] opacity-[0.05] md:opacity-[0.7]"
           style={{ right: "-5%", top: "-15%" }}
           animate={{
-            x: [0, -10, 0, 14, 0],
-            y: [0, 8, 0, -12, 0],
+            x: [0, -14, 0, 10, 0],
+            y: [0, 10, 0, -8, 0],
           }}
           transition={{
             duration: 16,
             repeat: Infinity,
             ease: "easeInOut",
-            delay: 2,
+            delay: 3,
           }}
         />
 
@@ -59,14 +77,14 @@ function HeroSection() {
           className="absolute w-28 md:w-[300px] lg:w-[380px] opacity-[0.045] md:opacity-[0.7]"
           style={{ right: "0%", bottom: "-10%" }}
           animate={{
-            x: [0, 8, 0, -6, 0],
-            y: [0, -8, 0, 10, 0],
+            x: [0, 6, 0, -10, 0],
+            y: [0, -12, 0, 8, 0],
           }}
           transition={{
-            duration: 14,
+            duration: 15,
             repeat: Infinity,
             ease: "easeInOut",
-            delay: 4,
+            delay: 5,
           }}
         />
       </div>
