@@ -387,7 +387,8 @@ function ShowDontTellSection() {
             <Container>
               <div className="text-center mb-12">
                 <h3 className="text-[32px] md:text-[44px] font-normal text-[#1A1F24] leading-tight mb-4" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
-                  Your business moves.<br className="md:hidden" /> Your website should too.
+                  <span className="block">You move.</span>
+                  <span className="block text-[#1A1F24]/70">Your site should too.</span>
                 </h3>
                 <p className="text-lg text-[#5A6570]">
                   Real schedules change week to week. We build pages that keep up.
