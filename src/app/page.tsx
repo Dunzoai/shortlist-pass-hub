@@ -243,41 +243,6 @@ function Footer() {
   );
 }
 
-// =============================================================================
-// HERO SECTION
-// Bold, editorial, confident. The text is the star.
-// =============================================================================
-
-function HeroSection() {
-  return (
-    <section className="relative min-h-[85vh] flex items-center justify-center bg-[#F4F1EC]">
-      <Container>
-        <div className="max-w-[900px] mx-auto text-center px-4">
-          {/* Eyebrow */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="text-xs tracking-[0.25em] text-[#5A6570] uppercase mb-8 md:mb-12"
-          >
-            Custom digital builds for small businesses
-          </motion.p>
-
-          {/* Main statement */}
-          <motion.h1
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
-            className="text-[28px] md:text-[36px] lg:text-[44px] font-medium text-[#1A1F24] leading-[1.4] md:leading-[1.45]"
-          >
-            We build websites and apps for small businesses that help customers trust you and choose you — not cookie-cutter, not like everyone else, because your business deserves to stand out.
-          </motion.h1>
-        </div>
-      </Container>
-    </section>
-  );
-}
-
 export default function Home() {
   const services = [
     {
@@ -303,7 +268,80 @@ export default function Home() {
   return (
     <main className="pt-16">
       {/* Hero Section */}
-      <HeroSection />
+      <section
+        className="relative py-20 lg:py-28"
+        style={{
+          backgroundImage: 'url(/hero-bg.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      >
+        {/* Dark overlay for text readability */}
+        <div className="absolute inset-0 bg-[#F4F1EC]/70 -z-5" />
+        <Container>
+          <div className="relative z-10">
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={staggerContainer}
+              className="max-w-4xl mx-auto text-center"
+            >
+              <motion.h1
+                variants={fadeUpVariant}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="text-[40px] md:text-[56px] lg:text-[64px] font-semibold text-[#1A1F24] leading-[1.05] mb-6"
+              >
+                <span className="block">Look legit.</span>
+                <span className="block">
+                  Get{" "}
+                  <span className="relative inline-block px-2">
+                    chosen.
+                    {/* SVG circle animation */}
+                    <motion.svg
+                      className="absolute pointer-events-none"
+                      viewBox="0 0 200 80"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      style={{
+                        width: "calc(100% + 48px)",
+                        height: "calc(100% + 28px)",
+                        left: "-24px",
+                        top: "-14px",
+                        overflow: "visible",
+                        transform: "rotate(2deg)",
+                        filter: "drop-shadow(0 0 8px rgba(176, 141, 87, 0.4))"
+                      }}
+                    >
+                      <motion.ellipse
+                        cx="100"
+                        cy="40"
+                        rx="115"
+                        ry="42"
+                        stroke="#2E8B57"
+                        strokeWidth="3.5"
+                        strokeLinecap="round"
+                        fill="none"
+                        initial={{ pathLength: 0, opacity: 0 }}
+                        animate={{ pathLength: 1, opacity: [0.8, 0.9, 0.8] }}
+                        transition={{ duration: 1.4, delay: 0.6, ease: "easeInOut" }}
+                      />
+                    </motion.svg>
+                  </span>
+                </span>
+                <span className="block">Stay busy.</span>
+              </motion.h1>
+              <motion.p
+                variants={fadeUpVariant}
+                transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
+                className="text-lg lg:text-xl text-[#5A6570] max-w-[720px] mx-auto"
+              >
+                Websites, social media, SmartPages, and custom apps that make customers pick you — not the place down the street.
+              </motion.p>
+            </motion.div>
+          </div>
+        </Container>
+      </section>
 
       {/* Scrolling Belt */}
       <ScrollingBelt />
