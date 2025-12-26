@@ -160,8 +160,8 @@ function ValuePropositionSection() {
 
   // Map scroll progress to Y translation (starts off-screen, slides up)
   const bgY = useTransform(scrollYProgress, [0, 0.5], ["100%", "0%"]);
-  // Start darker (0.55) and transition to current opacity (0.37)
-  const bgOpacity = useTransform(scrollYProgress, [0.1, 0.5], [0.55, 0.37]);
+  // Start 40% darker (0.77) and transition to final opacity (0.37)
+  const bgOpacity = useTransform(scrollYProgress, [0.1, 0.5], [0.77, 0.37]);
 
   return (
     <section
@@ -187,6 +187,14 @@ function ValuePropositionSection() {
         className="absolute inset-0 pointer-events-none bg-[#E8E5E0]/70"
       />
 
+      {/* Light slate blue sky overlay - gradient from top, meets the background image */}
+      <div
+        className="absolute inset-x-0 top-0 h-[60%] pointer-events-none"
+        style={{
+          background: "linear-gradient(180deg, rgba(200, 215, 225, 0.35) 0%, rgba(200, 215, 225, 0.15) 60%, transparent 100%)",
+        }}
+      />
+
       {/* Floating clouds - subtle continuous drift like hero images */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-[1]">
         {/* Cloud 1 - top left, large */}
@@ -205,6 +213,24 @@ function ValuePropositionSection() {
             opacity: { duration: 1, delay: 0.3 },
             x: { duration: 18, repeat: Infinity, ease: "easeInOut" },
             y: { duration: 20, repeat: Infinity, ease: "easeInOut" },
+          }}
+        />
+        {/* Cloud 2 - top center, medium */}
+        <motion.img
+          src="/cloud.png"
+          alt=""
+          className="absolute w-20 md:w-32 lg:w-40"
+          style={{ left: "42%", top: "8%" }}
+          initial={{ opacity: 0 }}
+          animate={isInView ? {
+            opacity: 0.6,
+            x: [0, -10, 0, 12, 0],
+            y: [0, 8, 0, -6, 0],
+          } : { opacity: 0 }}
+          transition={{
+            opacity: { duration: 1, delay: 0.5 },
+            x: { duration: 22, repeat: Infinity, ease: "easeInOut" },
+            y: { duration: 16, repeat: Infinity, ease: "easeInOut" },
           }}
         />
         {/* Cloud 3 - top right, small */}
@@ -259,24 +285,6 @@ function ValuePropositionSection() {
             opacity: { duration: 1, delay: 0.7 },
             x: { duration: 16, repeat: Infinity, ease: "easeInOut" },
             y: { duration: 21, repeat: Infinity, ease: "easeInOut" },
-          }}
-        />
-        {/* Cloud 6 - center bottom row, large */}
-        <motion.img
-          src="/cloud.png"
-          alt=""
-          className="absolute w-24 md:w-40 lg:w-52"
-          style={{ left: "35%", top: "28%" }}
-          initial={{ opacity: 0 }}
-          animate={isInView ? {
-            opacity: 0.55,
-            x: [0, 12, 0, -18, 0],
-            y: [0, -14, 0, 10, 0],
-          } : { opacity: 0 }}
-          transition={{
-            opacity: { duration: 1, delay: 0.8 },
-            x: { duration: 19, repeat: Infinity, ease: "easeInOut" },
-            y: { duration: 15, repeat: Infinity, ease: "easeInOut" },
           }}
         />
       </div>
