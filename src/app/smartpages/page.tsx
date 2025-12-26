@@ -189,9 +189,9 @@ function IconBelt() {
   return (
     <div className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 h-[200px] md:h-[240px] flex items-center justify-center overflow-visible z-0">
       {/* Left glow - icons entering/feeding info */}
-      <div className="absolute left-[15%] md:left-[20%] top-1/2 -translate-y-1/2 w-32 h-32 md:w-40 md:h-40 bg-[#fbbf24]/30 rounded-full blur-3xl" />
+      <div className="absolute left-[15%] md:left-[20%] top-1/2 -translate-y-1/2 w-32 h-32 md:w-40 md:h-40 bg-[#F4F1EC]/30 rounded-full blur-3xl" />
       {/* Right glow - icons exiting/sending to customers */}
-      <div className="absolute right-[15%] md:right-[20%] top-1/2 -translate-y-1/2 w-32 h-32 md:w-40 md:h-40 bg-[#fbbf24]/30 rounded-full blur-3xl" />
+      <div className="absolute right-[15%] md:right-[20%] top-1/2 -translate-y-1/2 w-32 h-32 md:w-40 md:h-40 bg-[#F4F1EC]/30 rounded-full blur-3xl" />
 
       {/* Full width continuous icon flow */}
       <motion.div
@@ -209,7 +209,7 @@ function IconBelt() {
               key={`icon-${index}`}
               className="flex-shrink-0 drop-shadow-[0_0_10px_rgba(251,191,36,0.6)]"
             >
-              <Icon className="h-7 w-7 md:h-10 md:w-10 text-[#fbbf24]" />
+              <Icon className="h-7 w-7 md:h-10 md:w-10 text-[#F4F1EC]" />
             </div>
           ))}
         </motion.div>
@@ -239,7 +239,7 @@ const phase1Messages: ChatMessage[] = [
     from: 'shorty',
     content: (
       <>
-        We&apos;re open Mon–Sat 11am–9pm — <span className="text-[#fbbf24] underline">here&apos;s the map</span>.
+        We&apos;re open Mon–Sat 11am–9pm — <span className="text-[#F4F1EC] underline">here&apos;s the map</span>.
       </>
     ),
   },
@@ -276,13 +276,13 @@ function LinkTile({
     <motion.div
       className={`flex flex-col items-center justify-center gap-1.5 rounded-xl border py-3 px-2 transition-colors duration-300 ${
         isHighlighted
-          ? 'bg-[#fbbf24] border-[#fbbf24]'
+          ? 'bg-[#F4F1EC] border-[#F4F1EC]'
           : 'bg-white/5 border-white/10'
       }`}
       animate={isHighlighted ? { scale: [1, 1.02, 1] } : {}}
       transition={{ duration: 0.3 }}
     >
-      <div className={`w-6 h-6 ${isHighlighted ? 'text-black' : 'text-[#fbbf24]'}`}>
+      <div className={`w-6 h-6 ${isHighlighted ? 'text-black' : 'text-[#F4F1EC]'}`}>
         <Icon className="w-full h-full" />
       </div>
       <span className={`text-[10px] md:text-xs ${isHighlighted ? 'text-black font-medium' : 'text-slate-300'}`}>
@@ -301,7 +301,7 @@ function NotificationTile({ isHighlighted }: { isHighlighted: boolean }) {
     <motion.div
       className={`rounded-xl px-3 py-2.5 flex items-center gap-2 transition-colors duration-300 ${
         isHighlighted
-          ? 'bg-[#fbbf24]'
+          ? 'bg-[#F4F1EC]'
           : 'bg-slate-900/80'
       }`}
       animate={isHighlighted ? { scale: [1, 1.02, 1] } : {}}
@@ -314,7 +314,7 @@ function NotificationTile({ isHighlighted }: { isHighlighted: boolean }) {
         <div className={`text-[11px] font-medium ${isHighlighted ? 'text-black' : 'text-white'}`}>
           Notifications On
         </div>
-        <div className={`text-[9px] ${isHighlighted ? 'text-black/70' : 'text-slate-400'}`}>
+        <div className={`text-[9px] ${isHighlighted ? 'text-[#5A6570]' : 'text-slate-400'}`}>
           You&apos;ll get updates from us.
         </div>
       </div>
@@ -388,11 +388,11 @@ function ShortyModal() {
   const displayedMessages = currentMessages.slice(0, visibleMessages);
 
   return (
-    <div className="relative w-full max-w-[220px] sm:max-w-[260px] md:max-w-[320px] h-[440px] md:h-[475px] mx-auto rounded-3xl bg-[#0a0f1a] border border-white/10 shadow-[0_0_60px_rgba(251,191,36,0.15)] z-10 flex flex-col overflow-hidden">
+    <div className="relative w-full max-w-[220px] sm:max-w-[260px] md:max-w-[320px] h-[440px] md:h-[475px] mx-auto rounded-3xl bg-[#2B3A44] border border-white/10 shadow-[0_0_60px_rgba(251,191,36,0.15)] z-10 flex flex-col overflow-hidden">
       {/* Header */}
       <div className="flex flex-col items-center pt-3 pb-2 px-3 border-b border-white/10">
         {/* Avatar */}
-        <div className="relative w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#fbbf24]/15 overflow-hidden flex items-center justify-center mb-1.5">
+        <div className="relative w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#F4F1EC]/15 overflow-hidden flex items-center justify-center mb-1.5">
           <Image
             src="/Shortlist_logo.png"
             alt="Shorty"
@@ -407,13 +407,13 @@ function ShortyModal() {
         </p>
         {/* Social icons */}
         <div className="flex gap-1.5 mt-2">
-          <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-[#fbbf24]">
+          <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-[#F4F1EC]">
             <InstagramIcon className="w-2.5 h-2.5" />
           </div>
-          <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-[#fbbf24]">
+          <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-[#F4F1EC]">
             <GlobeIcon className="w-2.5 h-2.5" />
           </div>
-          <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-[#fbbf24]">
+          <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-[#F4F1EC]">
             <MailIcon className="w-2.5 h-2.5" />
           </div>
         </div>
@@ -426,7 +426,7 @@ function ShortyModal() {
             onClick={() => { setMode('chat'); setVisibleMessages(0); }}
             className={`px-2.5 py-0.5 text-[9px] md:text-[10px] font-medium rounded-full transition-colors ${
               mode === 'chat'
-                ? 'bg-[#fbbf24] text-slate-900'
+                ? 'bg-[#F4F1EC] text-slate-900'
                 : 'text-slate-300'
             }`}
           >
@@ -436,7 +436,7 @@ function ShortyModal() {
             onClick={() => setMode('links')}
             className={`px-2.5 py-0.5 text-[9px] md:text-[10px] font-medium rounded-full transition-colors ${
               mode === 'links'
-                ? 'bg-[#fbbf24] text-slate-900'
+                ? 'bg-[#F4F1EC] text-slate-900'
                 : 'text-slate-300'
             }`}
           >
@@ -460,7 +460,7 @@ function ShortyModal() {
                   className={`max-w-[90%] rounded-2xl px-2 py-1.5 leading-snug ${
                     isCustomer
                       ? 'self-start bg-white/10 text-white'
-                      : 'self-end bg-[#fbbf24] text-black'
+                      : 'self-end bg-[#F4F1EC] text-black'
                   }`}
                 >
                   {msg.content}
@@ -496,7 +496,7 @@ function ShortyModal() {
           <span className="flex-1 text-[9px] md:text-[10px] text-slate-400">
             Ask Shorty anything…
           </span>
-          <button className="flex h-5 w-5 md:h-6 md:w-6 items-center justify-center rounded-full bg-[#fbbf24] shadow-md">
+          <button className="flex h-5 w-5 md:h-6 md:w-6 items-center justify-center rounded-full bg-[#F4F1EC] shadow-md">
             <ArrowRightIcon className="w-2.5 h-2.5 md:w-3 md:h-3 text-slate-900" />
           </button>
         </div>
@@ -526,7 +526,7 @@ function ShortyModal() {
 
 function AppGridSection() {
   return (
-    <section className="bg-[#0a0f1a] py-10 md:py-14 px-4 overflow-x-hidden">
+    <section className="bg-[#2B3A44] py-10 md:py-14 px-4 overflow-x-hidden">
       {/* Header with animated highlighter on "Zero competition for attention" */}
       <div className="max-w-4xl mx-auto text-center mb-4 md:mb-5">
         <motion.h2
@@ -539,7 +539,7 @@ function AppGridSection() {
           Your very own app.{' '}
           <span className="relative inline-block">
             <motion.span
-              className="absolute inset-0 bg-[#E5A833]/70 -skew-x-2 rounded-sm"
+              className="absolute inset-0 bg-[#2B3A44]/70 -skew-x-2 rounded-sm"
               initial={{ scaleX: 0 }}
               whileInView={{ scaleX: 1 }}
               viewport={{ once: true }}
@@ -627,7 +627,7 @@ function AppGridSection() {
       </div>
 
       {/* Scrolling Business Types - Yellow background with dark pills */}
-      <div className="mt-12 md:mt-16 -mx-4 bg-[#E5A833] py-8">
+      <div className="mt-12 md:mt-16 -mx-4 bg-[#2B3A44] py-8">
         <motion.p
           className="text-center text-lg sm:text-xl md:text-2xl text-black font-semibold mb-6 px-4"
           initial={{ opacity: 0, y: 20 }}
@@ -686,7 +686,7 @@ function AppGridSection() {
               Send push notifications straight to their lock screen.
             </h3>
             <p className="mt-4 md:mt-6 text-base sm:text-lg text-slate-400">
-              No DMs to miss. No emails to skip. No feed to scroll past. <span className="text-[#E5A833] font-semibold">98% open rate.</span>
+              No DMs to miss. No emails to skip. No feed to scroll past. <span className="text-[#2B3A44] font-semibold">98% open rate.</span>
             </p>
           </motion.div>
 
@@ -701,7 +701,7 @@ function AppGridSection() {
               transition={{ duration: 0.6, delay: 0 }}
             >
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#E5A833]/20 border border-[#E5A833]/40 flex items-center justify-center text-lg flex-shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-[#2B3A44]/20 border border-[#2B3A44]/40 flex items-center justify-center text-lg flex-shrink-0">
                   🥟
                 </div>
                 <div className="flex-1 min-w-0">
@@ -722,7 +722,7 @@ function AppGridSection() {
               transition={{ duration: 0.6, delay: 0.4 }}
             >
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#E5A833]/20 border border-[#E5A833]/40 flex items-center justify-center text-lg flex-shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-[#2B3A44]/20 border border-[#2B3A44]/40 flex items-center justify-center text-lg flex-shrink-0">
                   💇
                 </div>
                 <div className="flex-1 min-w-0">
@@ -743,7 +743,7 @@ function AppGridSection() {
               transition={{ duration: 0.6, delay: 0.8 }}
             >
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#E5A833]/20 border border-[#E5A833]/40 flex items-center justify-center text-lg flex-shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-[#2B3A44]/20 border border-[#2B3A44]/40 flex items-center justify-center text-lg flex-shrink-0">
                   🍺
                 </div>
                 <div className="flex-1 min-w-0">
@@ -767,7 +767,7 @@ function AppGridSection() {
               transition={{ duration: 0.6, delay: 0 }}
             >
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#E5A833]/20 border border-[#E5A833]/40 flex items-center justify-center text-lg flex-shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-[#2B3A44]/20 border border-[#2B3A44]/40 flex items-center justify-center text-lg flex-shrink-0">
                   🥟
                 </div>
                 <div className="flex-1 min-w-0">
@@ -788,7 +788,7 @@ function AppGridSection() {
               transition={{ duration: 0.6, delay: 0.4 }}
             >
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#E5A833]/20 border border-[#E5A833]/40 flex items-center justify-center text-lg flex-shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-[#2B3A44]/20 border border-[#2B3A44]/40 flex items-center justify-center text-lg flex-shrink-0">
                   💇
                 </div>
                 <div className="flex-1 min-w-0">
@@ -809,7 +809,7 @@ function AppGridSection() {
               transition={{ duration: 0.6, delay: 0.8 }}
             >
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#E5A833]/20 border border-[#E5A833]/40 flex items-center justify-center text-lg flex-shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-[#2B3A44]/20 border border-[#2B3A44]/40 flex items-center justify-center text-lg flex-shrink-0">
                   🍺
                 </div>
                 <div className="flex-1 min-w-0">
@@ -885,7 +885,7 @@ function FeatureVisual({ type }: { type: string }) {
               </div>
             </div>
             <div className="flex justify-end">
-              <div className="bg-[#E5A833] rounded-2xl px-4 py-2.5 text-sm text-black max-w-[80%]">
+              <div className="bg-[#2B3A44] rounded-2xl px-4 py-2.5 text-sm text-black max-w-[80%]">
                 We close at 9pm tonight! Come by before then.
               </div>
             </div>
@@ -895,7 +895,7 @@ function FeatureVisual({ type }: { type: string }) {
               </div>
             </div>
             <div className="flex justify-end">
-              <div className="bg-[#E5A833] rounded-2xl px-4 py-2.5 text-sm text-black max-w-[80%]">
+              <div className="bg-[#2B3A44] rounded-2xl px-4 py-2.5 text-sm text-black max-w-[80%]">
                 Yes! Free parking in the lot behind us.
               </div>
             </div>
@@ -959,7 +959,7 @@ function FeatureVisual({ type }: { type: string }) {
         <div className="bg-gray-900 rounded-3xl p-6 md:p-8 w-full max-w-sm md:max-w-lg md:min-w-[400px] mx-auto">
           <div className="space-y-4">
             {/* Yellow announcement banner */}
-            <div className="bg-[#E5A833] rounded-lg px-4 py-3 text-center">
+            <div className="bg-[#2B3A44] rounded-lg px-4 py-3 text-center">
               <p className="text-black font-semibold text-sm md:text-base">Holiday Hours: Closed Dec 25-26</p>
             </div>
             {/* Separator */}
@@ -991,7 +991,7 @@ function FeatureVisual({ type }: { type: string }) {
             {['Website', 'Instagram', 'Order Online', 'Book Now'].map((label, i) => (
               <div key={i} className="bg-gray-800 rounded-xl px-4 py-3.5 flex items-center justify-between">
                 <span className="text-white text-sm md:text-base">{label}</span>
-                <ArrowRightIcon className="w-4 h-4 text-[#E5A833]" />
+                <ArrowRightIcon className="w-4 h-4 text-[#2B3A44]" />
               </div>
             ))}
           </div>
@@ -1020,7 +1020,7 @@ function FeatureVisual({ type }: { type: string }) {
 
 function FeaturesSection() {
   return (
-    <section className="bg-[#0a0f1a] py-12 md:py-16 px-4">
+    <section className="bg-[#2B3A44] py-12 md:py-16 px-4">
       <div className="max-w-5xl mx-auto">
         <motion.h2
           className="text-2xl sm:text-3xl md:text-4xl text-white font-semibold text-center mb-10 md:mb-12"
@@ -1115,17 +1115,17 @@ export default function ShortyLandingPage() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-[#050814] to-black w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
-      <section className="relative min-h-screen overflow-hidden pt-16 md:pt-24 pb-16 md:pb-20 flex flex-col items-center px-4">
+    <main className="min-h-screen bg-[#F4F1EC] w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
+      <section className="relative min-h-screen overflow-hidden pt-16 md:pt-24 pb-16 md:pb-20 flex flex-col items-center px-4 bg-[#2B3A44]">
         {/* Headline + Subheadline - above modal */}
         <div className="text-center max-w-2xl mb-6 md:mb-8 z-10">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight text-white">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal tracking-tight leading-tight text-[#F4F1EC]" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
             One clear place customers trust.
           </h1>
-          <p className="mt-4 text-lg md:text-xl text-slate-300">
+          <p className="mt-4 text-lg md:text-xl text-[#F4F1EC]/80">
             SmartPages give customers instant answers, clear next steps, and everything they need to choose you — without digging, DM'ing, or bouncing.
           </p>
-          <p className="mt-3 text-sm md:text-base text-slate-400 italic">
+          <p className="mt-3 text-sm md:text-base text-[#F4F1EC]/60 italic">
             If customers have to hunt, they won't.
           </p>
         </div>
@@ -1142,11 +1142,12 @@ export default function ShortyLandingPage() {
       {/* =========================================================================== */}
 
       {/* Why This Exists Section */}
-      <section ref={finalCtaRef} className="bg-[#E5A833] py-20 md:py-28 px-4">
+      <section ref={finalCtaRef} className="bg-[#F4F1EC] py-20 md:py-28 px-4">
         <div className="max-w-3xl mx-auto text-center space-y-8">
           {/* Headline */}
           <motion.h2
-            className="text-4xl md:text-5xl lg:text-6xl font-bold text-black"
+            className="text-4xl md:text-5xl lg:text-6xl font-normal text-[#1A1F24]"
+            style={{ fontFamily: "var(--font-libre-baskerville)" }}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -1157,7 +1158,7 @@ export default function ShortyLandingPage() {
 
           {/* Body copy */}
           <motion.p
-            className="text-lg md:text-xl text-black/80 leading-relaxed"
+            className="text-lg md:text-xl text-[#5A6570] leading-relaxed"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -1167,7 +1168,7 @@ export default function ShortyLandingPage() {
           </motion.p>
 
           <motion.p
-            className="text-lg md:text-xl text-black/80 leading-relaxed"
+            className="text-lg md:text-xl text-[#5A6570] leading-relaxed"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -1184,30 +1185,30 @@ export default function ShortyLandingPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <span className="text-2xl md:text-3xl font-bold text-black">
+            <span className="text-2xl md:text-3xl font-semibold text-[#1A1F24]">
               SmartPages fix that.
             </span>
           </motion.div>
 
           {/* What is a SmartPage? Explanation */}
           <motion.div
-            className="mt-8 md:mt-10 p-6 md:p-8 rounded-2xl bg-slate-800/40 border border-slate-700/50 max-w-2xl mx-auto"
+            className="mt-8 md:mt-10 p-6 md:p-8 rounded-2xl bg-[#2B3A44] border border-[#2B3A44]/20 max-w-2xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <h3 className="text-xl md:text-2xl font-semibold text-white mb-4">What is a SmartPage?</h3>
+            <h3 className="text-xl md:text-2xl font-normal text-[#F4F1EC] mb-4" style={{ fontFamily: "var(--font-libre-baskerville)" }}>What is a SmartPage?</h3>
 
-            <p className="text-slate-300 text-base md:text-lg leading-relaxed mb-3">
+            <p className="text-[#F4F1EC]/80 text-base md:text-lg leading-relaxed mb-3">
               Think of it as a lightweight website—an intelligent version of Linktree.
             </p>
 
-            <p className="text-slate-300 text-base md:text-lg leading-relaxed mb-3">
+            <p className="text-[#F4F1EC]/80 text-base md:text-lg leading-relaxed mb-3">
               Your customers aren&apos;t reading through pages of content. Neither are you. Simply ask Shorty anything about your business, and your customer gets the answer instantly. 24/7.
             </p>
 
-            <p className="text-slate-300 text-base md:text-lg leading-relaxed">
+            <p className="text-[#F4F1EC]/80 text-base md:text-lg leading-relaxed">
               No more lost sales from click fatigue or missed opportunities. Perfect for every business that needs an online presence and real communication.
             </p>
           </motion.div>
@@ -1220,7 +1221,7 @@ export default function ShortyLandingPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.4 }}
           >
-            <span className="text-2xl md:text-3xl font-bold text-black">
+            <span className="text-2xl md:text-3xl font-semibold text-[#1A1F24]">
               Once they tap, you&apos;re connected forever.
             </span>
           </motion.div>
@@ -1228,7 +1229,7 @@ export default function ShortyLandingPage() {
           {/* CTA Button */}
           <motion.a
             href="https://buy.stripe.com/3cI4gyfB1eg65uZ02Q4sE05"
-            className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-[#E5A833] text-black font-bold px-8 py-4 text-lg shadow-lg hover:bg-[#d4962e] transition"
+            className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-[#2B3A44] text-[#F4F1EC] font-semibold px-8 py-4 text-lg shadow-lg hover:bg-[#1A1F24] transition"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -1241,7 +1242,7 @@ export default function ShortyLandingPage() {
       </section>
 
       {/* Without vs With Comparison */}
-      <section className="bg-[#0a0f1a] py-16 md:py-20 px-4">
+      <section className="bg-[#2B3A44] py-16 md:py-20 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="grid md:grid-cols-2 gap-8 md:gap-12">
             {/* Without SmartPages */}
@@ -1252,8 +1253,8 @@ export default function ShortyLandingPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
             >
-              <h3 className="text-xl md:text-2xl font-bold text-[#E5A833] mb-6">Without SmartPages</h3>
-              <div className="space-y-3 text-slate-400">
+              <h3 className="text-xl md:text-2xl font-normal text-[#F4F1EC] mb-6" style={{ fontFamily: "var(--font-libre-baskerville)" }}>Without SmartPages</h3>
+              <div className="space-y-3 text-[#F4F1EC]/60">
                 <p className="flex items-start gap-3">
                   <span className="text-red-500 mt-1">✕</span>
                   <span>&quot;Check our bio&quot;</span>
@@ -1285,8 +1286,8 @@ export default function ShortyLandingPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              <h3 className="text-xl md:text-2xl font-bold text-[#E5A833] mb-6">With SmartPages</h3>
-              <div className="space-y-3 text-white">
+              <h3 className="text-xl md:text-2xl font-normal text-[#F4F1EC] mb-6" style={{ fontFamily: "var(--font-libre-baskerville)" }}>With SmartPages</h3>
+              <div className="space-y-3 text-[#F4F1EC]">
                 <p className="flex items-start gap-3">
                   <span className="text-green-500 mt-1">✓</span>
                   <span>One clear page</span>
@@ -1323,31 +1324,31 @@ export default function ShortyLandingPage() {
       {/* POSITIONING CLARIFIER */}
       {/* =========================================================================== */}
 
-      {/* Gold/Brass background with dark text */}
-      <section className="bg-[#FACC15] py-16 md:py-20 px-4">
+      {/* Positioning clarifier section */}
+      <section className="bg-[#2B3A44] py-16 md:py-20 px-4">
         <div className="max-w-3xl mx-auto text-center space-y-6">
           {/* Positioning Statement */}
-          <div className="space-y-4 text-lg md:text-xl text-black/80 leading-relaxed">
+          <div className="space-y-4 text-lg md:text-xl text-[#F4F1EC]/80 leading-relaxed">
             <p>
-              <span className="font-semibold text-black">Social gets attention.</span>
+              <span className="font-semibold text-[#F4F1EC]">Social gets attention.</span>
             </p>
             <p>
-              <span className="font-semibold text-black">SmartPages give clarity.</span>
+              <span className="font-semibold text-[#F4F1EC]">SmartPages give clarity.</span>
             </p>
             <p>
-              <span className="font-semibold text-black">Websites go deeper when needed.</span>
+              <span className="font-semibold text-[#F4F1EC]">Websites go deeper when needed.</span>
             </p>
           </div>
 
           {/* Explanation */}
-          <p className="mt-8 text-xl md:text-2xl font-bold text-black">
+          <p className="mt-8 text-xl md:text-2xl font-normal text-[#F4F1EC]" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
             SmartPages sit in the middle — turning interest into action.
           </p>
 
           {/* CTA Button */}
           <a
             href="https://buy.stripe.com/3cI4gyfB1eg65uZ02Q4sE05"
-            className="mt-10 inline-flex items-center justify-center rounded-full bg-black px-8 py-3 text-sm sm:text-base font-semibold text-[#FACC15] shadow-lg hover:bg-black/80 transition"
+            className="mt-10 inline-flex items-center justify-center rounded-full bg-[#F4F1EC] px-8 py-3 text-sm sm:text-base font-semibold text-[#2B3A44] shadow-lg hover:bg-[#F4F1EC]/90 transition"
           >
             Get started
           </a>
@@ -1357,7 +1358,7 @@ export default function ShortyLandingPage() {
       {/* Floating CTA Bubble */}
       <a
         href="https://buy.stripe.com/3cI4gyfB1eg65uZ02Q4sE05"
-        className={`fixed bottom-6 left-1/2 -translate-x-1/2 bg-[#E5A833] text-black font-bold px-5 py-3 rounded-full shadow-lg z-50 text-center max-w-[250px] text-sm md:text-base transition-opacity duration-300 hover:bg-[#d4962e] ${
+        className={`fixed bottom-6 left-1/2 -translate-x-1/2 bg-[#2B3A44] text-[#F4F1EC] font-semibold px-5 py-3 rounded-full shadow-lg z-50 text-center max-w-[250px] text-sm md:text-base transition-opacity duration-300 hover:bg-[#1A1F24] ${
           showCTA ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
       >

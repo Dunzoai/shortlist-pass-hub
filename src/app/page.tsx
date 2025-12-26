@@ -35,7 +35,7 @@ function ScrollingBelt() {
   }, []);
 
   return (
-    <div className="relative overflow-hidden h-14 bg-gradient-to-r from-[#2E8B57] via-[#2E8B57] to-[#2E8B57] flex items-center">
+    <div className="relative overflow-hidden h-14 bg-gradient-to-r from-[#2B3A44] via-[#2B3A44] to-[#2B3A44] flex items-center">
       <div
         className="flex items-center whitespace-nowrap animate-scroll"
         style={{
@@ -67,9 +67,9 @@ function ServiceTile({ title, subhead, description, href, index }: ServiceTilePr
       transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
     >
       <Link href={href} className="group block h-full">
-        <div className="h-full p-8 bg-[#F4F1EC] border border-white/10 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#2E8B57]/30 hover:shadow-lg hover:shadow-[#2E8B57]/5 hover:bg-[#2E8B57]">
+        <div className="h-full p-8 bg-[#F4F1EC] border border-white/10 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#2B3A44]/30 hover:shadow-lg hover:shadow-[#2B3A44]/5 hover:bg-[#2B3A44]">
           <h3 className="text-2xl font-semibold text-[#1A1F24] mb-2 transition-colors duration-300 group-hover:text-[#F4F1EC]">{title}</h3>
-          <p className="text-sm font-medium text-[#2E8B57] mb-4 transition-colors duration-300 group-hover:text-[#F4F1EC]">{subhead}</p>
+          <p className="text-sm font-medium text-[#2B3A44] mb-4 transition-colors duration-300 group-hover:text-[#F4F1EC]">{subhead}</p>
           <p className="text-base text-[#5A6570] leading-relaxed transition-colors duration-300 group-hover:text-[#F4F1EC]">{description}</p>
         </div>
       </Link>
@@ -94,7 +94,7 @@ function HelpCard({ icon, title, description, index }: HelpCardProps) {
       transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
       className="group p-6 bg-[#F4F1EC] border border-[#1A1F24]/30 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#F4F1EC] hover:shadow-lg hover:shadow-[#F4F1EC]/20"
     >
-      <div className="mb-4 text-[#2E8B57]">{icon}</div>
+      <div className="mb-4 text-[#2B3A44]">{icon}</div>
       <h3 className="text-xl font-semibold text-[#1A1F24] mb-3">{title}</h3>
       <p className="text-base text-[#5A6570] leading-relaxed">{description}</p>
     </motion.div>
@@ -142,7 +142,7 @@ function HowWeHelp() {
   ];
 
   return (
-    <section className="py-24 bg-gradient-to-b from-[#2E8B57] via-[#2E8B57] to-[#2E8B57]">
+    <section className="py-24 bg-gradient-to-b from-[#2B3A44] via-[#2B3A44] to-[#2B3A44]">
       <Container>
         <motion.div
           variants={staggerContainer}
@@ -153,7 +153,8 @@ function HowWeHelp() {
           <motion.h2
             variants={fadeUpVariant}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="text-[32px] md:text-[40px] lg:text-[48px] font-semibold text-[#F4F1EC] leading-[1.05] mb-12 text-center"
+            className="text-[32px] md:text-[40px] lg:text-[48px] font-normal text-[#F4F1EC] leading-[1.05] mb-12 text-center"
+            style={{ fontFamily: "var(--font-libre-baskerville)" }}
           >
             How we help
           </motion.h2>
@@ -193,7 +194,8 @@ function ProofStrip() {
           <motion.h2
             variants={fadeUpVariant}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="text-3xl font-semibold text-[#1A1F24] mb-8"
+            className="text-3xl font-normal text-[#1A1F24] mb-8"
+            style={{ fontFamily: "var(--font-libre-baskerville)" }}
           >
             Built for real business owners.
           </motion.h2>
@@ -290,7 +292,8 @@ export default function Home() {
               <motion.h1
                 variants={fadeUpVariant}
                 transition={{ duration: 0.5, ease: "easeOut" }}
-                className="text-[40px] md:text-[56px] lg:text-[64px] font-semibold text-[#1A1F24] leading-[1.05] mb-6"
+                className="text-[40px] md:text-[56px] lg:text-[64px] font-normal text-[#1A1F24] leading-[1.05] mb-6"
+                style={{ fontFamily: "var(--font-libre-baskerville)" }}
               >
                 <span className="block">Look legit.</span>
                 <span className="block">
@@ -318,7 +321,7 @@ export default function Home() {
                         cy="40"
                         rx="115"
                         ry="42"
-                        stroke="#2E8B57"
+                        stroke="#2B3A44"
                         strokeWidth="3.5"
                         strokeLinecap="round"
                         fill="none"
