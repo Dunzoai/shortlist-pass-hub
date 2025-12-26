@@ -1,11 +1,19 @@
 import type { Metadata } from "next";
-import { Sora } from "next/font/google";
+import { Sora, Libre_Baskerville } from "next/font/google";
 import "./globals.css";
 import { Nav } from "@/components/Nav";
 
 const sora = Sora({
   variable: "--font-sora",
   subsets: ["latin"],
+  display: "swap",
+});
+
+const libreBaskerville = Libre_Baskerville({
+  variable: "--font-libre-baskerville",
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -21,7 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${sora.variable} font-sans antialiased bg-[#F4F1EC] text-[#1A1F24]`}>
+      <body className={`${sora.variable} ${libreBaskerville.variable} font-sans antialiased bg-[#F4F1EC] text-[#1A1F24]`}>
         <Nav />
         {children}
       </body>
