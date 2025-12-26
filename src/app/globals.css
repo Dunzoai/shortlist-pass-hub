@@ -53,34 +53,3 @@ html {
   }
 }
 
-/* Mobile-specific styles for hero icons - different positions than desktop */
-@media (max-width: 767px) {
-  .mobile-corner-1,
-  .mobile-corner-2,
-  .mobile-corner-3,
-  .mobile-corner-4 {
-    opacity: 0.5;
-  }
-
-  /* Reposition icons for mobile layout */
-  .mobile-corner-1 {
-    left: -5% !important;
-    top: 5% !important;
-  }
-  .mobile-corner-2 {
-    left: auto !important;
-    right: -8% !important;
-    top: -5% !important;
-  }
-  .mobile-corner-3 {
-    right: -5% !important;
-    top: auto !important;
-    bottom: 10% !important;
-  }
-  .mobile-corner-4 {
-    left: -5% !important;
-    right: auto !important;
-    top: auto !important;
-    bottom: 15% !important;
-  }
-}

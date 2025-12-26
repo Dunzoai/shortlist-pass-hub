@@ -9,109 +9,70 @@ import { WhyBlock } from "@/components/WhyBlock";
 
 // =============================================================================
 // SECTION 1: HERO
-// Bold, editorial, confident. The text is the star.
+// Micro-wow moment: subtle "settling into place" motion
+// No decorative animation — just care, craft, intentional design
 // =============================================================================
 
 function HeroSection() {
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: false, margin: "-10%" });
+
+  // Restrained motion values
+  const settleTransition = {
+    duration: 0.8,
+    ease: [0.25, 0.1, 0.25, 1] as const, // custom ease-out curve
+  };
+
   return (
-    <section className="relative min-h-[85vh] flex items-center justify-center bg-[#F4F1EC] overflow-hidden">
-      {/* Floating background icons - editorial polish */}
-      <div className="absolute inset-0 pointer-events-none z-0">
-        {/* Top left icon - laptop */}
-        <motion.img
-          src="/laptop-website.png"
-          alt=""
-          className="absolute w-40 md:w-[345px] lg:w-[460px] mobile-corner-1 md:opacity-[0.65]"
-          style={{ left: "2%", top: "-10%" }}
-          animate={{
-            x: [0, 8, 0, -6, 0],
-            y: [0, -8, 0, 6, 0],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-
-        {/* Left icon - business (below laptop, staggered left) */}
-        <motion.img
-          src="/business.png"
-          alt=""
-          className="absolute w-44 md:w-[390px] lg:w-[540px] mobile-corner-2 md:opacity-[0.65]"
-          style={{ left: "-10%", top: "12%" }}
-          animate={{
-            x: [0, 10, 0, -12, 0],
-            y: [0, -6, 0, 10, 0],
-          }}
-          transition={{
-            duration: 18,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 1,
-          }}
-        />
-
-        {/* Top right icon - calendar (staggered higher) */}
-        <motion.img
-          src="/calendar.png"
-          alt=""
-          className="absolute w-40 md:w-[370px] lg:w-[490px] mobile-corner-3 md:opacity-[0.65]"
-          style={{ right: "0%", top: "-18%" }}
-          animate={{
-            x: [0, -14, 0, 10, 0],
-            y: [0, 10, 0, -8, 0],
-          }}
-          transition={{
-            duration: 16,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 3,
-          }}
-        />
-
-        {/* Bottom right icon - message bubble (staggered inward) */}
-        <motion.img
-          src="/message-bubble.png"
-          alt=""
-          className="absolute w-32 md:w-[345px] lg:w-[440px] mobile-corner-4 md:opacity-[0.65]"
-          style={{ right: "3%", bottom: "-10%" }}
-          animate={{
-            x: [0, 6, 0, -10, 0],
-            y: [0, -12, 0, 8, 0],
-          }}
-          transition={{
-            duration: 15,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 5,
-          }}
-        />
-      </div>
-
+    <section
+      ref={sectionRef}
+      className="relative min-h-[90vh] flex items-center justify-center bg-[#F4F1EC] py-20 md:py-28"
+    >
       <Container>
-        <div className="relative z-20 max-w-[1000px] mx-auto text-center px-4 -mt-16 md:-mt-8 lg:mt-0">
-          {/* H1 - Serif */}
-          <motion.h1
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="text-[28px] md:text-[44px] lg:text-[56px] font-normal text-[#1A1F24] leading-[1.15] tracking-[-0.01em] mb-6 md:mb-8"
-            style={{ fontFamily: "var(--font-libre-baskerville)", textWrap: "balance" }}
+        <motion.div
+          className="max-w-[720px] mx-auto text-center px-4"
+          initial={{ opacity: 0.9, y: 8 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0.9, y: 8 }}
+          transition={settleTransition}
+        >
+          {/* Opening line - Serif */}
+          <h1
+            className="text-[26px] md:text-[38px] lg:text-[46px] font-normal text-[#1A1F24] leading-[1.2] tracking-[-0.01em] mb-6 md:mb-8"
+            style={{ fontFamily: "var(--font-libre-baskerville)" }}
           >
-            We build websites and apps for small businesses that help customers choose you.
-          </motion.h1>
+            Being a small business doesn&apos;t mean you should look small.
+          </h1>
 
-          {/* Anchor - Sans */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
-            className="text-sm md:text-lg text-[#5A6570]"
+          {/* Context - Sans, muted */}
+          <p className="text-base md:text-lg text-[#5A6570] mb-8 md:mb-10 leading-relaxed">
+            Your website is often the first place customers decide
+            whether to trust you or keep scrolling.
+          </p>
+
+          {/* Main statement - Serif, slightly smaller */}
+          <p
+            className="text-[20px] md:text-[26px] lg:text-[30px] font-normal text-[#1A1F24] leading-[1.3] mb-8 md:mb-10"
+            style={{ fontFamily: "var(--font-libre-baskerville)" }}
           >
-            Not cookie-cutter. Because your business deserves to stand out.
-          </motion.p>
-        </div>
+            We build websites and apps for small businesses that want to look established, confident, and legit.
+          </p>
+
+          {/* The list - Sans, spaced */}
+          <div className="space-y-1 mb-8 md:mb-10">
+            <p className="text-base md:text-lg text-[#5A6570]">No templates.</p>
+            <p className="text-base md:text-lg text-[#5A6570]">No shortcuts.</p>
+            <p className="text-base md:text-lg text-[#5A6570]">No guessing how your business works.</p>
+          </div>
+
+          {/* Closing - Serif, warm */}
+          <p
+            className="text-[18px] md:text-[22px] text-[#1A1F24] leading-[1.4]"
+            style={{ fontFamily: "var(--font-libre-baskerville)" }}
+          >
+            Built around you —<br />
+            so customers feel good choosing you.
+          </p>
+        </motion.div>
       </Container>
     </section>
   );
