@@ -83,24 +83,24 @@ export function FoodTruckTimeline() {
 
   return (
     <div className="relative">
-      {/* Glass panel container - light slate blue */}
+      {/* Glass panel container - slate blue */}
       <div
         className="relative rounded-[28px] p-6 md:p-8 overflow-hidden"
         style={{
-          background: "linear-gradient(180deg, rgba(213, 222, 230, 0.95) 0%, rgba(200, 212, 222, 0.98) 100%)",
-          border: "1px solid rgba(43, 58, 68, 0.15)",
-          boxShadow: "0 40px 80px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.5)",
+          background: "linear-gradient(180deg, rgba(43, 58, 68, 0.95) 0%, rgba(35, 48, 56, 0.98) 100%)",
+          border: "1px solid rgba(255, 255, 255, 0.1)",
+          boxShadow: "0 40px 80px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05)",
         }}
       >
         {/* Header */}
         <div className="text-center mb-6">
-          <p className="text-[10px] text-[#2B3A44] uppercase tracking-[0.25em] mb-2 font-medium">
+          <p className="text-[10px] text-[#F4F1EC]/60 uppercase tracking-[0.25em] mb-2 font-medium">
             Nito&apos;s Empanadas (Real Example)
           </p>
-          <h3 className="text-2xl md:text-3xl font-bold text-[#1A1F24] mb-2">
+          <h3 className="text-2xl md:text-3xl font-bold text-[#F4F1EC] mb-2" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
             Follow the truck this week.
           </h3>
-          <p className="text-sm text-[#5A6570]/70">
+          <p className="text-sm text-[#F4F1EC]/60">
             Tap a day. Watch the truck move. Get the details instantly.
           </p>
         </div>
@@ -197,8 +197,8 @@ export function FoodTruckTimeline() {
               onClick={() => scrollToCard(index)}
               className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 ${
                 index === activeIndex
-                  ? "bg-[#2B3A44] text-[#F4F1EC]"
-                  : "bg-[#2B3A44]/10 text-[#5A6570]/70 hover:bg-[#2B3A44]/20 hover:text-[#5A6570]"
+                  ? "bg-[#F4F1EC] text-[#2B3A44]"
+                  : "bg-[#F4F1EC]/10 text-[#F4F1EC]/60 hover:bg-[#F4F1EC]/20 hover:text-[#F4F1EC]"
               }`}
             >
               {day.day}

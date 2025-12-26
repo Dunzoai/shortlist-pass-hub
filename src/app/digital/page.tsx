@@ -354,7 +354,7 @@ function TalkVsWalkSection() {
       <Container>
         <div className="max-w-2xl mx-auto text-center">
           {/* Headline - Two lines, static, no animation */}
-          <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-bold text-[#F4F1EC] leading-tight mb-6">
+          <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-normal text-[#F4F1EC] leading-tight mb-6" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
             Everyone explains.
             <br />
             <span className="text-[#F4F1EC]/70">Very few execute.</span>
@@ -386,7 +386,7 @@ function ShowDontTellSection() {
           <div>
             <Container>
               <div className="text-center mb-12">
-                <h3 className="text-[32px] md:text-[44px] font-bold text-[#1A1F24] leading-tight mb-4">
+                <h3 className="text-[32px] md:text-[44px] font-normal text-[#1A1F24] leading-tight mb-4" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
                   Your business moves. Your website should too.
                 </h3>
                 <p className="text-lg text-[#5A6570]">
@@ -535,7 +535,7 @@ function AISchedulingDemo() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-bold text-[#1A1F24] leading-tight mb-6">
+          <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-normal text-[#1A1F24] leading-tight mb-6" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
             {AI_DEMO_COPY.headline}
             <br />
             <span className="text-[#2B3A44]">{AI_DEMO_COPY.headlineBrass}</span>
@@ -722,7 +722,8 @@ function OutcomesSection() {
       <Container>
         <div className="max-w-2xl mx-auto">
           <motion.h2
-            className="text-[32px] md:text-[44px] font-bold text-[#1A1F24] leading-tight mb-10"
+            className="text-[32px] md:text-[44px] font-normal text-[#1A1F24] leading-tight mb-10"
+            style={{ fontFamily: "var(--font-libre-baskerville)" }}
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5 }}
@@ -776,7 +777,8 @@ function ScopeSection() {
       <Container>
         <div className="max-w-2xl mx-auto text-center">
           <motion.h2
-            className="text-[32px] md:text-[44px] font-bold text-[#1A1F24] leading-tight mb-8"
+            className="text-[32px] md:text-[44px] font-normal text-[#1A1F24] leading-tight mb-8"
+            style={{ fontFamily: "var(--font-libre-baskerville)" }}
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5 }}
@@ -829,7 +831,7 @@ function FinalCTASection() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-bold text-[#1A1F24] leading-tight mb-10">
+          <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-normal text-[#1A1F24] leading-tight mb-10" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
             If you want your business to look like it belongs — we should talk.
           </h2>
 

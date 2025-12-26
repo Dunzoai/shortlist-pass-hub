@@ -313,7 +313,7 @@ export function CupcakeShowcaseSection() {
         <div className="w-full max-w-[800px] mx-auto px-6">
           {/* Hero text - stays visible during build */}
           <div className="text-center mb-8 lg:mb-10">
-            <h2 className="text-[26px] md:text-[34px] lg:text-[42px] font-bold text-[#F4F1EC] leading-tight mb-2">
+            <h2 className="text-[26px] md:text-[34px] lg:text-[42px] font-normal text-[#F4F1EC] leading-tight mb-2" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
               {CUPCAKE_COPY.hero.headline}
               <br />
               <span className="text-[#F4F1EC]/70">{CUPCAKE_COPY.hero.headlineLine2}</span>
@@ -398,9 +398,9 @@ export function CupcakeShowcaseSection() {
       </section>
 
       {/* Why block - after the build */}
-      <div className="bg-[#F4F1EC] py-16 lg:py-24">
+      <div className="bg-[#2B3A44] py-16 lg:py-24">
         <div className="max-w-[800px] mx-auto px-6">
-          <WhyBlock heading={CUPCAKE_COPY.why.heading} lines={CUPCAKE_COPY.why.lines} />
+          <WhyBlock heading={CUPCAKE_COPY.why.heading} lines={CUPCAKE_COPY.why.lines} variant="dark" />
         </div>
       </div>
     </>
