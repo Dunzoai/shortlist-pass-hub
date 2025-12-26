@@ -155,12 +155,13 @@ function ValuePropositionSection() {
       ref={sectionRef}
       className="relative py-28 lg:py-36 bg-[#F4F1EC] overflow-hidden"
     >
-      {/* Subtle paper grain texture overlay */}
+      {/* Background texture image */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-[0.05]"
+        className="absolute inset-0 pointer-events-none opacity-[0.25]"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-          mixBlendMode: "multiply",
+          backgroundImage: `url("/section-2-background.png")`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
         }}
       />
 
