@@ -21,8 +21,8 @@ function HeroSection() {
         <motion.img
           src="/business.png"
           alt=""
-          className="absolute w-32 md:w-48 lg:w-60 opacity-[0.035] md:opacity-[0.06]"
-          style={{ left: "5%", top: "20%" }}
+          className="absolute w-48 md:w-72 lg:w-[360px] opacity-[0.06] md:opacity-[0.09]"
+          style={{ left: "2%", top: "18%" }}
           animate={{
             x: [0, 12, 0, -8, 0],
             y: [0, -10, 0, 8, 0],
@@ -38,8 +38,8 @@ function HeroSection() {
         <motion.img
           src="/calendar.png"
           alt=""
-          className="absolute w-28 md:w-44 lg:w-56 opacity-[0.03] md:opacity-[0.055]"
-          style={{ right: "5%", top: "25%" }}
+          className="absolute w-44 md:w-64 lg:w-80 opacity-[0.05] md:opacity-[0.08]"
+          style={{ right: "2%", top: "22%" }}
           animate={{
             x: [0, -10, 0, 14, 0],
             y: [0, 8, 0, -12, 0],
@@ -56,8 +56,8 @@ function HeroSection() {
         <motion.img
           src="/message-bubble.png"
           alt=""
-          className="absolute w-24 md:w-40 lg:w-52 opacity-[0.025] md:opacity-[0.045]"
-          style={{ right: "15%", bottom: "12%" }}
+          className="absolute w-36 md:w-60 lg:w-72 opacity-[0.045] md:opacity-[0.07]"
+          style={{ right: "10%", bottom: "10%" }}
           animate={{
             x: [0, 8, 0, -6, 0],
             y: [0, -8, 0, 10, 0],
@@ -89,7 +89,7 @@ function HeroSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
-            className="text-base md:text-lg text-[#5A6570] whitespace-nowrap"
+            className="text-sm md:text-lg text-[#5A6570]"
           >
             Not cookie-cutter. Because your business deserves to stand out.
           </motion.p>
