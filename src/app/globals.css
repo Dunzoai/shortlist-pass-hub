@@ -84,3 +84,14 @@ html {
     bottom: 15% !important;
   }
 }
+
+/* Section 2 background - responsive sizing */
+.section-2-bg {
+  background-size: 126% !important; /* 40% larger on mobile */
+}
+
+@media (min-width: 768px) {
+  .section-2-bg {
+    background-size: 90% !important; /* Desktop size */
+  }
+}

@@ -21,7 +21,7 @@ function HeroSection() {
         <motion.img
           src="/laptop-website.png"
           alt=""
-          className="absolute w-40 md:w-[345px] lg:w-[460px] mobile-corner-1 md:opacity-[0.65]"
+          className="absolute w-52 md:w-[345px] lg:w-[460px] mobile-corner-1 md:opacity-[0.65]"
           style={{ left: "2%", top: "-10%" }}
           animate={{
             x: [0, 8, 0, -6, 0],
@@ -38,7 +38,7 @@ function HeroSection() {
         <motion.img
           src="/business.png"
           alt=""
-          className="absolute w-44 md:w-[390px] lg:w-[540px] mobile-corner-2 md:opacity-[0.65]"
+          className="absolute w-[229px] md:w-[390px] lg:w-[540px] mobile-corner-2 md:opacity-[0.65]"
           style={{ left: "-10%", top: "12%" }}
           animate={{
             x: [0, 10, 0, -12, 0],
@@ -56,7 +56,7 @@ function HeroSection() {
         <motion.img
           src="/calendar.png"
           alt=""
-          className="absolute w-40 md:w-[370px] lg:w-[490px] mobile-corner-3 md:opacity-[0.65]"
+          className="absolute w-52 md:w-[370px] lg:w-[490px] mobile-corner-3 md:opacity-[0.65]"
           style={{ right: "0%", top: "-18%" }}
           animate={{
             x: [0, -14, 0, 10, 0],
@@ -74,7 +74,7 @@ function HeroSection() {
         <motion.img
           src="/message-bubble.png"
           alt=""
-          className="absolute w-32 md:w-[345px] lg:w-[440px] mobile-corner-4 md:opacity-[0.65]"
+          className="absolute w-[166px] md:w-[345px] lg:w-[440px] mobile-corner-4 md:opacity-[0.65]"
           style={{ right: "3%", bottom: "-10%" }}
           animate={{
             x: [0, 6, 0, -10, 0],
@@ -170,10 +170,9 @@ function ValuePropositionSection() {
     >
       {/* Background texture image - anchored to bottom, scroll-based reveal */}
       <motion.div
-        className="absolute inset-x-0 bottom-0 pointer-events-none"
+        className="absolute inset-x-0 bottom-0 pointer-events-none section-2-bg"
         style={{
           backgroundImage: `url("/section-2-background.png")`,
-          backgroundSize: "90%",
           backgroundPosition: "center bottom",
           backgroundRepeat: "no-repeat",
           height: "100%",
