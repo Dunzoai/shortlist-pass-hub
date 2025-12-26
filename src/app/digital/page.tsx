@@ -196,9 +196,9 @@ function ValuePropositionSection() {
           style={{ left: "3%", top: "5%" }}
           initial={{ opacity: 0 }}
           animate={isInView ? {
-            opacity: 0.5,
-            x: [0, 8, 0, -6, 0],
-            y: [0, -6, 0, 4, 0],
+            opacity: 0.65,
+            x: [0, 15, 0, -12, 0],
+            y: [0, -10, 0, 8, 0],
           } : { opacity: 0 }}
           transition={{
             opacity: { duration: 1, delay: 0.3 },
@@ -211,12 +211,12 @@ function ValuePropositionSection() {
           src="/cloud.png"
           alt=""
           className="absolute w-20 md:w-32 lg:w-40"
-          style={{ left: "42%", top: "-2%" }}
+          style={{ left: "42%", top: "8%" }}
           initial={{ opacity: 0 }}
           animate={isInView ? {
-            opacity: 0.45,
-            x: [0, -5, 0, 7, 0],
-            y: [0, 5, 0, -4, 0],
+            opacity: 0.6,
+            x: [0, -10, 0, 12, 0],
+            y: [0, 8, 0, -6, 0],
           } : { opacity: 0 }}
           transition={{
             opacity: { duration: 1, delay: 0.5 },
@@ -232,9 +232,9 @@ function ValuePropositionSection() {
           style={{ right: "12%", top: "10%" }}
           initial={{ opacity: 0 }}
           animate={isInView ? {
-            opacity: 0.4,
-            x: [0, -10, 0, 6, 0],
-            y: [0, 4, 0, -5, 0],
+            opacity: 0.55,
+            x: [0, -18, 0, 14, 0],
+            y: [0, 8, 0, -10, 0],
           } : { opacity: 0 }}
           transition={{
             opacity: { duration: 1, delay: 0.4 },
@@ -250,9 +250,9 @@ function ValuePropositionSection() {
           style={{ left: "-5%", top: "55%" }}
           initial={{ opacity: 0 }}
           animate={isInView ? {
-            opacity: 0.45,
-            x: [0, 12, 0, -8, 0],
-            y: [0, -5, 0, 7, 0],
+            opacity: 0.6,
+            x: [0, 20, 0, -15, 0],
+            y: [0, -10, 0, 12, 0],
           } : { opacity: 0 }}
           transition={{
             opacity: { duration: 1, delay: 0.6 },
@@ -268,9 +268,9 @@ function ValuePropositionSection() {
           style={{ right: "5%", top: "40%" }}
           initial={{ opacity: 0 }}
           animate={isInView ? {
-            opacity: 0.35,
-            x: [0, -7, 0, 9, 0],
-            y: [0, 6, 0, -8, 0],
+            opacity: 0.5,
+            x: [0, -14, 0, 16, 0],
+            y: [0, 10, 0, -12, 0],
           } : { opacity: 0 }}
           transition={{
             opacity: { duration: 1, delay: 0.7 },
@@ -286,9 +286,9 @@ function ValuePropositionSection() {
           style={{ left: "10%", bottom: "8%" }}
           initial={{ opacity: 0 }}
           animate={isInView ? {
-            opacity: 0.4,
-            x: [0, 6, 0, -10, 0],
-            y: [0, -8, 0, 5, 0],
+            opacity: 0.55,
+            x: [0, 12, 0, -18, 0],
+            y: [0, -14, 0, 10, 0],
           } : { opacity: 0 }}
           transition={{
             opacity: { duration: 1, delay: 0.8 },
