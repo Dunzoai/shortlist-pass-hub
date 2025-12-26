@@ -118,129 +118,68 @@ function HeroSection() {
 }
 
 // =============================================================================
-// SECTION 2: LINE IN THE SAND
-// "Templates suck."
+// SECTION 2: VALUE PROPOSITION
+// Micro-wow moment: subtle "settling into place" motion
+// No decorative animation — just care, craft, intentional design
 // =============================================================================
 
-// Hand-drawn frown face SVG - rolls in from the right
-function FrownFace() {
-  return (
-    <motion.span
-      className="inline-block ml-2 md:ml-3"
-      style={{ verticalAlign: "middle", display: "inline-block" }}
-      initial={{ x: 60, rotate: 540, opacity: 0 }}
-      whileInView={{ x: 0, rotate: -6, opacity: 1 }}
-      viewport={{ once: true, margin: "0px" }}
-      transition={{
-        type: "spring",
-        stiffness: 80,
-        damping: 12,
-        mass: 1,
-      }}
-    >
-      <svg
-        width="32"
-        height="32"
-        viewBox="0 0 32 32"
-        fill="none"
-      >
-        {/* Face circle - slightly imperfect */}
-        <path
-          d="M16 3C8.5 3.2 3.2 8.8 3 16c-.2 7.5 5.8 13.2 13 13.5 7.5.3 13.5-5.5 13.5-13C29.5 9 24 2.8 16 3z"
-          stroke="#5A6570"
-          strokeWidth="2"
-          strokeLinecap="round"
-          fill="none"
-        />
-        {/* Left eye - dot */}
-        <circle cx="11" cy="12" r="1.5" fill="#5A6570" />
-        {/* Right eye - dot */}
-        <circle cx="21" cy="12" r="1.5" fill="#5A6570" />
-        {/* Frown - hand-drawn curve */}
-        <path
-          d="M10 22c1.5-3 3.5-4.5 6-4.5s4.5 1.5 6 4.5"
-          stroke="#5A6570"
-          strokeWidth="2"
-          strokeLinecap="round"
-          fill="none"
-        />
-      </svg>
-    </motion.span>
-  );
-}
-
-// Hand-drawn underline SVG - wavy and imperfect
-function HandDrawnUnderline() {
-  return (
-    <motion.svg
-      className="absolute -bottom-2 left-0 w-full h-3"
-      viewBox="0 0 200 12"
-      preserveAspectRatio="none"
-      initial={{ pathLength: 0, opacity: 0 }}
-      whileInView={{ pathLength: 1, opacity: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.8, delay: 0.7, ease: "easeOut" }}
-    >
-      <motion.path
-        d="M2 8c20-4 40 2 60-1s40 3 60 0 40-2 60 1 15 2 16 0"
-        stroke="#2E8B57"
-        strokeWidth="3"
-        strokeLinecap="round"
-        fill="none"
-        initial={{ pathLength: 0 }}
-        whileInView={{ pathLength: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8, delay: 0.7, ease: "easeOut" }}
-      />
-    </motion.svg>
-  );
-}
-
-function TemplatesSuckSection() {
+function ValuePropositionSection() {
   const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const isInView = useInView(sectionRef, { once: false, margin: "-10%" });
 
   return (
-    <section ref={sectionRef} className="py-24 lg:py-32 bg-[#F4F1EC] overflow-x-clip">
+    <section
+      ref={sectionRef}
+      className="py-24 lg:py-32 bg-[#F4F1EC]"
+    >
       <Container>
-        <div className="max-w-2xl mx-auto overflow-visible">
-          {/* Headline - serif font matching hero */}
-          <motion.h2
-            className="text-[32px] md:text-[44px] lg:text-[56px] font-normal text-[#1A1F24] leading-[1.15] tracking-[-0.01em] mb-10 overflow-visible"
+        <motion.div
+          className="max-w-[720px] mx-auto text-center px-4"
+          initial={{ opacity: 0.9, y: 6 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0.9, y: 6 }}
+          transition={{
+            duration: 0.75,
+            ease: [0.25, 0.1, 0.25, 1] as const,
+          }}
+        >
+          {/* Opening line - Serif */}
+          <h2
+            className="text-[26px] md:text-[38px] lg:text-[46px] font-normal text-[#1A1F24] leading-[1.2] tracking-[-0.01em] mb-6 md:mb-8"
             style={{ fontFamily: "var(--font-libre-baskerville)" }}
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            Templates suck.
-            <FrownFace />
-          </motion.h2>
+            Being a small business doesn&apos;t mean you should look small.
+          </h2>
 
-          {/* Body copy */}
-          <motion.div
-            className="space-y-4 text-lg text-[#5A6570]"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.15 }}
+          {/* Context - Sans, muted */}
+          <p className="text-base md:text-lg text-[#5A6570] mb-8 md:mb-10 leading-relaxed">
+            Your website is often the first place customers decide
+            whether to trust you or keep scrolling.
+          </p>
+
+          {/* Main statement - Serif, slightly smaller */}
+          <p
+            className="text-[20px] md:text-[26px] lg:text-[30px] font-normal text-[#1A1F24] leading-[1.3] mb-8 md:mb-10"
+            style={{ fontFamily: "var(--font-libre-baskerville)" }}
           >
-            <p>They&apos;re built on assumptions.</p>
-            <p>
-              They guess what your business does, how your customers think, and
-              what matters most.
-            </p>
-            <p>That&apos;s why so many sites and apps look the same.</p>
-            <p className="text-[#1A1F24]">You&apos;re unique.</p>
+            We build websites and apps for small businesses that want to look established, confident, and legit.
+          </p>
 
-            {/* Final line - bold, one line, hand-drawn underline on "We build for you" */}
-            <p className="text-[#1A1F24] text-xl md:text-2xl font-bold pt-2">
-              We build around you.{" "}
-              <span className="relative inline-block">
-                We build for you.
-                <HandDrawnUnderline />
-              </span>
-            </p>
-          </motion.div>
-        </div>
+          {/* The list - Sans, spaced */}
+          <div className="space-y-1 mb-8 md:mb-10">
+            <p className="text-base md:text-lg text-[#5A6570]">No templates.</p>
+            <p className="text-base md:text-lg text-[#5A6570]">No shortcuts.</p>
+            <p className="text-base md:text-lg text-[#5A6570]">No guessing how your business works.</p>
+          </div>
+
+          {/* Closing - Serif, warm */}
+          <p
+            className="text-[18px] md:text-[22px] text-[#1A1F24] leading-[1.4]"
+            style={{ fontFamily: "var(--font-libre-baskerville)" }}
+          >
+            Built around you —<br />
+            so customers feel good choosing you.
+          </p>
+        </motion.div>
       </Container>
     </section>
   );
@@ -788,7 +727,7 @@ export default function DigitalPage() {
   return (
     <main className="pt-16 overflow-x-clip">
       <HeroSection />
-      <TemplatesSuckSection />
+      <ValuePropositionSection />
       <TalkVsWalkSection />
       <ShowDontTellSection />
       <CupcakeShowcaseSection />
