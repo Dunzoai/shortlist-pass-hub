@@ -186,57 +186,115 @@ function ValuePropositionSection() {
         className="absolute inset-0 pointer-events-none bg-[#E8E5E0]/70"
       />
 
-      {/* Floating clouds - animate in with subtle drift (above overlay) */}
+      {/* Floating clouds - subtle continuous drift like hero images */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-[1]">
-        {/* Cloud 1 - top left */}
+        {/* Cloud 1 - top left, large */}
+        <motion.img
+          src="/cloud.png"
+          alt=""
+          className="absolute w-28 md:w-44 lg:w-56"
+          style={{ left: "3%", top: "5%" }}
+          initial={{ opacity: 0 }}
+          animate={isInView ? {
+            opacity: 0.5,
+            x: [0, 8, 0, -6, 0],
+            y: [0, -6, 0, 4, 0],
+          } : { opacity: 0 }}
+          transition={{
+            opacity: { duration: 1, delay: 0.3 },
+            x: { duration: 18, repeat: Infinity, ease: "easeInOut" },
+            y: { duration: 20, repeat: Infinity, ease: "easeInOut" },
+          }}
+        />
+        {/* Cloud 2 - top center, medium */}
+        <motion.img
+          src="/cloud.png"
+          alt=""
+          className="absolute w-20 md:w-32 lg:w-40"
+          style={{ left: "42%", top: "-2%" }}
+          initial={{ opacity: 0 }}
+          animate={isInView ? {
+            opacity: 0.45,
+            x: [0, -5, 0, 7, 0],
+            y: [0, 5, 0, -4, 0],
+          } : { opacity: 0 }}
+          transition={{
+            opacity: { duration: 1, delay: 0.5 },
+            x: { duration: 22, repeat: Infinity, ease: "easeInOut" },
+            y: { duration: 16, repeat: Infinity, ease: "easeInOut" },
+          }}
+        />
+        {/* Cloud 3 - top right, small */}
+        <motion.img
+          src="/cloud.png"
+          alt=""
+          className="absolute w-16 md:w-24 lg:w-32"
+          style={{ right: "12%", top: "10%" }}
+          initial={{ opacity: 0 }}
+          animate={isInView ? {
+            opacity: 0.4,
+            x: [0, -10, 0, 6, 0],
+            y: [0, 4, 0, -5, 0],
+          } : { opacity: 0 }}
+          transition={{
+            opacity: { duration: 1, delay: 0.4 },
+            x: { duration: 15, repeat: Infinity, ease: "easeInOut" },
+            y: { duration: 19, repeat: Infinity, ease: "easeInOut" },
+          }}
+        />
+        {/* Cloud 4 - left side lower, medium-large */}
+        <motion.img
+          src="/cloud.png"
+          alt=""
+          className="absolute w-24 md:w-36 lg:w-48"
+          style={{ left: "-5%", top: "55%" }}
+          initial={{ opacity: 0 }}
+          animate={isInView ? {
+            opacity: 0.45,
+            x: [0, 12, 0, -8, 0],
+            y: [0, -5, 0, 7, 0],
+          } : { opacity: 0 }}
+          transition={{
+            opacity: { duration: 1, delay: 0.6 },
+            x: { duration: 20, repeat: Infinity, ease: "easeInOut" },
+            y: { duration: 17, repeat: Infinity, ease: "easeInOut" },
+          }}
+        />
+        {/* Cloud 5 - right side middle, small */}
+        <motion.img
+          src="/cloud.png"
+          alt=""
+          className="absolute w-14 md:w-20 lg:w-28"
+          style={{ right: "5%", top: "40%" }}
+          initial={{ opacity: 0 }}
+          animate={isInView ? {
+            opacity: 0.35,
+            x: [0, -7, 0, 9, 0],
+            y: [0, 6, 0, -8, 0],
+          } : { opacity: 0 }}
+          transition={{
+            opacity: { duration: 1, delay: 0.7 },
+            x: { duration: 16, repeat: Infinity, ease: "easeInOut" },
+            y: { duration: 21, repeat: Infinity, ease: "easeInOut" },
+          }}
+        />
+        {/* Cloud 6 - bottom left, large */}
         <motion.img
           src="/cloud.png"
           alt=""
           className="absolute w-24 md:w-40 lg:w-52"
-          style={{ left: "5%", top: "8%" }}
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 0.5, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
-        />
-        {/* Cloud 2 - top right */}
-        <motion.img
-          src="/cloud.png"
-          alt=""
-          className="absolute w-20 md:w-32 lg:w-44"
-          style={{ right: "8%", top: "12%" }}
-          initial={{ opacity: 0, y: 25 }}
-          animate={isInView ? { opacity: 0.45, y: 0 } : { opacity: 0, y: 25 }}
-          transition={{ duration: 1.4, delay: 0.5, ease: "easeOut" }}
-        />
-        {/* Cloud 3 - left side middle */}
-        <motion.img
-          src="/cloud.png"
-          alt=""
-          className="absolute w-16 md:w-28 lg:w-36"
-          style={{ left: "-2%", top: "45%" }}
-          initial={{ opacity: 0, x: -20 }}
-          animate={isInView ? { opacity: 0.4, x: 0 } : { opacity: 0, x: -20 }}
-          transition={{ duration: 1.3, delay: 0.6, ease: "easeOut" }}
-        />
-        {/* Cloud 4 - right side middle */}
-        <motion.img
-          src="/cloud.png"
-          alt=""
-          className="absolute w-18 md:w-32 lg:w-40"
-          style={{ right: "-3%", top: "50%" }}
-          initial={{ opacity: 0, x: 20 }}
-          animate={isInView ? { opacity: 0.45, x: 0 } : { opacity: 0, x: 20 }}
-          transition={{ duration: 1.2, delay: 0.4, ease: "easeOut" }}
-        />
-        {/* Cloud 5 - bottom area */}
-        <motion.img
-          src="/cloud.png"
-          alt=""
-          className="absolute w-20 md:w-36 lg:w-48"
-          style={{ left: "15%", bottom: "15%" }}
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 0.4, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 1.5, delay: 0.7, ease: "easeOut" }}
+          style={{ left: "10%", bottom: "8%" }}
+          initial={{ opacity: 0 }}
+          animate={isInView ? {
+            opacity: 0.4,
+            x: [0, 6, 0, -10, 0],
+            y: [0, -8, 0, 5, 0],
+          } : { opacity: 0 }}
+          transition={{
+            opacity: { duration: 1, delay: 0.8 },
+            x: { duration: 19, repeat: Infinity, ease: "easeInOut" },
+            y: { duration: 15, repeat: Infinity, ease: "easeInOut" },
+          }}
         />
       </div>
 
