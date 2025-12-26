@@ -344,9 +344,58 @@ function ValuePropositionSection() {
 // Static, calm pause before the interactive demos
 // =============================================================================
 
-function TalkVsWalkSection() {
+// Hand-drawn curved arrow SVG that draws itself
+function HandDrawnArrow({ isVisible }: { isVisible: boolean }) {
   return (
-    <section className="py-20 lg:py-28 bg-[#2B3A44]">
+    <motion.svg
+      className="w-16 h-32 md:w-20 md:h-40"
+      viewBox="0 0 60 120"
+      fill="none"
+      aria-hidden="true"
+    >
+      {/* Main curved line - hand-drawn wobbly path */}
+      <motion.path
+        d="M30 0 C32 15, 28 25, 30 40 C33 55, 26 70, 30 85 C32 95, 28 105, 30 110"
+        stroke="#F4F1EC"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        fill="none"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={isVisible ? { pathLength: 1, opacity: 0.7 } : {}}
+        transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+      />
+      {/* Arrow head - left stroke */}
+      <motion.path
+        d="M30 110 L22 98"
+        stroke="#F4F1EC"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        fill="none"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={isVisible ? { pathLength: 1, opacity: 0.7 } : {}}
+        transition={{ duration: 0.3, ease: "easeOut", delay: 0.9 }}
+      />
+      {/* Arrow head - right stroke */}
+      <motion.path
+        d="M30 110 L38 98"
+        stroke="#F4F1EC"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        fill="none"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={isVisible ? { pathLength: 1, opacity: 0.7 } : {}}
+        transition={{ duration: 0.3, ease: "easeOut", delay: 1.0 }}
+      />
+    </motion.svg>
+  );
+}
+
+function TalkVsWalkSection() {
+  const arrowRef = useRef(null);
+  const arrowInView = useInView(arrowRef, { once: true, margin: "-20%" });
+
+  return (
+    <section className="py-20 lg:py-28 bg-[#2B3A44] relative">
       <Container>
         <div className="max-w-2xl mx-auto text-center">
           {/* Headline - static */}
@@ -365,6 +414,11 @@ function TalkVsWalkSection() {
           <p className="text-sm text-[#F4F1EC]/50">
             Built around how real businesses actually work — not templates or assumptions.
           </p>
+
+          {/* Hand-drawn arrow pointing to next section */}
+          <div ref={arrowRef} className="flex justify-center mt-10">
+            <HandDrawnArrow isVisible={arrowInView} />
+          </div>
         </div>
       </Container>
     </section>

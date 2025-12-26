@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useState } from "react";
 
 export function Nav() {
@@ -13,15 +12,8 @@ export function Nav() {
         {/* Logo */}
         <Link
           href="/"
-          className="flex items-center gap-2 text-lg font-semibold text-[#1A1F24] hover:text-[#2B3A44] transition-colors duration-300"
+          className="text-lg font-semibold text-[#1A1F24] hover:text-[#2B3A44] transition-colors duration-300"
         >
-          <Image
-            src="/shortlist-logo-slate-blue.png"
-            alt="The Shortlist Co"
-            width={96}
-            height={96}
-            className="w-9 h-9"
-          />
           The Shortlist Co
         </Link>
 
