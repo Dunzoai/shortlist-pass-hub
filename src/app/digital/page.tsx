@@ -134,7 +134,7 @@ function ValuePropositionSection() {
     >
       <Container>
         <motion.div
-          className="max-w-[720px] mx-auto text-center px-4"
+          className="max-w-[800px] mx-auto text-center px-4"
           initial={{ opacity: 0.9, y: 6 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0.9, y: 6 }}
           transition={{
@@ -142,42 +142,20 @@ function ValuePropositionSection() {
             ease: [0.25, 0.1, 0.25, 1] as const,
           }}
         >
-          {/* Opening line - Serif */}
+          {/* Opening statement - Serif */}
           <h2
-            className="text-[26px] md:text-[38px] lg:text-[46px] font-normal text-[#1A1F24] leading-[1.2] tracking-[-0.01em] mb-6 md:mb-8"
+            className="text-[24px] md:text-[36px] lg:text-[44px] font-normal text-[#1A1F24] leading-[1.25] tracking-[-0.01em] mb-6 md:mb-8"
             style={{ fontFamily: "var(--font-libre-baskerville)" }}
           >
-            Being a small business doesn&apos;t mean you should look small.
+            Most small businesses don&apos;t get custom websites. They get dressed-up templates. We don&apos;t do that.
           </h2>
 
-          {/* Context - Sans, muted */}
-          <p className="text-base md:text-lg text-[#5A6570] mb-8 md:mb-10 leading-relaxed">
-            Your website is often the first place customers decide
-            whether to trust you or keep scrolling.
-          </p>
-
-          {/* Main statement - Serif, slightly smaller */}
+          {/* Main statement - Serif */}
           <p
-            className="text-[20px] md:text-[26px] lg:text-[30px] font-normal text-[#1A1F24] leading-[1.3] mb-8 md:mb-10"
+            className="text-[18px] md:text-[24px] lg:text-[28px] font-normal text-[#1A1F24] leading-[1.4]"
             style={{ fontFamily: "var(--font-libre-baskerville)" }}
           >
-            We build websites and apps for small businesses that want to look established, confident, and legit.
-          </p>
-
-          {/* The list - Sans, spaced */}
-          <div className="space-y-1 mb-8 md:mb-10">
-            <p className="text-base md:text-lg text-[#5A6570]">No templates.</p>
-            <p className="text-base md:text-lg text-[#5A6570]">No shortcuts.</p>
-            <p className="text-base md:text-lg text-[#5A6570]">No guessing how your business works.</p>
-          </div>
-
-          {/* Closing - Serif, warm */}
-          <p
-            className="text-[18px] md:text-[22px] text-[#1A1F24] leading-[1.4]"
-            style={{ fontFamily: "var(--font-libre-baskerville)" }}
-          >
-            Built around you —<br />
-            so customers feel good choosing you.
+            We build websites and apps from the ground up — so your online presence feels intentional, confident, and unmistakably yours.
           </p>
         </motion.div>
       </Container>
