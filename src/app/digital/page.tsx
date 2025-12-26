@@ -204,12 +204,13 @@ function TemplatesSuckSection() {
     <section ref={sectionRef} className="py-24 lg:py-32 bg-[#F4F1EC] overflow-x-clip">
       <Container>
         <div className="max-w-2xl mx-auto overflow-visible">
-          {/* Headline - snaps in with rolling frown face */}
+          {/* Headline - serif font matching hero */}
           <motion.h2
-            className="text-[36px] md:text-[48px] lg:text-[56px] font-bold text-[#1A1F24] leading-tight mb-10 overflow-visible"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="text-[32px] md:text-[44px] lg:text-[56px] font-normal text-[#1A1F24] leading-[1.15] tracking-[-0.01em] mb-10 overflow-visible"
+            style={{ fontFamily: "var(--font-libre-baskerville)" }}
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
             Templates suck.
             <FrownFace />
