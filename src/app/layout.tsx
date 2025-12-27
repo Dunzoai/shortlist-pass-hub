@@ -23,20 +23,20 @@ export const metadata: Metadata = {
   keywords: ["small business", "social media management", "SmartPages", "websites", "custom apps", "digital marketing", "local business"],
   authors: [{ name: "The Shortlist Co" }],
   creator: "The Shortlist Co",
-  metadataBase: new URL("https://shortlistpass.com"),
+  metadataBase: new URL("https://www.shortlistpass.com"),
   alternates: {
     canonical: "/",
   },
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://shortlistpass.com",
+    url: "https://www.shortlistpass.com",
     siteName: "The Shortlist Co",
     title: "The Shortlist Co | We Help Small Businesses Show Up Like Big Ones",
     description: "Social media management, SmartPages, websites and custom apps built to make customers choose you.",
     images: [
       {
-        url: "https://shortlistpass.com/social-share.png",
+        url: "https://www.shortlistpass.com/social-share.png",
         width: 1200,
         height: 630,
         alt: "The Shortlist Co - We help small businesses show up like big ones",
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "The Shortlist Co | We Help Small Businesses Show Up Like Big Ones",
     description: "Social media management, SmartPages, websites and custom apps built to make customers choose you.",
-    images: ["https://shortlistpass.com/social-share.png"],
+    images: ["https://www.shortlistpass.com/social-share.png"],
   },
   robots: {
     index: true,
