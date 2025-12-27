@@ -351,51 +351,10 @@ function ValuePropositionSection() {
 // Static, calm pause before the interactive demos
 // =============================================================================
 
-// Hand-drawn sweeping arrow that spans across sections
-function SpanningArrow({ isVisible }: { isVisible: boolean }) {
-  return (
-    <motion.svg
-      className="w-[100px] h-[280px] md:w-[140px] md:h-[380px] lg:w-[180px] lg:h-[480px]"
-      viewBox="0 0 100 280"
-      fill="none"
-      aria-hidden="true"
-    >
-      {/* Main sweeping curve - starts center-left (near text), curves right then down-left to arrow */}
-      <motion.path
-        d="M10 0
-           C 15 20, 60 40, 85 80
-           C 95 110, 90 150, 75 190
-           C 60 230, 40 260, 25 275"
-        stroke="#9CA3AF"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        fill="none"
-        initial={{ pathLength: 0, opacity: 0 }}
-        animate={isVisible ? { pathLength: 1, opacity: 0.65 } : {}}
-        transition={{ duration: 1.0, ease: "easeOut", delay: 0.3 }}
-      />
-      {/* Arrowhead - single clean pointed tip */}
-      <motion.path
-        d="M25 275 L 10 255 M25 275 L 40 260"
-        stroke="#9CA3AF"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        fill="none"
-        initial={{ pathLength: 0, opacity: 0 }}
-        animate={isVisible ? { pathLength: 1, opacity: 0.65 } : {}}
-        transition={{ duration: 0.3, ease: "easeOut", delay: 1.2 }}
-      />
-    </motion.svg>
-  );
-}
-
-// Wrapper combining both sections with spanning arrow
+// Combined TalkVsWalk and ShowDontTell sections
 function TalkVsWalkWithArrow() {
-  const wrapperRef = useRef(null);
-  const arrowInView = useInView(wrapperRef, { once: true, margin: "-20%" });
-
   return (
-    <div ref={wrapperRef} className="relative">
+    <>
       {/* TalkVsWalk Section */}
       <section className="py-20 lg:py-28 bg-[#2B3A44]">
         <Container>
@@ -459,18 +418,7 @@ function TalkVsWalkWithArrow() {
           </div>
         </div>
       </section>
-
-      {/* Spanning arrow - positioned to start from subheading and point to "You move" */}
-      <div
-        className="absolute pointer-events-none z-10"
-        style={{
-          top: "18%",
-          right: "3%",
-        }}
-      >
-        <SpanningArrow isVisible={arrowInView} />
-      </div>
-    </div>
+    </>
   );
 }
 
@@ -883,12 +831,6 @@ function OutcomesSection() {
   const x = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], ["-100%", "0%", "0%", "-100%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
 
-  const bullets = [
-    "Customers understand you faster",
-    "Your brand feels intentional",
-    "Your business looks confident — even before first contact",
-  ];
-
   return (
     <section ref={sectionRef} className="py-12 lg:py-16 bg-[#F4F1EC] overflow-hidden">
       <motion.div
@@ -900,24 +842,20 @@ function OutcomesSection() {
             className="text-[32px] md:text-[44px] font-normal text-[#F4F1EC] leading-tight mb-10"
             style={{ fontFamily: "var(--font-libre-baskerville)" }}
           >
-            This is how businesses start feeling established.
+            This is the difference.
           </h2>
 
-          <ul className="space-y-5 mb-10">
-            {bullets.map((bullet) => (
-              <li
-                key={bullet}
-                className="flex items-start gap-4 text-lg text-[#F4F1EC]/80"
-              >
-                <span className="w-1.5 h-1.5 rounded-full bg-[#F4F1EC] mt-2.5 shrink-0" />
-                {bullet}
-              </li>
-            ))}
-          </ul>
-
-          <p className="text-sm text-[#F4F1EC]/50">
-            You don&apos;t need to know how it works. You just need it to work.
-          </p>
+          <div className="space-y-6 text-lg md:text-xl text-[#F4F1EC]/80 leading-relaxed">
+            <p>
+              The extra thought.<br />
+              The intentional details.<br />
+              The moments people remember.
+            </p>
+            <p>
+              That&apos;s what makes customers pause —<br />
+              and choose you.
+            </p>
+          </div>
         </div>
       </motion.div>
     </section>
@@ -957,17 +895,16 @@ function ScopeSection() {
             Websites. Apps. Custom tools.
           </h2>
 
-          <div className="space-y-3 text-lg text-[#5A6570] mb-8">
-            <p>Sometimes you need a simple site.</p>
-            <p>Sometimes you need something more.</p>
+          <div className="space-y-6 text-lg md:text-xl text-[#5A6570] leading-relaxed">
+            <p>
+              We learn your business first — then build around it.<br />
+              Not from templates. Not from assumptions.
+            </p>
             <p className="text-[#1A1F24]">
-              We design and build what fits — not what&apos;s easiest.
+              We take on the hard stuff.<br />
+              Because that&apos;s what makes your business stand out.
             </p>
           </div>
-
-          <p className="text-sm text-[#2B3A44]">
-            Built for real businesses. Not big budgets.
-          </p>
         </div>
       </motion.div>
     </section>
