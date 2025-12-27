@@ -20,8 +20,8 @@ const staggerContainer = {
   },
 };
 
-// Hero rotating images
-const heroImages = [
+// Hero rotating images - bottom left
+const heroImagesLeft = [
   "/coffee-receipt.png",
   "/laptop-note.png",
   "/barber.png",
@@ -29,29 +29,30 @@ const heroImages = [
   "/wrench-screwdriver.png",
 ];
 
-function HeroImageRotator() {
+// Hero rotating images - top right
+const heroImagesRight = [
+  "/website-homepage.png",
+  "/instagram-post.png",
+  "/smartpage-hero.png",
+  "/bubbles-homepage.png",
+  "/apps.png",
+];
+
+function HeroImageRotatorLeft() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
-    // Rotate every 5 seconds (hold time + transition time)
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % heroImages.length);
+      setCurrentIndex((prev) => (prev + 1) % heroImagesLeft.length);
     }, 5000);
-
     return () => clearInterval(interval);
   }, []);
 
-  // For reduced motion, just show static image
   if (prefersReducedMotion) {
     return (
       <div className="absolute bottom-0 left-0 w-40 h-40 md:w-56 md:h-56 lg:w-72 lg:h-72 -mb-4 -ml-8 md:-mb-6 md:-ml-12 lg:-mb-8 lg:-ml-16 z-0 opacity-60 md:opacity-65">
-        <Image
-          src={heroImages[0]}
-          alt=""
-          fill
-          className="object-contain object-bottom"
-        />
+        <Image src={heroImagesLeft[0]} alt="" fill className="object-contain object-bottom" />
       </div>
     );
   }
@@ -64,19 +65,51 @@ function HeroImageRotator() {
           initial={{ opacity: 0, x: -15 }}
           animate={{ opacity: 0.65, x: 0 }}
           exit={{ opacity: 0 }}
-          transition={{
-            duration: 0.8,
-            ease: "easeOut",
-            opacity: { duration: 0.6 }
-          }}
+          transition={{ duration: 0.8, ease: "easeOut", opacity: { duration: 0.6 } }}
           className="absolute inset-0"
         >
-          <Image
-            src={heroImages[currentIndex]}
-            alt=""
-            fill
-            className="object-contain object-bottom"
-          />
+          <Image src={heroImagesLeft[currentIndex]} alt="" fill className="object-contain object-bottom" />
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function HeroImageRotatorRight() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const prefersReducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    // Offset timing slightly so they don't sync up
+    const timeout = setTimeout(() => {
+      const interval = setInterval(() => {
+        setCurrentIndex((prev) => (prev + 1) % heroImagesRight.length);
+      }, 5000);
+      return () => clearInterval(interval);
+    }, 2500);
+    return () => clearTimeout(timeout);
+  }, []);
+
+  if (prefersReducedMotion) {
+    return (
+      <div className="absolute top-0 right-0 w-40 h-40 md:w-56 md:h-56 lg:w-72 lg:h-72 -mt-4 -mr-8 md:-mt-6 md:-mr-12 lg:-mt-8 lg:-mr-16 z-0 opacity-60 md:opacity-65">
+        <Image src={heroImagesRight[0]} alt="" fill className="object-contain object-top" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="absolute top-0 right-0 w-40 h-40 md:w-56 md:h-56 lg:w-72 lg:h-72 -mt-4 -mr-8 md:-mt-6 md:-mr-12 lg:-mt-8 lg:-mr-16 z-0 overflow-hidden">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentIndex}
+          initial={{ opacity: 0, x: 15 }}
+          animate={{ opacity: 0.65, x: 0 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut", opacity: { duration: 0.6 } }}
+          className="absolute inset-0"
+        >
+          <Image src={heroImagesRight[currentIndex]} alt="" fill className="object-contain object-top" />
         </motion.div>
       </AnimatePresence>
     </div>
@@ -322,7 +355,9 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative py-20 lg:py-28 bg-[#F4F1EC] overflow-hidden">
         {/* Rotating hero images - lower left */}
-        <HeroImageRotator />
+        <HeroImageRotatorLeft />
+        {/* Rotating hero images - upper right */}
+        <HeroImageRotatorRight />
 
         <Container>
           <div className="relative z-10">
