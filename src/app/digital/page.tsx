@@ -172,8 +172,8 @@ function ValuePropositionSection() {
       className="relative py-28 lg:py-36 bg-[#F4F1EC] overflow-hidden"
     >
       {/* Background texture image - anchored to bottom, scroll-based reveal */}
-      {/* Opacity wrapper - 15% less visible */}
-      <div className="absolute inset-0 pointer-events-none opacity-[0.85]">
+      {/* Opacity wrapper - subtle visibility */}
+      <div className="absolute inset-0 pointer-events-none opacity-[0.55]">
         <motion.div
           className="absolute inset-x-0 bottom-0 section-2-bg h-full"
           style={{
@@ -299,6 +299,13 @@ function ValuePropositionSection() {
 
       <Container>
         <div className="relative max-w-[820px] mx-auto text-center px-4">
+          {/* Subtle backdrop for text readability */}
+          <div
+            className="absolute inset-0 -inset-x-8 rounded-3xl pointer-events-none"
+            style={{
+              background: "radial-gradient(ellipse at center, rgba(244, 241, 236, 0.85) 0%, rgba(244, 241, 236, 0.6) 50%, transparent 80%)",
+            }}
+          />
           {/* Headline - static, no animation */}
           <h2
             className="text-[24px] md:text-[36px] lg:text-[44px] font-normal text-[#1A1F24] leading-[1.22] mb-6 md:mb-8"
