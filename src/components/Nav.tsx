@@ -7,12 +7,12 @@ export function Nav() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-black/20 border-b border-white/10">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#2B3A44]">
       <div className="max-w-[1200px] mx-auto px-6 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link
           href="/"
-          className="text-lg font-semibold text-[#1A1F24] hover:text-[#2B3A44] transition-colors duration-300"
+          className="text-lg font-semibold text-[#F4F1EC] hover:text-[#F4F1EC]/70 transition-colors duration-300"
         >
           The Shortlist Co
         </Link>
@@ -21,19 +21,19 @@ export function Nav() {
         <div className="hidden md:flex items-center gap-4">
           <Link
             href="/social"
-            className="text-sm text-[#5A6570] px-4 py-2 rounded-full transition-all duration-300 hover:bg-[#2B3A44] hover:text-[#F4F1EC]"
+            className="text-sm text-[#F4F1EC] px-4 py-2 rounded-full transition-all duration-300 hover:bg-[#5A6570] hover:text-[#F4F1EC]"
           >
             Social
           </Link>
           <Link
             href="/smartpages"
-            className="text-sm text-[#5A6570] px-4 py-2 rounded-full transition-all duration-300 hover:bg-[#2B3A44] hover:text-[#F4F1EC]"
+            className="text-sm text-[#F4F1EC] px-4 py-2 rounded-full transition-all duration-300 hover:bg-[#5A6570] hover:text-[#F4F1EC]"
           >
             SmartPages
           </Link>
           <Link
             href="/digital"
-            className="text-sm text-[#5A6570] px-4 py-2 rounded-full transition-all duration-300 hover:bg-[#2B3A44] hover:text-[#F4F1EC]"
+            className="text-sm text-[#F4F1EC] px-4 py-2 rounded-full transition-all duration-300 hover:bg-[#5A6570] hover:text-[#F4F1EC]"
           >
             Digital
           </Link>
@@ -42,7 +42,7 @@ export function Nav() {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden p-2 text-[#5A6570] hover:text-[#1A1F24] transition-colors"
+          className="md:hidden p-2 text-[#F4F1EC] hover:text-[#F4F1EC]/70 transition-colors"
           aria-label="Toggle menu"
         >
           <svg
@@ -64,25 +64,25 @@ export function Nav() {
 
       {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="md:hidden border-t border-white/10 bg-[#F4F1EC]/95 backdrop-blur-md">
+        <div className="md:hidden border-t border-[#F4F1EC]/10 bg-[#2B3A44]">
           <div className="px-6 py-4 flex flex-col gap-4">
             <Link
               href="/social"
-              className="text-sm text-[#5A6570] hover:text-[#1A1F24] transition-colors"
+              className="text-sm text-[#F4F1EC] hover:text-[#F4F1EC]/70 transition-colors"
               onClick={() => setMobileOpen(false)}
             >
               Social
             </Link>
             <Link
               href="/smartpages"
-              className="text-sm text-[#5A6570] hover:text-[#1A1F24] transition-colors"
+              className="text-sm text-[#F4F1EC] hover:text-[#F4F1EC]/70 transition-colors"
               onClick={() => setMobileOpen(false)}
             >
               SmartPages
             </Link>
             <Link
               href="/digital"
-              className="text-sm text-[#5A6570] hover:text-[#1A1F24] transition-colors"
+              className="text-sm text-[#F4F1EC] hover:text-[#F4F1EC]/70 transition-colors"
               onClick={() => setMobileOpen(false)}
             >
               Digital
