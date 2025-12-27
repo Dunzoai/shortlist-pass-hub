@@ -69,12 +69,12 @@ function ServiceTile({ title, subhead, description, href, index, image }: Servic
       transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
     >
       <Link href={href} className="group block h-full">
-        <div className="h-full p-8 bg-[#F4F1EC] border border-white/10 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#2B3A44]/30 hover:shadow-lg hover:shadow-[#2B3A44]/5 hover:bg-[#2B3A44] flex flex-col">
+        <div className="h-full p-8 bg-[#F4F1EC] border border-white/10 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#2B3A44]/30 hover:shadow-lg hover:shadow-[#2B3A44]/5 hover:bg-[#2B3A44] flex flex-col text-center">
           <h3 className="text-2xl font-semibold text-[#1A1F24] mb-2 transition-colors duration-300 group-hover:text-[#F4F1EC]">{title}</h3>
           <p className="text-sm font-medium text-[#2B3A44] mb-4 transition-colors duration-300 group-hover:text-[#F4F1EC]">{subhead}</p>
           <p className="text-base text-[#5A6570] leading-relaxed transition-colors duration-300 group-hover:text-[#F4F1EC] flex-1">{description}</p>
           <div className="mt-6 flex justify-center">
-            <Image src={image} alt="" width={144} height={144} className="w-36 h-36 object-contain" />
+            <Image src={image} alt="" width={288} height={288} className="w-72 h-72 object-contain" />
           </div>
         </div>
       </Link>
