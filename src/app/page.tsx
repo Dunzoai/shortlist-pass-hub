@@ -73,8 +73,8 @@ function ServiceTile({ title, subhead, description, href, index, image }: Servic
           <h3 className="text-2xl font-semibold text-[#1A1F24] mb-2 transition-colors duration-300 group-hover:text-[#F4F1EC]">{title}</h3>
           <p className="text-sm font-medium text-[#2B3A44] mb-4 transition-colors duration-300 group-hover:text-[#F4F1EC]">{subhead}</p>
           <p className="text-base text-[#5A6570] leading-relaxed transition-colors duration-300 group-hover:text-[#F4F1EC] flex-1">{description}</p>
-          <div className="mt-6">
-            <Image src={image} alt="" width={48} height={48} className="w-12 h-12 object-contain" />
+          <div className="mt-6 flex justify-center">
+            <Image src={image} alt="" width={144} height={144} className="w-36 h-36 object-contain" />
           </div>
         </div>
       </Link>
