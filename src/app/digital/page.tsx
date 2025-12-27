@@ -172,8 +172,8 @@ function ValuePropositionSection() {
       className="relative py-28 lg:py-36 bg-[#F4F1EC] overflow-hidden"
     >
       {/* Background texture image - anchored to bottom, scroll-based reveal */}
-      {/* Mobile opacity wrapper - 7% less visible on mobile */}
-      <div className="absolute inset-0 pointer-events-none opacity-[0.93] md:opacity-100">
+      {/* Opacity wrapper - 7% less on mobile, 15% less on desktop */}
+      <div className="absolute inset-0 pointer-events-none opacity-[0.93] md:opacity-[0.85]">
         <motion.div
           className="absolute inset-x-0 bottom-0 section-2-bg h-full"
           style={{
