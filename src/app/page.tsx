@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Container } from "@/components/Container";
 import { useState, useEffect } from "react";
@@ -55,9 +56,10 @@ interface ServiceTileProps {
   description: string;
   href: string;
   index: number;
+  image: string;
 }
 
-function ServiceTile({ title, subhead, description, href, index }: ServiceTileProps) {
+function ServiceTile({ title, subhead, description, href, index, image }: ServiceTileProps) {
   return (
     <motion.div
       variants={fadeUpVariant}
@@ -67,10 +69,13 @@ function ServiceTile({ title, subhead, description, href, index }: ServiceTilePr
       transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
     >
       <Link href={href} className="group block h-full">
-        <div className="h-full p-8 bg-[#F4F1EC] border border-white/10 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#2B3A44]/30 hover:shadow-lg hover:shadow-[#2B3A44]/5 hover:bg-[#2B3A44]">
+        <div className="h-full p-8 bg-[#F4F1EC] border border-white/10 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#2B3A44]/30 hover:shadow-lg hover:shadow-[#2B3A44]/5 hover:bg-[#2B3A44] flex flex-col">
           <h3 className="text-2xl font-semibold text-[#1A1F24] mb-2 transition-colors duration-300 group-hover:text-[#F4F1EC]">{title}</h3>
           <p className="text-sm font-medium text-[#2B3A44] mb-4 transition-colors duration-300 group-hover:text-[#F4F1EC]">{subhead}</p>
-          <p className="text-base text-[#5A6570] leading-relaxed transition-colors duration-300 group-hover:text-[#F4F1EC]">{description}</p>
+          <p className="text-base text-[#5A6570] leading-relaxed transition-colors duration-300 group-hover:text-[#F4F1EC] flex-1">{description}</p>
+          <div className="mt-6">
+            <Image src={image} alt="" width={48} height={48} className="w-12 h-12 object-contain" />
+          </div>
         </div>
       </Link>
     </motion.div>
@@ -252,18 +257,21 @@ export default function Home() {
       subhead: "Be seen where customers already scroll.",
       description: "We create and manage social media that stops the scroll and beats the algorithms — so your business actually shows up in feeds, stays familiar, and gets picked when it matters.",
       href: "/social",
+      image: "/Door.png",
     },
     {
       title: "SmartPages",
       subhead: "One clear place customers trust.",
       description: "A website-light page that knows your business inside and out — answers, hours, menus, links, updates, booking — all in one place, with instant responses that keep customers confident and moving forward.",
       href: "/smartpages",
+      image: "/house-frame.png",
     },
     {
       title: "Websites & Apps",
       subhead: "When the problem needs more than a template.",
       description: "Custom websites and lightweight apps built around how your business actually runs — designed to explain clearly, remove friction, and turn interest into orders, bookings, and calls.",
       href: "/digital",
+      image: "/house-windows.png",
     },
   ];
 
