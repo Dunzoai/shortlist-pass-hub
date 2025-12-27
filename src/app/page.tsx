@@ -240,25 +240,33 @@ function HowWeHelp() {
 
   const text = "How we help";
   const [displayedText, setDisplayedText] = useState("");
-  const [hasTyped, setHasTyped] = useState(false);
+  const [startTyping, setStartTyping] = useState(false);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const isInView = useInView(headingRef, { once: true, amount: 0.3 });
 
+  // Trigger typing when in view
   useEffect(() => {
-    if (isInView && !hasTyped) {
-      setHasTyped(true);
-      let index = 0;
-      const interval = setInterval(() => {
-        if (index < text.length) {
-          setDisplayedText(text.slice(0, index + 1));
-          index++;
-        } else {
-          clearInterval(interval);
-        }
-      }, 80);
-      return () => clearInterval(interval);
+    if (isInView && !startTyping) {
+      setStartTyping(true);
     }
-  }, [isInView, hasTyped]);
+  }, [isInView, startTyping]);
+
+  // Handle the actual typing animation
+  useEffect(() => {
+    if (!startTyping) return;
+
+    let currentIndex = 0;
+    const interval = setInterval(() => {
+      currentIndex++;
+      if (currentIndex <= text.length) {
+        setDisplayedText(text.slice(0, currentIndex));
+      } else {
+        clearInterval(interval);
+      }
+    }, 80);
+
+    return () => clearInterval(interval);
+  }, [startTyping]);
 
   return (
     <section className="pt-24 pb-12 bg-[#2B3A44]">
