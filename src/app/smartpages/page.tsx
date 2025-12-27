@@ -1150,7 +1150,7 @@ export default function ShortyLandingPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            Your customers aren&apos;t reading through pages of content. Neither are you. They simply ask Shorty anything about your business, and your customer gets the answer instantly. 24/7.
+            Your customers aren&apos;t reading pages of content. They ask your SmartPage anything about your business and get the answer instantly. 24/7.
           </motion.p>
 
           <motion.p
@@ -1160,17 +1160,7 @@ export default function ShortyLandingPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.15 }}
           >
-            No more lost sales from click fatigue or missed opportunities. Perfect for every business that needs an online presence and real communication.
-          </motion.p>
-
-          <motion.p
-            className="text-lg md:text-xl text-[#5A6570] leading-relaxed"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            Hours, menus, links, booking, updates, FAQs — when this information is scattered, customers bounce.
+            Hours, menus, links, booking, updates, FAQs — all in one place.
           </motion.p>
 
           {/* Solution */}
@@ -1179,10 +1169,10 @@ export default function ShortyLandingPage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.25 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
           >
             <span className="text-2xl md:text-3xl font-semibold text-[#1A1F24]">
-              SmartPages fix that.
+              SmartPages make it happen.
             </span>
           </motion.div>
 
