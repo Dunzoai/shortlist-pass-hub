@@ -76,10 +76,10 @@ function HeroImageRotatorLeft() {
         <motion.div
           key={currentIndex}
           initial={{ opacity: 0, x: -20, scale: 0.97 }}
-          animate={{ opacity: 1, x: 0, scale: 1 }}
+          animate={{ opacity: 0.15, x: 0, scale: 1 }}
           exit={{ opacity: 0, x: 10 }}
           transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
-          className="absolute inset-0 opacity-15 md:opacity-20"
+          className="absolute inset-0"
         >
           <Image src={heroImagesLeft[currentIndex]} alt="" fill className="object-contain object-bottom" />
         </motion.div>
@@ -130,10 +130,10 @@ function HeroImageRotatorRight() {
         <motion.div
           key={currentIndex}
           initial={{ opacity: 0, x: 20, scale: 0.97 }}
-          animate={{ opacity: 1, x: 0, scale: 1 }}
+          animate={{ opacity: 0.15, x: 0, scale: 1 }}
           exit={{ opacity: 0, x: -10 }}
           transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
-          className="absolute inset-0 opacity-15 md:opacity-20"
+          className="absolute inset-0"
         >
           <Image src={heroImagesRight[currentIndex]} alt="" fill className="object-contain object-top" />
         </motion.div>
