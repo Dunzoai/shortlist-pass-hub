@@ -25,7 +25,7 @@ function HeroImageLeft() {
 
   if (prefersReducedMotion) {
     return (
-      <div className="absolute bottom-0 left-0 w-40 h-40 md:w-52 md:h-52 lg:w-72 lg:h-72 -mb-4 -ml-6 md:-mb-8 md:-ml-14 lg:-mb-10 lg:-ml-16 z-0 opacity-25 md:opacity-30">
+      <div className="absolute bottom-0 left-0 w-[200px] h-[200px] md:w-[260px] md:h-[260px] lg:w-[360px] lg:h-[360px] -mb-4 -ml-2 md:-mb-8 md:-ml-6 lg:-mb-10 lg:-ml-8 z-0 opacity-55">
         <Image src="/bubbles-homepage.png" alt="" fill className="object-contain object-bottom" />
       </div>
     );
@@ -33,10 +33,10 @@ function HeroImageLeft() {
 
   return (
     <motion.div
-      className="absolute bottom-0 left-0 w-40 h-40 md:w-52 md:h-52 lg:w-72 lg:h-72 -mb-4 -ml-6 md:-mb-8 md:-ml-14 lg:-mb-10 lg:-ml-16 z-0 opacity-25 md:opacity-30"
+      className="absolute bottom-0 left-0 w-[200px] h-[200px] md:w-[260px] md:h-[260px] lg:w-[360px] lg:h-[360px] -mb-4 -ml-2 md:-mb-8 md:-ml-6 lg:-mb-10 lg:-ml-8 z-0"
       initial={{ opacity: 0 }}
       animate={{
-        opacity: 1,
+        opacity: 0.55,
         x: [0, 8, 0, -6, 0],
         y: [0, -8, 0, 6, 0],
       }}
@@ -56,7 +56,7 @@ function HeroImageRight() {
 
   if (prefersReducedMotion) {
     return (
-      <div className="absolute top-0 right-0 w-40 h-40 md:w-52 md:h-52 lg:w-72 lg:h-72 -mt-2 -mr-6 md:-mt-8 md:-mr-14 lg:-mt-10 lg:-mr-16 z-0 opacity-25 md:opacity-30">
+      <div className="absolute top-0 right-0 w-40 h-40 md:w-52 md:h-52 lg:w-72 lg:h-72 -mt-2 -mr-6 md:-mt-8 md:-mr-14 lg:-mt-10 lg:-mr-16 z-0 opacity-55">
         <Image src="/instagram-post.png" alt="" fill className="object-contain object-top" />
       </div>
     );
@@ -64,10 +64,10 @@ function HeroImageRight() {
 
   return (
     <motion.div
-      className="absolute top-0 right-0 w-40 h-40 md:w-52 md:h-52 lg:w-72 lg:h-72 -mt-2 -mr-6 md:-mt-8 md:-mr-14 lg:-mt-10 lg:-mr-16 z-0 opacity-25 md:opacity-30"
+      className="absolute top-0 right-0 w-40 h-40 md:w-52 md:h-52 lg:w-72 lg:h-72 -mt-2 -mr-6 md:-mt-8 md:-mr-14 lg:-mt-10 lg:-mr-16 z-0"
       initial={{ opacity: 0 }}
       animate={{
-        opacity: 1,
+        opacity: 0.55,
         x: [0, -10, 0, 8, 0],
         y: [0, 6, 0, -8, 0],
       }}
