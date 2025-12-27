@@ -1122,11 +1122,11 @@ export default function ShortyLandingPage() {
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal tracking-tight leading-tight text-[#F4F1EC]" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
             One clear place customers trust.
           </h1>
-          <p className="mt-4 text-lg md:text-xl text-[#F4F1EC]/80">
-            SmartPages give customers instant answers, clear next steps, and everything they need to choose you — without digging, DM'ing, or bouncing.
+          <p className="mt-4 text-lg md:text-xl text-[#F4F1EC]/80 italic">
+            If customers have to hunt, they won&apos;t.
           </p>
-          <p className="mt-3 text-sm md:text-base text-[#F4F1EC]/60 italic">
-            If customers have to hunt, they won't.
+          <p className="mt-3 text-base md:text-lg text-[#F4F1EC]/60">
+            SmartPages give customers instant answers, clear next steps, and everything they need to choose you — without digging, DM&apos;ing, or bouncing.
           </p>
         </div>
 
@@ -1190,7 +1190,21 @@ export default function ShortyLandingPage() {
             </span>
           </motion.div>
 
-          {/* What is a SmartPage? Explanation */}
+          {/* What is a SmartPage? - Above the card */}
+          <motion.div
+            className="mt-8 md:mt-10"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.25 }}
+          >
+            <h3 className="text-2xl md:text-3xl font-normal text-[#1A1F24] mb-4" style={{ fontFamily: "var(--font-libre-baskerville)" }}>What is a SmartPage?</h3>
+            <p className="text-lg md:text-xl text-[#5A6570] leading-relaxed max-w-2xl mx-auto">
+              Think of it as a lightweight website—an intelligent version of Linktree that keeps your most important links organized but chats with clients and answers any questions about your business.
+            </p>
+          </motion.div>
+
+          {/* Let's be real - Dark card */}
           <motion.div
             className="mt-8 md:mt-10 p-6 md:p-8 rounded-2xl bg-[#2B3A44] border border-[#2B3A44]/20 max-w-2xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
@@ -1198,11 +1212,7 @@ export default function ShortyLandingPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <h3 className="text-xl md:text-2xl font-normal text-[#F4F1EC] mb-4" style={{ fontFamily: "var(--font-libre-baskerville)" }}>What is a SmartPage?</h3>
-
-            <p className="text-[#F4F1EC]/80 text-base md:text-lg leading-relaxed mb-3">
-              Think of it as a lightweight website—an intelligent version of Linktree.
-            </p>
+            <h3 className="text-xl md:text-2xl font-normal text-[#F4F1EC] mb-4" style={{ fontFamily: "var(--font-libre-baskerville)" }}>Let&apos;s be real:</h3>
 
             <p className="text-[#F4F1EC]/80 text-base md:text-lg leading-relaxed mb-3">
               Your customers aren&apos;t reading through pages of content. Neither are you. Simply ask Shorty anything about your business, and your customer gets the answer instantly. 24/7.
