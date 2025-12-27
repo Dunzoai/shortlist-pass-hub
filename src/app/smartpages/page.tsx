@@ -1133,35 +1133,24 @@ export default function ShortyLandingPage() {
         {/* Modal */}
         <ShortyModal />
 
-        {/* Let's be real - bone text on dark background */}
-        <div className="mt-8 md:mt-10 max-w-2xl mx-auto text-center z-10 px-4">
-          <h3 className="text-xl md:text-2xl font-normal text-[#F4F1EC] mb-4" style={{ fontFamily: "var(--font-libre-baskerville)" }}>Let&apos;s be real:</h3>
-          <p className="text-[#F4F1EC]/70 text-base md:text-lg leading-relaxed mb-3">
-            Your customers aren&apos;t reading through pages of content. Neither are you. Simply ask Shorty anything about your business, and your customer gets the answer instantly. 24/7.
-          </p>
-          <p className="text-[#F4F1EC]/70 text-base md:text-lg leading-relaxed">
-            No more lost sales from click fatigue or missed opportunities. Perfect for every business that needs an online presence and real communication.
-          </p>
-        </div>
       </section>
 
       {/* =========================================================================== */}
-      {/* SECTION 2 - Let's Be Real (moved from bottom) */}
+      {/* SECTION 2 - Let's Be Real */}
       {/* =========================================================================== */}
 
-      {/* Why This Exists Section */}
       <section ref={finalCtaRef} className="bg-[#F4F1EC] py-20 md:py-28 px-4">
-        <div className="max-w-3xl mx-auto text-center space-y-8">
+        <div className="max-w-3xl mx-auto text-center space-y-6">
           {/* Headline */}
           <motion.h2
-            className="text-4xl md:text-5xl lg:text-6xl font-normal text-[#1A1F24]"
+            className="text-3xl md:text-4xl lg:text-5xl font-normal text-[#1A1F24]"
             style={{ fontFamily: "var(--font-libre-baskerville)" }}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            The problem isn&apos;t traffic. It&apos;s confusion.
+            Let&apos;s be real:
           </motion.h2>
 
           {/* Body copy */}
@@ -1172,7 +1161,7 @@ export default function ShortyLandingPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            Most customers don&apos;t leave because they&apos;re not interested — they leave because they can&apos;t quickly figure out what to do next.
+            Your customers aren&apos;t reading through pages of content. Neither are you. Simply ask Shorty anything about your business, and your customer gets the answer instantly. 24/7.
           </motion.p>
 
           <motion.p
@@ -1181,6 +1170,16 @@ export default function ShortyLandingPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.15 }}
+          >
+            No more lost sales from click fatigue or missed opportunities. Perfect for every business that needs an online presence and real communication.
+          </motion.p>
+
+          <motion.p
+            className="text-lg md:text-xl text-[#5A6570] leading-relaxed"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
           >
             Hours, menus, links, booking, updates, FAQs — when this information is scattered, customers bounce.
           </motion.p>
@@ -1191,23 +1190,10 @@ export default function ShortyLandingPage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.25 }}
           >
             <span className="text-2xl md:text-3xl font-semibold text-[#1A1F24]">
               SmartPages fix that.
-            </span>
-          </motion.div>
-
-          {/* Once they tap - BIG */}
-          <motion.div
-            className="pt-8"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-          >
-            <span className="text-2xl md:text-3xl font-semibold text-[#1A1F24]">
-              Once they tap, you&apos;re connected forever.
             </span>
           </motion.div>
 
@@ -1218,7 +1204,7 @@ export default function ShortyLandingPage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.6 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
           >
             Get Your SmartPage — $25/mo
             <ArrowRightIcon className="w-5 h-5" />
