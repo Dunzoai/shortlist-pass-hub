@@ -59,7 +59,7 @@ function HeroImageRotatorLeft() {
 
   if (prefersReducedMotion) {
     return (
-      <div className="absolute bottom-0 left-0 w-40 h-40 md:w-52 md:h-52 lg:w-72 lg:h-72 -mb-4 -ml-6 md:-mb-8 md:-ml-14 lg:-mb-10 lg:-ml-16 z-0 opacity-25 md:opacity-35">
+      <div className="absolute bottom-0 left-0 w-40 h-40 md:w-52 md:h-52 lg:w-72 lg:h-72 -mb-4 -ml-6 md:-mb-8 md:-ml-14 lg:-mb-10 lg:-ml-16 z-0 opacity-15 md:opacity-20">
         <Image src={heroImagesLeft[0]} alt="" fill className="object-contain object-bottom" />
       </div>
     );
@@ -79,7 +79,7 @@ function HeroImageRotatorLeft() {
           animate={{ opacity: 1, x: 0, scale: 1 }}
           exit={{ opacity: 0, x: 10 }}
           transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
-          className="absolute inset-0 opacity-25 md:opacity-35"
+          className="absolute inset-0 opacity-15 md:opacity-20"
         >
           <Image src={heroImagesLeft[currentIndex]} alt="" fill className="object-contain object-bottom" />
         </motion.div>
@@ -113,7 +113,7 @@ function HeroImageRotatorRight() {
 
   if (prefersReducedMotion) {
     return (
-      <div className="absolute top-0 right-0 w-40 h-40 md:w-52 md:h-52 lg:w-72 lg:h-72 -mt-2 -mr-6 md:-mt-8 md:-mr-14 lg:-mt-10 lg:-mr-16 z-0 opacity-25 md:opacity-35">
+      <div className="absolute top-0 right-0 w-40 h-40 md:w-52 md:h-52 lg:w-72 lg:h-72 -mt-2 -mr-6 md:-mt-8 md:-mr-14 lg:-mt-10 lg:-mr-16 z-0 opacity-15 md:opacity-20">
         <Image src={heroImagesRight[0]} alt="" fill className="object-contain object-top" />
       </div>
     );
@@ -133,7 +133,7 @@ function HeroImageRotatorRight() {
           animate={{ opacity: 1, x: 0, scale: 1 }}
           exit={{ opacity: 0, x: -10 }}
           transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
-          className="absolute inset-0 opacity-25 md:opacity-35"
+          className="absolute inset-0 opacity-15 md:opacity-20"
         >
           <Image src={heroImagesRight[currentIndex]} alt="" fill className="object-contain object-top" />
         </motion.div>
@@ -182,6 +182,8 @@ interface ServiceTileProps {
 
 function ServiceTile({ title, subhead, description, href, index, image, cta }: ServiceTileProps) {
   const isHouseWindows = image === "/house-windows.png";
+  // Door (0) slides from left, House frame (1) from right, House windows (2) from left
+  const slideFromLeft = index === 0 || index === 2;
 
   return (
     <motion.div
@@ -195,30 +197,37 @@ function ServiceTile({ title, subhead, description, href, index, image, cta }: S
         <h3 className="text-2xl font-semibold text-[#1A1F24] mb-2">{title}</h3>
         <p className="text-sm font-medium text-[#2B3A44] mb-4">{subhead}</p>
         <p className="text-base text-[#5A6570] leading-relaxed flex-1">{description}</p>
-        <div className="mt-2 flex justify-center">
-          {isHouseWindows ? (
-            <motion.div
-              animate={{
-                filter: [
-                  "brightness(1)",
-                  "brightness(1.15)",
-                  "brightness(1)",
-                  "brightness(1.1)",
-                  "brightness(1)",
-                ]
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut",
-                times: [0, 0.2, 0.5, 0.7, 1]
-              }}
-            >
+        <div className="mt-2 flex justify-center overflow-hidden">
+          <motion.div
+            initial={{ opacity: 0, x: slideFromLeft ? -40 : 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          >
+            {isHouseWindows ? (
+              <motion.div
+                animate={{
+                  filter: [
+                    "brightness(1)",
+                    "brightness(1.15)",
+                    "brightness(1)",
+                    "brightness(1.1)",
+                    "brightness(1)",
+                  ]
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  times: [0, 0.2, 0.5, 0.7, 1]
+                }}
+              >
+                <Image src={image} alt="" width={288} height={288} className="w-72 h-72 object-contain" />
+              </motion.div>
+            ) : (
               <Image src={image} alt="" width={288} height={288} className="w-72 h-72 object-contain" />
-            </motion.div>
-          ) : (
-            <Image src={image} alt="" width={288} height={288} className="w-72 h-72 object-contain" />
-          )}
+            )}
+          </motion.div>
         </div>
         <Link
           href={href}
