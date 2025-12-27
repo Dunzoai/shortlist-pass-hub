@@ -425,14 +425,14 @@ export default function Home() {
                   </motion.span>{" "}
                   <motion.span
                     className="inline-block"
-                    initial={{ opacity: 0, scale: 1.4, y: -20 }}
+                    initial={{ opacity: 0, scale: 1.5, y: -25 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     transition={{
                       delay: 0.9,
-                      duration: 0.6,
+                      duration: 1.2,
                       type: "spring",
-                      stiffness: 200,
-                      damping: 12
+                      stiffness: 80,
+                      damping: 10
                     }}
                   >
                     small
@@ -446,7 +446,39 @@ export default function Home() {
                     businesses
                   </motion.span>
                 </span>
-                <span className="block">show up like big ones.</span>
+                <span className="block">
+                  <span className="inline-block">show up</span>{" "}
+                  <motion.span
+                    className="inline-block"
+                    initial={{ x: 8 }}
+                    animate={{ x: 0 }}
+                    transition={{ delay: 1.4, duration: 0.4, ease: "easeOut" }}
+                  >
+                    like
+                  </motion.span>{" "}
+                  <motion.span
+                    className="inline-block font-semibold"
+                    initial={{ opacity: 0, scale: 0.5, y: 25 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    transition={{
+                      delay: 1.5,
+                      duration: 1.2,
+                      type: "spring",
+                      stiffness: 80,
+                      damping: 10
+                    }}
+                  >
+                    BIG
+                  </motion.span>{" "}
+                  <motion.span
+                    className="inline-block"
+                    initial={{ x: -8 }}
+                    animate={{ x: 0 }}
+                    transition={{ delay: 1.4, duration: 0.4, ease: "easeOut" }}
+                  >
+                    ones.
+                  </motion.span>
+                </span>
               </motion.h1>
               <motion.p
                 variants={fadeUpVariant}
