@@ -562,6 +562,9 @@ function AISchedulingDemo() {
           <p className="text-lg text-[#5A6570] max-w-2xl mx-auto">
             {AI_DEMO_COPY.subhead}
           </p>
+          <p className="text-base text-[#5A6570]/80 max-w-2xl mx-auto mt-4">
+            We built an app that understands your schedule and can book appointments 24/7.
+          </p>
         </motion.div>
 
         {/* Glass super-card - bone color */}
@@ -936,7 +939,7 @@ function FinalCTASection() {
         <Container>
           <div className="max-w-2xl mx-auto text-center">
             <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-normal text-[#F4F1EC] leading-tight mb-10" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
-              If you want your business to look like it belongs — we should talk.
+              If you&apos;re ready for a website that actually represents your business — we should talk.
             </h2>
 
             {/* Button */}
@@ -945,7 +948,7 @@ function FinalCTASection() {
                 href="mailto:hello@shortlistpass.com?subject=Let's talk"
                 className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold bg-[#F4F1EC] text-[#2B3A44] rounded-full hover:bg-white transition-colors"
               >
-                Start a conversation
+                Start the conversation.
               </a>
             </div>
 
