@@ -425,14 +425,14 @@ export default function Home() {
                   </motion.span>{" "}
                   <motion.span
                     className="inline-block"
-                    initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                    initial={{ opacity: 0, scale: 1.4, y: -20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     transition={{
                       delay: 0.9,
-                      duration: 0.5,
+                      duration: 0.6,
                       type: "spring",
-                      stiffness: 300,
-                      damping: 15
+                      stiffness: 200,
+                      damping: 12
                     }}
                   >
                     small
