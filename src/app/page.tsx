@@ -178,7 +178,7 @@ function HowWeHelp() {
           <motion.p
             variants={fadeUpVariant}
             transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
-            className="text-center text-sm text-[#1A1F24] font-medium"
+            className="text-center text-sm text-[#F4F1EC] font-medium"
           >
             Each service dives deeper — start where you need help most.
           </motion.p>
@@ -189,10 +189,8 @@ function HowWeHelp() {
 }
 
 function ProofStrip() {
-  const chips = ["Food Trucks", "Taprooms", "Restaurants", "Salons", "Service Businesses"];
-
   return (
-    <section className="py-24">
+    <section className="py-24 bg-[#2B3A44]">
       <Container>
         <motion.div
           variants={staggerContainer}
@@ -201,39 +199,21 @@ function ProofStrip() {
           viewport={{ once: true, margin: "-50px" }}
           className="text-center"
         >
-          <motion.h2
-            variants={fadeUpVariant}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className="text-3xl font-normal text-[#1A1F24] mb-8"
-            style={{ fontFamily: "var(--font-libre-baskerville)" }}
-          >
-            Built for real business owners.
-          </motion.h2>
-
-          {/* Chips */}
           <motion.div
             variants={fadeUpVariant}
-            transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-            className="flex flex-wrap justify-center gap-3 mb-6"
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="bg-[#F4F1EC] rounded-2xl px-8 py-12 md:px-16 md:py-16 max-w-2xl mx-auto"
           >
-            {chips.map((chip) => (
-              <span
-                key={chip}
-                className="px-3 py-1.5 text-xs text-[#5A6570]/70 bg-[#F4F1EC] border border-white/5 rounded-full"
-              >
-                {chip}
-              </span>
-            ))}
+            <h2
+              className="text-3xl md:text-4xl font-normal text-[#1A1F24] mb-4"
+              style={{ fontFamily: "var(--font-libre-baskerville)" }}
+            >
+              Built for real business owners.
+            </h2>
+            <p className="text-base md:text-lg text-[#5A6570]">
+              Designed around how customers actually behave.
+            </p>
           </motion.div>
-
-          {/* Optional reinforcement line */}
-          <motion.p
-            variants={fadeUpVariant}
-            transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
-            className="text-base text-[#5A6570]/80"
-          >
-            Designed around how customers actually behave.
-          </motion.p>
         </motion.div>
       </Container>
     </section>
