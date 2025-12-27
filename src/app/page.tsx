@@ -413,7 +413,39 @@ export default function Home() {
                 className="text-[26px] sm:text-[32px] md:text-[44px] lg:text-[52px] font-normal text-[#1A1F24] leading-[1.15] mb-6"
                 style={{ fontFamily: "var(--font-libre-baskerville)" }}
               >
-                <span className="block">We help small businesses</span>
+                <span className="block">
+                  <span className="inline-block">We</span>{" "}
+                  <motion.span
+                    className="inline-block"
+                    initial={{ x: 12 }}
+                    animate={{ x: 0 }}
+                    transition={{ delay: 0.8, duration: 0.4, ease: "easeOut" }}
+                  >
+                    help
+                  </motion.span>{" "}
+                  <motion.span
+                    className="inline-block"
+                    initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    transition={{
+                      delay: 0.9,
+                      duration: 0.5,
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 15
+                    }}
+                  >
+                    small
+                  </motion.span>{" "}
+                  <motion.span
+                    className="inline-block"
+                    initial={{ x: -12 }}
+                    animate={{ x: 0 }}
+                    transition={{ delay: 0.8, duration: 0.4, ease: "easeOut" }}
+                  >
+                    businesses
+                  </motion.span>
+                </span>
                 <span className="block">show up like big ones.</span>
               </motion.h1>
               <motion.p
