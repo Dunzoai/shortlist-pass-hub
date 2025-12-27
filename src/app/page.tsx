@@ -42,8 +42,8 @@ function ScrollingBelt() {
           animationDuration: isMobile ? '16s' : '17.25s'
         }}
       >
-        <span className="px-4 text-xl font-black tracking-[0.1em] text-[#1A1F24] uppercase leading-none">{beltText} •</span>
-        <span className="px-4 text-xl font-black tracking-[0.1em] text-[#1A1F24] uppercase leading-none">{beltText} •</span>
+        <span className="px-4 text-xl font-black tracking-[0.1em] text-[#F4F1EC] uppercase leading-none">{beltText} •</span>
+        <span className="px-4 text-xl font-black tracking-[0.1em] text-[#F4F1EC] uppercase leading-none">{beltText} •</span>
       </div>
     </div>
   );
