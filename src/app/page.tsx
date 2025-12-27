@@ -410,7 +410,7 @@ export default function Home() {
               <motion.h1
                 variants={fadeUpVariant}
                 transition={{ duration: 0.5, ease: "easeOut" }}
-                className="text-[32px] md:text-[44px] lg:text-[52px] font-normal text-[#1A1F24] leading-[1.15] mb-6"
+                className="text-[26px] sm:text-[32px] md:text-[44px] lg:text-[52px] font-normal text-[#1A1F24] leading-[1.15] mb-6"
                 style={{ fontFamily: "var(--font-libre-baskerville)" }}
               >
                 <span className="block">We help small businesses</span>
