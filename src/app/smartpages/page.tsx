@@ -527,7 +527,7 @@ function ShortyModal() {
 function AppGridSection() {
   return (
     <section className="bg-[#2B3A44] py-10 md:py-14 px-4 overflow-x-hidden">
-      {/* Header with animated highlighter on "Zero competition for attention" */}
+      {/* Header */}
       <div className="max-w-4xl mx-auto text-center mb-4 md:mb-5">
         <motion.h2
           className="text-2xl sm:text-3xl md:text-4xl text-white font-semibold"
@@ -536,27 +536,16 @@ function AppGridSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          Your very own app.{' '}
-          <span className="relative inline-block">
-            <motion.span
-              className="absolute inset-0 bg-[#2B3A44]/70 -skew-x-2 rounded-sm"
-              initial={{ scaleX: 0 }}
-              whileInView={{ scaleX: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.2, delay: 0.3, ease: 'easeOut' }}
-              style={{ transformOrigin: 'left' }}
-            />
-            <span className="relative z-10">Zero competition for attention.</span>
-          </span>
+          Your very own app.
         </motion.h2>
         <motion.p
-          className="mt-3 text-sm sm:text-base md:text-lg text-slate-400"
+          className="mt-3 text-sm sm:text-base md:text-lg text-slate-400 max-w-2xl mx-auto"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          No algorithm. No feed. Just you and your best customers.
+          What used to be reserved for big brands is now possible with your SmartPage. Your clients can download it directly to their home screen—making it easier to interact with your business. No typing links, no searching the web or social. Just direct access to everything you offer.
         </motion.p>
       </div>
 
@@ -1209,79 +1198,6 @@ export default function ShortyLandingPage() {
             Get Your SmartPage — $25/mo
             <ArrowRightIcon className="w-5 h-5" />
           </motion.a>
-        </div>
-      </section>
-
-      {/* Without vs With Comparison */}
-      <section className="bg-[#2B3A44] py-16 md:py-20 px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-8 md:gap-12">
-            {/* Without SmartPages */}
-            <motion.div
-              className="space-y-4"
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-            >
-              <h3 className="text-xl md:text-2xl font-normal text-[#F4F1EC] mb-6" style={{ fontFamily: "var(--font-libre-baskerville)" }}>Without SmartPages</h3>
-              <div className="space-y-3 text-[#F4F1EC]/60">
-                <p className="flex items-start gap-3">
-                  <span className="text-red-500 mt-1">✕</span>
-                  <span>&quot;Check our bio&quot;</span>
-                </p>
-                <p className="flex items-start gap-3">
-                  <span className="text-red-500 mt-1">✕</span>
-                  <span>&quot;DM us&quot;</span>
-                </p>
-                <p className="flex items-start gap-3">
-                  <span className="text-red-500 mt-1">✕</span>
-                  <span>&quot;Link in link&quot;</span>
-                </p>
-                <p className="flex items-start gap-3">
-                  <span className="text-red-500 mt-1">✕</span>
-                  <span>Info spread across multiple platforms</span>
-                </p>
-                <p className="flex items-start gap-3">
-                  <span className="text-red-500 mt-1">✕</span>
-                  <span>Customers leave to figure it out later</span>
-                </p>
-              </div>
-            </motion.div>
-
-            {/* With SmartPages */}
-            <motion.div
-              className="space-y-4"
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-            >
-              <h3 className="text-xl md:text-2xl font-normal text-[#F4F1EC] mb-6" style={{ fontFamily: "var(--font-libre-baskerville)" }}>With SmartPages</h3>
-              <div className="space-y-3 text-[#F4F1EC]">
-                <p className="flex items-start gap-3">
-                  <span className="text-green-500 mt-1">✓</span>
-                  <span>One clear page</span>
-                </p>
-                <p className="flex items-start gap-3">
-                  <span className="text-green-500 mt-1">✓</span>
-                  <span>Instant answers</span>
-                </p>
-                <p className="flex items-start gap-3">
-                  <span className="text-green-500 mt-1">✓</span>
-                  <span>All links in one place</span>
-                </p>
-                <p className="flex items-start gap-3">
-                  <span className="text-green-500 mt-1">✓</span>
-                  <span>Clear actions</span>
-                </p>
-                <p className="flex items-start gap-3">
-                  <span className="text-green-500 mt-1">✓</span>
-                  <span>Customers decide faster</span>
-                </p>
-              </div>
-            </motion.div>
-          </div>
         </div>
       </section>
 
