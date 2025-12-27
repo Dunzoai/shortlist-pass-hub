@@ -282,54 +282,17 @@ export default function Home() {
               <motion.h1
                 variants={fadeUpVariant}
                 transition={{ duration: 0.5, ease: "easeOut" }}
-                className="text-[40px] md:text-[56px] lg:text-[64px] font-normal text-[#1A1F24] leading-[1.05] mb-6"
+                className="text-[32px] md:text-[44px] lg:text-[52px] font-normal text-[#1A1F24] leading-[1.15] mb-6"
                 style={{ fontFamily: "var(--font-libre-baskerville)" }}
               >
-                <span className="block">Look legit.</span>
-                <span className="block">
-                  Get{" "}
-                  <span className="relative inline-block px-2">
-                    chosen.
-                    {/* SVG circle animation */}
-                    <motion.svg
-                      className="absolute pointer-events-none"
-                      viewBox="0 0 200 80"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      style={{
-                        width: "calc(100% + 48px)",
-                        height: "calc(100% + 28px)",
-                        left: "-24px",
-                        top: "-14px",
-                        overflow: "visible",
-                        transform: "rotate(2deg)",
-                        filter: "drop-shadow(0 0 8px rgba(176, 141, 87, 0.4))"
-                      }}
-                    >
-                      <motion.ellipse
-                        cx="100"
-                        cy="40"
-                        rx="115"
-                        ry="42"
-                        stroke="#2B3A44"
-                        strokeWidth="3.5"
-                        strokeLinecap="round"
-                        fill="none"
-                        initial={{ pathLength: 0, opacity: 0 }}
-                        animate={{ pathLength: 1, opacity: [0.8, 0.9, 0.8] }}
-                        transition={{ duration: 1.4, delay: 0.6, ease: "easeInOut" }}
-                      />
-                    </motion.svg>
-                  </span>
-                </span>
-                <span className="block">Stay busy.</span>
+                We help small businesses show up like big ones.
               </motion.h1>
               <motion.p
                 variants={fadeUpVariant}
                 transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
                 className="text-lg lg:text-xl text-[#5A6570] max-w-[720px] mx-auto"
               >
-                Websites, social media, SmartPages, and custom apps that make customers pick you — not the place down the street.
+                Social media management, SmartPages, websites and custom apps built to make customers choose you.
               </motion.p>
             </motion.div>
           </div>
