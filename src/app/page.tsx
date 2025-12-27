@@ -45,7 +45,7 @@ function HeroImageRotator() {
   // For reduced motion, just show static image
   if (prefersReducedMotion) {
     return (
-      <div className="absolute bottom-0 left-0 w-32 h-32 md:w-48 md:h-48 lg:w-64 lg:h-64 -mb-4 -ml-8 md:-mb-6 md:-ml-12 lg:-mb-8 lg:-ml-16 z-0 opacity-60 md:opacity-70">
+      <div className="absolute bottom-0 left-0 w-40 h-40 md:w-56 md:h-56 lg:w-72 lg:h-72 -mb-4 -ml-8 md:-mb-6 md:-ml-12 lg:-mb-8 lg:-ml-16 z-0 opacity-60 md:opacity-65">
         <Image
           src={heroImages[0]}
           alt=""
@@ -57,15 +57,19 @@ function HeroImageRotator() {
   }
 
   return (
-    <div className="absolute bottom-0 left-0 w-32 h-32 md:w-48 md:h-48 lg:w-64 lg:h-64 -mb-4 -ml-8 md:-mb-6 md:-ml-12 lg:-mb-8 lg:-ml-16 z-0 overflow-hidden">
+    <div className="absolute bottom-0 left-0 w-40 h-40 md:w-56 md:h-56 lg:w-72 lg:h-72 -mb-4 -ml-8 md:-mb-6 md:-ml-12 lg:-mb-8 lg:-ml-16 z-0 overflow-hidden">
       <AnimatePresence mode="wait">
         <motion.div
           key={currentIndex}
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, x: -15 }}
+          animate={{ opacity: 0.65, x: 0 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.7, ease: "easeOut" }}
-          className="absolute inset-0 opacity-60 md:opacity-70"
+          transition={{
+            duration: 0.8,
+            ease: "easeOut",
+            opacity: { duration: 0.6 }
+          }}
+          className="absolute inset-0"
         >
           <Image
             src={heroImages[currentIndex]}
