@@ -848,17 +848,9 @@ function OutcomesSection() {
             This is the difference.
           </h2>
 
-          <div className="space-y-6 text-lg md:text-xl text-[#F4F1EC]/80 leading-relaxed">
-            <p>
-              The extra thought.<br />
-              The intentional details.<br />
-              The moments people remember.
-            </p>
-            <p>
-              That&apos;s what makes customers pause —<br />
-              and choose you.
-            </p>
-          </div>
+          <p className="text-lg md:text-xl text-[#F4F1EC]/80 leading-relaxed">
+            The extra thought. The intentional details. The moments people remember. That&apos;s what makes customers pause — and choose you.
+          </p>
         </div>
       </motion.div>
     </section>
@@ -898,16 +890,12 @@ function ScopeSection() {
             Websites. Apps. Custom tools.
           </h2>
 
-          <div className="space-y-6 text-lg md:text-xl text-[#5A6570] leading-relaxed">
-            <p>
-              We learn your business first — then build around it.<br />
-              Not from templates. Not from assumptions.
-            </p>
-            <p className="text-[#1A1F24]">
-              We take on the hard stuff.<br />
-              Because that&apos;s what makes your business stand out.
-            </p>
-          </div>
+          <p className="text-lg md:text-xl text-[#5A6570] leading-relaxed mb-4">
+            We learn your business first — then build around it. Not from templates. Not from assumptions.
+          </p>
+          <p className="text-lg md:text-xl text-[#1A1F24] leading-relaxed">
+            We take on the hard stuff — because that&apos;s what makes your business stand out.
+          </p>
         </div>
       </motion.div>
     </section>
