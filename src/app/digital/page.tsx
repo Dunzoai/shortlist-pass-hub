@@ -301,14 +301,14 @@ function ValuePropositionSection() {
         <div className="relative max-w-[820px] mx-auto text-center px-4">
           {/* Subtle backdrop for text readability */}
           <div
-            className="absolute inset-0 -inset-x-8 rounded-3xl pointer-events-none"
+            className="absolute inset-0 -inset-x-8 rounded-3xl pointer-events-none z-0"
             style={{
               background: "radial-gradient(ellipse at center, rgba(244, 241, 236, 0.85) 0%, rgba(244, 241, 236, 0.6) 50%, transparent 80%)",
             }}
           />
           {/* Headline - static, no animation */}
           <h2
-            className="text-[24px] md:text-[36px] lg:text-[44px] font-normal text-[#1A1F24] leading-[1.22] mb-6 md:mb-8"
+            className="relative z-10 text-[24px] md:text-[36px] lg:text-[44px] font-normal text-[#1A1F24] leading-[1.22] mb-6 md:mb-8"
             style={{ fontFamily: "var(--font-libre-baskerville)" }}
           >
             Most small businesses don&apos;t get custom websites. They get{" "}
@@ -337,7 +337,7 @@ function ValuePropositionSection() {
 
           {/* Body copy */}
           <motion.p
-            className="text-[17px] md:text-[22px] lg:text-[26px] font-normal text-[#1A1F24]/85 leading-[1.45] -mt-1 md:mt-0"
+            className="relative z-10 text-[17px] md:text-[22px] lg:text-[26px] font-normal text-[#1A1F24]/85 leading-[1.45] -mt-1 md:mt-0"
             style={{ fontFamily: "var(--font-libre-baskerville)" }}
             initial={{ opacity: 0, y: 10 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
