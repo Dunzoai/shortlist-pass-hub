@@ -64,10 +64,7 @@ function HeroImageRotator() {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0 }}
-          transition={{
-            enter: { duration: 0.7, ease: "easeOut" },
-            exit: { duration: 0.4, ease: "easeOut" },
-          }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
           className="absolute inset-0 opacity-60 md:opacity-70"
         >
           <Image
