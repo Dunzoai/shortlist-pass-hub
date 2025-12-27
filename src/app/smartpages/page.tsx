@@ -1161,7 +1161,7 @@ export default function ShortyLandingPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            Your customers aren&apos;t reading through pages of content. Neither are you. Simply ask Shorty anything about your business, and your customer gets the answer instantly. 24/7.
+            Your customers aren&apos;t reading through pages of content. Neither are you. They simply ask Shorty anything about your business, and your customer gets the answer instantly. 24/7.
           </motion.p>
 
           <motion.p
