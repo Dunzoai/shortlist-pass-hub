@@ -45,7 +45,7 @@ function HeroImageRotatorLeft() {
 
   // Initial fade-in delay
   useEffect(() => {
-    const timer = setTimeout(() => setIsReady(true), 300);
+    const timer = setTimeout(() => setIsReady(true), 400);
     return () => clearTimeout(timer);
   }, []);
 
@@ -76,7 +76,7 @@ function HeroImageRotatorLeft() {
         <motion.div
           key={currentIndex}
           initial={{ opacity: 0, x: -20, scale: 0.97 }}
-          animate={{ opacity: 0.15, x: 0, scale: 1 }}
+          animate={{ opacity: 0.25, x: 0, scale: 1 }}
           exit={{ opacity: 0, x: 10 }}
           transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
           className="absolute inset-0"
@@ -93,22 +93,18 @@ function HeroImageRotatorRight() {
   const [isReady, setIsReady] = useState(false);
   const prefersReducedMotion = useReducedMotion();
 
-  // Initial fade-in delay (offset from left rotator)
+  // Initial fade-in delay (synced with left rotator)
   useEffect(() => {
-    const timer = setTimeout(() => setIsReady(true), 600);
+    const timer = setTimeout(() => setIsReady(true), 400);
     return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
     if (!isReady) return;
-    // Offset timing so they don't sync up
-    const timeout = setTimeout(() => {
-      const interval = setInterval(() => {
-        setCurrentIndex((prev) => (prev + 1) % heroImagesRight.length);
-      }, 5000);
-      return () => clearInterval(interval);
-    }, 2500);
-    return () => clearTimeout(timeout);
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % heroImagesRight.length);
+    }, 5000);
+    return () => clearInterval(interval);
   }, [isReady]);
 
   if (prefersReducedMotion) {
@@ -130,7 +126,7 @@ function HeroImageRotatorRight() {
         <motion.div
           key={currentIndex}
           initial={{ opacity: 0, x: 20, scale: 0.97 }}
-          animate={{ opacity: 0.15, x: 0, scale: 1 }}
+          animate={{ opacity: 0.25, x: 0, scale: 1 }}
           exit={{ opacity: 0, x: -10 }}
           transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
           className="absolute inset-0"
