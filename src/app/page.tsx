@@ -59,7 +59,7 @@ function HeroImageRotatorLeft() {
 
   if (prefersReducedMotion) {
     return (
-      <div className="absolute bottom-0 left-0 w-44 h-44 md:w-60 md:h-60 lg:w-80 lg:h-80 -mb-4 -ml-8 md:-mb-6 md:-ml-12 lg:-mb-8 lg:-ml-16 z-0 opacity-60 md:opacity-65">
+      <div className="absolute bottom-0 left-0 w-32 h-32 md:w-52 md:h-52 lg:w-72 lg:h-72 -mb-6 -ml-10 md:-mb-8 md:-ml-14 lg:-mb-10 lg:-ml-16 z-0 opacity-40 md:opacity-50">
         <Image src={heroImagesLeft[0]} alt="" fill className="object-contain object-bottom" />
       </div>
     );
@@ -67,7 +67,7 @@ function HeroImageRotatorLeft() {
 
   return (
     <motion.div
-      className="absolute bottom-0 left-0 w-44 h-44 md:w-60 md:h-60 lg:w-80 lg:h-80 -mb-4 -ml-8 md:-mb-6 md:-ml-12 lg:-mb-8 lg:-ml-16 z-0 overflow-hidden"
+      className="absolute bottom-0 left-0 w-32 h-32 md:w-52 md:h-52 lg:w-72 lg:h-72 -mb-6 -ml-10 md:-mb-8 md:-ml-14 lg:-mb-10 lg:-ml-16 z-0 overflow-hidden"
       initial={{ opacity: 0 }}
       animate={{ opacity: isReady ? 1 : 0 }}
       transition={{ duration: 0.8 }}
@@ -76,10 +76,10 @@ function HeroImageRotatorLeft() {
         <motion.div
           key={currentIndex}
           initial={{ opacity: 0, x: -20, scale: 0.97 }}
-          animate={{ opacity: 0.6, x: 0, scale: 1 }}
+          animate={{ opacity: 1, x: 0, scale: 1 }}
           exit={{ opacity: 0, x: 10 }}
           transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
-          className="absolute inset-0"
+          className="absolute inset-0 opacity-40 md:opacity-50"
         >
           <Image src={heroImagesLeft[currentIndex]} alt="" fill className="object-contain object-bottom" />
         </motion.div>
@@ -113,7 +113,7 @@ function HeroImageRotatorRight() {
 
   if (prefersReducedMotion) {
     return (
-      <div className="absolute top-8 right-4 md:top-4 md:right-8 lg:top-2 lg:right-12 w-44 h-44 md:w-60 md:h-60 lg:w-80 lg:h-80 z-0 opacity-60 md:opacity-65">
+      <div className="absolute top-0 right-0 w-32 h-32 md:w-52 md:h-52 lg:w-72 lg:h-72 -mt-6 -mr-10 md:-mt-8 md:-mr-14 lg:-mt-10 lg:-mr-16 z-0 opacity-40 md:opacity-50">
         <Image src={heroImagesRight[0]} alt="" fill className="object-contain object-top" />
       </div>
     );
@@ -121,7 +121,7 @@ function HeroImageRotatorRight() {
 
   return (
     <motion.div
-      className="absolute top-8 right-4 md:top-4 md:right-8 lg:top-2 lg:right-12 w-44 h-44 md:w-60 md:h-60 lg:w-80 lg:h-80 z-0 overflow-hidden"
+      className="absolute top-0 right-0 w-32 h-32 md:w-52 md:h-52 lg:w-72 lg:h-72 -mt-6 -mr-10 md:-mt-8 md:-mr-14 lg:-mt-10 lg:-mr-16 z-0 overflow-hidden"
       initial={{ opacity: 0 }}
       animate={{ opacity: isReady ? 1 : 0 }}
       transition={{ duration: 0.8 }}
@@ -130,10 +130,10 @@ function HeroImageRotatorRight() {
         <motion.div
           key={currentIndex}
           initial={{ opacity: 0, x: 20, scale: 0.97 }}
-          animate={{ opacity: 0.6, x: 0, scale: 1 }}
+          animate={{ opacity: 1, x: 0, scale: 1 }}
           exit={{ opacity: 0, x: -10 }}
           transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
-          className="absolute inset-0"
+          className="absolute inset-0 opacity-40 md:opacity-50"
         >
           <Image src={heroImagesRight[currentIndex]} alt="" fill className="object-contain object-top" />
         </motion.div>
@@ -400,10 +400,9 @@ export default function Home() {
   return (
     <main className="pt-16">
       {/* Hero Section */}
-      <section className="relative pt-24 pb-20 lg:pt-32 lg:pb-28 bg-[#F4F1EC] overflow-hidden">
-        {/* Rotating hero images - lower left */}
+      <section className="relative pt-20 pb-20 lg:pt-28 lg:pb-28 bg-[#F4F1EC] overflow-hidden">
+        {/* Rotating hero images */}
         <HeroImageRotatorLeft />
-        {/* Rotating hero images - upper right */}
         <HeroImageRotatorRight />
 
         <Container>
@@ -414,24 +413,21 @@ export default function Home() {
               variants={staggerContainer}
               className="max-w-4xl mx-auto text-center"
             >
-              {/* Frosted backdrop for text */}
-              <div className="relative inline-block px-8 py-6 md:px-12 md:py-8 rounded-2xl bg-[#F4F1EC]/80 backdrop-blur-sm">
-                <motion.h1
-                  variants={fadeUpVariant}
-                  transition={{ duration: 0.5, ease: "easeOut" }}
-                  className="text-[32px] md:text-[44px] lg:text-[52px] font-normal text-[#1A1F24] leading-[1.15] mb-4"
-                  style={{ fontFamily: "var(--font-libre-baskerville)" }}
-                >
-                  We help small businesses show up like big ones.
-                </motion.h1>
-                <motion.p
-                  variants={fadeUpVariant}
-                  transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-                  className="text-lg lg:text-xl text-[#5A6570] max-w-[720px] mx-auto"
-                >
-                  Social media management, SmartPages, websites and custom apps built to make customers choose you.
-                </motion.p>
-              </div>
+              <motion.h1
+                variants={fadeUpVariant}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="text-[32px] md:text-[44px] lg:text-[52px] font-normal text-[#1A1F24] leading-[1.15] mb-6"
+                style={{ fontFamily: "var(--font-libre-baskerville)" }}
+              >
+                We help small businesses show up like big ones.
+              </motion.h1>
+              <motion.p
+                variants={fadeUpVariant}
+                transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
+                className="text-lg lg:text-xl text-[#5A6570] max-w-[720px] mx-auto"
+              >
+                Social media management, SmartPages, websites and custom apps built to make customers choose you.
+              </motion.p>
             </motion.div>
           </div>
         </Container>
