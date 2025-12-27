@@ -211,44 +211,15 @@ interface HelpCardProps {
   icon: React.ReactNode;
   title: string;
   description: string;
-  index: number;
 }
 
-// Smoother card animation variant
-const cardRevealVariant = {
-  hidden: {
-    opacity: 0,
-    y: 30,
-    scale: 0.96
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1
-  },
-};
-
-function HelpCard({ icon, title, description, index }: HelpCardProps) {
-  // Calculate stagger delay: on mobile (single column), use row index
-  // On desktop (2 columns), use a pattern that reveals top-to-bottom, left-to-right
-  const getDelay = () => {
-    // Row-based delay with slight offset for right column
-    const row = Math.floor(index / 2);
-    const col = index % 2;
-    return row * 0.15 + col * 0.08;
-  };
-
+function HelpCard({ icon, title, description }: HelpCardProps) {
   return (
     <motion.div
-      variants={cardRevealVariant}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{
-        duration: 0.6,
-        delay: getDelay(),
-        ease: [0.25, 0.1, 0.25, 1]
-      }}
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.5 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
       className="group p-6 bg-[#F4F1EC] border border-[#1A1F24]/30 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#F4F1EC] hover:shadow-lg hover:shadow-[#F4F1EC]/20"
     >
       <div className="mb-4 text-[#2B3A44]">{icon}</div>
@@ -313,8 +284,8 @@ function HowWeHelp() {
         </motion.h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {items.map((item, index) => (
-            <HelpCard key={item.title} {...item} index={index} />
+          {items.map((item) => (
+            <HelpCard key={item.title} {...item} />
           ))}
         </div>
       </Container>
