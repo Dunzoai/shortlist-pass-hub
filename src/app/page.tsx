@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, useInView } from "framer-motion";
 import { Container } from "@/components/Container";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const fadeUpVariant = {
   hidden: { opacity: 0, y: 12 },
@@ -240,43 +240,41 @@ function HowWeHelp() {
 
   const text = "How we help";
   const [displayedText, setDisplayedText] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
   const [hasTyped, setHasTyped] = useState(false);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const isInView = useInView(headingRef, { once: true, amount: 0.3 });
 
-  const startTyping = () => {
-    if (hasTyped) return;
-    setIsTyping(true);
-    setHasTyped(true);
-    let index = 0;
-    const interval = setInterval(() => {
-      if (index < text.length) {
-        setDisplayedText(text.slice(0, index + 1));
-        index++;
-      } else {
-        clearInterval(interval);
-        setIsTyping(false);
-      }
-    }, 80);
-  };
+  useEffect(() => {
+    if (isInView && !hasTyped) {
+      setHasTyped(true);
+      let index = 0;
+      const interval = setInterval(() => {
+        if (index < text.length) {
+          setDisplayedText(text.slice(0, index + 1));
+          index++;
+        } else {
+          clearInterval(interval);
+        }
+      }, 80);
+      return () => clearInterval(interval);
+    }
+  }, [isInView, hasTyped]);
 
   return (
     <section className="pt-24 pb-12 bg-[#2B3A44]">
       <Container>
-        <motion.h2
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.5 }}
-          onViewportEnter={startTyping}
-          className="text-[32px] md:text-[40px] lg:text-[48px] font-normal text-[#F4F1EC] leading-[1.05] mb-12 text-center"
+        <h2
+          ref={headingRef}
+          className="text-[32px] md:text-[40px] lg:text-[48px] font-normal text-[#F4F1EC] leading-[1.05] mb-12 text-center min-h-[1.2em]"
           style={{ fontFamily: "var(--font-libre-baskerville)" }}
         >
           {displayedText}
           <motion.span
             className="inline-block w-[3px] h-[0.9em] bg-[#F4F1EC] ml-1 align-middle"
-            animate={{ opacity: [1, 0, 1] }}
-            transition={{ duration: 0.8, repeat: Infinity, ease: "steps(2)" }}
+            animate={{ opacity: [1, 1, 0, 0] }}
+            transition={{ duration: 1, repeat: Infinity, times: [0, 0.5, 0.5, 1] }}
           />
-        </motion.h2>
+        </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {items.map((item) => (
