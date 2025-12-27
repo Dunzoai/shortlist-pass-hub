@@ -618,7 +618,7 @@ function AppGridSection() {
       {/* Scrolling Business Types - Yellow background with dark pills */}
       <div className="mt-12 md:mt-16 -mx-4 bg-[#2B3A44] py-8">
         <motion.p
-          className="text-center text-lg sm:text-xl md:text-2xl text-black font-semibold mb-6 px-4"
+          className="text-center text-lg sm:text-xl md:text-2xl text-white font-semibold mb-6 px-4"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -675,7 +675,7 @@ function AppGridSection() {
               Send push notifications straight to their lock screen.
             </h3>
             <p className="mt-4 md:mt-6 text-base sm:text-lg text-slate-400">
-              No DMs to miss. No emails to skip. No feed to scroll past. <span className="text-[#2B3A44] font-semibold">98% open rate.</span>
+              No DMs to miss. No emails to skip. No feed to scroll past. <span className="text-[#F4F1EC] font-semibold">98% open rate.</span>
             </p>
           </motion.div>
 
@@ -874,7 +874,7 @@ function FeatureVisual({ type }: { type: string }) {
               </div>
             </div>
             <div className="flex justify-end">
-              <div className="bg-[#2B3A44] rounded-2xl px-4 py-2.5 text-sm text-black max-w-[80%]">
+              <div className="bg-[#F4F1EC] rounded-2xl px-4 py-2.5 text-sm text-[#1A1F24] max-w-[80%]">
                 We close at 9pm tonight! Come by before then.
               </div>
             </div>
@@ -884,7 +884,7 @@ function FeatureVisual({ type }: { type: string }) {
               </div>
             </div>
             <div className="flex justify-end">
-              <div className="bg-[#2B3A44] rounded-2xl px-4 py-2.5 text-sm text-black max-w-[80%]">
+              <div className="bg-[#F4F1EC] rounded-2xl px-4 py-2.5 text-sm text-[#1A1F24] max-w-[80%]">
                 Yes! Free parking in the lot behind us.
               </div>
             </div>
@@ -947,9 +947,9 @@ function FeatureVisual({ type }: { type: string }) {
       return (
         <div className="bg-gray-900 rounded-3xl p-6 md:p-8 w-full max-w-sm md:max-w-lg md:min-w-[400px] mx-auto">
           <div className="space-y-4">
-            {/* Yellow announcement banner */}
-            <div className="bg-[#2B3A44] rounded-lg px-4 py-3 text-center">
-              <p className="text-black font-semibold text-sm md:text-base">Holiday Hours: Closed Dec 25-26</p>
+            {/* Announcement banner */}
+            <div className="bg-[#F4F1EC] rounded-lg px-4 py-3 text-center">
+              <p className="text-[#1A1F24] font-semibold text-sm md:text-base">Holiday Hours: Closed Dec 25-26</p>
             </div>
             {/* Separator */}
             <div className="border-t border-white/10" />
@@ -980,7 +980,7 @@ function FeatureVisual({ type }: { type: string }) {
             {['Website', 'Instagram', 'Order Online', 'Book Now'].map((label, i) => (
               <div key={i} className="bg-gray-800 rounded-xl px-4 py-3.5 flex items-center justify-between">
                 <span className="text-white text-sm md:text-base">{label}</span>
-                <ArrowRightIcon className="w-4 h-4 text-[#2B3A44]" />
+                <ArrowRightIcon className="w-4 h-4 text-[#F4F1EC]" />
               </div>
             ))}
           </div>
