@@ -184,13 +184,9 @@ function ValuePropositionSection() {
         }}
       />
 
-      {/* Light grey overlay */}
+      {/* Light grey overlay - reduced to show background more */}
       <div
-        className="absolute inset-0 pointer-events-none bg-[#E8E5E0]/70"
-      />
-      {/* Darkening overlay - 30% darker */}
-      <div
-        className="absolute inset-0 pointer-events-none bg-[#1A1F24]/30"
+        className="absolute inset-0 pointer-events-none bg-[#E8E5E0]/40"
       />
 
       {/* Light slate blue sky overlay - gradient from top, meets the background image */}
@@ -211,7 +207,7 @@ function ValuePropositionSection() {
           style={{ left: "3%", top: "5%" }}
           initial={{ opacity: 0 }}
           animate={isInView ? {
-            opacity: 0.45,
+            opacity: 0.85,
             x: [0, 15, 0, -12, 0],
             y: [0, -10, 0, 8, 0],
           } : { opacity: 0 }}
@@ -229,7 +225,7 @@ function ValuePropositionSection() {
           style={{ left: "42%", top: "8%" }}
           initial={{ opacity: 0 }}
           animate={isInView ? {
-            opacity: 0.42,
+            opacity: 0.8,
             x: [0, -10, 0, 12, 0],
             y: [0, 8, 0, -6, 0],
           } : { opacity: 0 }}
@@ -247,7 +243,7 @@ function ValuePropositionSection() {
           style={{ right: "12%", top: "10%" }}
           initial={{ opacity: 0 }}
           animate={isInView ? {
-            opacity: 0.38,
+            opacity: 0.75,
             x: [0, -18, 0, 14, 0],
             y: [0, 8, 0, -10, 0],
           } : { opacity: 0 }}
@@ -265,7 +261,7 @@ function ValuePropositionSection() {
           style={{ left: "-5%", top: "25%" }}
           initial={{ opacity: 0 }}
           animate={isInView ? {
-            opacity: 0.42,
+            opacity: 0.8,
             x: [0, 20, 0, -15, 0],
             y: [0, -10, 0, 12, 0],
           } : { opacity: 0 }}
@@ -283,7 +279,7 @@ function ValuePropositionSection() {
           style={{ right: "5%", top: "22%" }}
           initial={{ opacity: 0 }}
           animate={isInView ? {
-            opacity: 0.35,
+            opacity: 0.7,
             x: [0, -14, 0, 16, 0],
             y: [0, 10, 0, -12, 0],
           } : { opacity: 0 }}
