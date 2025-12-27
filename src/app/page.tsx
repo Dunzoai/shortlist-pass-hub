@@ -76,7 +76,7 @@ function HeroImageRotatorLeft() {
         <motion.div
           key={currentIndex}
           initial={{ opacity: 0, x: -20, scale: 0.97 }}
-          animate={{ opacity: 0.25, x: 0, scale: 1 }}
+          animate={{ opacity: 0.32, x: 0, scale: 1 }}
           exit={{ opacity: 0, x: 10 }}
           transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
           className="absolute inset-0"
@@ -126,7 +126,7 @@ function HeroImageRotatorRight() {
         <motion.div
           key={currentIndex}
           initial={{ opacity: 0, x: 20, scale: 0.97 }}
-          animate={{ opacity: 0.25, x: 0, scale: 1 }}
+          animate={{ opacity: 0.32, x: 0, scale: 1 }}
           exit={{ opacity: 0, x: -10 }}
           transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
           className="absolute inset-0"
@@ -413,7 +413,8 @@ export default function Home() {
                 className="text-[32px] md:text-[44px] lg:text-[52px] font-normal text-[#1A1F24] leading-[1.15] mb-6"
                 style={{ fontFamily: "var(--font-libre-baskerville)" }}
               >
-                We help small businesses show up like big ones.
+                <span className="md:hidden">We help small businesses<br />show up like <span className="font-semibold">BIG</span> ones.</span>
+                <span className="hidden md:inline">We help small businesses show up like big ones.</span>
               </motion.h1>
               <motion.p
                 variants={fadeUpVariant}
