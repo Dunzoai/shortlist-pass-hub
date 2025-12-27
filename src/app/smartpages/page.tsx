@@ -1132,6 +1132,17 @@ export default function ShortyLandingPage() {
 
         {/* Modal */}
         <ShortyModal />
+
+        {/* Let's be real box - bone with slate blue text */}
+        <div className="mt-8 md:mt-10 p-6 md:p-8 rounded-2xl bg-[#F4F1EC] max-w-2xl mx-auto text-center z-10">
+          <h3 className="text-xl md:text-2xl font-normal text-[#2B3A44] mb-4" style={{ fontFamily: "var(--font-libre-baskerville)" }}>Let&apos;s be real:</h3>
+          <p className="text-[#2B3A44]/70 text-base md:text-lg leading-relaxed mb-3">
+            Your customers aren&apos;t reading through pages of content. Neither are you. Simply ask Shorty anything about your business, and your customer gets the answer instantly. 24/7.
+          </p>
+          <p className="text-[#2B3A44]/70 text-base md:text-lg leading-relaxed">
+            No more lost sales from click fatigue or missed opportunities. Perfect for every business that needs an online presence and real communication.
+          </p>
+        </div>
       </section>
 
       {/* =========================================================================== */}
@@ -1185,25 +1196,6 @@ export default function ShortyLandingPage() {
             <span className="text-2xl md:text-3xl font-semibold text-[#1A1F24]">
               SmartPages fix that.
             </span>
-          </motion.div>
-
-          {/* Let's be real - Dark card */}
-          <motion.div
-            className="mt-8 md:mt-10 p-6 md:p-8 rounded-2xl bg-[#2B3A44] border border-[#2B3A44]/20 max-w-2xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
-            <h3 className="text-xl md:text-2xl font-normal text-[#F4F1EC] mb-4" style={{ fontFamily: "var(--font-libre-baskerville)" }}>Let&apos;s be real:</h3>
-
-            <p className="text-[#F4F1EC]/80 text-base md:text-lg leading-relaxed mb-3">
-              Your customers aren&apos;t reading through pages of content. Neither are you. Simply ask Shorty anything about your business, and your customer gets the answer instantly. 24/7.
-            </p>
-
-            <p className="text-[#F4F1EC]/80 text-base md:text-lg leading-relaxed">
-              No more lost sales from click fatigue or missed opportunities. Perfect for every business that needs an online presence and real communication.
-            </p>
           </motion.div>
 
           {/* Once they tap - BIG */}
