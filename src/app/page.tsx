@@ -40,47 +40,68 @@ const heroImagesRight = [
 
 function HeroImageRotatorLeft() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isReady, setIsReady] = useState(false);
   const prefersReducedMotion = useReducedMotion();
 
+  // Initial fade-in delay
   useEffect(() => {
+    const timer = setTimeout(() => setIsReady(true), 300);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (!isReady) return;
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % heroImagesLeft.length);
     }, 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [isReady]);
 
   if (prefersReducedMotion) {
     return (
-      <div className="absolute bottom-0 left-0 w-40 h-40 md:w-56 md:h-56 lg:w-72 lg:h-72 -mb-4 -ml-8 md:-mb-6 md:-ml-12 lg:-mb-8 lg:-ml-16 z-0 opacity-60 md:opacity-65">
+      <div className="absolute bottom-0 left-0 w-44 h-44 md:w-60 md:h-60 lg:w-80 lg:h-80 -mb-4 -ml-8 md:-mb-6 md:-ml-12 lg:-mb-8 lg:-ml-16 z-0 opacity-60 md:opacity-65">
         <Image src={heroImagesLeft[0]} alt="" fill className="object-contain object-bottom" />
       </div>
     );
   }
 
   return (
-    <div className="absolute bottom-0 left-0 w-40 h-40 md:w-56 md:h-56 lg:w-72 lg:h-72 -mb-4 -ml-8 md:-mb-6 md:-ml-12 lg:-mb-8 lg:-ml-16 z-0 overflow-hidden">
+    <motion.div
+      className="absolute bottom-0 left-0 w-44 h-44 md:w-60 md:h-60 lg:w-80 lg:h-80 -mb-4 -ml-8 md:-mb-6 md:-ml-12 lg:-mb-8 lg:-ml-16 z-0 overflow-hidden"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: isReady ? 1 : 0 }}
+      transition={{ duration: 0.8 }}
+    >
       <AnimatePresence mode="wait">
         <motion.div
           key={currentIndex}
-          initial={{ opacity: 0, x: -15 }}
-          animate={{ opacity: 0.65, x: 0 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut", opacity: { duration: 0.6 } }}
+          initial={{ opacity: 0, x: -20, scale: 0.97 }}
+          animate={{ opacity: 0.6, x: 0, scale: 1 }}
+          exit={{ opacity: 0, x: 10 }}
+          transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
           className="absolute inset-0"
         >
           <Image src={heroImagesLeft[currentIndex]} alt="" fill className="object-contain object-bottom" />
         </motion.div>
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 }
 
 function HeroImageRotatorRight() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isReady, setIsReady] = useState(false);
   const prefersReducedMotion = useReducedMotion();
 
+  // Initial fade-in delay (offset from left rotator)
   useEffect(() => {
-    // Offset timing slightly so they don't sync up
+    const timer = setTimeout(() => setIsReady(true), 600);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (!isReady) return;
+    // Offset timing so they don't sync up
     const timeout = setTimeout(() => {
       const interval = setInterval(() => {
         setCurrentIndex((prev) => (prev + 1) % heroImagesRight.length);
@@ -88,31 +109,36 @@ function HeroImageRotatorRight() {
       return () => clearInterval(interval);
     }, 2500);
     return () => clearTimeout(timeout);
-  }, []);
+  }, [isReady]);
 
   if (prefersReducedMotion) {
     return (
-      <div className="absolute top-0 right-0 w-40 h-40 md:w-56 md:h-56 lg:w-72 lg:h-72 -mt-4 -mr-8 md:-mt-6 md:-mr-12 lg:-mt-8 lg:-mr-16 z-0 opacity-60 md:opacity-65">
+      <div className="absolute top-8 right-4 md:top-4 md:right-8 lg:top-2 lg:right-12 w-44 h-44 md:w-60 md:h-60 lg:w-80 lg:h-80 z-0 opacity-60 md:opacity-65">
         <Image src={heroImagesRight[0]} alt="" fill className="object-contain object-top" />
       </div>
     );
   }
 
   return (
-    <div className="absolute top-0 right-0 w-40 h-40 md:w-56 md:h-56 lg:w-72 lg:h-72 -mt-4 -mr-8 md:-mt-6 md:-mr-12 lg:-mt-8 lg:-mr-16 z-0 overflow-hidden">
+    <motion.div
+      className="absolute top-8 right-4 md:top-4 md:right-8 lg:top-2 lg:right-12 w-44 h-44 md:w-60 md:h-60 lg:w-80 lg:h-80 z-0 overflow-hidden"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: isReady ? 1 : 0 }}
+      transition={{ duration: 0.8 }}
+    >
       <AnimatePresence mode="wait">
         <motion.div
           key={currentIndex}
-          initial={{ opacity: 0, x: 15 }}
-          animate={{ opacity: 0.65, x: 0 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut", opacity: { duration: 0.6 } }}
+          initial={{ opacity: 0, x: 20, scale: 0.97 }}
+          animate={{ opacity: 0.6, x: 0, scale: 1 }}
+          exit={{ opacity: 0, x: -10 }}
+          transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
           className="absolute inset-0"
         >
           <Image src={heroImagesRight[currentIndex]} alt="" fill className="object-contain object-top" />
         </motion.div>
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 }
 
@@ -137,8 +163,8 @@ function ScrollingBelt() {
           animationDuration: isMobile ? '16s' : '17.25s'
         }}
       >
-        <span className="px-4 text-xl font-black tracking-[0.1em] text-[#F4F1EC] uppercase leading-none">{beltText} •</span>
-        <span className="px-4 text-xl font-black tracking-[0.1em] text-[#F4F1EC] uppercase leading-none">{beltText} •</span>
+        <span className="px-4 text-xl tracking-[0.05em] text-[#F4F1EC] leading-none" style={{ fontFamily: "var(--font-libre-baskerville)" }}>{beltText} •</span>
+        <span className="px-4 text-xl tracking-[0.05em] text-[#F4F1EC] leading-none" style={{ fontFamily: "var(--font-libre-baskerville)" }}>{beltText} •</span>
       </div>
     </div>
   );
@@ -188,14 +214,41 @@ interface HelpCardProps {
   index: number;
 }
 
+// Smoother card animation variant
+const cardRevealVariant = {
+  hidden: {
+    opacity: 0,
+    y: 30,
+    scale: 0.96
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1
+  },
+};
+
 function HelpCard({ icon, title, description, index }: HelpCardProps) {
+  // Calculate stagger delay: on mobile (single column), use row index
+  // On desktop (2 columns), use a pattern that reveals top-to-bottom, left-to-right
+  const getDelay = () => {
+    // Row-based delay with slight offset for right column
+    const row = Math.floor(index / 2);
+    const col = index % 2;
+    return row * 0.15 + col * 0.08;
+  };
+
   return (
     <motion.div
-      variants={fadeUpVariant}
+      variants={cardRevealVariant}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{
+        duration: 0.6,
+        delay: getDelay(),
+        ease: [0.25, 0.1, 0.25, 1]
+      }}
       className="group p-6 bg-[#F4F1EC] border border-[#1A1F24]/30 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#F4F1EC] hover:shadow-lg hover:shadow-[#F4F1EC]/20"
     >
       <div className="mb-4 text-[#2B3A44]">{icon}</div>
@@ -248,28 +301,22 @@ function HowWeHelp() {
   return (
     <section className="pt-24 pb-12 bg-[#2B3A44]">
       <Container>
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+          className="text-[32px] md:text-[40px] lg:text-[48px] font-normal text-[#F4F1EC] leading-[1.05] mb-12 text-center"
+          style={{ fontFamily: "var(--font-libre-baskerville)" }}
         >
-          <motion.h2
-            variants={fadeUpVariant}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className="text-[32px] md:text-[40px] lg:text-[48px] font-normal text-[#F4F1EC] leading-[1.05] mb-12 text-center"
-            style={{ fontFamily: "var(--font-libre-baskerville)" }}
-          >
-            How we help
-          </motion.h2>
+          How we help
+        </motion.h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {items.map((item, index) => (
-              <HelpCard key={item.title} {...item} index={index} />
-            ))}
-          </div>
-
-        </motion.div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {items.map((item, index) => (
+            <HelpCard key={item.title} {...item} index={index} />
+          ))}
+        </div>
       </Container>
     </section>
   );
@@ -353,7 +400,7 @@ export default function Home() {
   return (
     <main className="pt-16">
       {/* Hero Section */}
-      <section className="relative py-20 lg:py-28 bg-[#F4F1EC] overflow-hidden">
+      <section className="relative pt-24 pb-20 lg:pt-32 lg:pb-28 bg-[#F4F1EC] overflow-hidden">
         {/* Rotating hero images - lower left */}
         <HeroImageRotatorLeft />
         {/* Rotating hero images - upper right */}
@@ -367,21 +414,24 @@ export default function Home() {
               variants={staggerContainer}
               className="max-w-4xl mx-auto text-center"
             >
-              <motion.h1
-                variants={fadeUpVariant}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-                className="text-[32px] md:text-[44px] lg:text-[52px] font-normal text-[#1A1F24] leading-[1.15] mb-6"
-                style={{ fontFamily: "var(--font-libre-baskerville)" }}
-              >
-                We help small businesses show up like big ones.
-              </motion.h1>
-              <motion.p
-                variants={fadeUpVariant}
-                transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-                className="text-lg lg:text-xl text-[#5A6570] max-w-[720px] mx-auto"
-              >
-                Social media management, SmartPages, websites and custom apps built to make customers choose you.
-              </motion.p>
+              {/* Frosted backdrop for text */}
+              <div className="relative inline-block px-8 py-6 md:px-12 md:py-8 rounded-2xl bg-[#F4F1EC]/80 backdrop-blur-sm">
+                <motion.h1
+                  variants={fadeUpVariant}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                  className="text-[32px] md:text-[44px] lg:text-[52px] font-normal text-[#1A1F24] leading-[1.15] mb-4"
+                  style={{ fontFamily: "var(--font-libre-baskerville)" }}
+                >
+                  We help small businesses show up like big ones.
+                </motion.h1>
+                <motion.p
+                  variants={fadeUpVariant}
+                  transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
+                  className="text-lg lg:text-xl text-[#5A6570] max-w-[720px] mx-auto"
+                >
+                  Social media management, SmartPages, websites and custom apps built to make customers choose you.
+                </motion.p>
+              </div>
             </motion.div>
           </div>
         </Container>
