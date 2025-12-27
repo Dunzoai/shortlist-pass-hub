@@ -238,18 +238,44 @@ function HowWeHelp() {
     }
   ];
 
+  const text = "How we help";
+  const [displayedText, setDisplayedText] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const [hasTyped, setHasTyped] = useState(false);
+
+  const startTyping = () => {
+    if (hasTyped) return;
+    setIsTyping(true);
+    setHasTyped(true);
+    let index = 0;
+    const interval = setInterval(() => {
+      if (index < text.length) {
+        setDisplayedText(text.slice(0, index + 1));
+        index++;
+      } else {
+        clearInterval(interval);
+        setIsTyping(false);
+      }
+    }, 80);
+  };
+
   return (
     <section className="pt-24 pb-12 bg-[#2B3A44]">
       <Container>
         <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+          onViewportEnter={startTyping}
           className="text-[32px] md:text-[40px] lg:text-[48px] font-normal text-[#F4F1EC] leading-[1.05] mb-12 text-center"
           style={{ fontFamily: "var(--font-libre-baskerville)" }}
         >
-          How we help
+          {displayedText}
+          <motion.span
+            className="inline-block w-[3px] h-[0.9em] bg-[#F4F1EC] ml-1 align-middle"
+            animate={{ opacity: [1, 0, 1] }}
+            transition={{ duration: 0.8, repeat: Infinity, ease: "steps(2)" }}
+          />
         </motion.h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
