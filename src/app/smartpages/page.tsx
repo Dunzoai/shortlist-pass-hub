@@ -528,7 +528,7 @@ function AppGridSection() {
   return (
     <section className="bg-[#2B3A44] py-10 md:py-14 px-4 overflow-x-hidden">
       {/* Header */}
-      <div className="max-w-4xl mx-auto text-center mb-4 md:mb-5">
+      <div className="max-w-4xl mx-auto text-center mb-10 md:mb-14">
         <motion.h2
           className="text-2xl sm:text-3xl md:text-4xl text-white font-semibold"
           initial={{ opacity: 0, y: 20 }}
@@ -539,7 +539,7 @@ function AppGridSection() {
           Your very own app.
         </motion.h2>
         <motion.p
-          className="mt-3 text-sm sm:text-base md:text-lg text-slate-400 max-w-2xl mx-auto"
+          className="mt-5 md:mt-6 text-sm sm:text-base md:text-lg text-slate-400 max-w-2xl mx-auto"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -551,7 +551,7 @@ function AppGridSection() {
 
       {/* Try These Header */}
       <motion.p
-        className="text-center text-base md:text-lg text-slate-300 mb-4"
+        className="text-center text-base md:text-lg text-slate-300 mb-3"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
