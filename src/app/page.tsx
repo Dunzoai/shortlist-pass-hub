@@ -413,8 +413,8 @@ export default function Home() {
                 className="text-[32px] md:text-[44px] lg:text-[52px] font-normal text-[#1A1F24] leading-[1.15] mb-6"
                 style={{ fontFamily: "var(--font-libre-baskerville)" }}
               >
-                <span className="md:hidden">We help small businesses<br />show up like <span className="font-semibold">BIG</span> ones.</span>
-                <span className="hidden md:inline">We help small businesses show up like big ones.</span>
+                <span className="block">We help small businesses</span>
+                <span className="block">show up like big ones.</span>
               </motion.h1>
               <motion.p
                 variants={fadeUpVariant}
