@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     description: "Social media management, SmartPages, websites and custom apps built to make customers choose you.",
     images: [
       {
-        url: "/social-share.png",
+        url: "https://shortlistpass.com/social-share.png",
         width: 1200,
         height: 630,
         alt: "The Shortlist Co - We help small businesses show up like big ones",
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "The Shortlist Co | We Help Small Businesses Show Up Like Big Ones",
     description: "Social media management, SmartPages, websites and custom apps built to make customers choose you.",
-    images: ["/social-share.png"],
+    images: ["https://shortlistpass.com/social-share.png"],
   },
   robots: {
     index: true,
