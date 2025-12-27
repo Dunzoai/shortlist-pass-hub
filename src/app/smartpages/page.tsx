@@ -545,7 +545,7 @@ function AppGridSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          What used to be reserved for big brands is now possible with your SmartPage. Your clients can download it directly to their home screen—making it easier to interact with your business. No typing links, no searching the web or social. Just direct access to everything you offer.
+          What was once reserved for big brands is now yours. Clients download your SmartPage directly to their home screen—no links to type, no searching. Just direct access to your business.
         </motion.p>
       </div>
 
@@ -1107,7 +1107,7 @@ export default function ShortyLandingPage() {
     <main className="min-h-screen bg-[#F4F1EC] w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
       <section className="relative min-h-screen overflow-hidden pt-16 md:pt-24 pb-16 md:pb-20 flex flex-col items-center px-4 bg-[#2B3A44]">
         {/* Headline + Subheadline - above modal */}
-        <div className="text-center max-w-2xl mb-6 md:mb-8 z-10 mt-4 md:mt-0">
+        <div className="text-center max-w-2xl mb-6 md:mb-8 z-10 mt-10 md:mt-6">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal tracking-tight leading-tight text-[#F4F1EC]" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
             What is a SmartPage?
           </h1>
