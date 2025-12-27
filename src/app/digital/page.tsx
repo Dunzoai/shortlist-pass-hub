@@ -172,17 +172,19 @@ function ValuePropositionSection() {
       className="relative py-28 lg:py-36 bg-[#F4F1EC] overflow-hidden"
     >
       {/* Background texture image - anchored to bottom, scroll-based reveal */}
-      <motion.div
-        className="absolute inset-x-0 bottom-0 pointer-events-none section-2-bg"
-        style={{
-          backgroundImage: `url("/section-2-background.png")`,
-          backgroundPosition: "center bottom",
-          backgroundRepeat: "no-repeat",
-          height: "100%",
-          y: bgY,
-          opacity: bgOpacity,
-        }}
-      />
+      {/* Mobile opacity wrapper - 7% less visible on mobile */}
+      <div className="absolute inset-0 pointer-events-none opacity-[0.93] md:opacity-100">
+        <motion.div
+          className="absolute inset-x-0 bottom-0 section-2-bg h-full"
+          style={{
+            backgroundImage: `url("/section-2-background.png")`,
+            backgroundPosition: "center bottom",
+            backgroundRepeat: "no-repeat",
+            y: bgY,
+            opacity: bgOpacity,
+          }}
+        />
+      </div>
 
       {/* Light grey overlay - minimal to show background clearly */}
       <div
@@ -328,7 +330,7 @@ function ValuePropositionSection() {
 
           {/* Body copy */}
           <motion.p
-            className="text-[17px] md:text-[22px] lg:text-[26px] font-normal text-[#1A1F24]/85 leading-[1.45]"
+            className="text-[17px] md:text-[22px] lg:text-[26px] font-normal text-[#1A1F24]/85 leading-[1.45] -mt-2 md:mt-0"
             style={{ fontFamily: "var(--font-libre-baskerville)" }}
             initial={{ opacity: 0, y: 10 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
