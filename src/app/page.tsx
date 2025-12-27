@@ -152,7 +152,7 @@ function HowWeHelp() {
   ];
 
   return (
-    <section className="py-24 bg-gradient-to-b from-[#2B3A44] via-[#2B3A44] to-[#2B3A44]">
+    <section className="pt-24 pb-12 bg-[#2B3A44]">
       <Container>
         <motion.div
           variants={staggerContainer}
@@ -169,7 +169,7 @@ function HowWeHelp() {
             How we help
           </motion.h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {items.map((item, index) => (
               <HelpCard key={item.title} {...item} index={index} />
             ))}
@@ -183,7 +183,7 @@ function HowWeHelp() {
 
 function ProofStrip() {
   return (
-    <section className="py-16 bg-[#2B3A44]">
+    <section className="pt-8 pb-24 bg-[#2B3A44]">
       <Container>
         <motion.div
           variants={staggerContainer}
