@@ -234,7 +234,7 @@ export function CupcakeShowcaseSection() {
             </div>
 
             {/* Cupcake */}
-            <div className="flex flex-col items-center mb-16">
+            <div className="flex flex-col items-center mb-6">
               {/* Cupcake + vertical progress dots */}
               <div className="flex items-center gap-6 md:gap-8">
                 {/* Vertical progress dots - left side */}
@@ -403,7 +403,7 @@ export function CupcakeShowcaseSection() {
       </section>
 
       {/* Why block - after the build */}
-      <div className="bg-[#2B3A44] py-16 lg:py-24">
+      <div className="bg-[#2B3A44] pt-4 pb-16 lg:pt-6 lg:pb-24">
         <div className="max-w-[800px] mx-auto px-6">
           <WhyBlock heading={CUPCAKE_COPY.why.heading} lines={CUPCAKE_COPY.why.lines} variant="dark" />
         </div>
