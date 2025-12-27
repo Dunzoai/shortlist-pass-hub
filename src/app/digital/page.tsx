@@ -151,6 +151,9 @@ function ValuePropositionSection() {
   const isInView = useInView(sectionRef, { once: true, margin: "-15%" });
   const underlineRef = useRef(null);
   const underlineInView = useInView(underlineRef, { once: true, margin: "-30%" });
+  // Separate ref for "We don't do that" - triggers when middle of section is reached
+  const slamRef = useRef(null);
+  const slamInView = useInView(slamRef, { once: true, margin: "-50%" });
 
   // Scroll-based reveal for background
   const { scrollYProgress } = useScroll({
@@ -181,9 +184,13 @@ function ValuePropositionSection() {
         }}
       />
 
-      {/* Light grey overlay */}
+      {/* Light grey overlay - darker on mobile */}
       <div
-        className="absolute inset-0 pointer-events-none bg-[#E8E5E0]/70"
+        className="absolute inset-0 pointer-events-none bg-[#E8E5E0]/70 md:bg-[#E8E5E0]/70"
+      />
+      {/* Additional darkening overlay for mobile only */}
+      <div
+        className="absolute inset-0 pointer-events-none bg-[#1A1F24]/20 md:bg-transparent"
       />
 
       {/* Light slate blue sky overlay - gradient from top, meets the background image */}
@@ -194,8 +201,8 @@ function ValuePropositionSection() {
         }}
       />
 
-      {/* Floating clouds - subtle continuous drift like hero images */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden z-[1] section-2-clouds">
+      {/* Floating clouds - subtle continuous drift like hero images, darker on mobile */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-[1] section-2-clouds opacity-50 md:opacity-100">
         {/* Cloud 1 - top left, large */}
         <motion.img
           src="/cloud.png"
@@ -302,24 +309,24 @@ function ValuePropositionSection() {
             Most small businesses don&apos;t get custom websites. They get{" "}
             <span className="italic">templates</span>.
             <br />
-            {/* "We don't do that." - each word slams in from above */}
-            <span ref={underlineRef} className="relative inline-block whitespace-nowrap mt-4 md:mt-6">
+            {/* "We don't do that." - each word slams in from above, delayed until middle of section */}
+            <span ref={slamRef} className="relative inline-block whitespace-nowrap mt-4 md:mt-6">
               {["We", "don't", "do", "that."].map((word, i) => (
                 <motion.span
                   key={word}
                   className="inline-block mr-[0.3em]"
                   initial={{ scale: 2, y: -50, opacity: 0 }}
-                  animate={isInView ? { scale: 1, y: 0, opacity: 1 } : {}}
+                  animate={slamInView ? { scale: 1, y: 0, opacity: 1 } : {}}
                   transition={{
                     duration: 0.4,
-                    delay: 0.3 + i * 0.12,
+                    delay: 0.1 + i * 0.12,
                     ease: [0.22, 1, 0.36, 1],
                   }}
                 >
                   {word}
                 </motion.span>
               ))}
-              <DrawUnderline isVisible={underlineInView} />
+              <DrawUnderline isVisible={slamInView} />
             </span>
           </h2>
 
@@ -348,71 +355,35 @@ function ValuePropositionSection() {
 function SpanningArrow({ isVisible }: { isVisible: boolean }) {
   return (
     <motion.svg
-      className="w-[120px] h-[300px] md:w-[160px] md:h-[400px] lg:w-[200px] lg:h-[500px]"
-      viewBox="0 0 120 300"
+      className="w-[100px] h-[280px] md:w-[140px] md:h-[380px] lg:w-[180px] lg:h-[480px]"
+      viewBox="0 0 100 280"
       fill="none"
       aria-hidden="true"
     >
-      {/* Main sweeping curve - starts top, curves down and left */}
+      {/* Main sweeping curve - starts center-left (near text), curves right then down-left to arrow */}
       <motion.path
-        d="M100 0
-           C 105 30, 110 60, 105 100
-           C 100 140, 90 180, 70 220
-           C 55 250, 40 270, 30 285"
+        d="M10 0
+           C 15 20, 60 40, 85 80
+           C 95 110, 90 150, 75 190
+           C 60 230, 40 260, 25 275"
         stroke="#9CA3AF"
-        strokeWidth="3"
+        strokeWidth="2.5"
         strokeLinecap="round"
         fill="none"
         initial={{ pathLength: 0, opacity: 0 }}
-        animate={isVisible ? { pathLength: 1, opacity: 0.7 } : {}}
+        animate={isVisible ? { pathLength: 1, opacity: 0.65 } : {}}
         transition={{ duration: 1.0, ease: "easeOut", delay: 0.3 }}
       />
-      {/* Secondary line for hand-drawn effect */}
+      {/* Arrowhead - single clean pointed tip */}
       <motion.path
-        d="M98 5
-           C 103 35, 108 65, 103 105
-           C 98 145, 88 185, 68 225
-           C 53 255, 38 275, 28 290"
+        d="M25 275 L 10 255 M25 275 L 40 260"
         stroke="#9CA3AF"
-        strokeWidth="1.5"
+        strokeWidth="2.5"
         strokeLinecap="round"
         fill="none"
         initial={{ pathLength: 0, opacity: 0 }}
-        animate={isVisible ? { pathLength: 1, opacity: 0.4 } : {}}
-        transition={{ duration: 1.0, ease: "easeOut", delay: 0.4 }}
-      />
-      {/* Arrowhead - left feather */}
-      <motion.path
-        d="M30 285 C 15 270, 5 260, 0 245"
-        stroke="#9CA3AF"
-        strokeWidth="3"
-        strokeLinecap="round"
-        fill="none"
-        initial={{ pathLength: 0, opacity: 0 }}
-        animate={isVisible ? { pathLength: 1, opacity: 0.7 } : {}}
+        animate={isVisible ? { pathLength: 1, opacity: 0.65 } : {}}
         transition={{ duration: 0.3, ease: "easeOut", delay: 1.2 }}
-      />
-      {/* Arrowhead - center feather */}
-      <motion.path
-        d="M30 285 C 20 275, 15 265, 12 250"
-        stroke="#9CA3AF"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        fill="none"
-        initial={{ pathLength: 0, opacity: 0 }}
-        animate={isVisible ? { pathLength: 1, opacity: 0.6 } : {}}
-        transition={{ duration: 0.25, ease: "easeOut", delay: 1.3 }}
-      />
-      {/* Arrowhead - right feather */}
-      <motion.path
-        d="M30 285 C 45 280, 55 275, 65 265"
-        stroke="#9CA3AF"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        fill="none"
-        initial={{ pathLength: 0, opacity: 0 }}
-        animate={isVisible ? { pathLength: 1, opacity: 0.6 } : {}}
-        transition={{ duration: 0.25, ease: "easeOut", delay: 1.35 }}
       />
     </motion.svg>
   );
@@ -489,12 +460,12 @@ function TalkVsWalkWithArrow() {
         </div>
       </section>
 
-      {/* Spanning arrow - positioned to cross both sections */}
+      {/* Spanning arrow - positioned to start from subheading and point to "You move" */}
       <div
-        className="absolute pointer-events-none z-10 hidden md:block"
+        className="absolute pointer-events-none z-10"
         style={{
-          top: "15%",
-          right: "8%",
+          top: "18%",
+          right: "3%",
         }}
       >
         <SpanningArrow isVisible={arrowInView} />
