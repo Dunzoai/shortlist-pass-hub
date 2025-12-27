@@ -175,13 +175,6 @@ function HowWeHelp() {
             ))}
           </div>
 
-          <motion.p
-            variants={fadeUpVariant}
-            transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
-            className="text-center text-sm text-[#F4F1EC] font-medium"
-          >
-            Each service dives deeper — start where you need help most.
-          </motion.p>
         </motion.div>
       </Container>
     </section>
@@ -190,7 +183,7 @@ function HowWeHelp() {
 
 function ProofStrip() {
   return (
-    <section className="py-24 bg-[#2B3A44]">
+    <section className="py-16 bg-[#2B3A44]">
       <Container>
         <motion.div
           variants={staggerContainer}
