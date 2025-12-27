@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Container } from "@/components/Container";
 import { useState, useEffect } from "react";
 
@@ -20,120 +20,64 @@ const staggerContainer = {
   },
 };
 
-// Hero rotating images - bottom left
-const heroImagesLeft = [
-  "/coffee-receipt.png",
-  "/laptop-note.png",
-  "/barber.png",
-  "/takeout.png",
-  "/wrench-screwdriver.png",
-];
-
-// Hero rotating images - top right
-const heroImagesRight = [
-  "/website-homepage.png",
-  "/instagram-post.png",
-  "/smartpage-hero.png",
-  "/bubbles-homepage.png",
-  "/apps.png",
-];
-
-function HeroImageRotatorLeft() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isReady, setIsReady] = useState(false);
+function HeroImageLeft() {
   const prefersReducedMotion = useReducedMotion();
-
-  // Initial fade-in delay
-  useEffect(() => {
-    const timer = setTimeout(() => setIsReady(true), 400);
-    return () => clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
-    if (!isReady) return;
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % heroImagesLeft.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [isReady]);
 
   if (prefersReducedMotion) {
     return (
-      <div className="absolute bottom-0 left-0 w-40 h-40 md:w-52 md:h-52 lg:w-72 lg:h-72 -mb-4 -ml-6 md:-mb-8 md:-ml-14 lg:-mb-10 lg:-ml-16 z-0 opacity-15 md:opacity-20">
-        <Image src={heroImagesLeft[0]} alt="" fill className="object-contain object-bottom" />
+      <div className="absolute bottom-0 left-0 w-40 h-40 md:w-52 md:h-52 lg:w-72 lg:h-72 -mb-4 -ml-6 md:-mb-8 md:-ml-14 lg:-mb-10 lg:-ml-16 z-0 opacity-25 md:opacity-30">
+        <Image src="/bubbles-homepage.png" alt="" fill className="object-contain object-bottom" />
       </div>
     );
   }
 
   return (
     <motion.div
-      className="absolute bottom-0 left-0 w-40 h-40 md:w-52 md:h-52 lg:w-72 lg:h-72 -mb-4 -ml-6 md:-mb-8 md:-ml-14 lg:-mb-10 lg:-ml-16 z-0 overflow-hidden"
+      className="absolute bottom-0 left-0 w-40 h-40 md:w-52 md:h-52 lg:w-72 lg:h-72 -mb-4 -ml-6 md:-mb-8 md:-ml-14 lg:-mb-10 lg:-ml-16 z-0 opacity-25 md:opacity-30"
       initial={{ opacity: 0 }}
-      animate={{ opacity: isReady ? 1 : 0 }}
-      transition={{ duration: 0.8 }}
+      animate={{
+        opacity: 1,
+        x: [0, 8, 0, -6, 0],
+        y: [0, -8, 0, 6, 0],
+      }}
+      transition={{
+        opacity: { duration: 0.8 },
+        x: { duration: 20, repeat: Infinity, ease: "easeInOut" },
+        y: { duration: 20, repeat: Infinity, ease: "easeInOut" },
+      }}
     >
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentIndex}
-          initial={{ opacity: 0, x: -20, scale: 0.97 }}
-          animate={{ opacity: 0.32, x: 0, scale: 1 }}
-          exit={{ opacity: 0, x: 10 }}
-          transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
-          className="absolute inset-0"
-        >
-          <Image src={heroImagesLeft[currentIndex]} alt="" fill className="object-contain object-bottom" />
-        </motion.div>
-      </AnimatePresence>
+      <Image src="/bubbles-homepage.png" alt="" fill className="object-contain object-bottom" />
     </motion.div>
   );
 }
 
-function HeroImageRotatorRight() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isReady, setIsReady] = useState(false);
+function HeroImageRight() {
   const prefersReducedMotion = useReducedMotion();
-
-  // Initial fade-in delay (synced with left rotator)
-  useEffect(() => {
-    const timer = setTimeout(() => setIsReady(true), 400);
-    return () => clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
-    if (!isReady) return;
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % heroImagesRight.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [isReady]);
 
   if (prefersReducedMotion) {
     return (
-      <div className="absolute top-0 right-0 w-40 h-40 md:w-52 md:h-52 lg:w-72 lg:h-72 -mt-2 -mr-6 md:-mt-8 md:-mr-14 lg:-mt-10 lg:-mr-16 z-0 opacity-15 md:opacity-20">
-        <Image src={heroImagesRight[0]} alt="" fill className="object-contain object-top" />
+      <div className="absolute top-0 right-0 w-40 h-40 md:w-52 md:h-52 lg:w-72 lg:h-72 -mt-2 -mr-6 md:-mt-8 md:-mr-14 lg:-mt-10 lg:-mr-16 z-0 opacity-25 md:opacity-30">
+        <Image src="/instagram-post.png" alt="" fill className="object-contain object-top" />
       </div>
     );
   }
 
   return (
     <motion.div
-      className="absolute top-0 right-0 w-40 h-40 md:w-52 md:h-52 lg:w-72 lg:h-72 -mt-2 -mr-6 md:-mt-8 md:-mr-14 lg:-mt-10 lg:-mr-16 z-0 overflow-hidden"
+      className="absolute top-0 right-0 w-40 h-40 md:w-52 md:h-52 lg:w-72 lg:h-72 -mt-2 -mr-6 md:-mt-8 md:-mr-14 lg:-mt-10 lg:-mr-16 z-0 opacity-25 md:opacity-30"
       initial={{ opacity: 0 }}
-      animate={{ opacity: isReady ? 1 : 0 }}
-      transition={{ duration: 0.8 }}
+      animate={{
+        opacity: 1,
+        x: [0, -10, 0, 8, 0],
+        y: [0, 6, 0, -8, 0],
+      }}
+      transition={{
+        opacity: { duration: 0.8 },
+        x: { duration: 18, repeat: Infinity, ease: "easeInOut", delay: 2 },
+        y: { duration: 18, repeat: Infinity, ease: "easeInOut", delay: 2 },
+      }}
     >
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentIndex}
-          initial={{ opacity: 0, x: 20, scale: 0.97 }}
-          animate={{ opacity: 0.32, x: 0, scale: 1 }}
-          exit={{ opacity: 0, x: -10 }}
-          transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
-          className="absolute inset-0"
-        >
-          <Image src={heroImagesRight[currentIndex]} alt="" fill className="object-contain object-top" />
-        </motion.div>
-      </AnimatePresence>
+      <Image src="/instagram-post.png" alt="" fill className="object-contain object-top" />
     </motion.div>
   );
 }
@@ -395,9 +339,9 @@ export default function Home() {
     <main className="pt-16">
       {/* Hero Section */}
       <section className="relative pt-20 pb-20 lg:pt-28 lg:pb-28 bg-[#F4F1EC] overflow-hidden">
-        {/* Rotating hero images */}
-        <HeroImageRotatorLeft />
-        <HeroImageRotatorRight />
+        {/* Floating hero images */}
+        <HeroImageLeft />
+        <HeroImageRight />
 
         <Container>
           <div className="relative z-10">
