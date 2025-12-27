@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Container } from "@/components/Container";
 import { useState, useEffect } from "react";
 
@@ -20,7 +20,67 @@ const staggerContainer = {
   },
 };
 
-// Hero background is now static (background image only)
+// Hero rotating images
+const heroImages = [
+  "/coffee-receipt.png",
+  "/laptop-note.png",
+  "/barber.png",
+  "/takeout.png",
+  "/wrench-screwdriver.png",
+];
+
+function HeroImageRotator() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const prefersReducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    // Rotate every 5 seconds (hold time + transition time)
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % heroImages.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // For reduced motion, just show static image
+  if (prefersReducedMotion) {
+    return (
+      <div className="absolute bottom-0 left-0 w-32 h-32 md:w-48 md:h-48 lg:w-64 lg:h-64 -mb-4 -ml-8 md:-mb-6 md:-ml-12 lg:-mb-8 lg:-ml-16 z-0 opacity-60 md:opacity-70">
+        <Image
+          src={heroImages[0]}
+          alt=""
+          fill
+          className="object-contain object-bottom"
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div className="absolute bottom-0 left-0 w-32 h-32 md:w-48 md:h-48 lg:w-64 lg:h-64 -mb-4 -ml-8 md:-mb-6 md:-ml-12 lg:-mb-8 lg:-ml-16 z-0 overflow-hidden">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentIndex}
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0 }}
+          transition={{
+            enter: { duration: 0.7, ease: "easeOut" },
+            exit: { duration: 0.4, ease: "easeOut" },
+          }}
+          className="absolute inset-0 opacity-60 md:opacity-70"
+        >
+          <Image
+            src={heroImages[currentIndex]}
+            alt=""
+            fill
+            className="object-contain object-bottom"
+          />
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+}
 
 function ScrollingBelt() {
   const beltText = "GET SEEN • LOOK LEGIT • WEBSITES THAT CONVERT • POSTS THAT SOUND LIKE YOU • SOCIAL THAT SHOWS UP • ONE PAGE THAT EXPLAINS EVERYTHING • INSTANT CUSTOMER ANSWERS • APPS BUILT FOR REAL PROBLEMS • TOOLS THAT SAVE YOU TIME • MORE CUSTOMERS, LESS CONFUSION";
@@ -259,7 +319,10 @@ export default function Home() {
   return (
     <main className="pt-16">
       {/* Hero Section */}
-      <section className="relative py-20 lg:py-28 bg-[#F4F1EC]">
+      <section className="relative py-20 lg:py-28 bg-[#F4F1EC] overflow-hidden">
+        {/* Rotating hero images - lower left */}
+        <HeroImageRotator />
+
         <Container>
           <div className="relative z-10">
             <motion.div
