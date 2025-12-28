@@ -191,7 +191,7 @@ interface HelpCardProps {
 function HelpCard({ icon, title, description }: HelpCardProps) {
   return (
     <div className="group p-6 bg-[#F4F1EC] border border-[#1A1F24]/30 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#F4F1EC] hover:shadow-lg hover:shadow-[#F4F1EC]/20">
-      <div className="mb-4 w-10 h-10 relative">{icon}</div>
+      <div className="mb-4 w-[120px] h-[120px] relative">{icon}</div>
       <h3 className="text-xl font-semibold text-[#1A1F24] mb-3">{title}</h3>
       <p className="text-base text-[#5A6570] leading-relaxed">{description}</p>
     </div>
