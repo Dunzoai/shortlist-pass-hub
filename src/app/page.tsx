@@ -202,28 +202,28 @@ function HowWeHelp() {
   const items = [
     {
       icon: (
-        <Image src="/light-vector.png" alt="" width={48} height={48} className="object-contain" />
+        <Image src="/light-vector.png" alt="" width={144} height={144} className="object-contain" />
       ),
       title: "Show up in the feed",
       description: "We create scroll-stopping social media content designed to get shown — helping your business stay visible, familiar, and top-of-mind when customers are deciding where to go."
     },
     {
       icon: (
-        <Image src="/page.png" alt="" width={48} height={48} className="object-contain" />
+        <Image src="/page.png" alt="" width={144} height={144} className="object-contain" />
       ),
       title: "One page that explains everything",
       description: "We build SmartPages that know your business inside and out — answers, links, hours, menus, booking — all in one place so customers get what they need instantly and feel confident choosing you."
     },
     {
       icon: (
-        <Image src="/hand-tools.png" alt="" width={48} height={48} className="object-contain" />
+        <Image src="/hand-tools.png" alt="" width={144} height={144} className="object-contain" />
       ),
       title: "Apps built for real problems",
       description: "When your business needs more than a website, we build simple custom tools — ordering, scheduling, internal systems — designed around how you actually operate."
     },
     {
       icon: (
-        <Image src="/globe.png" alt="" width={48} height={48} className="object-contain" />
+        <Image src="/globe.png" alt="" width={144} height={144} className="object-contain" />
       ),
       title: "Websites that convert",
       description: "Fast, modern websites built to clearly explain what you do and push customers to take action — not cookie-cutter templates that look like everyone else."
