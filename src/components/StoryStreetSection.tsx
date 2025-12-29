@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import useEmblaCarousel from "embla-carousel-react";
 
 // Asset paths
 const ASSETS = {
@@ -22,182 +21,20 @@ interface ReactionInstance {
   delay: number;
 }
 
-// Slide 1: Swipe education
-function Slide1Content({ isActive }: { isActive: boolean }) {
-  if (!isActive) return null;
-
-  return (
-    <div className="absolute inset-0 flex flex-col items-center justify-end pb-8 md:pb-12 pointer-events-none z-20">
-      <div className="text-center px-6">
-        <h2
-          className="text-3xl md:text-4xl lg:text-5xl font-normal text-[#1A1F24] mb-4"
-          style={{ fontFamily: "var(--font-libre-baskerville)" }}
-        >
-          Get noticed.
-        </h2>
-        <p className="text-base md:text-lg text-[#5A6570] flex items-center justify-center gap-2">
-          <span>Swipe to see how it works</span>
-          <motion.span
-            animate={{ x: [0, 8, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-          >
-            →
-          </motion.span>
-        </p>
-      </div>
-    </div>
-  );
-}
-
-// Slide 2: IG Post with animations
-function Slide2Content({
-  isActive,
-  hasEntered,
-  onEnter,
-  reducedMotion,
-}: {
-  isActive: boolean;
-  hasEntered: boolean;
-  onEnter: () => void;
-  reducedMotion: boolean;
-}) {
-  const [showCaption, setShowCaption] = useState(false);
-  const [reactions, setReactions] = useState<ReactionInstance[]>([]);
-
-  // Trigger animations when slide becomes active
-  useEffect(() => {
-    if (isActive && !hasEntered) {
-      onEnter();
-      // Show caption after IG post lands
-      setTimeout(() => setShowCaption(true), 1800);
-
-      // Spawn reactions once
-      if (!reducedMotion) {
-        setTimeout(() => {
-          setReactions([
-            { id: "heart-1", type: "heart", scale: 1.0, xOffset: -100, delay: 0 },
-            { id: "heart-2", type: "heart", scale: 1.2, xOffset: 80, delay: 0.3 },
-            { id: "heart-3", type: "heart", scale: 0.9, xOffset: 0, delay: 0.6 },
-            { id: "thumbs-1", type: "thumbsUp", scale: 1.0, xOffset: -50, delay: 0.2 },
-            { id: "thumbs-2", type: "thumbsUp", scale: 0.85, xOffset: 100, delay: 0.5 },
-          ]);
-        }, 2200);
-      }
-    }
-
-    if (!isActive) {
-      setShowCaption(false);
-      setReactions([]);
-    }
-  }, [isActive, hasEntered, onEnter, reducedMotion]);
-
-  if (!isActive) return null;
-
-  return (
-    <>
-      {/* Dim overlay */}
-      <motion.div
-        className="absolute inset-0 bg-black pointer-events-none z-[11]"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.15 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.3 }}
-      />
-
-      {/* Floating reactions - always behind building */}
-      {!reducedMotion && reactions.map((reaction) => (
-        <FloatingReaction key={reaction.id} instance={reaction} />
-      ))}
-
-      {/* IG Post - starts behind building, rises up, then comes forward */}
-      <motion.div
-        className="absolute pointer-events-none"
-        style={{
-          width: "clamp(320px, 75vw, 600px)",
-          height: "clamp(388px, 91vw, 728px)",
-          left: "50%",
-          x: "-50%",
-        }}
-        initial={{
-          top: "70%",
-          opacity: 0,
-          scale: 0.8,
-          zIndex: 5,
-        }}
-        animate={{
-          top: "20%",
-          y: "-50%",
-          opacity: 1,
-          scale: 1,
-          zIndex: 15,
-        }}
-        exit={{ opacity: 0, scale: 0.8 }}
-        transition={{
-          duration: 1.2,
-          ease: [0.16, 1, 0.3, 1],
-          zIndex: { delay: 0.6, duration: 0.3 },
-        }}
-      >
-        <motion.div
-          className="w-full h-full relative"
-          animate={{
-            y: [0, -8, 0, -5, 0],
-          }}
-          transition={{
-            duration: 6,
-            ease: "easeInOut",
-            repeat: Infinity,
-            delay: 1.5,
-          }}
-        >
-          <Image
-            src={ASSETS.igPost}
-            alt="Coming soon post"
-            fill
-            className="object-contain drop-shadow-2xl"
-            priority
-          />
-        </motion.div>
-      </motion.div>
-
-      {/* Caption card */}
-      <AnimatePresence>
-        {showCaption && (
-          <motion.div
-            className="absolute bottom-[8%] md:bottom-[12%] left-1/2 -translate-x-1/2 z-20 pointer-events-none"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4, delay: 0.3 }}
-          >
-            <div className="bg-[#F4F1EC] rounded-lg shadow-lg px-6 py-4 max-w-sm mx-auto border border-[#E0DCD4]">
-              <p className="font-semibold text-[#1A1F24] mb-1 text-sm md:text-base">
-                Social is the introduction.
-              </p>
-              <p className="text-[#5A6570] text-xs md:text-sm">
-                It's how people meet your business before they ever click.
-              </p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
-  );
-}
-
-// Single floating reaction - always behind all layers
+// Floating reaction component
 function FloatingReaction({ instance }: { instance: ReactionInstance }) {
   const src = instance.type === "heart" ? ASSETS.heart : ASSETS.thumbsUp;
   const baseSize = instance.type === "heart" ? 60 : 55;
 
   return (
     <motion.div
-      className="absolute pointer-events-none z-[2]"
+      className="absolute pointer-events-none"
       style={{
         width: baseSize * instance.scale,
         height: baseSize * instance.scale,
         left: `calc(50% + ${instance.xOffset}px)`,
-        top: "60%",
+        bottom: "25%",
+        zIndex: 25,
       }}
       initial={{
         opacity: 0,
@@ -206,7 +43,7 @@ function FloatingReaction({ instance }: { instance: ReactionInstance }) {
       }}
       animate={{
         opacity: [0, 1, 1, 0],
-        y: [0, -100, -220, -380],
+        y: [0, -80, -180, -300],
         scale: [0.3, instance.scale, instance.scale * 0.9, instance.scale * 0.5],
       }}
       transition={{
@@ -221,17 +58,6 @@ function FloatingReaction({ instance }: { instance: ReactionInstance }) {
   );
 }
 
-// Slide 3: Placeholder
-function Slide3Content({ isActive }: { isActive: boolean }) {
-  if (!isActive) return null;
-
-  return (
-    <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-      <p className="text-[#5A6570] text-lg">Slide 3 - SmartPages coming soon</p>
-    </div>
-  );
-}
-
 // Pagination dots
 function PaginationDots({
   slideCount,
@@ -243,7 +69,7 @@ function PaginationDots({
   onDotClick: (index: number) => void;
 }) {
   return (
-    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-30 pointer-events-auto">
+    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-40 pointer-events-auto">
       {Array.from({ length: slideCount }).map((_, i) => (
         <button
           key={i}
@@ -273,27 +99,115 @@ export function StoryStreetSection({
   const prefersReducedMotion = useReducedMotion();
   const reducedMotion = prefersReducedMotion ?? false;
 
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    loop: false,
-    watchDrag: true,
-  });
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(0);
   const [hasEnteredSlide2, setHasEnteredSlide2] = useState(false);
+  const [showCaption, setShowCaption] = useState(false);
+  const [reactions, setReactions] = useState<ReactionInstance[]>([]);
 
-  // Sync current slide with Embla
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    setCurrentIndex(emblaApi.selectedScrollSnap());
-  }, [emblaApi]);
+  // Touch/drag handling
+  const containerRef = useRef<HTMLDivElement>(null);
+  const dragStartX = useRef<number | null>(null);
+  const isDragging = useRef(false);
 
+  const totalSlides = 3;
+  const swipeThreshold = 50; // minimum px to trigger slide change
+
+  // Handle slide navigation
+  const goToSlide = (index: number) => {
+    if (index >= 0 && index < totalSlides) {
+      setCurrentSlide(index);
+    }
+  };
+
+  const goNext = () => goToSlide(currentSlide + 1);
+  const goPrev = () => goToSlide(currentSlide - 1);
+
+  // Touch handlers
+  const handleTouchStart = (e: React.TouchEvent) => {
+    dragStartX.current = e.touches[0].clientX;
+    isDragging.current = true;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!isDragging.current || dragStartX.current === null) return;
+
+    const endX = e.changedTouches[0].clientX;
+    const diff = dragStartX.current - endX;
+
+    if (Math.abs(diff) > swipeThreshold) {
+      if (diff > 0) {
+        goNext(); // Swipe left = next
+      } else {
+        goPrev(); // Swipe right = prev
+      }
+    }
+
+    dragStartX.current = null;
+    isDragging.current = false;
+  };
+
+  // Mouse handlers for desktop drag
+  const handleMouseDown = (e: React.MouseEvent) => {
+    dragStartX.current = e.clientX;
+    isDragging.current = true;
+  };
+
+  const handleMouseUp = (e: React.MouseEvent) => {
+    if (!isDragging.current || dragStartX.current === null) return;
+
+    const diff = dragStartX.current - e.clientX;
+
+    if (Math.abs(diff) > swipeThreshold) {
+      if (diff > 0) {
+        goNext();
+      } else {
+        goPrev();
+      }
+    }
+
+    dragStartX.current = null;
+    isDragging.current = false;
+  };
+
+  const handleMouseLeave = () => {
+    dragStartX.current = null;
+    isDragging.current = false;
+  };
+
+  // Trigger slide 2 animations
   useEffect(() => {
-    if (!emblaApi) return;
-    onSelect();
-    emblaApi.on("select", onSelect);
-    return () => {
-      emblaApi.off("select", onSelect);
-    };
-  }, [emblaApi, onSelect]);
+    if (currentSlide === 1 && !hasEnteredSlide2) {
+      setHasEnteredSlide2(true);
+
+      // Show caption after IG post lands
+      const captionTimer = setTimeout(() => setShowCaption(true), 1800);
+
+      // Spawn reactions
+      let reactionTimer: NodeJS.Timeout;
+      if (!reducedMotion) {
+        reactionTimer = setTimeout(() => {
+          setReactions([
+            { id: "heart-1", type: "heart", scale: 1.0, xOffset: -80, delay: 0 },
+            { id: "heart-2", type: "heart", scale: 1.2, xOffset: 60, delay: 0.3 },
+            { id: "heart-3", type: "heart", scale: 0.9, xOffset: -20, delay: 0.6 },
+            { id: "thumbs-1", type: "thumbsUp", scale: 1.0, xOffset: -40, delay: 0.2 },
+            { id: "thumbs-2", type: "thumbsUp", scale: 0.85, xOffset: 80, delay: 0.5 },
+          ]);
+        }, 2200);
+      }
+
+      return () => {
+        clearTimeout(captionTimer);
+        if (reactionTimer) clearTimeout(reactionTimer);
+      };
+    }
+
+    // Reset when leaving slide 2
+    if (currentSlide !== 1) {
+      setShowCaption(false);
+      setReactions([]);
+    }
+  }, [currentSlide, hasEnteredSlide2, reducedMotion]);
 
   // Preload images
   useEffect(() => {
@@ -303,66 +217,189 @@ export function StoryStreetSection({
     });
   }, []);
 
-  const scrollTo = useCallback(
-    (index: number) => emblaApi?.scrollTo(index),
-    [emblaApi]
-  );
-
   return (
     <section className="py-12 md:py-20 bg-[#F4F1EC]">
-      {/* Carousel container */}
+      {/* Main scene container - SINGLE fixed background */}
       <div className="relative max-w-7xl mx-auto">
-        {/* Embla viewport - wraps the draggable area */}
-        <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex touch-pan-y">
-            {/* All 3 slides render the same scene with different overlays */}
-            {[0, 1, 2].map((slideIndex) => (
-              <div
-                key={slideIndex}
-                className="flex-[0_0_100%] min-w-0"
+        <div
+          ref={containerRef}
+          className="relative w-full aspect-[4/5] sm:aspect-[3/4] md:aspect-[16/9] lg:aspect-[2/1] overflow-hidden cursor-grab active:cursor-grabbing select-none"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          onMouseDown={handleMouseDown}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseLeave}
+        >
+          {/* STATIC background - never moves */}
+          <Image
+            src={ASSETS.streetBase}
+            alt="Street scene"
+            fill
+            className="object-cover object-center"
+            style={{ zIndex: 1 }}
+            priority
+            draggable={false}
+          />
+
+          {/* ===== SLIDE 1: Intro text ===== */}
+          <AnimatePresence>
+            {currentSlide === 0 && (
+              <motion.div
+                key="slide1-content"
+                className="absolute inset-0 flex flex-col items-center justify-end pb-8 md:pb-12 pointer-events-none"
+                style={{ zIndex: 20 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
               >
-                <div className="relative w-full aspect-[4/5] sm:aspect-[3/4] md:aspect-[16/9] lg:aspect-[2/1]">
-                  {/* Fixed base scene */}
-                  <Image
-                    src={ASSETS.streetBase}
-                    alt="Street scene"
-                    fill
-                    className="object-cover object-center z-10"
-                    style={{ position: 'absolute' }}
-                    priority
-                  />
-
-                  {/* Overlay content based on current slide */}
-                  <AnimatePresence mode="wait">
-                    {currentIndex === slideIndex && slideIndex === 0 && (
-                      <Slide1Content key="slide1" isActive={currentIndex === 0} />
-                    )}
-                    {currentIndex === slideIndex && slideIndex === 1 && (
-                      <Slide2Content
-                        key="slide2"
-                        isActive={currentIndex === 1}
-                        hasEntered={hasEnteredSlide2}
-                        onEnter={() => setHasEnteredSlide2(true)}
-                        reducedMotion={reducedMotion}
-                      />
-                    )}
-                    {currentIndex === slideIndex && slideIndex === 2 && (
-                      <Slide3Content key="slide3" isActive={currentIndex === 2} />
-                    )}
-                  </AnimatePresence>
-
-                  {/* Pagination dots - only show on first slide to avoid duplicates */}
-                  {slideIndex === 0 && (
-                    <PaginationDots
-                      slideCount={3}
-                      currentIndex={currentIndex}
-                      onDotClick={scrollTo}
-                    />
-                  )}
+                <div className="text-center px-6">
+                  <h2
+                    className="text-3xl md:text-4xl lg:text-5xl font-normal text-[#1A1F24] mb-4"
+                    style={{ fontFamily: "var(--font-libre-baskerville)" }}
+                  >
+                    Get noticed.
+                  </h2>
+                  <p className="text-base md:text-lg text-[#5A6570] flex items-center justify-center gap-2">
+                    <span>Swipe to see how it works</span>
+                    <motion.span
+                      animate={{ x: [0, 8, 0] }}
+                      transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                    >
+                      →
+                    </motion.span>
+                  </p>
                 </div>
-              </div>
-            ))}
-          </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* ===== SLIDE 2: IG Post animation ===== */}
+          <AnimatePresence>
+            {currentSlide === 1 && (
+              <>
+                {/* Dim overlay */}
+                <motion.div
+                  key="slide2-overlay"
+                  className="absolute inset-0 bg-black pointer-events-none"
+                  style={{ zIndex: 10 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 0.15 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                />
+
+                {/* IG Post - rises from behind building */}
+                <motion.div
+                  key="slide2-igpost"
+                  className="absolute pointer-events-none left-1/2"
+                  style={{
+                    width: "clamp(280px, 70vw, 600px)",
+                    height: "clamp(340px, 85vw, 728px)",
+                    zIndex: 15,
+                  }}
+                  initial={{
+                    x: "-50%",
+                    bottom: "-20%",
+                    opacity: 0,
+                    scale: 0.85,
+                  }}
+                  animate={{
+                    x: "-50%",
+                    bottom: "15%",
+                    opacity: 1,
+                    scale: 1,
+                  }}
+                  exit={{
+                    opacity: 0,
+                    scale: 0.9,
+                  }}
+                  transition={{
+                    duration: 1.2,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                >
+                  <motion.div
+                    className="w-full h-full relative"
+                    animate={{
+                      y: [0, -8, 0, -5, 0],
+                    }}
+                    transition={{
+                      duration: 6,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      delay: 1.5,
+                    }}
+                  >
+                    <Image
+                      src={ASSETS.igPost}
+                      alt="Coming soon post"
+                      fill
+                      className="object-contain drop-shadow-2xl"
+                      priority
+                      draggable={false}
+                    />
+                  </motion.div>
+                </motion.div>
+
+                {/* Floating reactions - hearts and thumbs */}
+                {!reducedMotion && reactions.map((reaction) => (
+                  <FloatingReaction key={reaction.id} instance={reaction} />
+                ))}
+
+                {/* Caption card */}
+                <AnimatePresence>
+                  {showCaption && (
+                    <motion.div
+                      key="slide2-caption"
+                      className="absolute left-1/2 -translate-x-1/2 pointer-events-none px-4"
+                      style={{
+                        zIndex: 30,
+                        bottom: "6%",
+                      }}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.4, delay: 0.3 }}
+                    >
+                      <div className="bg-[#F4F1EC] rounded-lg shadow-lg px-4 md:px-6 py-3 md:py-4 max-w-xs md:max-w-sm mx-auto border border-[#E0DCD4]">
+                        <p className="font-semibold text-[#1A1F24] mb-1 text-sm md:text-base">
+                          Social is the introduction.
+                        </p>
+                        <p className="text-[#5A6570] text-xs md:text-sm">
+                          It's how people meet your business before they ever click.
+                        </p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </>
+            )}
+          </AnimatePresence>
+
+          {/* ===== SLIDE 3: Placeholder ===== */}
+          <AnimatePresence>
+            {currentSlide === 2 && (
+              <motion.div
+                key="slide3-content"
+                className="absolute inset-0 flex items-center justify-center pointer-events-none"
+                style={{ zIndex: 20 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <p className="text-[#5A6570] text-lg">Slide 3 - SmartPages coming soon</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Pagination dots - always visible */}
+          <PaginationDots
+            slideCount={totalSlides}
+            currentIndex={currentSlide}
+            onDotClick={goToSlide}
+          />
         </div>
       </div>
 
