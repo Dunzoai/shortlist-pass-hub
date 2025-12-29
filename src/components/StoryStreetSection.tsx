@@ -22,11 +22,12 @@ interface ReactionInstance {
   delay: number;
 }
 
-// Floating reaction component - BIG motion, fast, visible immediately
+// Floating reaction component - normal speed, starts after IG post, loops
 function FloatingReaction({ instance }: { instance: ReactionInstance }) {
   const src = instance.type === "heart" ? ASSETS.heart : ASSETS.thumbsUp;
   const baseSize = instance.type === "heart" ? 60 : 55;
   const driftDir = instance.xOffset > 0 ? 1 : -1;
+  const driftAmount = 20 + Math.abs(instance.xOffset) * 0.12;
 
   return (
     <motion.div
@@ -35,25 +36,27 @@ function FloatingReaction({ instance }: { instance: ReactionInstance }) {
         width: baseSize * instance.scale,
         height: baseSize * instance.scale,
         left: `calc(50% + ${instance.xOffset}px)`,
-        bottom: `${18 + instance.yOffset}%`,
+        bottom: `${20 + instance.yOffset}%`,
         zIndex: 10,
       }}
       initial={{
-        opacity: 0.9,
-        y: 20,
-        scale: instance.scale * 0.8,
+        opacity: 0.85,
+        y: 0,
+        scale: instance.scale * 0.9,
       }}
       animate={{
-        opacity: [0.9, 1, 0.9, 0.6, 0],
-        y: [20, 0, -50, -100, -140],
-        scale: [instance.scale * 0.8, instance.scale, instance.scale * 0.95, instance.scale * 0.8, instance.scale * 0.5],
-        x: [0, driftDir * 8, driftDir * -6, driftDir * 10, driftDir * 4],
+        opacity: [0.85, 1, 1, 0.8, 0],
+        y: [0, -60, -150, -280, -400],
+        scale: [instance.scale * 0.9, instance.scale, instance.scale * 0.95, instance.scale * 0.8, instance.scale * 0.5],
+        x: [0, driftDir * driftAmount * 0.5, driftDir * -driftAmount * 0.4, driftDir * driftAmount * 0.6, driftDir * driftAmount * 0.2],
       }}
       transition={{
-        duration: 0.45,
+        duration: 4,
         delay: instance.delay,
-        ease: "easeOut",
-        times: [0, 0.2, 0.5, 0.8, 1],
+        ease: "easeInOut",
+        times: [0, 0.15, 0.45, 0.75, 1],
+        repeat: Infinity,
+        repeatDelay: 0.5,
       }}
     >
       <Image src={src} alt="" fill className="object-contain drop-shadow-lg" />
@@ -113,12 +116,13 @@ export function StoryStreetSection({
   const totalSlides = 3;
   const swipeThreshold = 50;
 
-  // Reaction configs - 2-3 hearts, 1-2 thumbs, staggered fast
+  // Reaction configs - start after IG post floats up (0.35s), staggered
   const reactionConfigs: ReactionInstance[] = useMemo(() => [
-    { id: "heart-1", type: "heart", scale: 1.1, xOffset: -90, yOffset: 0, delay: 0.05 },
-    { id: "thumbs-1", type: "thumbsUp", scale: 1.15, xOffset: 70, yOffset: 4, delay: 0.12 },
-    { id: "heart-2", type: "heart", scale: 1.3, xOffset: 20, yOffset: -2, delay: 0.2 },
-    { id: "heart-3", type: "heart", scale: 0.95, xOffset: -40, yOffset: 6, delay: 0.28 },
+    { id: "heart-1", type: "heart", scale: 1.1, xOffset: -90, yOffset: 0, delay: 0.35 },
+    { id: "thumbs-1", type: "thumbsUp", scale: 1.15, xOffset: 70, yOffset: 4, delay: 0.5 },
+    { id: "heart-2", type: "heart", scale: 1.3, xOffset: 20, yOffset: -2, delay: 0.7 },
+    { id: "thumbs-2", type: "thumbsUp", scale: 1.0, xOffset: -50, yOffset: 5, delay: 0.9 },
+    { id: "heart-3", type: "heart", scale: 0.95, xOffset: 100, yOffset: -3, delay: 1.1 },
   ], []);
 
   const goToSlide = (index: number) => {
@@ -238,7 +242,7 @@ export function StoryStreetSection({
                   </>
                 )}
 
-                {/* IG Post - MIDDLE layer - visible immediately with BIG upward motion */}
+                {/* IG Post - MIDDLE layer - floats up then hovers */}
                 <AnimatePresence mode="sync">
                   {currentSlide === 1 && (
                     <motion.div
@@ -247,13 +251,13 @@ export function StoryStreetSection({
                       style={{ zIndex: 20 }}
                       initial={{
                         x: "-50%",
-                        y: "16%",
+                        y: "18%",
                         opacity: 0.85,
                         scale: 0.95,
                       }}
                       animate={{
                         x: "-50%",
-                        y: "-8%",
+                        y: "2%",
                         opacity: 1,
                         scale: 1,
                       }}
@@ -266,14 +270,26 @@ export function StoryStreetSection({
                         ease: "easeOut",
                       }}
                     >
-                      <Image
-                        src={ASSETS.igPost}
-                        alt="Coming soon post"
-                        fill
-                        className="object-contain drop-shadow-2xl"
-                        priority
-                        draggable={false}
-                      />
+                      {/* Subtle hover animation */}
+                      <motion.div
+                        className="w-full h-full relative"
+                        animate={{ y: [0, -8, 0, -5, 0] }}
+                        transition={{
+                          duration: 5,
+                          ease: "easeInOut",
+                          repeat: Infinity,
+                          delay: 0.4,
+                        }}
+                      >
+                        <Image
+                          src={ASSETS.igPost}
+                          alt="Coming soon post"
+                          fill
+                          className="object-contain drop-shadow-2xl"
+                          priority
+                          draggable={false}
+                        />
+                      </motion.div>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -311,17 +327,17 @@ export function StoryStreetSection({
                 </AnimatePresence>
               </div>
 
-              {/* Caption overlay - visible immediately on Slide 2 */}
+              {/* Caption overlay - appears after hearts start with a breath */}
               <AnimatePresence>
                 {currentSlide === 1 && (
                   <motion.div
                     key={`slide2-caption-${slide2Key}`}
                     className="relative -mt-24 sm:-mt-28 md:-mt-20 mx-auto w-[85%] sm:w-[80%] max-w-md pointer-events-none"
                     style={{ zIndex: 35 }}
-                    initial={{ opacity: 0.85, y: 8 }}
+                    initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 5 }}
-                    transition={{ duration: 0.25, ease: "easeOut" }}
+                    transition={{ duration: 0.35, ease: "easeOut", delay: 1.4 }}
                   >
                     <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-3 md:px-5 md:py-4 border-2 border-[#5b8fc9]/35 ring-1 ring-[#5b8fc9]/15">
                       <h3 className="font-semibold text-[#1A1F24] text-sm sm:text-base md:text-lg mb-1">
