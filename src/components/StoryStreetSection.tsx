@@ -1,26 +1,33 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Container } from "@/components/Container";
 
-// Asset paths - all in /public root
+// Asset paths
 const ASSETS = {
-  streetBase: "/slide-0.png",
-  igPost: "/coming-soon.png",
-  heart: "/heart-overlay.png",
-  thumbsUp: "/thumbs-up.png",
+  streetBase: "/story/slide-0.png",
+  igPost: "/story/overlays/coming-soon.png",
+  heart: "/story/overlays/heart-overlay.png",
+  thumbsUp: "/story/overlays/thumbs-up.png",
 };
 
-// Safe image component that handles missing files
+// Reaction instance type
+interface ReactionInstance {
+  id: string;
+  type: "heart" | "thumbsUp";
+  scale: number;
+  xOffset: number;
+  delay: number;
+}
+
+// Safe image component
 function SafeImage({
   src,
   alt,
   fill,
-  width,
-  height,
   className,
   priority,
   style,
@@ -28,25 +35,18 @@ function SafeImage({
   src: string;
   alt: string;
   fill?: boolean;
-  width?: number;
-  height?: number;
   className?: string;
   priority?: boolean;
   style?: React.CSSProperties;
 }) {
   const [hasError, setHasError] = useState(false);
-
-  if (hasError) {
-    return null;
-  }
+  if (hasError) return null;
 
   return (
     <Image
       src={src}
       alt={alt}
       fill={fill}
-      width={width}
-      height={height}
       className={className}
       priority={priority}
       style={style}
@@ -55,49 +55,106 @@ function SafeImage({
   );
 }
 
-// Floating reaction component (hearts, thumbs up)
-function FloatingReaction({
-  src,
-  delay,
-  startX,
-  size,
-  driftX,
+// Coming Soon Post overlay
+function ComingSoonPost({
+  isActive,
   reducedMotion,
 }: {
-  src: string;
-  delay: number;
-  startX: string;
-  size: number;
-  driftX: number;
+  isActive: boolean;
   reducedMotion: boolean;
 }) {
   const [hasError, setHasError] = useState(false);
+  if (hasError) return null;
 
-  if (hasError || reducedMotion) {
-    return null;
+  // Reduced motion: show statically
+  if (reducedMotion && isActive) {
+    return (
+      <div
+        className="absolute w-32 h-40 md:w-40 md:h-48 lg:w-48 lg:h-56 pointer-events-none z-10"
+        style={{
+          left: "50%",
+          bottom: "30%",
+          transform: "translateX(-50%)",
+          opacity: 0.65,
+        }}
+      >
+        <Image
+          src={ASSETS.igPost}
+          alt=""
+          fill
+          className="object-contain drop-shadow-xl"
+          onError={() => setHasError(true)}
+        />
+      </div>
+    );
   }
 
   return (
+    <AnimatePresence>
+      {isActive && (
+        <motion.div
+          className="absolute w-32 h-40 md:w-40 md:h-48 lg:w-48 lg:h-56 pointer-events-none z-10"
+          style={{ left: "50%", bottom: "15%", x: "-50%" }}
+          initial={{ opacity: 0, y: 80 }}
+          animate={{
+            opacity: [0, 1, 1, 0.65],
+            y: [80, 0, 0, 0],
+          }}
+          transition={{
+            duration: 1.7,
+            ease: "easeOut",
+            times: [0, 0.4, 0.6, 1],
+          }}
+        >
+          <Image
+            src={ASSETS.igPost}
+            alt=""
+            fill
+            className="object-contain drop-shadow-xl"
+            onError={() => setHasError(true)}
+          />
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
+// Single floating reaction
+function FloatingReaction({
+  instance,
+  reducedMotion,
+}: {
+  instance: ReactionInstance;
+  reducedMotion: boolean;
+}) {
+  const [hasError, setHasError] = useState(false);
+  const src = instance.type === "heart" ? ASSETS.heart : ASSETS.thumbsUp;
+  const size = instance.type === "heart" ? 32 : 28;
+
+  if (hasError || reducedMotion) return null;
+
+  return (
     <motion.div
-      className="absolute pointer-events-none"
+      className="absolute pointer-events-none z-20"
       style={{
-        left: startX,
-        bottom: "45%",
-        width: size,
-        height: size,
+        left: `calc(50% + ${instance.xOffset}px)`,
+        bottom: "40%",
+        width: size * instance.scale,
+        height: size * instance.scale,
+        transform: "translateX(-50%)",
       }}
-      initial={{ opacity: 0, y: 20, scale: 0.3 }}
+      initial={{ opacity: 0, y: 0, scale: 0.3 }}
       animate={{
         opacity: [0, 1, 1, 0],
-        y: [20, -20, -60, -100],
-        x: [0, driftX * 0.3, driftX * 0.6, driftX],
-        scale: [0.3, 1, 1, 0.7],
+        y: [0, -30, -70, -110],
+        x: [0, instance.xOffset * 0.2, instance.xOffset * 0.4, instance.xOffset * 0.5],
+        scale: [0.3, instance.scale, instance.scale, instance.scale * 0.7],
       }}
       transition={{
-        duration: 2.2,
-        delay: delay,
+        duration: 1.2,
+        delay: instance.delay,
         ease: "easeOut",
-        times: [0, 0.25, 0.7, 1],
+        times: [0, 0.2, 0.65, 1],
       }}
     >
       <Image
@@ -111,84 +168,27 @@ function FloatingReaction({
   );
 }
 
-// Instagram post that floats up and then drifts away
-function FloatingIGPost({
-  show,
-  reducedMotion,
+// Main section component
+export function StoryStreetSection({
+  showOldCards,
+  onToggleOldCards,
+  oldCardsContent,
 }: {
-  show: boolean;
-  reducedMotion: boolean;
+  showOldCards: boolean;
+  onToggleOldCards: () => void;
+  oldCardsContent: React.ReactNode;
 }) {
-  const [hasError, setHasError] = useState(false);
-
-  if (hasError) {
-    return null;
-  }
-
-  if (reducedMotion) {
-    // For reduced motion, just show statically if triggered
-    return show ? (
-      <div
-        className="absolute w-28 h-36 md:w-36 md:h-44 lg:w-44 lg:h-52 pointer-events-none"
-        style={{
-          left: "50%",
-          bottom: "35%",
-          transform: "translateX(-50%)",
-        }}
-      >
-        <Image
-          src={ASSETS.igPost}
-          alt=""
-          fill
-          className="object-contain"
-          onError={() => setHasError(true)}
-        />
-      </div>
-    ) : null;
-  }
-
-  return (
-    <AnimatePresence>
-      {show && (
-        <motion.div
-          className="absolute w-28 h-36 md:w-36 md:h-44 lg:w-44 lg:h-52 pointer-events-none"
-          style={{
-            left: "50%",
-            bottom: "25%",
-            x: "-50%",
-          }}
-          initial={{ opacity: 0, y: 60, scale: 0.8 }}
-          animate={{
-            opacity: [0, 1, 1, 1, 0],
-            y: [60, 0, -10, -20, -60],
-            scale: [0.8, 1, 1, 1, 0.9],
-          }}
-          transition={{
-            duration: 3.5,
-            ease: "easeOut",
-            times: [0, 0.2, 0.5, 0.75, 1],
-          }}
-        >
-          <Image
-            src={ASSETS.igPost}
-            alt=""
-            fill
-            className="object-contain drop-shadow-lg"
-            onError={() => setHasError(true)}
-          />
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-}
-
-export function StoryStreetSection() {
   const prefersReducedMotion = useReducedMotion();
   const reducedMotion = prefersReducedMotion ?? false;
 
-  const sectionRef = useRef<HTMLElement>(null);
-  const [hasTriggered, setHasTriggered] = useState(false);
-  const [showReactions, setShowReactions] = useState(false);
+  // Stage state
+  const [stage, setStage] = useState(0);
+  const [hasPlayedStage1, setHasPlayedStage1] = useState(false);
+  const [reactions, setReactions] = useState<ReactionInstance[]>([]);
+
+  // Refs for sentinel elements
+  const stage1SentinelRef = useRef<HTMLDivElement>(null);
+  const oldCardsSectionId = "old-cards-section";
 
   // Preload images
   useEffect(() => {
@@ -198,39 +198,59 @@ export function StoryStreetSection() {
     });
   }, []);
 
-  // IntersectionObserver to trigger animation when section is ~40% visible
+  // Spawn reactions for Stage 1
+  const spawnReactions = useCallback(() => {
+    const newReactions: ReactionInstance[] = [
+      { id: "heart-1", type: "heart", scale: 0.85, xOffset: -25, delay: 0.15 },
+      { id: "heart-2", type: "heart", scale: 1.05, xOffset: 20, delay: 0.35 },
+      { id: "heart-3", type: "heart", scale: 0.7, xOffset: 5, delay: 0.55 },
+      { id: "thumbs-1", type: "thumbsUp", scale: 0.9, xOffset: -10, delay: 0.75 },
+    ];
+    setReactions(newReactions);
+
+    // Clear reactions after animation completes
+    setTimeout(() => setReactions([]), 3000);
+  }, []);
+
+  // Stage 1 trigger via IntersectionObserver
   useEffect(() => {
-    if (reducedMotion) {
-      setHasTriggered(true);
+    if (hasPlayedStage1 || reducedMotion) {
+      if (reducedMotion) {
+        setStage(1);
+        setHasPlayedStage1(true);
+      }
       return;
     }
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && !hasTriggered) {
-            setHasTriggered(true);
-            // Delay reactions until IG post is partially visible
-            setTimeout(() => setShowReactions(true), 1200);
+          if (entry.isIntersecting && !hasPlayedStage1) {
+            setStage(1);
+            setHasPlayedStage1(true);
+            // Spawn reactions after post starts animating
+            setTimeout(spawnReactions, 800);
           }
         });
       },
-      { threshold: 0.4 }
+      { threshold: 0.6 }
     );
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
+    if (stage1SentinelRef.current) {
+      observer.observe(stage1SentinelRef.current);
     }
 
     return () => observer.disconnect();
-  }, [hasTriggered, reducedMotion]);
+  }, [hasPlayedStage1, reducedMotion, spawnReactions]);
 
   return (
-    <section ref={sectionRef} className="py-16 md:py-24 bg-[#F4F1EC]">
+    <section className="py-16 md:py-24 bg-[#F4F1EC]">
       <Container>
-        {/* Street scene container */}
         <div className="relative w-full max-w-4xl mx-auto">
-          {/* Image container with aspect ratio */}
+          {/* Stage 0 sentinel (top of section) */}
+          <div data-stage="0" className="absolute top-0 h-1" />
+
+          {/* Image container */}
           <div className="relative w-full aspect-[4/3] md:aspect-[16/10] rounded-xl overflow-hidden bg-[#2B3A44]/5">
             {/* Base street image - always visible */}
             <SafeImage
@@ -241,133 +261,109 @@ export function StoryStreetSection() {
               priority
             />
 
-            {/* Instagram post floating up */}
-            <FloatingIGPost show={hasTriggered} reducedMotion={reducedMotion} />
+            {/* Stage 1 sentinel - positioned to trigger when image is mostly visible */}
+            <div
+              ref={stage1SentinelRef}
+              data-stage="1"
+              className="absolute left-0 right-0 h-4"
+              style={{ top: "60%" }}
+            />
 
-            {/* Floating reactions - hearts and thumbs up */}
-            {showReactions && !reducedMotion && (
-              <>
-                {/* Heart 1 - left of center, smaller */}
-                <FloatingReaction
-                  src={ASSETS.heart}
-                  delay={0}
-                  startX="42%"
-                  size={28}
-                  driftX={-15}
-                  reducedMotion={reducedMotion}
-                />
-                {/* Heart 2 - center-right, medium */}
-                <FloatingReaction
-                  src={ASSETS.heart}
-                  delay={0.3}
-                  startX="52%"
-                  size={36}
-                  driftX={10}
-                  reducedMotion={reducedMotion}
-                />
-                {/* Heart 3 - right, larger */}
-                <FloatingReaction
-                  src={ASSETS.heart}
-                  delay={0.6}
-                  startX="48%"
-                  size={32}
-                  driftX={20}
-                  reducedMotion={reducedMotion}
-                />
-                {/* Thumbs up - slightly delayed */}
-                <FloatingReaction
-                  src={ASSETS.thumbsUp}
-                  delay={0.9}
-                  startX="45%"
-                  size={30}
-                  driftX={-8}
-                  reducedMotion={reducedMotion}
-                />
-              </>
+            {/* Coming Soon Post - only renders when stage >= 1 */}
+            <ComingSoonPost isActive={stage >= 1} reducedMotion={reducedMotion} />
+
+            {/* Floating reactions */}
+            {reactions.map((reaction) => (
+              <FloatingReaction
+                key={reaction.id}
+                instance={reaction}
+                reducedMotion={reducedMotion}
+              />
+            ))}
+
+            {/* Reduced motion: show static heart */}
+            {reducedMotion && stage >= 1 && (
+              <div
+                className="absolute w-6 h-6 pointer-events-none z-20"
+                style={{ left: "52%", bottom: "50%", opacity: 0.8 }}
+              >
+                <SafeImage src={ASSETS.heart} alt="" fill className="object-contain" />
+              </div>
             )}
 
-            {/* Subtle gradient overlay at bottom */}
+            {/* Subtle gradient overlay */}
             <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-[#2B3A44]/10 to-transparent pointer-events-none" />
           </div>
 
-          {/* Copy and CTA below image */}
+          {/* Copy and CTA */}
           <div className="mt-8 text-center">
-            <motion.p
+            <p
               className="text-2xl md:text-3xl lg:text-4xl font-normal text-[#1A1F24] mb-6"
               style={{ fontFamily: "var(--font-libre-baskerville)" }}
-              initial={reducedMotion ? {} : { opacity: 0, y: 10 }}
-              animate={hasTriggered ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.3, duration: 0.5 }}
             >
               Get noticed.
-            </motion.p>
-            <motion.div
-              initial={reducedMotion ? {} : { opacity: 0, y: 10 }}
-              animate={hasTriggered ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.5, duration: 0.5 }}
+            </p>
+            <Link
+              href="/social"
+              className="inline-block px-8 py-3 bg-[#2B3A44] text-[#F4F1EC] font-medium rounded-full hover:bg-[#1A1F24] transition-colors duration-300"
             >
-              <Link
-                href="/social"
-                className="inline-block px-8 py-3 bg-[#2B3A44] text-[#F4F1EC] font-medium rounded-full hover:bg-[#1A1F24] transition-colors duration-300"
+              Social that shows up
+            </Link>
+          </div>
+
+          {/* Toggle button */}
+          <div className="mt-10 text-center">
+            <button
+              onClick={onToggleOldCards}
+              aria-expanded={showOldCards}
+              aria-controls={oldCardsSectionId}
+              className="inline-flex items-center gap-2 text-sm text-[#5A6570] hover:text-[#2B3A44] transition-colors duration-200"
+            >
+              <span>
+                {showOldCards ? "Hide the long version" : "Want the straight explanation?"}
+              </span>
+              <svg
+                className={`w-4 h-4 transition-transform duration-300 ${
+                  showOldCards ? "rotate-180" : ""
+                }`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
               >
-                Social that shows up
-              </Link>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Old cards section - revealed IN PLACE */}
+          <div
+            id={oldCardsSectionId}
+            className={`overflow-hidden transition-all ${
+              reducedMotion ? "duration-0" : "duration-300 ease-out"
+            }`}
+            style={{
+              maxHeight: showOldCards ? "2000px" : "0px",
+              opacity: showOldCards ? 1 : 0,
+              marginTop: showOldCards ? "2rem" : "0",
+            }}
+          >
+            <motion.div
+              initial={false}
+              animate={{
+                y: showOldCards ? 0 : 20,
+                opacity: showOldCards ? 1 : 0,
+              }}
+              transition={{
+                duration: reducedMotion ? 0 : 0.25,
+                ease: "easeOut",
+              }}
+            >
+              {oldCardsContent}
             </motion.div>
           </div>
         </div>
       </Container>
     </section>
-  );
-}
-
-// Toggle component for revealing old cards section
-interface CardsToggleProps {
-  isOpen: boolean;
-  onToggle: () => void;
-}
-
-export function CardsToggle({ isOpen, onToggle }: CardsToggleProps) {
-  return (
-    <button
-      onClick={onToggle}
-      className="flex items-center justify-center gap-2 mx-auto text-sm text-[#5A6570] hover:text-[#2B3A44] transition-colors duration-200"
-    >
-      <span>{isOpen ? "Hide the long version" : "Want the straight explanation?"}</span>
-      <svg
-        className={`w-4 h-4 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        strokeWidth={2}
-      >
-        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-      </svg>
-    </button>
-  );
-}
-
-// Wrapper for the old cards section with animation
-interface OldCardsSectionWrapperProps {
-  isVisible: boolean;
-  children: React.ReactNode;
-}
-
-export function OldCardsSectionWrapper({ isVisible, children }: OldCardsSectionWrapperProps) {
-  const prefersReducedMotion = useReducedMotion();
-  const reducedMotion = prefersReducedMotion ?? false;
-
-  return (
-    <AnimatePresence>
-      {isVisible && (
-        <motion.div
-          initial={reducedMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: reducedMotion ? 0.1 : 0.4, ease: "easeOut" }}
-        >
-          {children}
-        </motion.div>
-      )}
-    </AnimatePresence>
   );
 }

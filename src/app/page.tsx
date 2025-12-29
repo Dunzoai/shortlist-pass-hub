@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, useReducedMotion, useInView } from "framer-motion";
 import { Container } from "@/components/Container";
-import { StoryStreetSection, CardsToggle, OldCardsSectionWrapper } from "@/components/StoryStreetSection";
+import { StoryStreetSection } from "@/components/StoryStreetSection";
 import { useState, useEffect, useRef } from "react";
 
 const fadeUpVariant = {
@@ -506,29 +506,18 @@ export default function Home() {
       {/* Scrolling Belt */}
       <ScrollingBelt />
 
-      {/* StoryStreet Section - New visual scene */}
-      <StoryStreetSection />
-
-      {/* Toggle for old cards section */}
-      <div className="py-8 bg-[#F4F1EC]">
-        <CardsToggle
-          isOpen={showOldCards}
-          onToggle={() => setShowOldCards(!showOldCards)}
-        />
-      </div>
-
-      {/* Old Service Tiles (hidden by default) */}
-      <OldCardsSectionWrapper isVisible={showOldCards}>
-        <section className="pb-24 bg-[#F4F1EC]">
-          <Container>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {services.map((service, index) => (
-                <ServiceTile key={service.title} {...service} index={index} />
-              ))}
-            </div>
-          </Container>
-        </section>
-      </OldCardsSectionWrapper>
+      {/* StoryStreet Section - with old cards revealed in place */}
+      <StoryStreetSection
+        showOldCards={showOldCards}
+        onToggleOldCards={() => setShowOldCards(!showOldCards)}
+        oldCardsContent={
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {services.map((service, index) => (
+              <ServiceTile key={service.title} {...service} index={index} />
+            ))}
+          </div>
+        }
+      />
 
       {/* How We Help */}
       <HowWeHelp />
