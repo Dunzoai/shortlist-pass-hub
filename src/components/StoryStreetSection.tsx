@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useMemo } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 
 // Asset paths
@@ -359,7 +360,7 @@ export function StoryStreetSection({
                   {currentSlide === 2 && (
                     <motion.div
                       key={`smartpage-${slide3Key}`}
-                      className="absolute pointer-events-none left-1/2 bottom-[35%] md:bottom-[27%] w-[280px] h-[380px] md:w-[420px] md:h-[570px]"
+                      className="absolute pointer-events-none left-1/2 bottom-[35%] md:bottom-[32%] w-[280px] h-[380px] md:w-[420px] md:h-[570px]"
                       style={{ zIndex: 30 }}
                       initial={{
                         x: "-50%",
@@ -411,8 +412,8 @@ export function StoryStreetSection({
                   {currentSlide === 2 && (
                     <motion.div
                       key={`smartpage-text-${slide3Key}`}
-                      className="absolute pointer-events-none left-1/2 bottom-[35%] md:bottom-[27%] w-[280px] h-[380px] md:w-[420px] md:h-[570px]"
-                      style={{ zIndex: 32 }}
+                      className="absolute pointer-events-none left-1/2 bottom-[35%] md:bottom-[32%] w-[280px] h-[380px] md:w-[420px] md:h-[570px]"
+                      style={{ zIndex: 32, transform: "translateX(-50%)" }}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0, transition: { duration: 0.1 } }}
@@ -533,14 +534,14 @@ export function StoryStreetSection({
                 {currentSlide === 1 && (
                   <motion.div
                     key={`slide2-caption-${slide2Key}`}
-                    className="relative -mt-24 sm:-mt-28 md:-mt-20 mx-auto w-[85%] sm:w-[80%] max-w-md pointer-events-none"
+                    className="relative -mt-24 sm:-mt-28 md:-mt-20 mx-auto w-[85%] sm:w-[80%] max-w-md"
                     style={{ zIndex: 40 }}
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, transition: { duration: 0.08 } }}
                     transition={{ duration: 0.35, ease: "easeOut", delay: 0.8 }}
                   >
-                    <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-3 md:px-5 md:py-4 border-2 border-[#5b8fc9]/35 ring-1 ring-[#5b8fc9]/15">
+                    <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-3 md:px-5 md:py-4 border-2 border-[#5b8fc9]/35 ring-1 ring-[#5b8fc9]/15 pointer-events-none">
                       <h3 className="font-semibold text-[#1A1F24] text-sm sm:text-base md:text-lg mb-1">
                         Social is how you get noticed
                       </h3>
@@ -557,6 +558,14 @@ export function StoryStreetSection({
                         </motion.span>
                       </p>
                     </div>
+                    <div className="flex justify-center mt-3">
+                      <Link
+                        href="/social"
+                        className="inline-block px-5 py-2 bg-[#5b8fc9] text-[#F4F1EC] text-sm font-medium rounded-lg hover:bg-[#4a7eb8] transition-colors duration-200 pointer-events-auto"
+                      >
+                        Learn more
+                      </Link>
+                    </div>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -566,14 +575,14 @@ export function StoryStreetSection({
                 {currentSlide === 2 && (
                   <motion.div
                     key={`slide3-caption-${slide3Key}`}
-                    className="relative -mt-24 sm:-mt-28 md:-mt-20 mx-auto w-[90%] sm:w-[85%] max-w-lg pointer-events-none"
+                    className="relative -mt-24 sm:-mt-28 md:-mt-20 mx-auto w-[90%] sm:w-[85%] max-w-lg"
                     style={{ zIndex: 40 }}
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, transition: { duration: 0.08 } }}
                     transition={{ duration: 0.35, ease: "easeOut", delay: 1.5 }}
                   >
-                    <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-3 md:px-5 md:py-4 border-2 border-[#5b8fc9]/35 ring-1 ring-[#5b8fc9]/15">
+                    <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-3 md:px-5 md:py-4 border-2 border-[#5b8fc9]/35 ring-1 ring-[#5b8fc9]/15 pointer-events-none">
                       <h3 className="font-semibold text-[#1A1F24] text-sm sm:text-base md:text-lg mb-1">
                         Your business assistant, online.
                       </h3>
@@ -583,6 +592,14 @@ export function StoryStreetSection({
                       <p className="text-[#5A6570] text-xs sm:text-sm md:text-base mt-2">
                         Think of it as a lightweight website with superpowers. One place. Every answer. No searching. No confusion.
                       </p>
+                    </div>
+                    <div className="flex justify-center mt-3">
+                      <Link
+                        href="/smartpage"
+                        className="inline-block px-5 py-2 bg-[#5b8fc9] text-[#F4F1EC] text-sm font-medium rounded-lg hover:bg-[#4a7eb8] transition-colors duration-200 pointer-events-auto"
+                      >
+                        Meet your SmartPage
+                      </Link>
                     </div>
                   </motion.div>
                 )}
