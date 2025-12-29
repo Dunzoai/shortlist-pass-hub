@@ -47,7 +47,7 @@ function FloatingReaction({ instance }: { instance: ReactionInstance }) {
         scale: 0.3,
       }}
       animate={{
-        opacity: [0, 0.9, 1, 1, 0.8, 0],
+        opacity: [0, 1, 1, 1, 0.8, 0],
         y: [0, -80, -200, -380, -520, -680],
         scale: [
           0.3,
@@ -68,12 +68,12 @@ function FloatingReaction({ instance }: { instance: ReactionInstance }) {
         ],
       }}
       transition={{
-        duration: 6,
+        duration: 5.5,
         delay: instance.delay,
         ease: "easeInOut",
-        times: [0, 0.12, 0.35, 0.58, 0.8, 1],
+        times: [0, 0.06, 0.3, 0.55, 0.8, 1],
         repeat: Infinity,
-        repeatDelay: 0.3,
+        repeatDelay: 0.2,
       }}
     >
       <Image src={src} alt="" fill className="object-contain drop-shadow-lg" />
@@ -134,13 +134,13 @@ export function StoryStreetSection({
   const totalSlides = 3;
   const swipeThreshold = 50;
 
-  // Randomized reaction configs - staggered delays for continuous stream
+  // Randomized reaction configs - quick appearance, staggered for continuous stream
   const reactionConfigs: ReactionInstance[] = useMemo(() => [
     { id: "heart-1", type: "heart", scale: 1.1, xOffset: -100, yOffset: 0, delay: 0 },
-    { id: "heart-2", type: "heart", scale: 1.4, xOffset: 85, yOffset: 8, delay: 1.0 },
-    { id: "heart-3", type: "heart", scale: 0.9, xOffset: -20, yOffset: -5, delay: 2.0 },
-    { id: "thumbs-1", type: "thumbsUp", scale: 1.2, xOffset: -60, yOffset: 3, delay: 0.5 },
-    { id: "thumbs-2", type: "thumbsUp", scale: 1.0, xOffset: 120, yOffset: -3, delay: 1.5 },
+    { id: "thumbs-1", type: "thumbsUp", scale: 1.2, xOffset: -60, yOffset: 3, delay: 0.15 },
+    { id: "heart-2", type: "heart", scale: 1.4, xOffset: 85, yOffset: 8, delay: 0.35 },
+    { id: "thumbs-2", type: "thumbsUp", scale: 1.0, xOffset: 120, yOffset: -3, delay: 0.6 },
+    { id: "heart-3", type: "heart", scale: 0.9, xOffset: -20, yOffset: -5, delay: 0.9 },
   ], []);
 
   const goToSlide = (index: number) => {
@@ -208,15 +208,15 @@ export function StoryStreetSection({
     if (currentSlide === 1 && !hasEnteredSlide2.current) {
       hasEnteredSlide2.current = true;
 
-      // Hearts/thumbs appear AFTER IG post rises (1.4s animation)
+      // Hearts/thumbs appear shortly after IG post starts rising
       reactionTimer = setTimeout(() => {
         setShowReactions(true);
-      }, 1600);
+      }, 1200);
 
-      // Caption appears AFTER hearts/thumbs are animating
+      // Caption appears AFTER hearts/thumbs are clearly visible and floating
       captionTimer = setTimeout(() => {
         setShowCaption(true);
-      }, 3000);
+      }, 4500);
     }
 
     if (currentSlide !== 1) {
@@ -351,39 +351,6 @@ export function StoryStreetSection({
                   )}
                 </AnimatePresence>
 
-                {/* Slide 2 caption - overlay at bottom of street */}
-                <AnimatePresence>
-                  {currentSlide === 1 && showCaption && (
-                    <motion.div
-                      key="slide2-caption-overlay"
-                      className="absolute left-1/2 bottom-[-2%] md:bottom-[2%] -translate-x-1/2 w-[90%] max-w-lg pointer-events-none"
-                      style={{ zIndex: 35 }}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      transition={{ duration: 0.4 }}
-                    >
-                      <div className="bg-white/85 backdrop-blur-sm rounded-xl shadow-lg px-5 py-4 border-2 border-[#64748b]/30 ring-1 ring-[#64748b]/10">
-                        <h3 className="font-semibold text-[#1A1F24] text-base md:text-lg mb-1">
-                          Social is how you get noticed
-                        </h3>
-                        <p className="text-[#5A6570] text-sm md:text-base">
-                          Before websites. Before clicks. It&apos;s how strangers become familiar — and familiar turns into trust.
-                        </p>
-                        <p className="text-[#5A6570]/70 text-xs md:text-sm mt-2 flex items-center justify-center gap-1">
-                          <span>Swipe for the next step</span>
-                          <motion.span
-                            animate={{ x: [0, 4, 0] }}
-                            transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
-                          >
-                            →
-                          </motion.span>
-                        </p>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
                 {/* Slide 3 placeholder */}
                 <AnimatePresence>
                   {currentSlide === 2 && (
@@ -401,6 +368,39 @@ export function StoryStreetSection({
                   )}
                 </AnimatePresence>
               </div>
+
+              {/* Caption overlay - outside stage container to allow overflow */}
+              <AnimatePresence>
+                {currentSlide === 1 && showCaption && (
+                  <motion.div
+                    key="slide2-caption-overlay"
+                    className="relative -mt-24 sm:-mt-28 md:-mt-20 mx-auto w-[85%] sm:w-[80%] max-w-md pointer-events-none"
+                    style={{ zIndex: 35 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ duration: 0.4 }}
+                  >
+                    <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-3 md:px-5 md:py-4 border-2 border-[#5b8fc9]/35 ring-1 ring-[#5b8fc9]/15">
+                      <h3 className="font-semibold text-[#1A1F24] text-sm sm:text-base md:text-lg mb-1">
+                        Social is how you get noticed
+                      </h3>
+                      <p className="text-[#5A6570] text-xs sm:text-sm md:text-base">
+                        Before websites. Before clicks. It&apos;s how strangers become familiar and familiar turns into trust.
+                      </p>
+                      <p className="text-[#5A6570]/70 text-[10px] sm:text-xs md:text-sm mt-2 flex items-center justify-center gap-1">
+                        <span>Swipe for the next step</span>
+                        <motion.span
+                          animate={{ x: [0, 4, 0] }}
+                          transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+                        >
+                          →
+                        </motion.span>
+                      </p>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
               {/* Caption area BELOW the stage image */}
               <div className="mt-6 text-center">
@@ -490,39 +490,48 @@ export function StoryStreetSection({
             </div>
           </motion.div>
 
-      {/* Text explanation overlay - puzzle reveal */}
+      {/* Text explanation overlay - puzzle reveal with scene pieces */}
       <AnimatePresence>
         {showOldCards && (
           <motion.div
             key="cards-overlay"
             className="absolute inset-0 z-50 overflow-y-auto"
           >
-            {/* Animated background tiles for puzzle effect */}
-            <motion.div
-              className="absolute inset-0 bg-[#F4F1EC]"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.97 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
-            />
-
-            {/* Grid overlay for puzzle reveal effect */}
-            <div className="absolute inset-0 grid grid-cols-4 grid-rows-4 pointer-events-none">
-              {Array.from({ length: 16 }).map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="bg-[#F4F1EC]"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{
-                    duration: 0.4,
-                    delay: i * 0.03,
-                    ease: "easeOut",
-                  }}
-                />
-              ))}
+            {/* Grid of image tiles for puzzle effect - showing pieces of the street scene */}
+            <div className="absolute inset-0 grid grid-cols-6 grid-rows-8 pointer-events-none">
+              {Array.from({ length: 48 }).map((_, i) => {
+                const col = i % 6;
+                const row = Math.floor(i / 6);
+                return (
+                  <motion.div
+                    key={i}
+                    className="relative overflow-hidden"
+                    style={{
+                      backgroundImage: `url(${ASSETS.buildingLayer})`,
+                      backgroundSize: "600% 800%",
+                      backgroundPosition: `${col * 20}% ${row * 14.28}%`,
+                    }}
+                    initial={{ opacity: 0, scale: 0.7, rotate: -5 + Math.random() * 10 }}
+                    animate={{ opacity: 0.92, scale: 1, rotate: 0 }}
+                    exit={{ opacity: 0, scale: 0.85, rotate: 5 - Math.random() * 10 }}
+                    transition={{
+                      duration: 0.5,
+                      delay: (row * 0.04) + (col * 0.02) + Math.random() * 0.08,
+                      ease: "easeOut",
+                    }}
+                  />
+                );
+              })}
             </div>
+
+            {/* Frosted overlay for readability */}
+            <motion.div
+              className="absolute inset-0 bg-[#F4F1EC]/85 backdrop-blur-[2px]"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            />
 
             {/* Content with staggered reveal */}
             <motion.div
