@@ -37,7 +37,7 @@ function ComingSoonPost({
   if (reducedMotion && isActive) {
     return (
       <div
-        className="absolute pointer-events-none z-10"
+        className="absolute pointer-events-none z-[5]"
         style={{
           width: "clamp(140px, 28vw, 280px)",
           height: "clamp(170px, 34vw, 340px)",
@@ -61,7 +61,7 @@ function ComingSoonPost({
     <AnimatePresence>
       {isActive && (
         <motion.div
-          className="absolute pointer-events-none z-10"
+          className="absolute pointer-events-none z-[5]"
           style={{
             width: "clamp(140px, 28vw, 280px)",
             height: "clamp(170px, 34vw, 340px)",
@@ -307,7 +307,7 @@ export function StoryStreetSection({
             src={ASSETS.streetBase}
             alt="Street scene with storefronts"
             fill
-            className="object-cover object-center"
+            className="object-cover object-center z-10"
             priority
             draggable={false}
           />
