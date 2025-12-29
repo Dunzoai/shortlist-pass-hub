@@ -358,7 +358,7 @@ export function StoryStreetSection({
                   {currentSlide === 2 && (
                     <motion.div
                       key={`answer-bubble-${slide3Key}`}
-                      className="absolute pointer-events-none left-[47%] bottom-[65%] md:bottom-[62%] w-[440px] h-[220px] md:w-[560px] md:h-[280px]"
+                      className="absolute pointer-events-none left-[47%] bottom-[61%] md:bottom-[58%] w-[440px] h-[220px] md:w-[560px] md:h-[280px]"
                       style={{ zIndex: 30 }}
                       initial={{
                         x: "-50%",
@@ -377,7 +377,7 @@ export function StoryStreetSection({
                         transition: { duration: 0.1 },
                       }}
                       transition={{
-                        duration: 0.45,
+                        duration: 0.8,
                         ease: "easeOut",
                         delay: 0.6,
                       }}
@@ -442,7 +442,7 @@ export function StoryStreetSection({
                   {currentSlide === 2 && (
                     <motion.div
                       key={`question-bubble-${slide3Key}`}
-                      className="absolute pointer-events-none left-[47%] md:left-[50%] bottom-[30%] md:bottom-[34%] w-[270px] h-[135px] md:w-[330px] md:h-[165px]"
+                      className="absolute pointer-events-none left-[42%] md:left-[45%] bottom-[30%] md:bottom-[34%] w-[270px] h-[135px] md:w-[330px] md:h-[165px]"
                       style={{ zIndex: 42 }}
                       initial={{
                         opacity: 0,
@@ -457,7 +457,7 @@ export function StoryStreetSection({
                         transition: { duration: 0.1 },
                       }}
                       transition={{
-                        duration: 0.35,
+                        duration: 0.6,
                         ease: "easeOut",
                         delay: 0.15,
                       }}
