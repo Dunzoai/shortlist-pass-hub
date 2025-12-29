@@ -307,7 +307,7 @@ export function StoryStreetSection({
                 </AnimatePresence>
 
                 {/* Dim overlay - behind IG post & emojis, in front of scene */}
-                <AnimatePresence mode="sync">
+                <AnimatePresence>
                   {currentSlide === 1 && (
                     <motion.div
                       key="slide2-dim-overlay"
@@ -315,7 +315,7 @@ export function StoryStreetSection({
                       style={{ zIndex: 20 }}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
+                      exit={{ opacity: 0, transition: { duration: 0 } }}
                       transition={{ duration: 0.15 }}
                     />
                   )}
