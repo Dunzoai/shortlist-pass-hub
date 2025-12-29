@@ -69,19 +69,19 @@ function Slide2Content({
     if (isActive && !hasEntered) {
       onEnter();
       // Show caption after IG post lands
-      setTimeout(() => setShowCaption(true), 1500);
+      setTimeout(() => setShowCaption(true), 1800);
 
       // Spawn reactions once
       if (!reducedMotion) {
         setTimeout(() => {
           setReactions([
-            { id: "heart-1", type: "heart", scale: 0.9, xOffset: -80, delay: 0 },
-            { id: "heart-2", type: "heart", scale: 1.1, xOffset: 60, delay: 0.3 },
-            { id: "heart-3", type: "heart", scale: 0.85, xOffset: 0, delay: 0.6 },
-            { id: "thumbs-1", type: "thumbsUp", scale: 0.95, xOffset: -40, delay: 0.2 },
-            { id: "thumbs-2", type: "thumbsUp", scale: 0.8, xOffset: 80, delay: 0.5 },
+            { id: "heart-1", type: "heart", scale: 1.0, xOffset: -100, delay: 0 },
+            { id: "heart-2", type: "heart", scale: 1.2, xOffset: 80, delay: 0.3 },
+            { id: "heart-3", type: "heart", scale: 0.9, xOffset: 0, delay: 0.6 },
+            { id: "thumbs-1", type: "thumbsUp", scale: 1.0, xOffset: -50, delay: 0.2 },
+            { id: "thumbs-2", type: "thumbsUp", scale: 0.85, xOffset: 100, delay: 0.5 },
           ]);
-        }, 1800);
+        }, 2200);
       }
     }
 
@@ -97,58 +97,74 @@ function Slide2Content({
     <>
       {/* Dim overlay */}
       <motion.div
-        className="absolute inset-0 bg-black pointer-events-none z-[6]"
+        className="absolute inset-0 bg-black pointer-events-none z-[11]"
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.15 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.3 }}
       />
 
-      {/* IG Post - large and centered */}
+      {/* Floating reactions - always behind building */}
+      {!reducedMotion && reactions.map((reaction) => (
+        <FloatingReaction key={reaction.id} instance={reaction} />
+      ))}
+
+      {/* IG Post - starts behind building, rises up, then comes forward */}
       <motion.div
-        className="absolute pointer-events-none z-[7]"
+        className="absolute pointer-events-none"
         style={{
-          width: "clamp(280px, 70vw, 560px)",
-          height: "clamp(340px, 85vw, 680px)",
+          width: "clamp(320px, 75vw, 600px)",
+          height: "clamp(388px, 91vw, 728px)",
           left: "50%",
           x: "-50%",
         }}
         initial={{
-          top: "60%",
+          top: "70%",
           opacity: 0,
-          scale: 0.7,
+          scale: 0.8,
+          zIndex: 5,
         }}
         animate={{
-          top: "50%",
+          top: "20%",
           y: "-50%",
           opacity: 1,
           scale: 1,
+          zIndex: 15,
         }}
-        exit={{ opacity: 0, scale: 0.7 }}
+        exit={{ opacity: 0, scale: 0.8 }}
         transition={{
-          duration: 0.8,
-          ease: [0.16, 1, 0.3, 1], // easeOutCubic-ish
+          duration: 1.2,
+          ease: [0.16, 1, 0.3, 1],
+          zIndex: { delay: 0.6, duration: 0.3 },
         }}
       >
-        <Image
-          src={ASSETS.igPost}
-          alt="Coming soon post"
-          fill
-          className="object-contain drop-shadow-2xl"
-          priority
-        />
+        <motion.div
+          className="w-full h-full relative"
+          animate={{
+            y: [0, -8, 0, -5, 0],
+          }}
+          transition={{
+            duration: 6,
+            ease: "easeInOut",
+            repeat: Infinity,
+            delay: 1.5,
+          }}
+        >
+          <Image
+            src={ASSETS.igPost}
+            alt="Coming soon post"
+            fill
+            className="object-contain drop-shadow-2xl"
+            priority
+          />
+        </motion.div>
       </motion.div>
-
-      {/* Floating reactions */}
-      {!reducedMotion && reactions.map((reaction) => (
-        <FloatingReaction key={reaction.id} instance={reaction} />
-      ))}
 
       {/* Caption card */}
       <AnimatePresence>
         {showCaption && (
           <motion.div
-            className="absolute bottom-[8%] md:bottom-[12%] left-1/2 -translate-x-1/2 z-[8] pointer-events-none"
+            className="absolute bottom-[8%] md:bottom-[12%] left-1/2 -translate-x-1/2 z-20 pointer-events-none"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
@@ -169,32 +185,32 @@ function Slide2Content({
   );
 }
 
-// Single floating reaction
+// Single floating reaction - always behind all layers
 function FloatingReaction({ instance }: { instance: ReactionInstance }) {
   const src = instance.type === "heart" ? ASSETS.heart : ASSETS.thumbsUp;
-  const baseSize = instance.type === "heart" ? 50 : 45;
+  const baseSize = instance.type === "heart" ? 60 : 55;
 
   return (
     <motion.div
-      className="absolute pointer-events-none z-[7]"
+      className="absolute pointer-events-none z-[2]"
       style={{
         width: baseSize * instance.scale,
         height: baseSize * instance.scale,
         left: `calc(50% + ${instance.xOffset}px)`,
-        top: "55%",
+        top: "60%",
       }}
       initial={{
         opacity: 0,
         y: 0,
-        scale: 0.4,
+        scale: 0.3,
       }}
       animate={{
         opacity: [0, 1, 1, 0],
-        y: [0, -80, -180, -300],
-        scale: [0.4, instance.scale, instance.scale * 0.9, instance.scale * 0.5],
+        y: [0, -100, -220, -380],
+        scale: [0.3, instance.scale, instance.scale * 0.9, instance.scale * 0.5],
       }}
       transition={{
-        duration: 3,
+        duration: 3.5,
         delay: instance.delay,
         ease: "easeOut",
         times: [0, 0.2, 0.6, 1],
@@ -227,7 +243,7 @@ function PaginationDots({
   onDotClick: (index: number) => void;
 }) {
   return (
-    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-30">
+    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-30 pointer-events-auto">
       {Array.from({ length: slideCount }).map((_, i) => (
         <button
           key={i}
@@ -257,7 +273,10 @@ export function StoryStreetSection({
   const prefersReducedMotion = useReducedMotion();
   const reducedMotion = prefersReducedMotion ?? false;
 
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: false,
+    watchDrag: true,
+  });
   const [currentIndex, setCurrentIndex] = useState(0);
   const [hasEnteredSlide2, setHasEnteredSlide2] = useState(false);
 
@@ -293,45 +312,56 @@ export function StoryStreetSection({
     <section className="py-12 md:py-20 bg-[#F4F1EC]">
       {/* Carousel container */}
       <div className="relative max-w-7xl mx-auto">
-        {/* Fixed base scene - doesn't move */}
-        <div className="relative w-full aspect-[4/5] sm:aspect-[3/4] md:aspect-[16/9] lg:aspect-[2/1]">
-          <Image
-            src={ASSETS.streetBase}
-            alt="Street scene"
-            fill
-            className="object-cover object-center"
-            priority
-          />
-
-          {/* Overlay content based on current slide */}
-          <AnimatePresence mode="wait">
-            {currentIndex === 0 && <Slide1Content key="slide1" isActive={currentIndex === 0} />}
-            {currentIndex === 1 && (
-              <Slide2Content
-                key="slide2"
-                isActive={currentIndex === 1}
-                hasEntered={hasEnteredSlide2}
-                onEnter={() => setHasEnteredSlide2(true)}
-                reducedMotion={reducedMotion}
-              />
-            )}
-            {currentIndex === 2 && <Slide3Content key="slide3" isActive={currentIndex === 2} />}
-          </AnimatePresence>
-
-          {/* Pagination dots */}
-          <PaginationDots
-            slideCount={3}
-            currentIndex={currentIndex}
-            onDotClick={scrollTo}
-          />
-        </div>
-
-        {/* Hidden Embla viewport - controls pagination only */}
+        {/* Embla viewport - wraps the draggable area */}
         <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex">
-            <div className="flex-[0_0_100%] min-w-0 h-0" />
-            <div className="flex-[0_0_100%] min-w-0 h-0" />
-            <div className="flex-[0_0_100%] min-w-0 h-0" />
+          <div className="flex touch-pan-y">
+            {/* All 3 slides render the same scene with different overlays */}
+            {[0, 1, 2].map((slideIndex) => (
+              <div
+                key={slideIndex}
+                className="flex-[0_0_100%] min-w-0"
+              >
+                <div className="relative w-full aspect-[4/5] sm:aspect-[3/4] md:aspect-[16/9] lg:aspect-[2/1]">
+                  {/* Fixed base scene */}
+                  <Image
+                    src={ASSETS.streetBase}
+                    alt="Street scene"
+                    fill
+                    className="object-cover object-center z-10"
+                    style={{ position: 'absolute' }}
+                    priority
+                  />
+
+                  {/* Overlay content based on current slide */}
+                  <AnimatePresence mode="wait">
+                    {currentIndex === slideIndex && slideIndex === 0 && (
+                      <Slide1Content key="slide1" isActive={currentIndex === 0} />
+                    )}
+                    {currentIndex === slideIndex && slideIndex === 1 && (
+                      <Slide2Content
+                        key="slide2"
+                        isActive={currentIndex === 1}
+                        hasEntered={hasEnteredSlide2}
+                        onEnter={() => setHasEnteredSlide2(true)}
+                        reducedMotion={reducedMotion}
+                      />
+                    )}
+                    {currentIndex === slideIndex && slideIndex === 2 && (
+                      <Slide3Content key="slide3" isActive={currentIndex === 2} />
+                    )}
+                  </AnimatePresence>
+
+                  {/* Pagination dots - only show on first slide to avoid duplicates */}
+                  {slideIndex === 0 && (
+                    <PaginationDots
+                      slideCount={3}
+                      currentIndex={currentIndex}
+                      onDotClick={scrollTo}
+                    />
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
