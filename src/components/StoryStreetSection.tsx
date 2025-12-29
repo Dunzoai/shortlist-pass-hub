@@ -12,7 +12,7 @@ const ASSETS = {
   thumbsUp: "/storystreet/thumbs-up.png",
 };
 
-// Reaction instance type
+// Reaction instance type with z-index for depth
 interface ReactionInstance {
   id: string;
   type: "heart" | "thumbsUp";
@@ -20,6 +20,7 @@ interface ReactionInstance {
   xOffset: number;
   yOffset: number;
   delay: number;
+  zIndex: number; // 15 = behind IG post, 25 = in front of IG post
 }
 
 // Floating reaction component - normal speed, starts after IG post, loops
@@ -37,7 +38,7 @@ function FloatingReaction({ instance }: { instance: ReactionInstance }) {
         height: baseSize * instance.scale,
         left: `calc(50% + ${instance.xOffset}px)`,
         bottom: `${20 + instance.yOffset}%`,
-        zIndex: 10,
+        zIndex: instance.zIndex,
       }}
       initial={{
         opacity: 0.85,
@@ -116,13 +117,13 @@ export function StoryStreetSection({
   const totalSlides = 3;
   const swipeThreshold = 50;
 
-  // Reaction configs - start after IG post floats up (0.35s), staggered
+  // Reaction configs - some behind IG post (z:15), some in front (z:25) for depth
   const reactionConfigs: ReactionInstance[] = useMemo(() => [
-    { id: "heart-1", type: "heart", scale: 1.1, xOffset: -90, yOffset: 0, delay: 0.35 },
-    { id: "thumbs-1", type: "thumbsUp", scale: 1.15, xOffset: 70, yOffset: 4, delay: 0.5 },
-    { id: "heart-2", type: "heart", scale: 1.3, xOffset: 20, yOffset: -2, delay: 0.7 },
-    { id: "thumbs-2", type: "thumbsUp", scale: 1.0, xOffset: -50, yOffset: 5, delay: 0.9 },
-    { id: "heart-3", type: "heart", scale: 0.95, xOffset: 100, yOffset: -3, delay: 1.1 },
+    { id: "heart-1", type: "heart", scale: 1.1, xOffset: -90, yOffset: 0, delay: 0.35, zIndex: 15 },
+    { id: "thumbs-1", type: "thumbsUp", scale: 1.15, xOffset: 70, yOffset: 4, delay: 0.5, zIndex: 25 },
+    { id: "heart-2", type: "heart", scale: 1.3, xOffset: 20, yOffset: -2, delay: 0.7, zIndex: 25 },
+    { id: "thumbs-2", type: "thumbsUp", scale: 1.0, xOffset: -50, yOffset: 5, delay: 0.9, zIndex: 15 },
+    { id: "heart-3", type: "heart", scale: 0.95, xOffset: 100, yOffset: -3, delay: 1.1, zIndex: 15 },
   ], []);
 
   const goToSlide = (index: number) => {
@@ -242,12 +243,12 @@ export function StoryStreetSection({
                   </>
                 )}
 
-                {/* IG Post - MIDDLE layer - floats up then hovers */}
+                {/* IG Post - in front of dim overlay, pops */}
                 <AnimatePresence mode="sync">
                   {currentSlide === 1 && (
                     <motion.div
                       key={`igpost-${slide2Key}`}
-                      className="absolute pointer-events-none left-1/2 bottom-[42%] md:bottom-[27%] w-[325px] h-[395px] md:w-[550px] md:h-[668px]"
+                      className="absolute pointer-events-none left-1/2 bottom-[42%] md:bottom-[27%] w-[325px] h-[395px] md:w-[495px] md:h-[601px]"
                       style={{ zIndex: 20 }}
                       initial={{
                         x: "-50%",
@@ -294,16 +295,16 @@ export function StoryStreetSection({
                   )}
                 </AnimatePresence>
 
-                {/* Dim overlay for slide 2 - applied immediately */}
+                {/* Dim overlay for slide 2 - behind IG post */}
                 <AnimatePresence>
                   {currentSlide === 1 && (
                     <motion.div
                       key="dim-overlay"
                       className="absolute inset-0 bg-black/10 pointer-events-none"
-                      style={{ zIndex: 32 }}
+                      style={{ zIndex: 12 }}
                       initial={{ opacity: 0.8 }}
                       animate={{ opacity: 1 }}
-                      exit={{ opacity: 0, transition: { duration: 0.1 } }}
+                      exit={{ opacity: 0, transition: { duration: 0.08 } }}
                       transition={{ duration: 0.15 }}
                     />
                   )}
@@ -327,7 +328,7 @@ export function StoryStreetSection({
                 </AnimatePresence>
               </div>
 
-              {/* Caption overlay - appears after hearts start with a breath */}
+              {/* Caption overlay - appears AFTER emojis with a breath */}
               <AnimatePresence>
                 {currentSlide === 1 && (
                   <motion.div
@@ -336,8 +337,8 @@ export function StoryStreetSection({
                     style={{ zIndex: 35 }}
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 5 }}
-                    transition={{ duration: 0.35, ease: "easeOut", delay: 1.4 }}
+                    exit={{ opacity: 0, transition: { duration: 0.08 } }}
+                    transition={{ duration: 0.35, ease: "easeOut", delay: 2.5 }}
                   >
                     <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-3 md:px-5 md:py-4 border-2 border-[#5b8fc9]/35 ring-1 ring-[#5b8fc9]/15">
                       <h3 className="font-semibold text-[#1A1F24] text-sm sm:text-base md:text-lg mb-1">
