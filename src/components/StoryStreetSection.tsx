@@ -358,7 +358,7 @@ export function StoryStreetSection({
                   {currentSlide === 2 && (
                     <motion.div
                       key={`answer-bubble-${slide3Key}`}
-                      className="absolute pointer-events-none left-[47%] bottom-[61%] md:bottom-[58%] w-[440px] h-[220px] md:w-[560px] md:h-[280px]"
+                      className="absolute pointer-events-none left-[47%] bottom-[58%] md:bottom-[58%] w-[440px] h-[220px] md:w-[560px] md:h-[280px]"
                       style={{ zIndex: 30 }}
                       initial={{
                         x: "-50%",
@@ -442,7 +442,7 @@ export function StoryStreetSection({
                   {currentSlide === 2 && (
                     <motion.div
                       key={`question-bubble-${slide3Key}`}
-                      className="absolute pointer-events-none left-[42%] md:left-[45%] bottom-[30%] md:bottom-[34%] w-[270px] h-[135px] md:w-[330px] md:h-[165px]"
+                      className="absolute pointer-events-none left-[38%] md:left-[45%] bottom-[30%] md:bottom-[34%] w-[270px] h-[135px] md:w-[330px] md:h-[165px]"
                       style={{ zIndex: 42 }}
                       initial={{
                         opacity: 0,
@@ -486,7 +486,7 @@ export function StoryStreetSection({
                 </AnimatePresence>
               </div>
 
-              {/* Caption overlay - appears AFTER emojis with a breath */}
+              {/* Slide 2 Caption overlay - appears AFTER emojis with a breath */}
               <AnimatePresence>
                 {currentSlide === 1 && (
                   <motion.div
@@ -513,6 +513,33 @@ export function StoryStreetSection({
                         >
                           →
                         </motion.span>
+                      </p>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* Slide 3 Caption overlay - appears AFTER business answers */}
+              <AnimatePresence>
+                {currentSlide === 2 && (
+                  <motion.div
+                    key={`slide3-caption-${slide3Key}`}
+                    className="relative -mt-24 sm:-mt-28 md:-mt-20 mx-auto w-[90%] sm:w-[85%] max-w-lg pointer-events-none"
+                    style={{ zIndex: 40 }}
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, transition: { duration: 0.08 } }}
+                    transition={{ duration: 0.35, ease: "easeOut", delay: 1.5 }}
+                  >
+                    <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-3 md:px-5 md:py-4 border-2 border-[#5b8fc9]/35 ring-1 ring-[#5b8fc9]/15">
+                      <h3 className="font-semibold text-[#1A1F24] text-sm sm:text-base md:text-lg mb-1">
+                        Your business assistant, online.
+                      </h3>
+                      <p className="text-[#5A6570] text-xs sm:text-sm md:text-base">
+                        A SmartPage knows your hours, availability, links, services, and next steps — and hands the right answer directly to customers when they ask.
+                      </p>
+                      <p className="text-[#5A6570] text-xs sm:text-sm md:text-base mt-2">
+                        Think of it as a lightweight website with superpowers. One place. Every answer. No searching. No confusion.
                       </p>
                     </div>
                   </motion.div>
