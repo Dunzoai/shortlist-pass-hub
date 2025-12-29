@@ -117,13 +117,13 @@ export function StoryStreetSection({
   const totalSlides = 3;
   const swipeThreshold = 50;
 
-  // Reaction configs - some behind IG post (z:15), some in front (z:25) for depth
+  // Reaction configs - start right when IG post settles (0.3s), staggered quickly
   const reactionConfigs: ReactionInstance[] = useMemo(() => [
-    { id: "heart-1", type: "heart", scale: 1.1, xOffset: -90, yOffset: 0, delay: 0.35, zIndex: 15 },
-    { id: "thumbs-1", type: "thumbsUp", scale: 1.15, xOffset: 70, yOffset: 4, delay: 0.5, zIndex: 25 },
-    { id: "heart-2", type: "heart", scale: 1.3, xOffset: 20, yOffset: -2, delay: 0.7, zIndex: 25 },
-    { id: "thumbs-2", type: "thumbsUp", scale: 1.0, xOffset: -50, yOffset: 5, delay: 0.9, zIndex: 15 },
-    { id: "heart-3", type: "heart", scale: 0.95, xOffset: 100, yOffset: -3, delay: 1.1, zIndex: 15 },
+    { id: "heart-1", type: "heart", scale: 1.1, xOffset: -90, yOffset: 0, delay: 0.2, zIndex: 15 },
+    { id: "thumbs-1", type: "thumbsUp", scale: 1.15, xOffset: 70, yOffset: 4, delay: 0.28, zIndex: 25 },
+    { id: "heart-2", type: "heart", scale: 1.3, xOffset: 20, yOffset: -2, delay: 0.38, zIndex: 25 },
+    { id: "thumbs-2", type: "thumbsUp", scale: 1.0, xOffset: -50, yOffset: 5, delay: 0.5, zIndex: 15 },
+    { id: "heart-3", type: "heart", scale: 0.95, xOffset: 100, yOffset: -3, delay: 0.65, zIndex: 15 },
   ], []);
 
   const goToSlide = (index: number) => {
@@ -258,7 +258,7 @@ export function StoryStreetSection({
                       }}
                       animate={{
                         x: "-50%",
-                        y: "2%",
+                        y: "-3%",
                         opacity: 1,
                         scale: 1,
                       }}
@@ -295,13 +295,13 @@ export function StoryStreetSection({
                   )}
                 </AnimatePresence>
 
-                {/* Dim overlay for slide 2 - behind IG post */}
+                {/* Dim overlay - behind IG post & emojis, in front of scene */}
                 <AnimatePresence>
                   {currentSlide === 1 && (
                     <motion.div
                       key="dim-overlay"
-                      className="absolute inset-0 bg-black/10 pointer-events-none"
-                      style={{ zIndex: 12 }}
+                      className="absolute inset-0 bg-black/15 pointer-events-none"
+                      style={{ zIndex: 8 }}
                       initial={{ opacity: 0.8 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0, transition: { duration: 0.08 } }}
@@ -338,7 +338,7 @@ export function StoryStreetSection({
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, transition: { duration: 0.08 } }}
-                    transition={{ duration: 0.35, ease: "easeOut", delay: 2.5 }}
+                    transition={{ duration: 0.35, ease: "easeOut", delay: 1.0 }}
                   >
                     <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-3 md:px-5 md:py-4 border-2 border-[#5b8fc9]/35 ring-1 ring-[#5b8fc9]/15">
                       <h3 className="font-semibold text-[#1A1F24] text-sm sm:text-base md:text-lg mb-1">
