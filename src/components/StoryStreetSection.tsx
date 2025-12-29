@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 
@@ -18,13 +18,14 @@ interface ReactionInstance {
   type: "heart" | "thumbsUp";
   scale: number;
   xOffset: number;
+  yOffset: number;
   delay: number;
 }
 
-// Floating reaction component - BEHIND IG post, loops continuously
+// Floating reaction component - varied positions for natural feel
 function FloatingReaction({ instance }: { instance: ReactionInstance }) {
   const src = instance.type === "heart" ? ASSETS.heart : ASSETS.thumbsUp;
-  const baseSize = instance.type === "heart" ? 60 : 55;
+  const baseSize = instance.type === "heart" ? 55 : 50;
 
   return (
     <motion.div
@@ -33,8 +34,8 @@ function FloatingReaction({ instance }: { instance: ReactionInstance }) {
         width: baseSize * instance.scale,
         height: baseSize * instance.scale,
         left: `calc(50% + ${instance.xOffset}px)`,
-        bottom: "25%",
-        zIndex: 10, // BOTTOM layer - behind IG post and building
+        bottom: `${20 + instance.yOffset}%`,
+        zIndex: 10,
       }}
       initial={{
         opacity: 0,
@@ -43,16 +44,16 @@ function FloatingReaction({ instance }: { instance: ReactionInstance }) {
       }}
       animate={{
         opacity: [0, 1, 1, 0],
-        y: [0, -75, -180, -300], // 50% higher animation
-        scale: [0.3, instance.scale, instance.scale * 0.9, instance.scale * 0.5],
+        y: [0, -80, -180, -280],
+        scale: [0.3, instance.scale, instance.scale * 0.95, instance.scale * 0.6],
       }}
       transition={{
-        duration: 3.5,
+        duration: 4,
         delay: instance.delay,
         ease: "easeOut",
         times: [0, 0.2, 0.6, 1],
         repeat: Infinity,
-        repeatDelay: 0.5,
+        repeatDelay: 1,
       }}
     >
       <Image src={src} alt="" fill className="object-contain" />
@@ -71,7 +72,7 @@ function PaginationDots({
   onDotClick: (index: number) => void;
 }) {
   return (
-    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-40 pointer-events-auto">
+    <div className="flex justify-center gap-2 mt-4">
       {Array.from({ length: slideCount }).map((_, i) => (
         <button
           key={i}
@@ -105,10 +106,7 @@ export function StoryStreetSection({
   const [showCaption, setShowCaption] = useState(false);
   const [showReactions, setShowReactions] = useState(false);
 
-  // Use ref instead of state to prevent re-render clearing timers
   const hasEnteredSlide2 = useRef(false);
-
-  // Touch/drag handling
   const containerRef = useRef<HTMLDivElement>(null);
   const dragStartX = useRef<number | null>(null);
   const isDragging = useRef(false);
@@ -116,16 +114,15 @@ export function StoryStreetSection({
   const totalSlides = 3;
   const swipeThreshold = 50;
 
-  // Reaction configs - 3 hearts, 2 thumbs
-  const reactionConfigs: ReactionInstance[] = [
-    { id: "heart-1", type: "heart", scale: 1.0, xOffset: -100, delay: 0 },
-    { id: "heart-2", type: "heart", scale: 1.4, xOffset: 80, delay: 0.6 },
-    { id: "heart-3", type: "heart", scale: 0.8, xOffset: -20, delay: 1.2 },
-    { id: "thumbs-1", type: "thumbsUp", scale: 1.1, xOffset: -60, delay: 0.3 },
-    { id: "thumbs-2", type: "thumbsUp", scale: 0.9, xOffset: 120, delay: 0.9 },
-  ];
+  // Randomized reaction configs - varied positions each render cycle
+  const reactionConfigs: ReactionInstance[] = useMemo(() => [
+    { id: "heart-1", type: "heart", scale: 1.0, xOffset: -110, yOffset: 0, delay: 0 },
+    { id: "heart-2", type: "heart", scale: 1.3, xOffset: 90, yOffset: 5, delay: 0.8 },
+    { id: "heart-3", type: "heart", scale: 0.85, xOffset: -30, yOffset: -3, delay: 1.6 },
+    { id: "thumbs-1", type: "thumbsUp", scale: 1.1, xOffset: -70, yOffset: 2, delay: 0.4 },
+    { id: "thumbs-2", type: "thumbsUp", scale: 0.9, xOffset: 130, yOffset: -2, delay: 1.2 },
+  ], []);
 
-  // Handle slide navigation
   const goToSlide = (index: number) => {
     if (index >= 0 && index < totalSlides) {
       setCurrentSlide(index);
@@ -173,7 +170,17 @@ export function StoryStreetSection({
     isDragging.current = false;
   };
 
-  // Trigger slide 2 animations
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") goNext();
+      if (e.key === "ArrowLeft") goPrev();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  });
+
+  // Trigger slide 2 animations: IG post → hearts/thumbs → copy box
   useEffect(() => {
     let reactionTimer: NodeJS.Timeout;
     let captionTimer: NodeJS.Timeout;
@@ -181,18 +188,17 @@ export function StoryStreetSection({
     if (currentSlide === 1 && !hasEnteredSlide2.current) {
       hasEnteredSlide2.current = true;
 
-      // Show reactions after a short delay (they loop continuously)
+      // Hearts/thumbs appear AFTER IG post rises (1.4s animation)
       reactionTimer = setTimeout(() => {
         setShowReactions(true);
-      }, 800);
+      }, 1600);
 
-      // Show caption 300ms after IG post lands (post animation is 1.4s)
+      // Caption appears AFTER hearts/thumbs are animating
       captionTimer = setTimeout(() => {
         setShowCaption(true);
-      }, 1700);
+      }, 3000);
     }
 
-    // Reset when leaving slide 2
     if (currentSlide !== 1) {
       setShowCaption(false);
       setShowReactions(false);
@@ -213,250 +219,279 @@ export function StoryStreetSection({
   }, []);
 
   return (
-    <section className="py-12 md:py-20 bg-[#F4F1EC]">
-      <div className="relative max-w-7xl mx-auto">
-        <div
-          ref={containerRef}
-          className="relative w-full aspect-[4/5] sm:aspect-[3/4] md:aspect-[16/9] lg:aspect-[2/1] overflow-hidden cursor-grab active:cursor-grabbing select-none bg-[#E8E4DD]"
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-          onMouseDown={handleMouseDown}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseLeave}
-        >
-          {/* ===== LAYER ORDER ===== */}
-          {/* z-10: Hearts/Thumbs (BOTTOM - behind everything) */}
-          {/* z-20: IG Post (MIDDLE - behind building) */}
-          {/* z-30: Building layer (TOP - foreground) */}
-          {/* z-35: Caption card */}
-          {/* z-40: Pagination */}
-
-          {/* Building/Street layer - TOP foreground layer */}
-          <Image
-            src={ASSETS.buildingLayer}
-            alt="Street scene"
-            fill
-            className="object-cover object-center pointer-events-none"
-            style={{ zIndex: 30 }}
-            priority
-            draggable={false}
-          />
-
-          {/* Hearts and Thumbs - render BEFORE IG post, behind it */}
-          {currentSlide === 1 && showReactions && (
-            <>
-              {reactionConfigs.map((reaction) => (
-                <FloatingReaction key={reaction.id} instance={reaction} />
-              ))}
-            </>
-          )}
-
-          {/* IG Post - rises from below into the sky */}
-          <AnimatePresence mode="sync">
-            {currentSlide === 1 && (
-              <motion.div
-                key="igpost"
-                className="absolute pointer-events-none left-1/2 bottom-[47%] md:bottom-[27%] w-[325px] h-[395px] md:w-[550px] md:h-[668px]"
-                style={{
-                  zIndex: 20,
-                }}
-                initial={{
-                  x: "-50%",
-                  y: "100%",
-                  opacity: 0,
-                  scale: 0.5,
-                }}
-                animate={{
-                  x: "-50%",
-                  y: "0%",
-                  opacity: 1,
-                  scale: 1,
-                }}
-                exit={{
-                  opacity: 0,
-                  transition: { duration: 0.15 },
-                }}
-                transition={{
-                  duration: 1.4,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-              >
-                <motion.div
-                  className="w-full h-full relative"
-                  animate={{
-                    y: [0, -6, 0, -4, 0],
-                  }}
-                  transition={{
-                    duration: 5,
-                    ease: "easeInOut",
-                    repeat: Infinity,
-                    delay: 1.6,
-                  }}
-                >
-                  <Image
-                    src={ASSETS.igPost}
-                    alt="Coming soon post"
-                    fill
-                    className="object-contain drop-shadow-2xl"
-                    priority
-                    draggable={false}
-                  />
-                </motion.div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Dim overlay for slide 2 */}
-          <AnimatePresence>
-            {currentSlide === 1 && (
-              <motion.div
-                key="dim-overlay"
-                className="absolute inset-0 bg-black/10 pointer-events-none"
-                style={{ zIndex: 32 }}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0, transition: { duration: 0.15 } }}
-                transition={{ duration: 0.3 }}
-              />
-            )}
-          </AnimatePresence>
-
-          {/* Slide 1 intro text */}
-          <AnimatePresence>
-            {currentSlide === 0 && (
-              <motion.div
-                key="slide1-text"
-                className="absolute inset-0 flex flex-col items-center justify-end pb-8 md:pb-12 pointer-events-none"
-                style={{ zIndex: 35 }}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="text-center px-6">
-                  <h2
-                    className="text-3xl md:text-4xl lg:text-5xl font-normal text-[#1A1F24] mb-4"
-                    style={{ fontFamily: "var(--font-libre-baskerville)" }}
-                  >
-                    Get noticed.
-                  </h2>
-                  <p className="text-base md:text-lg text-[#5A6570] flex items-center justify-center gap-2">
-                    <span>Swipe to see how it works</span>
-                    <motion.span
-                      animate={{ x: [0, 8, 0] }}
-                      transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                    >
-                      →
-                    </motion.span>
-                  </p>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Caption card - ON TOP of building layer, centered under IG post */}
-          <AnimatePresence>
-            {currentSlide === 1 && showCaption && (
-              <motion.div
-                key="slide2-caption"
-                className="absolute left-1/2 -translate-x-1/2 pointer-events-none px-4"
-                style={{
-                  zIndex: 35,
-                  bottom: "12%",
-                }}
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, transition: { duration: 0.15 } }}
-                transition={{ duration: 0.4 }}
-              >
-                <div className="bg-[#F4F1EC]/95 backdrop-blur-sm rounded-lg shadow-lg px-5 md:px-6 py-4 md:py-5 max-w-xs md:max-w-sm mx-auto border border-[#E0DCD4]">
-                  <p className="font-semibold text-[#1A1F24] mb-1 text-sm md:text-base">
-                    Social is the introduction.
-                  </p>
-                  <p className="text-[#5A6570] text-xs md:text-sm">
-                    It&apos;s how people meet your business before they ever click.
-                  </p>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Slide 3 placeholder */}
-          <AnimatePresence>
-            {currentSlide === 2 && (
-              <motion.div
-                key="slide3-text"
-                className="absolute inset-0 flex items-center justify-center pointer-events-none"
-                style={{ zIndex: 35 }}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                <p className="text-[#5A6570] text-lg">Slide 3 - SmartPages coming soon</p>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Pagination dots */}
-          <PaginationDots
-            slideCount={totalSlides}
-            currentIndex={currentSlide}
-            onDotClick={goToSlide}
-          />
-        </div>
-      </div>
-
-      {/* Accordion below */}
-      <div className="max-w-4xl mx-auto px-6 mt-12">
-        <div className="text-center">
-          <button
-            onClick={onToggleOldCards}
-            aria-expanded={showOldCards}
-            className="inline-flex items-center gap-2 text-sm text-[#5A6570] hover:text-[#2B3A44] transition-colors duration-200"
-          >
-            <span>
-              {showOldCards ? "Hide the long version" : "Want the straight explanation?"}
-            </span>
-            <svg
-              className={`w-4 h-4 transition-transform duration-300 ${
-                showOldCards ? "rotate-180" : ""
-              }`}
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-        </div>
-
-        <div
-          className={`overflow-hidden transition-all ${
-            reducedMotion ? "duration-0" : "duration-300 ease-out"
-          }`}
-          style={{
-            maxHeight: showOldCards ? "2000px" : "0px",
-            opacity: showOldCards ? 1 : 0,
-            marginTop: showOldCards ? "2rem" : "0",
-          }}
-        >
+    <section className="py-8 md:py-16 bg-[#F4F1EC]">
+      {/* Toggle between carousel and cards - in place */}
+      <AnimatePresence mode="wait">
+        {!showOldCards ? (
           <motion.div
-            initial={false}
-            animate={{
-              y: showOldCards ? 0 : 20,
-              opacity: showOldCards ? 1 : 0,
-            }}
-            transition={{
-              duration: reducedMotion ? 0 : 0.25,
-              ease: "easeOut",
-            }}
+            key="carousel"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
           >
+            <div className="relative max-w-7xl mx-auto px-4">
+              {/* Stage container */}
+              <div
+                ref={containerRef}
+                className="relative w-full aspect-[4/5] sm:aspect-[3/4] md:aspect-[16/9] lg:aspect-[2/1] overflow-hidden cursor-grab active:cursor-grabbing select-none rounded-lg"
+                onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
+                onMouseDown={handleMouseDown}
+                onMouseUp={handleMouseUp}
+                onMouseLeave={handleMouseLeave}
+              >
+                {/* Building layer - TOP foreground */}
+                <Image
+                  src={ASSETS.buildingLayer}
+                  alt="Street scene"
+                  fill
+                  className="object-cover object-bottom pointer-events-none"
+                  style={{ zIndex: 30 }}
+                  priority
+                  draggable={false}
+                />
+
+                {/* Hearts and Thumbs - BOTTOM layer */}
+                {currentSlide === 1 && showReactions && (
+                  <>
+                    {reactionConfigs.map((reaction) => (
+                      <FloatingReaction key={reaction.id} instance={reaction} />
+                    ))}
+                  </>
+                )}
+
+                {/* IG Post - MIDDLE layer */}
+                <AnimatePresence mode="sync">
+                  {currentSlide === 1 && (
+                    <motion.div
+                      key="igpost"
+                      className="absolute pointer-events-none left-1/2 bottom-[47%] md:bottom-[27%] w-[325px] h-[395px] md:w-[550px] md:h-[668px]"
+                      style={{ zIndex: 20 }}
+                      initial={{
+                        x: "-50%",
+                        y: "100%",
+                        opacity: 0,
+                        scale: 0.5,
+                      }}
+                      animate={{
+                        x: "-50%",
+                        y: "0%",
+                        opacity: 1,
+                        scale: 1,
+                      }}
+                      exit={{
+                        opacity: 0,
+                        transition: { duration: 0.15 },
+                      }}
+                      transition={{
+                        duration: 1.4,
+                        ease: [0.16, 1, 0.3, 1],
+                      }}
+                    >
+                      <motion.div
+                        className="w-full h-full relative"
+                        animate={{ y: [0, -6, 0, -4, 0] }}
+                        transition={{
+                          duration: 5,
+                          ease: "easeInOut",
+                          repeat: Infinity,
+                          delay: 1.6,
+                        }}
+                      >
+                        <Image
+                          src={ASSETS.igPost}
+                          alt="Coming soon post"
+                          fill
+                          className="object-contain drop-shadow-2xl"
+                          priority
+                          draggable={false}
+                        />
+                      </motion.div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Dim overlay for slide 2 */}
+                <AnimatePresence>
+                  {currentSlide === 1 && (
+                    <motion.div
+                      key="dim-overlay"
+                      className="absolute inset-0 bg-black/10 pointer-events-none"
+                      style={{ zIndex: 32 }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0, transition: { duration: 0.15 } }}
+                      transition={{ duration: 0.3 }}
+                    />
+                  )}
+                </AnimatePresence>
+
+                {/* Slide 3 placeholder */}
+                <AnimatePresence>
+                  {currentSlide === 2 && (
+                    <motion.div
+                      key="slide3-text"
+                      className="absolute inset-0 flex items-center justify-center pointer-events-none"
+                      style={{ zIndex: 35 }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <p className="text-[#5A6570] text-lg">Next: SmartPages</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Caption area BELOW the stage image */}
+              <div className="mt-6 text-center">
+                <AnimatePresence mode="wait">
+                  {/* Slide 1 caption */}
+                  {currentSlide === 0 && (
+                    <motion.div
+                      key="slide1-caption"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <h2
+                        className="text-3xl md:text-4xl lg:text-5xl font-normal text-[#1A1F24] mb-3"
+                        style={{ fontFamily: "var(--font-libre-baskerville)" }}
+                      >
+                        Get noticed.
+                      </h2>
+                      <p className="text-base md:text-lg text-[#5A6570] flex items-center justify-center gap-2">
+                        <span>Swipe to see how it works</span>
+                        <motion.span
+                          className="inline-flex"
+                          animate={{ x: [0, 8, 0] }}
+                          transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+                        >
+                          →
+                        </motion.span>
+                      </p>
+                    </motion.div>
+                  )}
+
+                  {/* Slide 2 caption */}
+                  {currentSlide === 1 && showCaption && (
+                    <motion.div
+                      key="slide2-caption"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.4 }}
+                      className="max-w-lg mx-auto"
+                    >
+                      <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-md px-6 py-5 border border-[#E0DCD4]">
+                        <h3 className="font-semibold text-[#1A1F24] text-lg md:text-xl mb-2">
+                          Social is how you get noticed
+                        </h3>
+                        <p className="text-[#5A6570] text-sm md:text-base">
+                          Before websites. Before clicks. It&apos;s how strangers become familiar — and familiar turns into trust.
+                        </p>
+                        <p className="text-[#5A6570]/70 text-xs md:text-sm mt-3 flex items-center justify-center gap-1">
+                          <span>Swipe for the next step</span>
+                          <motion.span
+                            animate={{ x: [0, 4, 0] }}
+                            transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+                          >
+                            →
+                          </motion.span>
+                        </p>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {/* Slide 2 placeholder before caption */}
+                  {currentSlide === 1 && !showCaption && (
+                    <motion.div
+                      key="slide2-placeholder"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="h-[120px]"
+                    />
+                  )}
+
+                  {/* Slide 3 caption */}
+                  {currentSlide === 2 && (
+                    <motion.div
+                      key="slide3-caption"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <p className="text-[#5A6570]">Coming soon...</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Pagination dots */}
+                <PaginationDots
+                  slideCount={totalSlides}
+                  currentIndex={currentSlide}
+                  onDotClick={goToSlide}
+                />
+              </div>
+            </div>
+
+            {/* Toggle button */}
+            <div className="text-center mt-8">
+              <button
+                onClick={onToggleOldCards}
+                className="inline-flex items-center gap-2 text-sm text-[#5A6570] hover:text-[#2B3A44] transition-colors duration-200"
+              >
+                <span>Want the straight explanation?</span>
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+            </div>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="cards"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="max-w-4xl mx-auto px-6"
+          >
+            {/* Back button */}
+            <div className="text-center mb-8">
+              <button
+                onClick={onToggleOldCards}
+                className="inline-flex items-center gap-2 text-sm text-[#5A6570] hover:text-[#2B3A44] transition-colors duration-200"
+              >
+                <svg
+                  className="w-4 h-4 rotate-180"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+                <span>Back to the story</span>
+              </button>
+            </div>
+
+            {/* Old cards content */}
             {oldCardsContent}
           </motion.div>
-        </div>
-      </div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
