@@ -41,21 +41,33 @@ function HeroImageLeft({ scrollDrift }: HeroImageProps) {
   return (
     <motion.div
       className="absolute bottom-0 left-0 w-[200px] h-[200px] md:w-[260px] md:h-[260px] lg:w-[360px] lg:h-[360px] -mb-8 -ml-2 md:-mb-12 md:-ml-6 lg:-mb-16 lg:-ml-8 z-0"
-      initial={{ opacity: 0, y: 10, scale: 0.96 }}
+      initial={{ opacity: 0, scale: 0.96 }}
       animate={{
         opacity: 0.45,
-        y: scrollDrift.y,
         x: scrollDrift.x,
         scale: 1
       }}
       transition={{
         opacity: { delay: 1.8, duration: 0.5, ease: "easeOut" },
-        y: { delay: 1.8, duration: 0.5, ease: "easeOut" },
         x: { duration: 0.4, ease: "easeOut" },
         scale: { delay: 1.8, duration: 0.5, ease: "easeOut" },
       }}
     >
-      <Image src="/bubbles-homepage.png" alt="" fill className="object-contain object-bottom" />
+      {/* Inner div for continuous floating motion */}
+      <motion.div
+        className="w-full h-full"
+        initial={{ y: 10 }}
+        animate={{
+          y: [scrollDrift.y, scrollDrift.y - 8, scrollDrift.y, scrollDrift.y + 6, scrollDrift.y],
+          x: [0, 8, 0, -6, 0],
+        }}
+        transition={{
+          y: { delay: 1.8, duration: 20, repeat: Infinity, ease: "easeInOut" },
+          x: { delay: 1.8, duration: 20, repeat: Infinity, ease: "easeInOut" },
+        }}
+      >
+        <Image src="/bubbles-homepage.png" alt="" fill className="object-contain object-bottom" />
+      </motion.div>
     </motion.div>
   );
 }
@@ -77,21 +89,33 @@ function HeroImageRight({ scrollDrift }: HeroImageProps) {
   return (
     <motion.div
       className="absolute top-0 right-0 w-40 h-40 md:w-52 md:h-52 lg:w-72 lg:h-72 -mt-2 -mr-6 md:-mt-8 md:-mr-14 lg:-mt-10 lg:-mr-16 z-0"
-      initial={{ opacity: 0, y: -8, scale: 0.96 }}
+      initial={{ opacity: 0, scale: 0.96 }}
       animate={{
         opacity: 0.28,
-        y: scrollDrift.y,
         x: scrollDrift.x,
         scale: 1
       }}
       transition={{
         opacity: { delay: 2.2, duration: 0.5, ease: "easeOut" },
-        y: { delay: 2.2, duration: 0.5, ease: "easeOut" },
         x: { duration: 0.4, ease: "easeOut" },
         scale: { delay: 2.2, duration: 0.5, ease: "easeOut" },
       }}
     >
-      <Image src="/instagram-post.png" alt="" fill className="object-contain object-top" />
+      {/* Inner div for continuous floating motion */}
+      <motion.div
+        className="w-full h-full"
+        initial={{ y: -8 }}
+        animate={{
+          y: [scrollDrift.y, scrollDrift.y + 6, scrollDrift.y, scrollDrift.y - 8, scrollDrift.y],
+          x: [0, -10, 0, 8, 0],
+        }}
+        transition={{
+          y: { delay: 2.2, duration: 18, repeat: Infinity, ease: "easeInOut" },
+          x: { delay: 2.2, duration: 18, repeat: Infinity, ease: "easeInOut" },
+        }}
+      >
+        <Image src="/instagram-post.png" alt="" fill className="object-contain object-top" />
+      </motion.div>
     </motion.div>
   );
 }
