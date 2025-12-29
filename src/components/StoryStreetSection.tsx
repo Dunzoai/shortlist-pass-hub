@@ -22,10 +22,10 @@ interface ReactionInstance {
   delay: number;
 }
 
-// Floating reaction component - varied positions for natural feel
+// Floating reaction component - dynamic float to sky animation
 function FloatingReaction({ instance }: { instance: ReactionInstance }) {
   const src = instance.type === "heart" ? ASSETS.heart : ASSETS.thumbsUp;
-  const baseSize = instance.type === "heart" ? 55 : 50;
+  const baseSize = instance.type === "heart" ? 60 : 55;
 
   return (
     <motion.div
@@ -34,29 +34,32 @@ function FloatingReaction({ instance }: { instance: ReactionInstance }) {
         width: baseSize * instance.scale,
         height: baseSize * instance.scale,
         left: `calc(50% + ${instance.xOffset}px)`,
-        bottom: `${20 + instance.yOffset}%`,
+        bottom: `${15 + instance.yOffset}%`,
         zIndex: 10,
       }}
       initial={{
         opacity: 0,
         y: 0,
-        scale: 0.3,
+        scale: 0.2,
+        rotate: -10,
       }}
       animate={{
-        opacity: [0, 1, 1, 0],
-        y: [0, -80, -180, -280],
-        scale: [0.3, instance.scale, instance.scale * 0.95, instance.scale * 0.6],
+        opacity: [0, 1, 1, 1, 0],
+        y: [0, -120, -280, -450, -600],
+        scale: [0.2, instance.scale * 1.1, instance.scale, instance.scale * 0.9, instance.scale * 0.5],
+        rotate: [-10, 5, -5, 3, 0],
+        x: [0, instance.xOffset * 0.1, instance.xOffset * -0.1, instance.xOffset * 0.05, 0],
       }}
       transition={{
-        duration: 4,
+        duration: 5,
         delay: instance.delay,
         ease: "easeOut",
-        times: [0, 0.2, 0.6, 1],
+        times: [0, 0.15, 0.4, 0.7, 1],
         repeat: Infinity,
-        repeatDelay: 1,
+        repeatDelay: 0.5,
       }}
     >
-      <Image src={src} alt="" fill className="object-contain" />
+      <Image src={src} alt="" fill className="object-contain drop-shadow-lg" />
     </motion.div>
   );
 }
@@ -114,13 +117,13 @@ export function StoryStreetSection({
   const totalSlides = 3;
   const swipeThreshold = 50;
 
-  // Randomized reaction configs - varied positions each render cycle
+  // Randomized reaction configs - staggered delays for continuous stream
   const reactionConfigs: ReactionInstance[] = useMemo(() => [
-    { id: "heart-1", type: "heart", scale: 1.0, xOffset: -110, yOffset: 0, delay: 0 },
-    { id: "heart-2", type: "heart", scale: 1.3, xOffset: 90, yOffset: 5, delay: 0.8 },
-    { id: "heart-3", type: "heart", scale: 0.85, xOffset: -30, yOffset: -3, delay: 1.6 },
-    { id: "thumbs-1", type: "thumbsUp", scale: 1.1, xOffset: -70, yOffset: 2, delay: 0.4 },
-    { id: "thumbs-2", type: "thumbsUp", scale: 0.9, xOffset: 130, yOffset: -2, delay: 1.2 },
+    { id: "heart-1", type: "heart", scale: 1.1, xOffset: -100, yOffset: 0, delay: 0 },
+    { id: "heart-2", type: "heart", scale: 1.4, xOffset: 85, yOffset: 8, delay: 1.0 },
+    { id: "heart-3", type: "heart", scale: 0.9, xOffset: -20, yOffset: -5, delay: 2.0 },
+    { id: "thumbs-1", type: "thumbsUp", scale: 1.2, xOffset: -60, yOffset: 3, delay: 0.5 },
+    { id: "thumbs-2", type: "thumbsUp", scale: 1.0, xOffset: 120, yOffset: -3, delay: 1.5 },
   ], []);
 
   const goToSlide = (index: number) => {
@@ -218,18 +221,22 @@ export function StoryStreetSection({
     });
   }, []);
 
+  // Reset to slide 1 when closing overlay
+  const handleCloseOverlay = () => {
+    setCurrentSlide(0);
+    hasEnteredSlide2.current = false;
+    setShowCaption(false);
+    setShowReactions(false);
+    onToggleOldCards();
+  };
+
   return (
-    <section className="py-8 md:py-16 bg-[#F4F1EC]">
-      {/* Toggle between carousel and cards - in place */}
-      <AnimatePresence mode="wait">
-        {!showOldCards ? (
-          <motion.div
-            key="carousel"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-          >
+    <section className="py-8 md:py-16 bg-[#F4F1EC] relative">
+      {/* Carousel - always mounted */}
+      <motion.div
+        animate={{ opacity: showOldCards ? 0.3 : 1 }}
+        transition={{ duration: 0.3 }}
+      >
             <div className="relative max-w-7xl mx-auto px-4">
               {/* Stage container */}
               <div
@@ -266,7 +273,7 @@ export function StoryStreetSection({
                   {currentSlide === 1 && (
                     <motion.div
                       key="igpost"
-                      className="absolute pointer-events-none left-1/2 bottom-[47%] md:bottom-[27%] w-[325px] h-[395px] md:w-[550px] md:h-[668px]"
+                      className="absolute pointer-events-none left-1/2 bottom-[42%] md:bottom-[27%] w-[325px] h-[395px] md:w-[550px] md:h-[668px]"
                       style={{ zIndex: 20 }}
                       initial={{
                         x: "-50%",
@@ -327,6 +334,39 @@ export function StoryStreetSection({
                   )}
                 </AnimatePresence>
 
+                {/* Slide 2 caption - overlay at bottom of street */}
+                <AnimatePresence>
+                  {currentSlide === 1 && showCaption && (
+                    <motion.div
+                      key="slide2-caption-overlay"
+                      className="absolute left-1/2 bottom-[8%] md:bottom-[12%] -translate-x-1/2 w-[90%] max-w-lg pointer-events-none"
+                      style={{ zIndex: 35 }}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      transition={{ duration: 0.4 }}
+                    >
+                      <div className="bg-white/70 backdrop-blur-sm rounded-xl shadow-md px-5 py-4 border border-[#E0DCD4]/50">
+                        <h3 className="font-semibold text-[#1A1F24] text-base md:text-lg mb-1">
+                          Social is how you get noticed
+                        </h3>
+                        <p className="text-[#5A6570] text-sm md:text-base">
+                          Before websites. Before clicks. It&apos;s how strangers become familiar — and familiar turns into trust.
+                        </p>
+                        <p className="text-[#5A6570]/70 text-xs md:text-sm mt-2 flex items-center justify-center gap-1">
+                          <span>Swipe for the next step</span>
+                          <motion.span
+                            animate={{ x: [0, 4, 0] }}
+                            transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+                          >
+                            →
+                          </motion.span>
+                        </p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
                 {/* Slide 3 placeholder */}
                 <AnimatePresence>
                   {currentSlide === 2 && (
@@ -361,10 +401,13 @@ export function StoryStreetSection({
                         className="text-3xl md:text-4xl lg:text-5xl font-normal text-[#1A1F24] mb-3"
                         style={{ fontFamily: "var(--font-libre-baskerville)" }}
                       >
-                        Get noticed.
+                        Your business belongs here.
                       </h2>
-                      <p className="text-base md:text-lg text-[#5A6570] flex items-center justify-center gap-2">
-                        <span>Swipe to see how it works</span>
+                      <p className="text-base md:text-lg text-[#5A6570] mb-2">
+                        Most never make it past the scroll.
+                      </p>
+                      <p className="text-sm md:text-base text-[#5A6570]/80 flex items-center justify-center gap-2">
+                        <span>Swipe to see what separates the ones that do</span>
                         <motion.span
                           className="inline-flex"
                           animate={{ x: [0, 8, 0] }}
@@ -376,44 +419,14 @@ export function StoryStreetSection({
                     </motion.div>
                   )}
 
-                  {/* Slide 2 caption */}
-                  {currentSlide === 1 && showCaption && (
-                    <motion.div
-                      key="slide2-caption"
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      transition={{ duration: 0.4 }}
-                      className="max-w-lg mx-auto"
-                    >
-                      <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-md px-6 py-5 border border-[#E0DCD4]">
-                        <h3 className="font-semibold text-[#1A1F24] text-lg md:text-xl mb-2">
-                          Social is how you get noticed
-                        </h3>
-                        <p className="text-[#5A6570] text-sm md:text-base">
-                          Before websites. Before clicks. It&apos;s how strangers become familiar — and familiar turns into trust.
-                        </p>
-                        <p className="text-[#5A6570]/70 text-xs md:text-sm mt-3 flex items-center justify-center gap-1">
-                          <span>Swipe for the next step</span>
-                          <motion.span
-                            animate={{ x: [0, 4, 0] }}
-                            transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
-                          >
-                            →
-                          </motion.span>
-                        </p>
-                      </div>
-                    </motion.div>
-                  )}
-
-                  {/* Slide 2 placeholder before caption */}
-                  {currentSlide === 1 && !showCaption && (
+                  {/* Slide 2 - placeholder space (caption is now overlay) */}
+                  {currentSlide === 1 && (
                     <motion.div
                       key="slide2-placeholder"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      className="h-[120px]"
+                      className="h-[60px]"
                     />
                   )}
 
@@ -459,36 +472,44 @@ export function StoryStreetSection({
               </button>
             </div>
           </motion.div>
-        ) : (
+
+      {/* Text explanation overlay */}
+      <AnimatePresence>
+        {showOldCards && (
           <motion.div
-            key="cards"
+            key="cards-overlay"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="max-w-4xl mx-auto px-6"
+            className="absolute inset-0 bg-[#F4F1EC]/95 backdrop-blur-sm z-50 overflow-y-auto"
           >
-            {/* Back button */}
-            <div className="text-center mb-8">
-              <button
-                onClick={onToggleOldCards}
-                className="inline-flex items-center gap-2 text-sm text-[#5A6570] hover:text-[#2B3A44] transition-colors duration-200"
-              >
-                <svg
-                  className="w-4 h-4 rotate-180"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
+            <div className="max-w-4xl mx-auto px-6 py-8">
+              {/* Back button */}
+              <div className="text-center mb-8">
+                <button
+                  onClick={handleCloseOverlay}
+                  className="inline-flex items-center gap-2 text-sm text-[#5A6570] hover:text-[#2B3A44] transition-colors duration-200"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                </svg>
-                <span>Back to the story</span>
-              </button>
-            </div>
+                  <span>←</span>
+                  <span>Back to the visual story</span>
+                </button>
+              </div>
 
-            {/* Old cards content */}
-            {oldCardsContent}
+              {/* Old cards content */}
+              {oldCardsContent}
+
+              {/* Bottom back button */}
+              <div className="text-center mt-8">
+                <button
+                  onClick={handleCloseOverlay}
+                  className="inline-flex items-center gap-2 text-sm text-[#5A6570] hover:text-[#2B3A44] transition-colors duration-200"
+                >
+                  <span>←</span>
+                  <span>Back to the visual story</span>
+                </button>
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
