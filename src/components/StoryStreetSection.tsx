@@ -316,7 +316,7 @@ export function StoryStreetSection({
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0, transition: { duration: 0 } }}
-                      transition={{ duration: 0.15 }}
+                      transition={{ duration: 0.2, delay: 0.05 }}
                     />
                   )}
                 </AnimatePresence>
@@ -346,10 +346,10 @@ export function StoryStreetSection({
                       key="slide3-dim-overlay"
                       className="absolute inset-0 bg-black/15 pointer-events-none"
                       style={{ zIndex: 20 }}
-                      initial={{ opacity: 0.8 }}
+                      initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      exit={{ opacity: 0, transition: { duration: 0.08 } }}
-                      transition={{ duration: 0.15 }}
+                      exit={{ opacity: 0, transition: { duration: 0 } }}
+                      transition={{ duration: 0.2, delay: 0.05 }}
                     />
                   )}
                 </AnimatePresence>
