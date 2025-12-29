@@ -37,7 +37,7 @@ function FloatingReaction({ instance }: { instance: ReactionInstance }) {
         width: baseSize * instance.scale,
         height: baseSize * instance.scale,
         left: `calc(50% + ${instance.xOffset}px)`,
-        bottom: `${55 + instance.yOffset}%`,
+        bottom: `${57 + instance.yOffset}%`,
         zIndex: instance.zIndex,
       }}
       initial={{
@@ -117,13 +117,13 @@ export function StoryStreetSection({
   const totalSlides = 3;
   const swipeThreshold = 50;
 
-  // Reaction configs - start immediately with IG post, staggered quickly
+  // Reaction configs - pause slightly after IG post, then stagger
   const reactionConfigs: ReactionInstance[] = useMemo(() => [
-    { id: "heart-1", type: "heart", scale: 1.1, xOffset: -90, yOffset: 0, delay: 0, zIndex: 25 },
-    { id: "thumbs-1", type: "thumbsUp", scale: 1.15, xOffset: 70, yOffset: 4, delay: 0.08, zIndex: 35 },
-    { id: "heart-2", type: "heart", scale: 1.3, xOffset: 20, yOffset: -2, delay: 0.18, zIndex: 35 },
-    { id: "thumbs-2", type: "thumbsUp", scale: 1.0, xOffset: -50, yOffset: 5, delay: 0.3, zIndex: 25 },
-    { id: "heart-3", type: "heart", scale: 0.95, xOffset: 100, yOffset: -3, delay: 0.45, zIndex: 25 },
+    { id: "heart-1", type: "heart", scale: 1.1, xOffset: -90, yOffset: 0, delay: 0.2, zIndex: 25 },
+    { id: "thumbs-1", type: "thumbsUp", scale: 1.15, xOffset: 70, yOffset: 4, delay: 0.28, zIndex: 35 },
+    { id: "heart-2", type: "heart", scale: 1.3, xOffset: 20, yOffset: -2, delay: 0.38, zIndex: 35 },
+    { id: "thumbs-2", type: "thumbsUp", scale: 1.0, xOffset: -50, yOffset: 5, delay: 0.5, zIndex: 25 },
+    { id: "heart-3", type: "heart", scale: 0.95, xOffset: 100, yOffset: -3, delay: 0.65, zIndex: 25 },
   ], []);
 
   const goToSlide = (index: number) => {
@@ -252,7 +252,7 @@ export function StoryStreetSection({
                       style={{ zIndex: 30 }}
                       initial={{
                         x: "-50%",
-                        y: "5%",
+                        y: "3%",
                         opacity: 0.85,
                         scale: 0.97,
                       }}
