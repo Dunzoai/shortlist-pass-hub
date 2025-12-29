@@ -360,7 +360,7 @@ export function StoryStreetSection({
                   {currentSlide === 2 && (
                     <motion.div
                       key={`smartpage-${slide3Key}`}
-                      className="absolute pointer-events-none left-1/2 bottom-[35%] md:bottom-[32%] w-[280px] h-[380px] md:w-[420px] md:h-[570px]"
+                      className="absolute pointer-events-none left-1/2 bottom-[35%] md:bottom-[34%] w-[280px] h-[380px] md:w-[420px] md:h-[570px]"
                       style={{ zIndex: 30 }}
                       initial={{
                         x: "-50%",
@@ -412,7 +412,7 @@ export function StoryStreetSection({
                   {currentSlide === 2 && (
                     <motion.div
                       key={`smartpage-text-${slide3Key}`}
-                      className="absolute pointer-events-none left-1/2 bottom-[35%] md:bottom-[32%] w-[280px] h-[380px] md:w-[420px] md:h-[570px]"
+                      className="absolute pointer-events-none left-1/2 bottom-[35%] md:bottom-[34%] w-[280px] h-[380px] md:w-[420px] md:h-[570px]"
                       style={{ zIndex: 32, transform: "translateX(-50%)" }}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -563,7 +563,7 @@ export function StoryStreetSection({
                         href="/social"
                         className="inline-block px-5 py-2 bg-[#5b8fc9] text-[#F4F1EC] text-sm font-medium rounded-lg hover:bg-[#4a7eb8] transition-colors duration-200 pointer-events-auto"
                       >
-                        Learn more
+                        Why social comes first
                       </Link>
                     </div>
                   </motion.div>
