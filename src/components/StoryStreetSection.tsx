@@ -6,7 +6,7 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 
 // Asset paths
 const ASSETS = {
-  buildingLayer: "/storystreet/slide-0.jpg", // TOP layer - building foreground
+  buildingLayer: "/storystreet/slide-0.jpg",
   igPost: "/storystreet/coming-soon.png",
   heart: "/storystreet/heart-overlay.png",
   thumbsUp: "/storystreet/thumbs-up.png",
@@ -21,7 +21,7 @@ interface ReactionInstance {
   delay: number;
 }
 
-// Floating reaction component - sits BEHIND IG post and building
+// Floating reaction component - ABOVE building layer, loops continuously
 function FloatingReaction({ instance }: { instance: ReactionInstance }) {
   const src = instance.type === "heart" ? ASSETS.heart : ASSETS.thumbsUp;
   const baseSize = instance.type === "heart" ? 60 : 55;
@@ -33,8 +33,8 @@ function FloatingReaction({ instance }: { instance: ReactionInstance }) {
         width: baseSize * instance.scale,
         height: baseSize * instance.scale,
         left: `calc(50% + ${instance.xOffset}px)`,
-        bottom: "40%",
-        zIndex: 10, // Behind IG post (20) and building (30)
+        bottom: "30%",
+        zIndex: 35, // ABOVE building layer (30) so it's visible
       }}
       initial={{
         opacity: 0,
@@ -43,14 +43,16 @@ function FloatingReaction({ instance }: { instance: ReactionInstance }) {
       }}
       animate={{
         opacity: [0, 1, 1, 0],
-        y: [0, -60, -140, -250],
+        y: [0, -50, -120, -200],
         scale: [0.3, instance.scale, instance.scale * 0.9, instance.scale * 0.5],
       }}
       transition={{
-        duration: 3.5,
+        duration: 3,
         delay: instance.delay,
         ease: "easeOut",
         times: [0, 0.2, 0.6, 1],
+        repeat: Infinity, // Loop continuously
+        repeatDelay: 0.5,
       }}
     >
       <Image src={src} alt="" fill className="object-contain" />
@@ -102,7 +104,7 @@ export function StoryStreetSection({
   const [currentSlide, setCurrentSlide] = useState(0);
   const [hasEnteredSlide2, setHasEnteredSlide2] = useState(false);
   const [showCaption, setShowCaption] = useState(false);
-  const [reactions, setReactions] = useState<ReactionInstance[]>([]);
+  const [showReactions, setShowReactions] = useState(false);
 
   // Touch/drag handling
   const containerRef = useRef<HTMLDivElement>(null);
@@ -111,6 +113,15 @@ export function StoryStreetSection({
 
   const totalSlides = 3;
   const swipeThreshold = 50;
+
+  // Reaction configs - 3 hearts, 2 thumbs
+  const reactionConfigs: ReactionInstance[] = [
+    { id: "heart-1", type: "heart", scale: 1.0, xOffset: -100, delay: 0 },
+    { id: "heart-2", type: "heart", scale: 1.4, xOffset: 80, delay: 0.6 },
+    { id: "heart-3", type: "heart", scale: 0.8, xOffset: -20, delay: 1.2 },
+    { id: "thumbs-1", type: "thumbsUp", scale: 1.1, xOffset: -60, delay: 0.3 },
+    { id: "thumbs-2", type: "thumbsUp", scale: 0.9, xOffset: 120, delay: 0.9 },
+  ];
 
   // Handle slide navigation
   const goToSlide = (index: number) => {
@@ -165,35 +176,28 @@ export function StoryStreetSection({
     if (currentSlide === 1 && !hasEnteredSlide2) {
       setHasEnteredSlide2(true);
 
-      // Spawn reactions - they float behind the building
-      let reactionTimer: NodeJS.Timeout;
-      if (!reducedMotion) {
-        reactionTimer = setTimeout(() => {
-          setReactions([
-            { id: "heart-1", type: "heart", scale: 1.0, xOffset: -90, delay: 0 },
-            { id: "heart-2", type: "heart", scale: 1.3, xOffset: 70, delay: 0.4 },
-            { id: "heart-3", type: "heart", scale: 0.85, xOffset: -30, delay: 0.8 },
-            { id: "thumbs-1", type: "thumbsUp", scale: 1.1, xOffset: -50, delay: 0.2 },
-            { id: "thumbs-2", type: "thumbsUp", scale: 0.9, xOffset: 90, delay: 0.6 },
-          ]);
-        }, 400);
-      }
+      // Show reactions after a short delay (they loop continuously)
+      const reactionTimer = setTimeout(() => {
+        setShowReactions(true);
+      }, 800);
 
-      // Show caption after IG post rises
-      const captionTimer = setTimeout(() => setShowCaption(true), 1800);
+      // Show caption 300ms after IG post lands (post animation is 1.4s)
+      const captionTimer = setTimeout(() => {
+        setShowCaption(true);
+      }, 1700); // 1.4s animation + 300ms delay
 
       return () => {
+        clearTimeout(reactionTimer);
         clearTimeout(captionTimer);
-        if (reactionTimer) clearTimeout(reactionTimer);
       };
     }
 
-    // Immediately reset when leaving slide 2
+    // Reset when leaving slide 2
     if (currentSlide !== 1) {
       setShowCaption(false);
-      setReactions([]);
+      setShowReactions(false);
     }
-  }, [currentSlide, hasEnteredSlide2, reducedMotion]);
+  }, [currentSlide, hasEnteredSlide2]);
 
   // Preload images
   useEffect(() => {
@@ -215,14 +219,14 @@ export function StoryStreetSection({
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseLeave}
         >
-          {/* ===== LAYER ORDER (bottom to top) ===== */}
+          {/* ===== LAYER ORDER ===== */}
+          {/* z-20: IG Post (beneath building visually - rises into sky area) */}
+          {/* z-30: Building layer (the scene) */}
+          {/* z-35: Hearts/Thumbs (ABOVE building so they're visible, loop) */}
+          {/* z-40: Caption card (ON TOP of everything) */}
+          {/* z-50: Pagination */}
 
-          {/* Layer 1: Hearts and Thumbs - BOTTOM (z-10) */}
-          {currentSlide === 1 && !reducedMotion && reactions.map((reaction) => (
-            <FloatingReaction key={reaction.id} instance={reaction} />
-          ))}
-
-          {/* Layer 2: IG Post - MIDDLE (z-20) - beneath building */}
+          {/* IG Post - rises from below into the sky */}
           <AnimatePresence mode="sync">
             {currentSlide === 1 && (
               <motion.div
@@ -241,13 +245,13 @@ export function StoryStreetSection({
                 }}
                 animate={{
                   x: "-50%",
-                  bottom: "27%", // Final position - 15% higher than before
+                  bottom: "var(--ig-post-bottom)",
                   opacity: 1,
                   scale: 1,
                 }}
                 exit={{
                   opacity: 0,
-                  transition: { duration: 0.15 }, // Fast exit
+                  transition: { duration: 0.15 },
                 }}
                 transition={{
                   duration: 1.4,
@@ -279,7 +283,7 @@ export function StoryStreetSection({
             )}
           </AnimatePresence>
 
-          {/* Layer 3: Building/Street - TOP foreground (z-30) - always visible */}
+          {/* Building/Street layer - the scene */}
           <Image
             src={ASSETS.buildingLayer}
             alt="Street scene"
@@ -290,13 +294,22 @@ export function StoryStreetSection({
             draggable={false}
           />
 
-          {/* Layer 4: Dim overlay for slide 2 (z-35) */}
+          {/* Hearts and Thumbs - ABOVE building, loop continuously */}
+          {currentSlide === 1 && showReactions && !reducedMotion && (
+            <>
+              {reactionConfigs.map((reaction) => (
+                <FloatingReaction key={reaction.id} instance={reaction} />
+              ))}
+            </>
+          )}
+
+          {/* Dim overlay for slide 2 */}
           <AnimatePresence>
             {currentSlide === 1 && (
               <motion.div
                 key="dim-overlay"
                 className="absolute inset-0 bg-black/10 pointer-events-none"
-                style={{ zIndex: 35 }}
+                style={{ zIndex: 36 }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0, transition: { duration: 0.15 } }}
@@ -304,8 +317,6 @@ export function StoryStreetSection({
               />
             )}
           </AnimatePresence>
-
-          {/* Layer 5: Text overlays and captions (z-40) */}
 
           {/* Slide 1 intro text */}
           <AnimatePresence>
@@ -340,7 +351,7 @@ export function StoryStreetSection({
             )}
           </AnimatePresence>
 
-          {/* Slide 2 caption */}
+          {/* Caption card - ON TOP of building layer, centered under IG post */}
           <AnimatePresence>
             {currentSlide === 1 && showCaption && (
               <motion.div
@@ -348,14 +359,14 @@ export function StoryStreetSection({
                 className="absolute left-1/2 -translate-x-1/2 pointer-events-none px-4"
                 style={{
                   zIndex: 40,
-                  bottom: "8%",
+                  bottom: "12%",
                 }}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, transition: { duration: 0.15 } }}
                 transition={{ duration: 0.4 }}
               >
-                <div className="bg-[#F4F1EC] rounded-lg shadow-lg px-4 md:px-6 py-3 md:py-4 max-w-xs md:max-w-sm mx-auto border border-[#E0DCD4]">
+                <div className="bg-[#F4F1EC]/95 backdrop-blur-sm rounded-lg shadow-lg px-5 md:px-6 py-4 md:py-5 max-w-xs md:max-w-sm mx-auto border border-[#E0DCD4]">
                   <p className="font-semibold text-[#1A1F24] mb-1 text-sm md:text-base">
                     Social is the introduction.
                   </p>
@@ -384,7 +395,7 @@ export function StoryStreetSection({
             )}
           </AnimatePresence>
 
-          {/* Pagination dots (z-50) */}
+          {/* Pagination dots */}
           <PaginationDots
             slideCount={totalSlides}
             currentIndex={currentSlide}
@@ -392,6 +403,18 @@ export function StoryStreetSection({
           />
         </div>
       </div>
+
+      {/* CSS variable for responsive IG post position */}
+      <style jsx global>{`
+        :root {
+          --ig-post-bottom: 52%;
+        }
+        @media (min-width: 768px) {
+          :root {
+            --ig-post-bottom: 27%;
+          }
+        }
+      `}</style>
 
       {/* Accordion below */}
       <div className="max-w-4xl mx-auto px-6 mt-12">
