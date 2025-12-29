@@ -231,7 +231,7 @@ export function StoryStreetSection({
             {currentSlide === 1 && (
               <motion.div
                 key="igpost"
-                className="absolute pointer-events-none left-1/2"
+                className="absolute pointer-events-none left-1/2 bottom-[52%] md:bottom-[27%]"
                 style={{
                   width: "clamp(260px, 65vw, 550px)",
                   height: "clamp(316px, 79vw, 668px)",
@@ -239,13 +239,13 @@ export function StoryStreetSection({
                 }}
                 initial={{
                   x: "-50%",
-                  bottom: "-40%",
+                  y: "100%",
                   opacity: 0,
                   scale: 0.5,
                 }}
                 animate={{
                   x: "-50%",
-                  bottom: "var(--ig-post-bottom)",
+                  y: "0%",
                   opacity: 1,
                   scale: 1,
                 }}
@@ -295,7 +295,7 @@ export function StoryStreetSection({
           />
 
           {/* Hearts and Thumbs - ABOVE building, loop continuously */}
-          {currentSlide === 1 && showReactions && !reducedMotion && (
+          {currentSlide === 1 && showReactions && (
             <>
               {reactionConfigs.map((reaction) => (
                 <FloatingReaction key={reaction.id} instance={reaction} />
@@ -403,18 +403,6 @@ export function StoryStreetSection({
           />
         </div>
       </div>
-
-      {/* CSS variable for responsive IG post position */}
-      <style jsx global>{`
-        :root {
-          --ig-post-bottom: 52%;
-        }
-        @media (min-width: 768px) {
-          :root {
-            --ig-post-bottom: 27%;
-          }
-        }
-      `}</style>
 
       {/* Accordion below */}
       <div className="max-w-4xl mx-auto px-6 mt-12">
