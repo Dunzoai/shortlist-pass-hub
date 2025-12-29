@@ -42,7 +42,7 @@ function ComingSoonPost({
           width: "clamp(210px, 42vw, 420px)",
           height: "clamp(255px, 51vw, 510px)",
           left: "50%",
-          top: "8%",
+          top: "-35%",
           transform: "translateX(-50%)",
         }}
       >
@@ -74,7 +74,7 @@ function ComingSoonPost({
             rotate: -3,
           }}
           animate={{
-            top: "8%",
+            top: "-35%",
             opacity: 1,
             rotate: [-3, 2, -1, 1, 0],
           }}
@@ -133,7 +133,7 @@ function FloatingReaction({
         width: baseSize * instance.scale,
         height: baseSize * instance.scale,
         left: `calc(50% + ${instance.xOffset}px)`,
-        top: "18%",
+        top: "68%",
       }}
       initial={{
         opacity: 0,
@@ -143,7 +143,7 @@ function FloatingReaction({
       }}
       animate={{
         opacity: [0, 1, 1, 0],
-        y: [0, -60, -140, -220],
+        y: [0, -150, -350, -570],
         x: ["-50%", `calc(-50% + ${instance.xOffset * 0.4}px)`, `calc(-50% + ${instance.xOffset * 0.8}px)`, `calc(-50% + ${instance.xOffset * 1.2}px)`],
         scale: [0.4, instance.scale, instance.scale * 0.9, instance.scale * 0.5],
       }}
@@ -346,7 +346,7 @@ export function StoryStreetSection({
                 width: 50,
                 height: 50,
                 left: "54%",
-                top: "10%",
+                top: "-25%",
                 opacity: 0.85,
               }}
             >
