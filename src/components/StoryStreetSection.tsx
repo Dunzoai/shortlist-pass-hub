@@ -22,14 +22,11 @@ interface ReactionInstance {
   delay: number;
 }
 
-// Floating reaction component - smooth float with varied drift
+// Floating reaction component - BIG motion, fast, visible immediately
 function FloatingReaction({ instance }: { instance: ReactionInstance }) {
   const src = instance.type === "heart" ? ASSETS.heart : ASSETS.thumbsUp;
   const baseSize = instance.type === "heart" ? 60 : 55;
-
-  // Alternate drift direction based on instance position
   const driftDir = instance.xOffset > 0 ? 1 : -1;
-  const driftAmount = 25 + Math.abs(instance.xOffset) * 0.15;
 
   return (
     <motion.div
@@ -38,42 +35,25 @@ function FloatingReaction({ instance }: { instance: ReactionInstance }) {
         width: baseSize * instance.scale,
         height: baseSize * instance.scale,
         left: `calc(50% + ${instance.xOffset}px)`,
-        bottom: `${15 + instance.yOffset}%`,
+        bottom: `${18 + instance.yOffset}%`,
         zIndex: 10,
       }}
       initial={{
-        opacity: 0,
-        y: 0,
-        scale: 0.3,
+        opacity: 0.9,
+        y: 20,
+        scale: instance.scale * 0.8,
       }}
       animate={{
-        opacity: [0, 1, 1, 1, 0.8, 0],
-        y: [0, -80, -200, -380, -520, -680],
-        scale: [
-          0.3,
-          instance.scale * 1.05,
-          instance.scale,
-          instance.scale * 0.95,
-          instance.scale * 0.8,
-          instance.scale * 0.4
-        ],
-        rotate: [0, driftDir * 8, driftDir * -6, driftDir * 4, driftDir * -3, 0],
-        x: [
-          0,
-          driftDir * driftAmount * 0.4,
-          driftDir * -driftAmount * 0.6,
-          driftDir * driftAmount * 0.8,
-          driftDir * -driftAmount * 0.3,
-          driftDir * driftAmount * 0.2
-        ],
+        opacity: [0.9, 1, 0.9, 0.6, 0],
+        y: [20, 0, -50, -100, -140],
+        scale: [instance.scale * 0.8, instance.scale, instance.scale * 0.95, instance.scale * 0.8, instance.scale * 0.5],
+        x: [0, driftDir * 8, driftDir * -6, driftDir * 10, driftDir * 4],
       }}
       transition={{
-        duration: 5.5,
+        duration: 0.45,
         delay: instance.delay,
-        ease: "easeInOut",
-        times: [0, 0.06, 0.3, 0.55, 0.8, 1],
-        repeat: Infinity,
-        repeatDelay: 0.2,
+        ease: "easeOut",
+        times: [0, 0.2, 0.5, 0.8, 1],
       }}
     >
       <Image src={src} alt="" fill className="object-contain drop-shadow-lg" />
@@ -123,28 +103,30 @@ export function StoryStreetSection({
   const reducedMotion = prefersReducedMotion ?? false;
 
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [showCaption, setShowCaption] = useState(false);
-  const [showReactions, setShowReactions] = useState(false);
+  // Key to force remount animations on each Slide 2 entry
+  const [slide2Key, setSlide2Key] = useState(0);
 
-  const hasEnteredSlide2 = useRef(false);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const dragStartX = useRef<number | null>(null);
   const isDragging = useRef(false);
 
   const totalSlides = 3;
   const swipeThreshold = 50;
 
-  // Randomized reaction configs - quick appearance, staggered for continuous stream
+  // Reaction configs - 2-3 hearts, 1-2 thumbs, staggered fast
   const reactionConfigs: ReactionInstance[] = useMemo(() => [
-    { id: "heart-1", type: "heart", scale: 1.1, xOffset: -100, yOffset: 0, delay: 0 },
-    { id: "thumbs-1", type: "thumbsUp", scale: 1.2, xOffset: -60, yOffset: 3, delay: 0.15 },
-    { id: "heart-2", type: "heart", scale: 1.4, xOffset: 85, yOffset: 8, delay: 0.35 },
-    { id: "thumbs-2", type: "thumbsUp", scale: 1.0, xOffset: 120, yOffset: -3, delay: 0.6 },
-    { id: "heart-3", type: "heart", scale: 0.9, xOffset: -20, yOffset: -5, delay: 0.9 },
+    { id: "heart-1", type: "heart", scale: 1.1, xOffset: -90, yOffset: 0, delay: 0.05 },
+    { id: "thumbs-1", type: "thumbsUp", scale: 1.15, xOffset: 70, yOffset: 4, delay: 0.12 },
+    { id: "heart-2", type: "heart", scale: 1.3, xOffset: 20, yOffset: -2, delay: 0.2 },
+    { id: "heart-3", type: "heart", scale: 0.95, xOffset: -40, yOffset: 6, delay: 0.28 },
   ], []);
 
   const goToSlide = (index: number) => {
     if (index >= 0 && index < totalSlides) {
+      // Increment key when entering Slide 2 to force animation replay
+      if (index === 1) {
+        setSlide2Key((k) => k + 1);
+      }
       setCurrentSlide(index);
     }
   };
@@ -200,35 +182,7 @@ export function StoryStreetSection({
     return () => window.removeEventListener("keydown", handleKeyDown);
   });
 
-  // Trigger slide 2 animations: IG post → hearts/thumbs → copy box
-  useEffect(() => {
-    let reactionTimer: NodeJS.Timeout;
-    let captionTimer: NodeJS.Timeout;
-
-    if (currentSlide === 1 && !hasEnteredSlide2.current) {
-      hasEnteredSlide2.current = true;
-
-      // Hearts/thumbs appear shortly after IG post starts rising
-      reactionTimer = setTimeout(() => {
-        setShowReactions(true);
-      }, 1200);
-
-      // Caption appears AFTER hearts/thumbs are clearly visible and floating
-      captionTimer = setTimeout(() => {
-        setShowCaption(true);
-      }, 4500);
-    }
-
-    if (currentSlide !== 1) {
-      setShowCaption(false);
-      setShowReactions(false);
-    }
-
-    return () => {
-      if (reactionTimer) clearTimeout(reactionTimer);
-      if (captionTimer) clearTimeout(captionTimer);
-    };
-  }, [currentSlide]);
+  // No timers needed - everything visible immediately on Slide 2
 
   // Preload images
   useEffect(() => {
@@ -241,14 +195,19 @@ export function StoryStreetSection({
   // Reset to slide 1 when closing overlay
   const handleCloseOverlay = () => {
     setCurrentSlide(0);
-    hasEnteredSlide2.current = false;
-    setShowCaption(false);
-    setShowReactions(false);
     onToggleOldCards();
   };
 
   return (
-    <section className="py-8 md:py-16 bg-[#F4F1EC] relative">
+    <section
+      ref={sectionRef}
+      className="py-8 md:py-16 bg-[#F4F1EC] relative cursor-grab active:cursor-grabbing select-none"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseLeave}
+    >
       {/* Carousel - always mounted */}
       <motion.div
         animate={{ opacity: showOldCards ? 0.3 : 1 }}
@@ -257,13 +216,7 @@ export function StoryStreetSection({
             <div className="relative max-w-7xl mx-auto px-4">
               {/* Stage container */}
               <div
-                ref={containerRef}
-                className="relative w-full aspect-[4/5] sm:aspect-[3/4] md:aspect-[16/9] lg:aspect-[2/1] overflow-hidden cursor-grab active:cursor-grabbing select-none rounded-lg"
-                onTouchStart={handleTouchStart}
-                onTouchEnd={handleTouchEnd}
-                onMouseDown={handleMouseDown}
-                onMouseUp={handleMouseUp}
-                onMouseLeave={handleMouseLeave}
+                className="relative w-full aspect-[4/5] sm:aspect-[3/4] md:aspect-[16/9] lg:aspect-[2/1] overflow-hidden rounded-lg"
               >
                 {/* Building layer - TOP foreground */}
                 <Image
@@ -276,77 +229,66 @@ export function StoryStreetSection({
                   draggable={false}
                 />
 
-                {/* Hearts and Thumbs - BOTTOM layer */}
-                {currentSlide === 1 && showReactions && (
+                {/* Hearts and Thumbs - BOTTOM layer - visible immediately on Slide 2 */}
+                {currentSlide === 1 && (
                   <>
                     {reactionConfigs.map((reaction) => (
-                      <FloatingReaction key={reaction.id} instance={reaction} />
+                      <FloatingReaction key={`${reaction.id}-${slide2Key}`} instance={reaction} />
                     ))}
                   </>
                 )}
 
-                {/* IG Post - MIDDLE layer */}
+                {/* IG Post - MIDDLE layer - visible immediately with BIG upward motion */}
                 <AnimatePresence mode="sync">
                   {currentSlide === 1 && (
                     <motion.div
-                      key="igpost"
+                      key={`igpost-${slide2Key}`}
                       className="absolute pointer-events-none left-1/2 bottom-[42%] md:bottom-[27%] w-[325px] h-[395px] md:w-[550px] md:h-[668px]"
                       style={{ zIndex: 20 }}
                       initial={{
                         x: "-50%",
-                        y: "100%",
-                        opacity: 0,
-                        scale: 0.5,
+                        y: "16%",
+                        opacity: 0.85,
+                        scale: 0.95,
                       }}
                       animate={{
                         x: "-50%",
-                        y: "0%",
+                        y: "-8%",
                         opacity: 1,
                         scale: 1,
                       }}
                       exit={{
                         opacity: 0,
-                        transition: { duration: 0.15 },
+                        transition: { duration: 0.12 },
                       }}
                       transition={{
-                        duration: 1.4,
-                        ease: [0.16, 1, 0.3, 1],
+                        duration: 0.3,
+                        ease: "easeOut",
                       }}
                     >
-                      <motion.div
-                        className="w-full h-full relative"
-                        animate={{ y: [0, -6, 0, -4, 0] }}
-                        transition={{
-                          duration: 5,
-                          ease: "easeInOut",
-                          repeat: Infinity,
-                          delay: 1.6,
-                        }}
-                      >
-                        <Image
-                          src={ASSETS.igPost}
-                          alt="Coming soon post"
-                          fill
-                          className="object-contain drop-shadow-2xl"
-                          priority
-                          draggable={false}
-                        />
-                      </motion.div>
+                      <Image
+                        src={ASSETS.igPost}
+                        alt="Coming soon post"
+                        fill
+                        className="object-contain drop-shadow-2xl"
+                        priority
+                        draggable={false}
+                      />
                     </motion.div>
                   )}
                 </AnimatePresence>
 
-                {/* Dim overlay for slide 2 */}
+                {/* Dim overlay for slide 2 - applied immediately */}
                 <AnimatePresence>
                   {currentSlide === 1 && (
                     <motion.div
                       key="dim-overlay"
                       className="absolute inset-0 bg-black/10 pointer-events-none"
                       style={{ zIndex: 32 }}
-                      initial={{ opacity: 0 }}
+                      initial={{ opacity: 0.8 }}
                       animate={{ opacity: 1 }}
-                      exit={{ opacity: 0, transition: { duration: 0.15 } }}
-                      transition={{ duration: 0.3 }}
+                      exit={{ opacity: 0, transition: { duration: 0.1 } }}
+                      transition={{ duration: 0.15 }}
                     />
                   )}
                 </AnimatePresence>
@@ -369,17 +311,17 @@ export function StoryStreetSection({
                 </AnimatePresence>
               </div>
 
-              {/* Caption overlay - outside stage container to allow overflow */}
+              {/* Caption overlay - visible immediately on Slide 2 */}
               <AnimatePresence>
-                {currentSlide === 1 && showCaption && (
+                {currentSlide === 1 && (
                   <motion.div
-                    key="slide2-caption-overlay"
+                    key={`slide2-caption-${slide2Key}`}
                     className="relative -mt-24 sm:-mt-28 md:-mt-20 mx-auto w-[85%] sm:w-[80%] max-w-md pointer-events-none"
                     style={{ zIndex: 35 }}
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0.85, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    transition={{ duration: 0.4 }}
+                    exit={{ opacity: 0, y: 5 }}
+                    transition={{ duration: 0.25, ease: "easeOut" }}
                   >
                     <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-3 md:px-5 md:py-4 border-2 border-[#5b8fc9]/35 ring-1 ring-[#5b8fc9]/15">
                       <h3 className="font-semibold text-[#1A1F24] text-sm sm:text-base md:text-lg mb-1">
