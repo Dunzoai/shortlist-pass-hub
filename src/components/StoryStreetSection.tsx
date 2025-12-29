@@ -359,13 +359,13 @@ export function StoryStreetSection({
                   {currentSlide === 2 && (
                     <motion.div
                       key={`smartpage-${slide3Key}`}
-                      className="absolute pointer-events-none left-1/2 bottom-[35%] md:bottom-[22%] w-[280px] h-[380px] md:w-[420px] md:h-[570px]"
+                      className="absolute pointer-events-none left-1/2 bottom-[35%] md:bottom-[27%] w-[280px] h-[380px] md:w-[420px] md:h-[570px]"
                       style={{ zIndex: 30 }}
                       initial={{
                         x: "-50%",
-                        y: "80%",
+                        y: "20%",
                         opacity: 0,
-                        scale: 0.95,
+                        scale: 0.97,
                       }}
                       animate={{
                         x: "-50%",
@@ -401,17 +401,39 @@ export function StoryStreetSection({
                           className="object-contain drop-shadow-2xl"
                           draggable={false}
                         />
-                        {/* Text that appears on the SmartPage input field */}
-                        <motion.div
-                          className="absolute left-[12%] md:left-[10%] bottom-[22%] md:bottom-[21%] w-[55%] md:w-[58%] h-[6%]"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{
-                            duration: 0.4,
-                            ease: "easeOut",
-                            delay: 1.2,
-                          }}
-                        >
+                      </motion.div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Slide 3: SmartPage text - appears after SmartPage settles */}
+                <AnimatePresence>
+                  {currentSlide === 2 && (
+                    <motion.div
+                      key={`smartpage-text-${slide3Key}`}
+                      className="absolute pointer-events-none left-1/2 bottom-[35%] md:bottom-[27%] w-[280px] h-[380px] md:w-[420px] md:h-[570px]"
+                      style={{ zIndex: 32 }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0, transition: { duration: 0.1 } }}
+                      transition={{
+                        duration: 0.4,
+                        ease: "easeOut",
+                        delay: 1.5,
+                      }}
+                    >
+                      {/* Match the hover animation */}
+                      <motion.div
+                        className="w-full h-full relative"
+                        animate={{ y: [0, -8, 0, -5, 0] }}
+                        transition={{
+                          duration: 5,
+                          ease: "easeInOut",
+                          repeat: Infinity,
+                          delay: 1.0,
+                        }}
+                      >
+                        <div className="absolute left-[12%] md:left-[11%] bottom-[22%] md:bottom-[21.5%] w-[52%] md:w-[55%] h-[5%] md:h-[4.5%]">
                           <Image
                             src={ASSETS.smartpage3Text}
                             alt=""
@@ -419,7 +441,7 @@ export function StoryStreetSection({
                             className="object-contain object-left"
                             draggable={false}
                           />
-                        </motion.div>
+                        </div>
                       </motion.div>
                     </motion.div>
                   )}
