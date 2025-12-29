@@ -226,17 +226,6 @@ export function StoryStreetSection({
     });
   }, []);
 
-  // Continuous reaction loop - spawn new reactions every 3.5 seconds
-  useEffect(() => {
-    if (currentSlide !== 1 || !showReactions || reducedMotion) return;
-
-    const interval = setInterval(() => {
-      spawnReactions();
-    }, 3500);
-
-    return () => clearInterval(interval);
-  }, [currentSlide, showReactions, spawnReactions, reducedMotion]);
-
   // Spawn reactions - called repeatedly while on slide 2
   const spawnReactions = useCallback(() => {
     const newReactions: ReactionInstance[] = [
@@ -247,6 +236,17 @@ export function StoryStreetSection({
     ];
     setReactions(newReactions);
   }, []);
+
+  // Continuous reaction loop - spawn new reactions every 3.5 seconds
+  useEffect(() => {
+    if (currentSlide !== 1 || !showReactions || reducedMotion) return;
+
+    const interval = setInterval(() => {
+      spawnReactions();
+    }, 3500);
+
+    return () => clearInterval(interval);
+  }, [currentSlide, showReactions, spawnReactions, reducedMotion]);
 
   // Navigate to slide
   const goToSlide = useCallback((index: number) => {
