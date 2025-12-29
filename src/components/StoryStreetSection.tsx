@@ -7,6 +7,7 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 // Asset paths
 const ASSETS = {
   buildingLayer: "/storystreet/slide-0.jpg",
+  theBusiness: "/storystreet/the-business.png",
   igPost: "/storystreet/coming-soon.png",
   heart: "/storystreet/heart-overlay.png",
   thumbsUp: "/storystreet/thumbs-up.png",
@@ -309,6 +310,22 @@ export function StoryStreetSection({
                     />
                   )}
                 </AnimatePresence>
+
+                {/* The Business layer - on top so IG post & emojis emerge from behind */}
+                {currentSlide === 1 && (
+                  <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{ zIndex: 38 }}
+                  >
+                    <Image
+                      src={ASSETS.theBusiness}
+                      alt=""
+                      fill
+                      className="object-cover object-bottom"
+                      draggable={false}
+                    />
+                  </div>
+                )}
 
                 {/* Slide 3 placeholder */}
                 <AnimatePresence>
