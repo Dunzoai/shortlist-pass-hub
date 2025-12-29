@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { motion, useReducedMotion, useInView } from "framer-motion";
+import { motion, useReducedMotion, useInView, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
 import { Container } from "@/components/Container";
 import { useState, useEffect, useRef } from "react";
 
@@ -20,14 +20,18 @@ const staggerContainer = {
   },
 };
 
-function HeroImageLeft() {
+interface HeroImageProps {
+  scrollDrift: { x: number; y: number };
+}
+
+function HeroImageLeft({ scrollDrift }: HeroImageProps) {
   const prefersReducedMotion = useReducedMotion();
 
   if (prefersReducedMotion) {
     return (
       <div
         className="absolute bottom-0 left-0 w-[200px] h-[200px] md:w-[260px] md:h-[260px] lg:w-[360px] lg:h-[360px] -mb-8 -ml-2 md:-mb-12 md:-ml-6 lg:-mb-16 lg:-ml-8 z-0"
-        style={{ opacity: 0.35 }}
+        style={{ opacity: 0.45 }}
       >
         <Image src="/bubbles-homepage.png" alt="" fill className="object-contain object-bottom" />
       </div>
@@ -37,14 +41,18 @@ function HeroImageLeft() {
   return (
     <motion.div
       className="absolute bottom-0 left-0 w-[200px] h-[200px] md:w-[260px] md:h-[260px] lg:w-[360px] lg:h-[360px] -mb-8 -ml-2 md:-mb-12 md:-ml-6 lg:-mb-16 lg:-ml-8 z-0"
-      style={{ opacity: 0.35 }}
+      initial={{ opacity: 0, y: 10, scale: 0.96 }}
       animate={{
-        x: [0, 8, 0, -6, 0],
-        y: [0, -8, 0, 6, 0],
+        opacity: 0.45,
+        y: scrollDrift.y,
+        x: scrollDrift.x,
+        scale: 1
       }}
       transition={{
-        x: { duration: 20, repeat: Infinity, ease: "easeInOut" },
-        y: { duration: 20, repeat: Infinity, ease: "easeInOut" },
+        opacity: { delay: 1.8, duration: 0.5, ease: "easeOut" },
+        y: { delay: 1.8, duration: 0.5, ease: "easeOut" },
+        x: { duration: 0.4, ease: "easeOut" },
+        scale: { delay: 1.8, duration: 0.5, ease: "easeOut" },
       }}
     >
       <Image src="/bubbles-homepage.png" alt="" fill className="object-contain object-bottom" />
@@ -52,14 +60,14 @@ function HeroImageLeft() {
   );
 }
 
-function HeroImageRight() {
+function HeroImageRight({ scrollDrift }: HeroImageProps) {
   const prefersReducedMotion = useReducedMotion();
 
   if (prefersReducedMotion) {
     return (
       <div
         className="absolute top-0 right-0 w-40 h-40 md:w-52 md:h-52 lg:w-72 lg:h-72 -mt-2 -mr-6 md:-mt-8 md:-mr-14 lg:-mt-10 lg:-mr-16 z-0"
-        style={{ opacity: 0.35 }}
+        style={{ opacity: 0.28 }}
       >
         <Image src="/instagram-post.png" alt="" fill className="object-contain object-top" />
       </div>
@@ -69,14 +77,18 @@ function HeroImageRight() {
   return (
     <motion.div
       className="absolute top-0 right-0 w-40 h-40 md:w-52 md:h-52 lg:w-72 lg:h-72 -mt-2 -mr-6 md:-mt-8 md:-mr-14 lg:-mt-10 lg:-mr-16 z-0"
-      style={{ opacity: 0.35 }}
+      initial={{ opacity: 0, y: -8, scale: 0.96 }}
       animate={{
-        x: [0, -10, 0, 8, 0],
-        y: [0, 6, 0, -8, 0],
+        opacity: 0.28,
+        y: scrollDrift.y,
+        x: scrollDrift.x,
+        scale: 1
       }}
       transition={{
-        x: { duration: 18, repeat: Infinity, ease: "easeInOut", delay: 2 },
-        y: { duration: 18, repeat: Infinity, ease: "easeInOut", delay: 2 },
+        opacity: { delay: 2.2, duration: 0.5, ease: "easeOut" },
+        y: { delay: 2.2, duration: 0.5, ease: "easeOut" },
+        x: { duration: 0.4, ease: "easeOut" },
+        scale: { delay: 2.2, duration: 0.5, ease: "easeOut" },
       }}
     >
       <Image src="/instagram-post.png" alt="" fill className="object-contain object-top" />
@@ -361,13 +373,40 @@ export default function Home() {
     },
   ];
 
+  // OPTION 5: Micro scroll interaction - one-time drift on first scroll
+  const heroRef = useRef<HTMLElement>(null);
+  const [hasScrolled, setHasScrolled] = useState(false);
+  const [scrollDriftLeft, setScrollDriftLeft] = useState({ x: 0, y: 0 });
+  const [scrollDriftRight, setScrollDriftRight] = useState({ x: 0, y: 0 });
+  const [subheadOpacity, setSubheadOpacity] = useState(1);
+  const prefersReducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+
+    const handleScroll = () => {
+      if (!hasScrolled && window.scrollY > 20) {
+        setHasScrolled(true);
+        // Left elements drift left/down
+        setScrollDriftLeft({ x: -8, y: 6 });
+        // Right elements drift right/up
+        setScrollDriftRight({ x: 8, y: -6 });
+        // Subhead fades slightly
+        setSubheadOpacity(0.92);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [hasScrolled, prefersReducedMotion]);
+
   return (
     <main className="pt-16">
       {/* Hero Section */}
-      <section className="relative pt-20 pb-20 lg:pt-28 lg:pb-28 bg-[#F4F1EC] overflow-hidden">
-        {/* Floating hero images */}
-        <HeroImageLeft />
-        <HeroImageRight />
+      <section ref={heroRef} className="relative pt-20 pb-20 lg:pt-28 lg:pb-28 bg-[#F4F1EC] overflow-hidden">
+        {/* Floating hero images - OPTION 4: directional focus */}
+        <HeroImageLeft scrollDrift={scrollDriftLeft} />
+        <HeroImageRight scrollDrift={scrollDriftRight} />
 
         <Container>
           <div className="relative z-10">
@@ -377,6 +416,7 @@ export default function Home() {
               variants={staggerContainer}
               className="max-w-4xl mx-auto text-center"
             >
+              {/* Headline - OPTION 2 & 3: appears first, BIG has visual weight */}
               <motion.h1
                 variants={fadeUpVariant}
                 transition={{ duration: 0.5, ease: "easeOut" }}
@@ -385,74 +425,47 @@ export default function Home() {
               >
                 <span className="block">
                   <span className="inline-block">We</span>{" "}
+                  <span className="inline-block">help</span>{" "}
                   <motion.span
                     className="inline-block"
-                    initial={{ x: 12 }}
-                    animate={{ x: 0 }}
-                    transition={{ delay: 0.8, duration: 0.4, ease: "easeOut" }}
-                  >
-                    help
-                  </motion.span>{" "}
-                  <motion.span
-                    className="inline-block"
-                    initial={{ opacity: 0, scale: 1.5, y: -25 }}
+                    initial={{ opacity: 0, scale: 1.4, y: -20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     transition={{
-                      delay: 0.9,
-                      duration: 1.2,
-                      type: "spring",
-                      stiffness: 80,
-                      damping: 10
+                      delay: 0.6,
+                      duration: 0.8,
+                      ease: [0.25, 0.1, 0.25, 1]
                     }}
                   >
                     small
                   </motion.span>{" "}
-                  <motion.span
-                    className="inline-block"
-                    initial={{ x: -12 }}
-                    animate={{ x: 0 }}
-                    transition={{ delay: 0.8, duration: 0.4, ease: "easeOut" }}
-                  >
-                    businesses
-                  </motion.span>
+                  <span className="inline-block">businesses</span>
                 </span>
                 <span className="block">
-                  <span className="inline-block">show up</span>{" "}
+                  <span className="inline-block">show up like</span>{" "}
                   <motion.span
-                    className="inline-block"
-                    initial={{ x: 8 }}
-                    animate={{ x: 0 }}
-                    transition={{ delay: 1.4, duration: 0.4, ease: "easeOut" }}
-                  >
-                    like
-                  </motion.span>{" "}
-                  <motion.span
-                    className="inline-block font-semibold"
-                    initial={{ opacity: 0, scale: 0.5, y: 25 }}
+                    className="inline-block font-semibold tracking-[-0.02em]"
+                    style={{ color: "#0D1117", textShadow: "0 1px 2px rgba(0,0,0,0.06)" }}
+                    initial={{ opacity: 0, scale: 0.6, y: 16 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     transition={{
-                      delay: 1.5,
-                      duration: 1.2,
-                      type: "spring",
-                      stiffness: 80,
-                      damping: 10
+                      delay: 1.1,
+                      duration: 0.7,
+                      ease: [0.25, 0.1, 0.25, 1]
                     }}
                   >
                     BIG
                   </motion.span>{" "}
-                  <motion.span
-                    className="inline-block"
-                    initial={{ x: -8 }}
-                    animate={{ x: 0 }}
-                    transition={{ delay: 1.4, duration: 0.4, ease: "easeOut" }}
-                  >
-                    ones.
-                  </motion.span>
+                  <span className="inline-block">ones.</span>
                 </span>
               </motion.h1>
+              {/* Subhead - OPTION 3 & 5: appears second, fades slightly on scroll */}
               <motion.p
-                variants={fadeUpVariant}
-                transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: subheadOpacity, y: 0 }}
+                transition={{
+                  opacity: { delay: 0.3, duration: 0.5, ease: "easeOut" },
+                  y: { delay: 0.3, duration: 0.5, ease: "easeOut" }
+                }}
                 className="text-lg lg:text-xl text-[#5A6570] max-w-[720px] mx-auto"
               >
                 Social media management, SmartPages, websites and custom apps built to make customers choose you.
