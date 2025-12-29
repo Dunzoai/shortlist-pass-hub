@@ -6,7 +6,7 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 
 // Asset paths
 const ASSETS = {
-  streetBase: "/storystreet/slide-0.jpg",
+  buildingLayer: "/storystreet/slide-0.jpg", // TOP layer - building foreground
   igPost: "/storystreet/coming-soon.png",
   heart: "/storystreet/heart-overlay.png",
   thumbsUp: "/storystreet/thumbs-up.png",
@@ -21,7 +21,7 @@ interface ReactionInstance {
   delay: number;
 }
 
-// Floating reaction component - sits behind building/IG post layers
+// Floating reaction component - sits BEHIND IG post and building
 function FloatingReaction({ instance }: { instance: ReactionInstance }) {
   const src = instance.type === "heart" ? ASSETS.heart : ASSETS.thumbsUp;
   const baseSize = instance.type === "heart" ? 60 : 55;
@@ -33,8 +33,8 @@ function FloatingReaction({ instance }: { instance: ReactionInstance }) {
         width: baseSize * instance.scale,
         height: baseSize * instance.scale,
         left: `calc(50% + ${instance.xOffset}px)`,
-        bottom: "35%",
-        zIndex: 5, // Behind building layer and IG post
+        bottom: "40%",
+        zIndex: 10, // Behind IG post (20) and building (30)
       }}
       initial={{
         opacity: 0,
@@ -69,7 +69,7 @@ function PaginationDots({
   onDotClick: (index: number) => void;
 }) {
   return (
-    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-40 pointer-events-auto">
+    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-50 pointer-events-auto">
       {Array.from({ length: slideCount }).map((_, i) => (
         <button
           key={i}
@@ -110,7 +110,7 @@ export function StoryStreetSection({
   const isDragging = useRef(false);
 
   const totalSlides = 3;
-  const swipeThreshold = 50; // minimum px to trigger slide change
+  const swipeThreshold = 50;
 
   // Handle slide navigation
   const goToSlide = (index: number) => {
@@ -130,23 +130,16 @@ export function StoryStreetSection({
 
   const handleTouchEnd = (e: React.TouchEvent) => {
     if (!isDragging.current || dragStartX.current === null) return;
-
     const endX = e.changedTouches[0].clientX;
     const diff = dragStartX.current - endX;
-
     if (Math.abs(diff) > swipeThreshold) {
-      if (diff > 0) {
-        goNext(); // Swipe left = next
-      } else {
-        goPrev(); // Swipe right = prev
-      }
+      diff > 0 ? goNext() : goPrev();
     }
-
     dragStartX.current = null;
     isDragging.current = false;
   };
 
-  // Mouse handlers for desktop drag
+  // Mouse handlers
   const handleMouseDown = (e: React.MouseEvent) => {
     dragStartX.current = e.clientX;
     isDragging.current = true;
@@ -154,17 +147,10 @@ export function StoryStreetSection({
 
   const handleMouseUp = (e: React.MouseEvent) => {
     if (!isDragging.current || dragStartX.current === null) return;
-
     const diff = dragStartX.current - e.clientX;
-
     if (Math.abs(diff) > swipeThreshold) {
-      if (diff > 0) {
-        goNext();
-      } else {
-        goPrev();
-      }
+      diff > 0 ? goNext() : goPrev();
     }
-
     dragStartX.current = null;
     isDragging.current = false;
   };
@@ -179,7 +165,7 @@ export function StoryStreetSection({
     if (currentSlide === 1 && !hasEnteredSlide2) {
       setHasEnteredSlide2(true);
 
-      // Spawn reactions early - they float behind the building as post rises
+      // Spawn reactions - they float behind the building
       let reactionTimer: NodeJS.Timeout;
       if (!reducedMotion) {
         reactionTimer = setTimeout(() => {
@@ -190,11 +176,11 @@ export function StoryStreetSection({
             { id: "thumbs-1", type: "thumbsUp", scale: 1.1, xOffset: -50, delay: 0.2 },
             { id: "thumbs-2", type: "thumbsUp", scale: 0.9, xOffset: 90, delay: 0.6 },
           ]);
-        }, 600); // Start reactions early during the rise
+        }, 400);
       }
 
-      // Show caption after IG post finishes rising and scaling (2s animation)
-      const captionTimer = setTimeout(() => setShowCaption(true), 2400);
+      // Show caption after IG post rises
+      const captionTimer = setTimeout(() => setShowCaption(true), 1800);
 
       return () => {
         clearTimeout(captionTimer);
@@ -202,7 +188,7 @@ export function StoryStreetSection({
       };
     }
 
-    // Reset when leaving slide 2
+    // Immediately reset when leaving slide 2
     if (currentSlide !== 1) {
       setShowCaption(false);
       setReactions([]);
@@ -219,35 +205,115 @@ export function StoryStreetSection({
 
   return (
     <section className="py-12 md:py-20 bg-[#F4F1EC]">
-      {/* Main scene container - SINGLE fixed background */}
       <div className="relative max-w-7xl mx-auto">
         <div
           ref={containerRef}
-          className="relative w-full aspect-[4/5] sm:aspect-[3/4] md:aspect-[16/9] lg:aspect-[2/1] overflow-hidden cursor-grab active:cursor-grabbing select-none"
+          className="relative w-full aspect-[4/5] sm:aspect-[3/4] md:aspect-[16/9] lg:aspect-[2/1] overflow-hidden cursor-grab active:cursor-grabbing select-none bg-[#E8E4DD]"
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
           onMouseDown={handleMouseDown}
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseLeave}
         >
-          {/* STATIC background - never moves */}
+          {/* ===== LAYER ORDER (bottom to top) ===== */}
+
+          {/* Layer 1: Hearts and Thumbs - BOTTOM (z-10) */}
+          {currentSlide === 1 && !reducedMotion && reactions.map((reaction) => (
+            <FloatingReaction key={reaction.id} instance={reaction} />
+          ))}
+
+          {/* Layer 2: IG Post - MIDDLE (z-20) - beneath building */}
+          <AnimatePresence mode="sync">
+            {currentSlide === 1 && (
+              <motion.div
+                key="igpost"
+                className="absolute pointer-events-none left-1/2"
+                style={{
+                  width: "clamp(260px, 65vw, 550px)",
+                  height: "clamp(316px, 79vw, 668px)",
+                  zIndex: 20,
+                }}
+                initial={{
+                  x: "-50%",
+                  bottom: "-40%",
+                  opacity: 0,
+                  scale: 0.5,
+                }}
+                animate={{
+                  x: "-50%",
+                  bottom: "27%", // Final position - 15% higher than before
+                  opacity: 1,
+                  scale: 1,
+                }}
+                exit={{
+                  opacity: 0,
+                  transition: { duration: 0.15 }, // Fast exit
+                }}
+                transition={{
+                  duration: 1.4,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+              >
+                <motion.div
+                  className="w-full h-full relative"
+                  animate={{
+                    y: [0, -6, 0, -4, 0],
+                  }}
+                  transition={{
+                    duration: 5,
+                    ease: "easeInOut",
+                    repeat: Infinity,
+                    delay: 1.6,
+                  }}
+                >
+                  <Image
+                    src={ASSETS.igPost}
+                    alt="Coming soon post"
+                    fill
+                    className="object-contain drop-shadow-2xl"
+                    priority
+                    draggable={false}
+                  />
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Layer 3: Building/Street - TOP foreground (z-30) - always visible */}
           <Image
-            src={ASSETS.streetBase}
+            src={ASSETS.buildingLayer}
             alt="Street scene"
             fill
-            className="object-cover object-center"
-            style={{ zIndex: 1 }}
+            className="object-cover object-center pointer-events-none"
+            style={{ zIndex: 30 }}
             priority
             draggable={false}
           />
 
-          {/* ===== SLIDE 1: Intro text ===== */}
+          {/* Layer 4: Dim overlay for slide 2 (z-35) */}
+          <AnimatePresence>
+            {currentSlide === 1 && (
+              <motion.div
+                key="dim-overlay"
+                className="absolute inset-0 bg-black/10 pointer-events-none"
+                style={{ zIndex: 35 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0, transition: { duration: 0.15 } }}
+                transition={{ duration: 0.3 }}
+              />
+            )}
+          </AnimatePresence>
+
+          {/* Layer 5: Text overlays and captions (z-40) */}
+
+          {/* Slide 1 intro text */}
           <AnimatePresence>
             {currentSlide === 0 && (
               <motion.div
-                key="slide1-content"
+                key="slide1-text"
                 className="absolute inset-0 flex flex-col items-center justify-end pb-8 md:pb-12 pointer-events-none"
-                style={{ zIndex: 20 }}
+                style={{ zIndex: 40 }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -274,119 +340,40 @@ export function StoryStreetSection({
             )}
           </AnimatePresence>
 
-          {/* ===== SLIDE 2: IG Post animation ===== */}
+          {/* Slide 2 caption */}
           <AnimatePresence>
-            {currentSlide === 1 && (
-              <>
-                {/* Dim overlay */}
-                <motion.div
-                  key="slide2-overlay"
-                  className="absolute inset-0 bg-black pointer-events-none"
-                  style={{ zIndex: 10 }}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 0.15 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                />
-
-                {/* IG Post - Phase 1: rises from behind building (small), Phase 2: pushes forward (scales up) */}
-                <motion.div
-                  key="slide2-igpost"
-                  className="absolute pointer-events-none left-1/2"
-                  style={{
-                    width: "clamp(260px, 65vw, 550px)",
-                    height: "clamp(316px, 79vw, 668px)",
-                  }}
-                  initial={{
-                    x: "-50%",
-                    bottom: "-30%",
-                    opacity: 0,
-                    scale: 0.6,
-                    zIndex: 5, // Start behind building layer
-                  }}
-                  animate={{
-                    x: "-50%",
-                    bottom: ["0%", "18%", "12%"], // Rise up, then settle
-                    opacity: 1,
-                    scale: [0.6, 0.75, 1.05], // Start small, grow, then hero size
-                    zIndex: [5, 5, 20], // Stay behind, then come forward
-                  }}
-                  exit={{
-                    opacity: 0,
-                    scale: 0.8,
-                  }}
-                  transition={{
-                    duration: 2.0,
-                    ease: [0.16, 1, 0.3, 1],
-                    times: [0, 0.5, 1], // Phase 1 at 50%, Phase 2 completes at 100%
-                    zIndex: { duration: 0.1, delay: 1.0 }, // z-index changes at the transition point
-                  }}
-                >
-                  <motion.div
-                    className="w-full h-full relative"
-                    animate={{
-                      y: [0, -6, 0, -4, 0],
-                    }}
-                    transition={{
-                      duration: 5,
-                      ease: "easeInOut",
-                      repeat: Infinity,
-                      delay: 2.2,
-                    }}
-                  >
-                    <Image
-                      src={ASSETS.igPost}
-                      alt="Coming soon post"
-                      fill
-                      className="object-contain drop-shadow-2xl"
-                      priority
-                      draggable={false}
-                    />
-                  </motion.div>
-                </motion.div>
-
-                {/* Floating reactions - hearts and thumbs */}
-                {!reducedMotion && reactions.map((reaction) => (
-                  <FloatingReaction key={reaction.id} instance={reaction} />
-                ))}
-
-                {/* Caption card */}
-                <AnimatePresence>
-                  {showCaption && (
-                    <motion.div
-                      key="slide2-caption"
-                      className="absolute left-1/2 -translate-x-1/2 pointer-events-none px-4"
-                      style={{
-                        zIndex: 30,
-                        bottom: "6%",
-                      }}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.4, delay: 0.3 }}
-                    >
-                      <div className="bg-[#F4F1EC] rounded-lg shadow-lg px-4 md:px-6 py-3 md:py-4 max-w-xs md:max-w-sm mx-auto border border-[#E0DCD4]">
-                        <p className="font-semibold text-[#1A1F24] mb-1 text-sm md:text-base">
-                          Social is the introduction.
-                        </p>
-                        <p className="text-[#5A6570] text-xs md:text-sm">
-                          It's how people meet your business before they ever click.
-                        </p>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </>
+            {currentSlide === 1 && showCaption && (
+              <motion.div
+                key="slide2-caption"
+                className="absolute left-1/2 -translate-x-1/2 pointer-events-none px-4"
+                style={{
+                  zIndex: 40,
+                  bottom: "8%",
+                }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, transition: { duration: 0.15 } }}
+                transition={{ duration: 0.4 }}
+              >
+                <div className="bg-[#F4F1EC] rounded-lg shadow-lg px-4 md:px-6 py-3 md:py-4 max-w-xs md:max-w-sm mx-auto border border-[#E0DCD4]">
+                  <p className="font-semibold text-[#1A1F24] mb-1 text-sm md:text-base">
+                    Social is the introduction.
+                  </p>
+                  <p className="text-[#5A6570] text-xs md:text-sm">
+                    It&apos;s how people meet your business before they ever click.
+                  </p>
+                </div>
+              </motion.div>
             )}
           </AnimatePresence>
 
-          {/* ===== SLIDE 3: Placeholder ===== */}
+          {/* Slide 3 placeholder */}
           <AnimatePresence>
             {currentSlide === 2 && (
               <motion.div
-                key="slide3-content"
+                key="slide3-text"
                 className="absolute inset-0 flex items-center justify-center pointer-events-none"
-                style={{ zIndex: 20 }}
+                style={{ zIndex: 40 }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -397,7 +384,7 @@ export function StoryStreetSection({
             )}
           </AnimatePresence>
 
-          {/* Pagination dots - always visible */}
+          {/* Pagination dots (z-50) */}
           <PaginationDots
             slideCount={totalSlides}
             currentIndex={currentSlide}
@@ -406,7 +393,7 @@ export function StoryStreetSection({
         </div>
       </div>
 
-      {/* Accordion below carousel - separate section */}
+      {/* Accordion below */}
       <div className="max-w-4xl mx-auto px-6 mt-12">
         <div className="text-center">
           <button
@@ -431,7 +418,6 @@ export function StoryStreetSection({
           </button>
         </div>
 
-        {/* Old cards section */}
         <div
           className={`overflow-hidden transition-all ${
             reducedMotion ? "duration-0" : "duration-300 ease-out"
