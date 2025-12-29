@@ -37,7 +37,7 @@ function FloatingReaction({ instance }: { instance: ReactionInstance }) {
         width: baseSize * instance.scale,
         height: baseSize * instance.scale,
         left: `calc(50% + ${instance.xOffset}px)`,
-        bottom: `${20 + instance.yOffset}%`,
+        bottom: `${55 + instance.yOffset}%`,
         zIndex: instance.zIndex,
       }}
       initial={{
@@ -252,9 +252,9 @@ export function StoryStreetSection({
                       style={{ zIndex: 30 }}
                       initial={{
                         x: "-50%",
-                        y: "18%",
+                        y: "5%",
                         opacity: 0.85,
-                        scale: 0.95,
+                        scale: 0.97,
                       }}
                       animate={{
                         x: "-50%",
