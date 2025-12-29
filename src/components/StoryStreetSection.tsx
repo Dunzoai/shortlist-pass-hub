@@ -11,6 +11,11 @@ const ASSETS = {
   igPost: "/storystreet/coming-soon.png",
   heart: "/storystreet/heart-overlay.png",
   thumbsUp: "/storystreet/thumbs-up.png",
+  // Slide 3 assets
+  theBusiness3: "/storystreet/the-business-3.png",
+  man: "/storystreet/man.png",
+  questionBubble: "/storystreet/man-availability-question.png",
+  answerBubble: "/storystreet/business-availability-answer.png",
 };
 
 // Reaction instance type with z-index for depth
@@ -108,8 +113,9 @@ export function StoryStreetSection({
   const reducedMotion = prefersReducedMotion ?? false;
 
   const [currentSlide, setCurrentSlide] = useState(0);
-  // Key to force remount animations on each Slide 2 entry
+  // Keys to force remount animations on each slide entry
   const [slide2Key, setSlide2Key] = useState(0);
+  const [slide3Key, setSlide3Key] = useState(0);
 
   const sectionRef = useRef<HTMLElement>(null);
   const dragStartX = useRef<number | null>(null);
@@ -129,9 +135,12 @@ export function StoryStreetSection({
 
   const goToSlide = (index: number) => {
     if (index >= 0 && index < totalSlides) {
-      // Increment key when entering Slide 2 to force animation replay
+      // Increment keys when entering slides to force animation replay
       if (index === 1) {
         setSlide2Key((k) => k + 1);
+      }
+      if (index === 2) {
+        setSlide3Key((k) => k + 1);
       }
       setCurrentSlide(index);
     }
@@ -327,19 +336,114 @@ export function StoryStreetSection({
                   </div>
                 )}
 
-                {/* Slide 3 placeholder */}
+                {/* ========== SLIDE 3: SmartPages ========== */}
+
+                {/* Slide 3: The Business layer */}
+                {currentSlide === 2 && (
+                  <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{ zIndex: 25 }}
+                  >
+                    <Image
+                      src={ASSETS.theBusiness3}
+                      alt=""
+                      fill
+                      className="object-cover object-bottom"
+                      draggable={false}
+                    />
+                  </div>
+                )}
+
+                {/* Slide 3: Man character - foreground, visible immediately */}
+                {currentSlide === 2 && (
+                  <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{ zIndex: 30 }}
+                  >
+                    <Image
+                      src={ASSETS.man}
+                      alt=""
+                      fill
+                      className="object-cover object-bottom"
+                      draggable={false}
+                    />
+                  </div>
+                )}
+
+                {/* Slide 3: Business answer bubble - animates from behind building */}
                 <AnimatePresence>
                   {currentSlide === 2 && (
                     <motion.div
-                      key="slide3-text"
-                      className="absolute inset-0 flex items-center justify-center pointer-events-none"
-                      style={{ zIndex: 40 }}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.3 }}
+                      key={`answer-bubble-${slide3Key}`}
+                      className="absolute pointer-events-none left-1/2 bottom-[45%] md:bottom-[38%] w-[280px] h-[140px] md:w-[350px] md:h-[175px]"
+                      style={{ zIndex: 28 }}
+                      initial={{
+                        x: "-30%",
+                        y: "80%",
+                        opacity: 0,
+                        scale: 0.9,
+                      }}
+                      animate={{
+                        x: "-30%",
+                        y: "0%",
+                        opacity: 1,
+                        scale: 1,
+                      }}
+                      exit={{
+                        opacity: 0,
+                        transition: { duration: 0.1 },
+                      }}
+                      transition={{
+                        duration: 0.45,
+                        ease: "easeOut",
+                        delay: 0.6, // After question bubble starts
+                      }}
                     >
-                      <p className="text-[#5A6570] text-lg">Next: SmartPages</p>
+                      <Image
+                        src={ASSETS.answerBubble}
+                        alt="Business response"
+                        fill
+                        className="object-contain drop-shadow-xl"
+                        draggable={false}
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Slide 3: Customer question bubble - animates from man's head */}
+                <AnimatePresence>
+                  {currentSlide === 2 && (
+                    <motion.div
+                      key={`question-bubble-${slide3Key}`}
+                      className="absolute pointer-events-none left-[15%] md:left-[25%] bottom-[25%] md:bottom-[22%] w-[220px] h-[110px] md:w-[280px] md:h-[140px]"
+                      style={{ zIndex: 35 }}
+                      initial={{
+                        y: "60%",
+                        opacity: 0,
+                        scale: 0.85,
+                      }}
+                      animate={{
+                        y: "0%",
+                        opacity: 1,
+                        scale: 1,
+                      }}
+                      exit={{
+                        opacity: 0,
+                        transition: { duration: 0.1 },
+                      }}
+                      transition={{
+                        duration: 0.45,
+                        ease: "easeOut",
+                        delay: 0.15, // Starts first
+                      }}
+                    >
+                      <Image
+                        src={ASSETS.questionBubble}
+                        alt="Customer question"
+                        fill
+                        className="object-contain drop-shadow-lg"
+                        draggable={false}
+                      />
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -423,17 +527,15 @@ export function StoryStreetSection({
                     />
                   )}
 
-                  {/* Slide 3 caption */}
+                  {/* Slide 3 - placeholder space (visual tells the story) */}
                   {currentSlide === 2 && (
                     <motion.div
-                      key="slide3-caption"
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <p className="text-[#5A6570]">Coming soon...</p>
-                    </motion.div>
+                      key="slide3-placeholder"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="h-[60px]"
+                    />
                   )}
                 </AnimatePresence>
 
