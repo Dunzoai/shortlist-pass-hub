@@ -326,7 +326,7 @@ export function StoryStreetSection({
         onMouseUp={handleMouseUp}
       >
         {/* Fixed base image - the street/building scene */}
-        <div className="relative w-full aspect-[320/189] sm:aspect-[16/9] md:aspect-[16/9] lg:aspect-[2/1] overflow-hidden">
+        <div className="relative w-full aspect-[320/189] sm:aspect-[16/9] md:aspect-[16/9] lg:aspect-[2/1] overflow-visible sm:overflow-hidden">
           <Image
             src={ASSETS.streetBase}
             alt="Street scene with storefronts"
