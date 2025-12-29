@@ -21,7 +21,7 @@ interface ReactionInstance {
   delay: number;
 }
 
-// Floating reaction component
+// Floating reaction component - sits behind building/IG post layers
 function FloatingReaction({ instance }: { instance: ReactionInstance }) {
   const src = instance.type === "heart" ? ASSETS.heart : ASSETS.thumbsUp;
   const baseSize = instance.type === "heart" ? 60 : 55;
@@ -33,8 +33,8 @@ function FloatingReaction({ instance }: { instance: ReactionInstance }) {
         width: baseSize * instance.scale,
         height: baseSize * instance.scale,
         left: `calc(50% + ${instance.xOffset}px)`,
-        bottom: "25%",
-        zIndex: 25,
+        bottom: "35%",
+        zIndex: 5, // Behind building layer and IG post
       }}
       initial={{
         opacity: 0,
@@ -43,7 +43,7 @@ function FloatingReaction({ instance }: { instance: ReactionInstance }) {
       }}
       animate={{
         opacity: [0, 1, 1, 0],
-        y: [0, -80, -180, -300],
+        y: [0, -60, -140, -250],
         scale: [0.3, instance.scale, instance.scale * 0.9, instance.scale * 0.5],
       }}
       transition={{
@@ -179,22 +179,22 @@ export function StoryStreetSection({
     if (currentSlide === 1 && !hasEnteredSlide2) {
       setHasEnteredSlide2(true);
 
-      // Show caption after IG post lands
-      const captionTimer = setTimeout(() => setShowCaption(true), 1800);
-
-      // Spawn reactions
+      // Spawn reactions early - they float behind the building as post rises
       let reactionTimer: NodeJS.Timeout;
       if (!reducedMotion) {
         reactionTimer = setTimeout(() => {
           setReactions([
-            { id: "heart-1", type: "heart", scale: 1.0, xOffset: -80, delay: 0 },
-            { id: "heart-2", type: "heart", scale: 1.2, xOffset: 60, delay: 0.3 },
-            { id: "heart-3", type: "heart", scale: 0.9, xOffset: -20, delay: 0.6 },
-            { id: "thumbs-1", type: "thumbsUp", scale: 1.0, xOffset: -40, delay: 0.2 },
-            { id: "thumbs-2", type: "thumbsUp", scale: 0.85, xOffset: 80, delay: 0.5 },
+            { id: "heart-1", type: "heart", scale: 1.0, xOffset: -90, delay: 0 },
+            { id: "heart-2", type: "heart", scale: 1.3, xOffset: 70, delay: 0.4 },
+            { id: "heart-3", type: "heart", scale: 0.85, xOffset: -30, delay: 0.8 },
+            { id: "thumbs-1", type: "thumbsUp", scale: 1.1, xOffset: -50, delay: 0.2 },
+            { id: "thumbs-2", type: "thumbsUp", scale: 0.9, xOffset: 90, delay: 0.6 },
           ]);
-        }, 2200);
+        }, 600); // Start reactions early during the rise
       }
+
+      // Show caption after IG post finishes rising and scaling (2s animation)
+      const captionTimer = setTimeout(() => setShowCaption(true), 2400);
 
       return () => {
         clearTimeout(captionTimer);
@@ -289,46 +289,49 @@ export function StoryStreetSection({
                   transition={{ duration: 0.3 }}
                 />
 
-                {/* IG Post - rises from behind building */}
+                {/* IG Post - Phase 1: rises from behind building (small), Phase 2: pushes forward (scales up) */}
                 <motion.div
                   key="slide2-igpost"
                   className="absolute pointer-events-none left-1/2"
                   style={{
-                    width: "clamp(280px, 70vw, 600px)",
-                    height: "clamp(340px, 85vw, 728px)",
-                    zIndex: 15,
+                    width: "clamp(260px, 65vw, 550px)",
+                    height: "clamp(316px, 79vw, 668px)",
                   }}
                   initial={{
                     x: "-50%",
-                    bottom: "-20%",
+                    bottom: "-30%",
                     opacity: 0,
-                    scale: 0.85,
+                    scale: 0.6,
+                    zIndex: 5, // Start behind building layer
                   }}
                   animate={{
                     x: "-50%",
-                    bottom: "15%",
+                    bottom: ["0%", "18%", "12%"], // Rise up, then settle
                     opacity: 1,
-                    scale: 1,
+                    scale: [0.6, 0.75, 1.05], // Start small, grow, then hero size
+                    zIndex: [5, 5, 20], // Stay behind, then come forward
                   }}
                   exit={{
                     opacity: 0,
-                    scale: 0.9,
+                    scale: 0.8,
                   }}
                   transition={{
-                    duration: 1.2,
+                    duration: 2.0,
                     ease: [0.16, 1, 0.3, 1],
+                    times: [0, 0.5, 1], // Phase 1 at 50%, Phase 2 completes at 100%
+                    zIndex: { duration: 0.1, delay: 1.0 }, // z-index changes at the transition point
                   }}
                 >
                   <motion.div
                     className="w-full h-full relative"
                     animate={{
-                      y: [0, -8, 0, -5, 0],
+                      y: [0, -6, 0, -4, 0],
                     }}
                     transition={{
-                      duration: 6,
+                      duration: 5,
                       ease: "easeInOut",
                       repeat: Infinity,
-                      delay: 1.5,
+                      delay: 2.2,
                     }}
                   >
                     <Image
