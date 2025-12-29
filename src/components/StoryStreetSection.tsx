@@ -358,16 +358,16 @@ export function StoryStreetSection({
                   {currentSlide === 2 && (
                     <motion.div
                       key={`answer-bubble-${slide3Key}`}
-                      className="absolute pointer-events-none left-1/2 bottom-[48%] md:bottom-[42%] w-[180px] h-[90px] md:w-[240px] md:h-[120px]"
+                      className="absolute pointer-events-none left-1/2 bottom-[58%] md:bottom-[55%] w-[220px] h-[110px] md:w-[280px] md:h-[140px]"
                       style={{ zIndex: 30 }}
                       initial={{
-                        x: "-40%",
-                        y: "50%",
+                        x: "-50%",
+                        y: "120%",
                         opacity: 0,
                         scale: 0.95,
                       }}
                       animate={{
-                        x: "-40%",
+                        x: "-50%",
                         y: "0%",
                         opacity: 1,
                         scale: 1,
@@ -377,7 +377,7 @@ export function StoryStreetSection({
                         transition: { duration: 0.1 },
                       }}
                       transition={{
-                        duration: 0.4,
+                        duration: 0.45,
                         ease: "easeOut",
                         delay: 0.55,
                       }}
@@ -437,15 +437,15 @@ export function StoryStreetSection({
                   </div>
                 )}
 
-                {/* Slide 3: Question bubble - near man's head, hovers */}
+                {/* Slide 3: Question bubble - near man's head (right side), hovers */}
                 <AnimatePresence>
                   {currentSlide === 2 && (
                     <motion.div
                       key={`question-bubble-${slide3Key}`}
-                      className="absolute pointer-events-none left-[8%] md:left-[18%] bottom-[32%] md:bottom-[30%] w-[140px] h-[70px] md:w-[180px] md:h-[90px]"
+                      className="absolute pointer-events-none left-[28%] md:left-[32%] bottom-[38%] md:bottom-[42%] w-[180px] h-[90px] md:w-[220px] md:h-[110px]"
                       style={{ zIndex: 42 }}
                       initial={{
-                        y: "40%",
+                        y: "50%",
                         opacity: 0,
                         scale: 0.9,
                       }}
