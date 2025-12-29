@@ -17,7 +17,6 @@ const ASSETS = {
   man: "/storystreet/man.png",
   questionBubble: "/storystreet/man-availability-question.png",
   smartpage3: "/storystreet/smartpage-3.png",
-  smartpage3Text: "/storystreet/smartpage-3-text.png",
 };
 
 // Reaction instance type with z-index for depth
@@ -407,48 +406,7 @@ export function StoryStreetSection({
                   )}
                 </AnimatePresence>
 
-                {/* Slide 3: SmartPage text - appears after SmartPage settles */}
-                <AnimatePresence>
-                  {currentSlide === 2 && (
-                    <motion.div
-                      key={`smartpage-text-${slide3Key}`}
-                      className="absolute pointer-events-none left-1/2 bottom-[35%] md:bottom-[34%] w-[280px] h-[380px] md:w-[420px] md:h-[570px]"
-                      style={{ zIndex: 32, transform: "translateX(-50%)" }}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0, transition: { duration: 0.1 } }}
-                      transition={{
-                        duration: 0.4,
-                        ease: "easeOut",
-                        delay: 1.5,
-                      }}
-                    >
-                      {/* Match the hover animation */}
-                      <motion.div
-                        className="w-full h-full relative"
-                        animate={{ y: [0, -8, 0, -5, 0] }}
-                        transition={{
-                          duration: 5,
-                          ease: "easeInOut",
-                          repeat: Infinity,
-                          delay: 1.0,
-                        }}
-                      >
-                        <div className="absolute left-[12%] md:left-[11%] bottom-[22%] md:bottom-[21.5%] w-[52%] md:w-[55%] h-[5%] md:h-[4.5%]">
-                          <Image
-                            src={ASSETS.smartpage3Text}
-                            alt=""
-                            fill
-                            className="object-contain object-left"
-                            draggable={false}
-                          />
-                        </div>
-                      </motion.div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
-                {/* Slide 3: The Business layer - on TOP so answer emerges from behind */}
+                {/* Slide 3: The Business layer - on TOP so SmartPage emerges from behind */}
                 {currentSlide === 2 && (
                   <div
                     className="absolute inset-0 pointer-events-none"
