@@ -22,10 +22,14 @@ interface ReactionInstance {
   delay: number;
 }
 
-// Floating reaction component - dynamic float to sky animation
+// Floating reaction component - smooth float with varied drift
 function FloatingReaction({ instance }: { instance: ReactionInstance }) {
   const src = instance.type === "heart" ? ASSETS.heart : ASSETS.thumbsUp;
   const baseSize = instance.type === "heart" ? 60 : 55;
+
+  // Alternate drift direction based on instance position
+  const driftDir = instance.xOffset > 0 ? 1 : -1;
+  const driftAmount = 25 + Math.abs(instance.xOffset) * 0.15;
 
   return (
     <motion.div
@@ -40,23 +44,36 @@ function FloatingReaction({ instance }: { instance: ReactionInstance }) {
       initial={{
         opacity: 0,
         y: 0,
-        scale: 0.2,
-        rotate: -10,
+        scale: 0.3,
       }}
       animate={{
-        opacity: [0, 1, 1, 1, 0],
-        y: [0, -120, -280, -450, -600],
-        scale: [0.2, instance.scale * 1.1, instance.scale, instance.scale * 0.9, instance.scale * 0.5],
-        rotate: [-10, 5, -5, 3, 0],
-        x: [0, instance.xOffset * 0.1, instance.xOffset * -0.1, instance.xOffset * 0.05, 0],
+        opacity: [0, 0.9, 1, 1, 0.8, 0],
+        y: [0, -80, -200, -380, -520, -680],
+        scale: [
+          0.3,
+          instance.scale * 1.05,
+          instance.scale,
+          instance.scale * 0.95,
+          instance.scale * 0.8,
+          instance.scale * 0.4
+        ],
+        rotate: [0, driftDir * 8, driftDir * -6, driftDir * 4, driftDir * -3, 0],
+        x: [
+          0,
+          driftDir * driftAmount * 0.4,
+          driftDir * -driftAmount * 0.6,
+          driftDir * driftAmount * 0.8,
+          driftDir * -driftAmount * 0.3,
+          driftDir * driftAmount * 0.2
+        ],
       }}
       transition={{
-        duration: 5,
+        duration: 6,
         delay: instance.delay,
-        ease: "easeOut",
-        times: [0, 0.15, 0.4, 0.7, 1],
+        ease: "easeInOut",
+        times: [0, 0.12, 0.35, 0.58, 0.8, 1],
         repeat: Infinity,
-        repeatDelay: 0.5,
+        repeatDelay: 0.3,
       }}
     >
       <Image src={src} alt="" fill className="object-contain drop-shadow-lg" />
@@ -339,14 +356,14 @@ export function StoryStreetSection({
                   {currentSlide === 1 && showCaption && (
                     <motion.div
                       key="slide2-caption-overlay"
-                      className="absolute left-1/2 bottom-[8%] md:bottom-[12%] -translate-x-1/2 w-[90%] max-w-lg pointer-events-none"
+                      className="absolute left-1/2 bottom-[-2%] md:bottom-[2%] -translate-x-1/2 w-[90%] max-w-lg pointer-events-none"
                       style={{ zIndex: 35 }}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.4 }}
                     >
-                      <div className="bg-white/70 backdrop-blur-sm rounded-xl shadow-md px-5 py-4 border border-[#E0DCD4]/50">
+                      <div className="bg-white/85 backdrop-blur-sm rounded-xl shadow-lg px-5 py-4 border-2 border-[#64748b]/30 ring-1 ring-[#64748b]/10">
                         <h3 className="font-semibold text-[#1A1F24] text-base md:text-lg mb-1">
                           Social is how you get noticed
                         </h3>
@@ -459,7 +476,7 @@ export function StoryStreetSection({
                 onClick={onToggleOldCards}
                 className="inline-flex items-center gap-2 text-sm text-[#5A6570] hover:text-[#2B3A44] transition-colors duration-200"
               >
-                <span>Want the straight explanation?</span>
+                <span>Want to read about it instead?</span>
                 <svg
                   className="w-4 h-4"
                   fill="none"
@@ -473,20 +490,55 @@ export function StoryStreetSection({
             </div>
           </motion.div>
 
-      {/* Text explanation overlay */}
+      {/* Text explanation overlay - puzzle reveal */}
       <AnimatePresence>
         {showOldCards && (
           <motion.div
             key="cards-overlay"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="absolute inset-0 bg-[#F4F1EC]/95 backdrop-blur-sm z-50 overflow-y-auto"
+            className="absolute inset-0 z-50 overflow-y-auto"
           >
-            <div className="max-w-4xl mx-auto px-6 py-8">
+            {/* Animated background tiles for puzzle effect */}
+            <motion.div
+              className="absolute inset-0 bg-[#F4F1EC]"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.97 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+            />
+
+            {/* Grid overlay for puzzle reveal effect */}
+            <div className="absolute inset-0 grid grid-cols-4 grid-rows-4 pointer-events-none">
+              {Array.from({ length: 16 }).map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="bg-[#F4F1EC]"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{
+                    duration: 0.4,
+                    delay: i * 0.03,
+                    ease: "easeOut",
+                  }}
+                />
+              ))}
+            </div>
+
+            {/* Content with staggered reveal */}
+            <motion.div
+              className="relative max-w-4xl mx-auto px-6 py-8"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3, delay: 0.4 }}
+            >
               {/* Back button */}
-              <div className="text-center mb-8">
+              <motion.div
+                className="text-center mb-8"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.5 }}
+              >
                 <button
                   onClick={handleCloseOverlay}
                   className="inline-flex items-center gap-2 text-sm text-[#5A6570] hover:text-[#2B3A44] transition-colors duration-200"
@@ -494,13 +546,24 @@ export function StoryStreetSection({
                   <span>←</span>
                   <span>Back to the visual story</span>
                 </button>
-              </div>
+              </motion.div>
 
-              {/* Old cards content */}
-              {oldCardsContent}
+              {/* Old cards content with fade in */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.6 }}
+              >
+                {oldCardsContent}
+              </motion.div>
 
               {/* Bottom back button */}
-              <div className="text-center mt-8">
+              <motion.div
+                className="text-center mt-8"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3, delay: 0.8 }}
+              >
                 <button
                   onClick={handleCloseOverlay}
                   className="inline-flex items-center gap-2 text-sm text-[#5A6570] hover:text-[#2B3A44] transition-colors duration-200"
@@ -508,8 +571,8 @@ export function StoryStreetSection({
                   <span>←</span>
                   <span>Back to the visual story</span>
                 </button>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
