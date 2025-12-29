@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { motion, useReducedMotion, useInView } from "framer-motion";
+import { motion, useReducedMotion, useInView, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
 import { Container } from "@/components/Container";
-import { ServicesStorySlider } from "@/components/ServicesStorySlider";
 import { useState, useEffect, useRef } from "react";
 
 const fadeUpVariant = {
@@ -149,6 +148,75 @@ function ScrollingBelt() {
   );
 }
 
+interface ServiceTileProps {
+  title: string;
+  subhead: string;
+  description: string;
+  href: string;
+  index: number;
+  image: string;
+  cta: string;
+}
+
+function ServiceTile({ title, subhead, description, href, index, image, cta }: ServiceTileProps) {
+  const isHouseWindows = image === "/house-windows.png";
+  // Door (0) slides from left, House frame (1) from right, House windows (2) from left
+  const slideFromLeft = index === 0 || index === 2;
+
+  return (
+    <motion.div
+      variants={fadeUpVariant}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
+    >
+      <div className="h-full p-8 bg-[#F4F1EC] border border-transparent rounded-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#2B3A44] hover:shadow-lg hover:shadow-[#2B3A44]/10 flex flex-col text-center">
+        <h3 className="text-2xl font-semibold text-[#1A1F24] mb-2">{title}</h3>
+        <p className="text-sm font-medium text-[#2B3A44] mb-4">{subhead}</p>
+        <p className="text-base text-[#5A6570] leading-relaxed flex-1">{description}</p>
+        <div className="mt-2 flex justify-center overflow-hidden">
+          <motion.div
+            initial={{ opacity: 0, x: slideFromLeft ? -40 : 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          >
+            {isHouseWindows ? (
+              <motion.div
+                animate={{
+                  filter: [
+                    "brightness(1)",
+                    "brightness(1.15)",
+                    "brightness(1)",
+                    "brightness(1.1)",
+                    "brightness(1)",
+                  ]
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  times: [0, 0.2, 0.5, 0.7, 1]
+                }}
+              >
+                <Image src={image} alt="" width={288} height={288} className="w-72 h-72 object-contain" />
+              </motion.div>
+            ) : (
+              <Image src={image} alt="" width={288} height={288} className="w-72 h-72 object-contain" />
+            )}
+          </motion.div>
+        </div>
+        <Link
+          href={href}
+          className="mt-4 inline-block px-6 py-3 bg-[#2B3A44] text-[#F4F1EC] font-medium rounded-full hover:bg-[#1A1F24] transition-colors duration-300"
+        >
+          {cta}
+        </Link>
+      </div>
+    </motion.div>
+  );
+}
 
 interface HelpCardProps {
   icon: React.ReactNode;
@@ -302,6 +370,33 @@ function Footer() {
 }
 
 export default function Home() {
+  const services = [
+    {
+      title: "Social that actually shows up",
+      subhead: "Be seen where customers already scroll.",
+      description: "Social is how people first come across your business. It introduces who you are, what you offer, and why you're worth paying attention to — before they ever click a link. We create and manage social that builds familiarity early, so when someone's ready to act, your business already feels like a known choice.",
+      href: "/social",
+      image: "/Door.png",
+      cta: "Get seen first",
+    },
+    {
+      title: "SmartPages",
+      subhead: "One clear place customers trust.",
+      description: "Once people want to learn more, they need a clear, reliable place to land. SmartPages bring everything about your business together — answers, hours, menus, links, updates, and booking — so customers don't have to hunt or second-guess. It's the framework that holds your business online, and makes it feel organized and real.",
+      href: "/smartpages",
+      image: "/house-frame.png",
+      cta: "Build your foundation",
+    },
+    {
+      title: "Websites & Apps",
+      subhead: "When the problem needs more than a template.",
+      description: "As your business grows, you need more than a single page. Custom websites and lightweight apps let you explain clearly, guide people through decisions, and handle real-world needs — ordering, booking, events, memberships, and more. This is where everything comes together and actually works, turning interest into action and keeping your business running smoothly.",
+      href: "/digital",
+      image: "/house-windows.png",
+      cta: "Make it work",
+    },
+  ];
+
   // OPTION 5: Micro scroll interaction - one-time drift on first scroll
   const heroRef = useRef<HTMLElement>(null);
   const [hasScrolled, setHasScrolled] = useState(false);
@@ -407,8 +502,16 @@ export default function Home() {
       {/* Scrolling Belt */}
       <ScrollingBelt />
 
-      {/* Services Story Slider */}
-      <ServicesStorySlider />
+      {/* Service Tiles */}
+      <section className="py-24">
+        <Container>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {services.map((service, index) => (
+              <ServiceTile key={service.title} {...service} index={index} />
+            ))}
+          </div>
+        </Container>
+      </section>
 
       {/* How We Help */}
       <HowWeHelp />
