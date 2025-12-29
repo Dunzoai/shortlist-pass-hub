@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, useReducedMotion, useInView } from "framer-motion";
 import { Container } from "@/components/Container";
-import { ServicesSection } from "@/components/ServicesSection";
+import { ServicesStorySlider } from "@/components/ServicesStorySlider";
 import { useState, useEffect, useRef } from "react";
 
 const fadeUpVariant = {
@@ -407,8 +407,8 @@ export default function Home() {
       {/* Scrolling Belt */}
       <ScrollingBelt />
 
-      {/* Services Section - Interactive house progression */}
-      <ServicesSection />
+      {/* Services Story Slider */}
+      <ServicesStorySlider />
 
       {/* How We Help */}
       <HowWeHelp />
