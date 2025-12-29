@@ -353,12 +353,12 @@ export function StoryStreetSection({
                   )}
                 </AnimatePresence>
 
-                {/* Slide 3: Answer bubble - animates up from behind business, then hovers */}
+                {/* Slide 3: Answer bubble - animates up from behind business after question fades in */}
                 <AnimatePresence>
                   {currentSlide === 2 && (
                     <motion.div
                       key={`answer-bubble-${slide3Key}`}
-                      className="absolute pointer-events-none left-1/2 bottom-[65%] md:bottom-[62%] w-[220px] h-[110px] md:w-[280px] md:h-[140px]"
+                      className="absolute pointer-events-none left-[47%] bottom-[65%] md:bottom-[62%] w-[440px] h-[220px] md:w-[560px] md:h-[280px]"
                       style={{ zIndex: 30 }}
                       initial={{
                         x: "-50%",
@@ -379,7 +379,7 @@ export function StoryStreetSection({
                       transition={{
                         duration: 0.45,
                         ease: "easeOut",
-                        delay: 0.55,
+                        delay: 0.6,
                       }}
                     >
                       {/* Subtle hover animation */}
@@ -437,20 +437,18 @@ export function StoryStreetSection({
                   </div>
                 )}
 
-                {/* Slide 3: Question bubble - near man's head (right side), hovers */}
+                {/* Slide 3: Question bubble - fades in near man's head, then hovers */}
                 <AnimatePresence>
                   {currentSlide === 2 && (
                     <motion.div
                       key={`question-bubble-${slide3Key}`}
-                      className="absolute pointer-events-none left-[45%] md:left-[48%] bottom-[33%] md:bottom-[37%] w-[180px] h-[90px] md:w-[220px] md:h-[110px]"
+                      className="absolute pointer-events-none left-[47%] md:left-[50%] bottom-[30%] md:bottom-[34%] w-[270px] h-[135px] md:w-[330px] md:h-[165px]"
                       style={{ zIndex: 42 }}
                       initial={{
-                        y: "50%",
                         opacity: 0,
-                        scale: 0.9,
+                        scale: 0.95,
                       }}
                       animate={{
-                        y: "0%",
                         opacity: 1,
                         scale: 1,
                       }}
@@ -459,7 +457,7 @@ export function StoryStreetSection({
                         transition: { duration: 0.1 },
                       }}
                       transition={{
-                        duration: 0.4,
+                        duration: 0.35,
                         ease: "easeOut",
                         delay: 0.15,
                       }}
