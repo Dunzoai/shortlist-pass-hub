@@ -34,7 +34,7 @@ function FloatingReaction({ instance }: { instance: ReactionInstance }) {
         height: baseSize * instance.scale,
         left: `calc(50% + ${instance.xOffset}px)`,
         bottom: "25%",
-        zIndex: 15, // Behind IG post (20) but above building (10)
+        zIndex: 18, // Behind IG post (20) but above building (10)
       }}
       initial={{
         opacity: 0,
@@ -224,19 +224,39 @@ export function StoryStreetSection({
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseLeave}
         >
-          {/* ===== LAYER ORDER ===== */}
+          {/* ===== LAYER ORDER (render order matters for same z-index) ===== */}
           {/* z-10: Building layer (the scene) */}
-          {/* z-15: Hearts/Thumbs (above building, behind IG post) */}
+          {/* z-18: Hearts/Thumbs (behind IG post) */}
           {/* z-20: IG Post (in front of hearts) */}
           {/* z-30: Caption card (ON TOP of everything) */}
           {/* z-40: Pagination */}
+
+          {/* Building/Street layer - the scene (base layer) */}
+          <Image
+            src={ASSETS.buildingLayer}
+            alt="Street scene"
+            fill
+            className="object-cover object-center pointer-events-none"
+            style={{ zIndex: 10 }}
+            priority
+            draggable={false}
+          />
+
+          {/* Hearts and Thumbs - render BEFORE IG post, behind it */}
+          {currentSlide === 1 && showReactions && (
+            <>
+              {reactionConfigs.map((reaction) => (
+                <FloatingReaction key={reaction.id} instance={reaction} />
+              ))}
+            </>
+          )}
 
           {/* IG Post - rises from below into the sky */}
           <AnimatePresence mode="sync">
             {currentSlide === 1 && (
               <motion.div
                 key="igpost"
-                className="absolute pointer-events-none left-1/2 bottom-[52%] md:bottom-[27%] w-[325px] h-[395px] md:w-[550px] md:h-[668px]"
+                className="absolute pointer-events-none left-1/2 bottom-[47%] md:bottom-[27%] w-[325px] h-[395px] md:w-[550px] md:h-[668px]"
                 style={{
                   zIndex: 20,
                 }}
@@ -285,26 +305,6 @@ export function StoryStreetSection({
               </motion.div>
             )}
           </AnimatePresence>
-
-          {/* Building/Street layer - the scene (base layer) */}
-          <Image
-            src={ASSETS.buildingLayer}
-            alt="Street scene"
-            fill
-            className="object-cover object-center pointer-events-none"
-            style={{ zIndex: 10 }}
-            priority
-            draggable={false}
-          />
-
-          {/* Hearts and Thumbs - ABOVE building, loop continuously */}
-          {currentSlide === 1 && showReactions && (
-            <>
-              {reactionConfigs.map((reaction) => (
-                <FloatingReaction key={reaction.id} instance={reaction} />
-              ))}
-            </>
-          )}
 
           {/* Dim overlay for slide 2 */}
           <AnimatePresence>
