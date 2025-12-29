@@ -102,9 +102,11 @@ export function StoryStreetSection({
   const reducedMotion = prefersReducedMotion ?? false;
 
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [hasEnteredSlide2, setHasEnteredSlide2] = useState(false);
   const [showCaption, setShowCaption] = useState(false);
   const [showReactions, setShowReactions] = useState(false);
+
+  // Use ref instead of state to prevent re-render clearing timers
+  const hasEnteredSlide2 = useRef(false);
 
   // Touch/drag handling
   const containerRef = useRef<HTMLDivElement>(null);
@@ -173,23 +175,21 @@ export function StoryStreetSection({
 
   // Trigger slide 2 animations
   useEffect(() => {
-    if (currentSlide === 1 && !hasEnteredSlide2) {
-      setHasEnteredSlide2(true);
+    let reactionTimer: NodeJS.Timeout;
+    let captionTimer: NodeJS.Timeout;
+
+    if (currentSlide === 1 && !hasEnteredSlide2.current) {
+      hasEnteredSlide2.current = true;
 
       // Show reactions after a short delay (they loop continuously)
-      const reactionTimer = setTimeout(() => {
+      reactionTimer = setTimeout(() => {
         setShowReactions(true);
       }, 800);
 
       // Show caption 300ms after IG post lands (post animation is 1.4s)
-      const captionTimer = setTimeout(() => {
+      captionTimer = setTimeout(() => {
         setShowCaption(true);
-      }, 1700); // 1.4s animation + 300ms delay
-
-      return () => {
-        clearTimeout(reactionTimer);
-        clearTimeout(captionTimer);
-      };
+      }, 1700);
     }
 
     // Reset when leaving slide 2
@@ -197,7 +197,12 @@ export function StoryStreetSection({
       setShowCaption(false);
       setShowReactions(false);
     }
-  }, [currentSlide, hasEnteredSlide2]);
+
+    return () => {
+      if (reactionTimer) clearTimeout(reactionTimer);
+      if (captionTimer) clearTimeout(captionTimer);
+    };
+  }, [currentSlide]);
 
   // Preload images
   useEffect(() => {
