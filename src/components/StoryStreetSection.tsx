@@ -21,7 +21,7 @@ interface ReactionInstance {
   delay: number;
 }
 
-// Floating reaction component - ABOVE building layer, loops continuously
+// Floating reaction component - BEHIND IG post, loops continuously
 function FloatingReaction({ instance }: { instance: ReactionInstance }) {
   const src = instance.type === "heart" ? ASSETS.heart : ASSETS.thumbsUp;
   const baseSize = instance.type === "heart" ? 60 : 55;
@@ -33,8 +33,8 @@ function FloatingReaction({ instance }: { instance: ReactionInstance }) {
         width: baseSize * instance.scale,
         height: baseSize * instance.scale,
         left: `calc(50% + ${instance.xOffset}px)`,
-        bottom: "30%",
-        zIndex: 35, // ABOVE building layer (30) so it's visible
+        bottom: "25%",
+        zIndex: 15, // Behind IG post (20) but above building (10)
       }}
       initial={{
         opacity: 0,
@@ -43,15 +43,15 @@ function FloatingReaction({ instance }: { instance: ReactionInstance }) {
       }}
       animate={{
         opacity: [0, 1, 1, 0],
-        y: [0, -50, -120, -200],
+        y: [0, -75, -180, -300], // 50% higher animation
         scale: [0.3, instance.scale, instance.scale * 0.9, instance.scale * 0.5],
       }}
       transition={{
-        duration: 3,
+        duration: 3.5,
         delay: instance.delay,
         ease: "easeOut",
         times: [0, 0.2, 0.6, 1],
-        repeat: Infinity, // Loop continuously
+        repeat: Infinity,
         repeatDelay: 0.5,
       }}
     >
@@ -71,7 +71,7 @@ function PaginationDots({
   onDotClick: (index: number) => void;
 }) {
   return (
-    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-50 pointer-events-auto">
+    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-40 pointer-events-auto">
       {Array.from({ length: slideCount }).map((_, i) => (
         <button
           key={i}
@@ -225,21 +225,19 @@ export function StoryStreetSection({
           onMouseLeave={handleMouseLeave}
         >
           {/* ===== LAYER ORDER ===== */}
-          {/* z-20: IG Post (beneath building visually - rises into sky area) */}
-          {/* z-30: Building layer (the scene) */}
-          {/* z-35: Hearts/Thumbs (ABOVE building so they're visible, loop) */}
-          {/* z-40: Caption card (ON TOP of everything) */}
-          {/* z-50: Pagination */}
+          {/* z-10: Building layer (the scene) */}
+          {/* z-15: Hearts/Thumbs (above building, behind IG post) */}
+          {/* z-20: IG Post (in front of hearts) */}
+          {/* z-30: Caption card (ON TOP of everything) */}
+          {/* z-40: Pagination */}
 
           {/* IG Post - rises from below into the sky */}
           <AnimatePresence mode="sync">
             {currentSlide === 1 && (
               <motion.div
                 key="igpost"
-                className="absolute pointer-events-none left-1/2 bottom-[52%] md:bottom-[27%]"
+                className="absolute pointer-events-none left-1/2 bottom-[52%] md:bottom-[27%] w-[325px] h-[395px] md:w-[550px] md:h-[668px]"
                 style={{
-                  width: "clamp(260px, 65vw, 550px)",
-                  height: "clamp(316px, 79vw, 668px)",
                   zIndex: 20,
                 }}
                 initial={{
@@ -288,13 +286,13 @@ export function StoryStreetSection({
             )}
           </AnimatePresence>
 
-          {/* Building/Street layer - the scene */}
+          {/* Building/Street layer - the scene (base layer) */}
           <Image
             src={ASSETS.buildingLayer}
             alt="Street scene"
             fill
             className="object-cover object-center pointer-events-none"
-            style={{ zIndex: 30 }}
+            style={{ zIndex: 10 }}
             priority
             draggable={false}
           />
@@ -314,7 +312,7 @@ export function StoryStreetSection({
               <motion.div
                 key="dim-overlay"
                 className="absolute inset-0 bg-black/10 pointer-events-none"
-                style={{ zIndex: 36 }}
+                style={{ zIndex: 25 }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0, transition: { duration: 0.15 } }}
@@ -329,7 +327,7 @@ export function StoryStreetSection({
               <motion.div
                 key="slide1-text"
                 className="absolute inset-0 flex flex-col items-center justify-end pb-8 md:pb-12 pointer-events-none"
-                style={{ zIndex: 40 }}
+                style={{ zIndex: 30 }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -363,7 +361,7 @@ export function StoryStreetSection({
                 key="slide2-caption"
                 className="absolute left-1/2 -translate-x-1/2 pointer-events-none px-4"
                 style={{
-                  zIndex: 40,
+                  zIndex: 30,
                   bottom: "12%",
                 }}
                 initial={{ opacity: 0, y: 15 }}
@@ -389,7 +387,7 @@ export function StoryStreetSection({
               <motion.div
                 key="slide3-text"
                 className="absolute inset-0 flex items-center justify-center pointer-events-none"
-                style={{ zIndex: 40 }}
+                style={{ zIndex: 30 }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
