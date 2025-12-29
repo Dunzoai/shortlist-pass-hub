@@ -22,7 +22,7 @@ interface ReactionInstance {
   delay: number;
 }
 
-// Coming Soon Post overlay
+// Coming Soon Post overlay - floats up toward the sky
 function ComingSoonPost({
   isActive,
   reducedMotion,
@@ -37,12 +37,14 @@ function ComingSoonPost({
   if (reducedMotion && isActive) {
     return (
       <div
-        className="absolute w-28 h-36 sm:w-36 sm:h-44 md:w-44 md:h-52 lg:w-52 lg:h-64 pointer-events-none z-10"
+        className="absolute pointer-events-none z-10"
         style={{
+          width: "clamp(180px, 45vw, 400px)",
+          height: "clamp(220px, 55vw, 500px)",
           left: "50%",
-          top: "50%",
-          transform: "translate(-50%, -50%)",
-          opacity: 0.85,
+          bottom: "20%",
+          transform: "translateX(-50%)",
+          opacity: 0.9,
         }}
       >
         <Image
@@ -60,17 +62,24 @@ function ComingSoonPost({
     <AnimatePresence>
       {isActive && (
         <motion.div
-          className="absolute w-28 h-36 sm:w-36 sm:h-44 md:w-44 md:h-52 lg:w-52 lg:h-64 pointer-events-none z-10"
-          style={{ left: "50%", top: "50%", x: "-50%", y: "-50%" }}
-          initial={{ opacity: 0, scale: 0.3 }}
+          className="absolute pointer-events-none z-10"
+          style={{
+            width: "clamp(180px, 45vw, 400px)",
+            height: "clamp(220px, 55vw, 500px)",
+            left: "50%",
+            x: "-50%",
+            bottom: "5%",
+          }}
+          initial={{ opacity: 0, y: 100, scale: 0.8 }}
           animate={{
-            opacity: [0, 1, 1, 0.85],
-            scale: [0.3, 1.05, 1, 1],
+            opacity: [0, 1, 1, 0.9],
+            y: [100, 0, -20, -40],
+            scale: [0.8, 1, 1.02, 1],
           }}
           transition={{
-            duration: 1.4,
+            duration: 2,
             ease: "easeOut",
-            times: [0, 0.4, 0.6, 1],
+            times: [0, 0.3, 0.7, 1],
           }}
         >
           <Image
@@ -86,7 +95,7 @@ function ComingSoonPost({
   );
 }
 
-// Single floating reaction
+// Single floating reaction - floats up toward the sky
 function FloatingReaction({
   instance,
   reducedMotion,
@@ -96,7 +105,8 @@ function FloatingReaction({
 }) {
   const [hasError, setHasError] = useState(false);
   const src = instance.type === "heart" ? ASSETS.heart : ASSETS.thumbsUp;
-  const size = instance.type === "heart" ? 36 : 32;
+  // 4x larger base sizes
+  const baseSize = instance.type === "heart" ? 100 : 90;
 
   if (hasError || reducedMotion) return null;
 
@@ -105,23 +115,22 @@ function FloatingReaction({
       className="absolute pointer-events-none z-20"
       style={{
         left: `calc(50% + ${instance.xOffset}px)`,
-        top: "50%",
-        width: size * instance.scale,
-        height: size * instance.scale,
-        transform: "translateX(-50%)",
+        bottom: "25%",
+        width: baseSize * instance.scale,
+        height: baseSize * instance.scale,
       }}
-      initial={{ opacity: 0, y: 0, scale: 0.3 }}
+      initial={{ opacity: 0, y: 50, scale: 0.3, x: "-50%" }}
       animate={{
         opacity: [0, 1, 1, 0],
-        y: [0, -40, -90, -140],
-        x: [0, instance.xOffset * 0.3, instance.xOffset * 0.5, instance.xOffset * 0.7],
-        scale: [0.3, instance.scale, instance.scale, instance.scale * 0.6],
+        y: [50, 0, -100, -200],
+        x: ["-50%", `calc(-50% + ${instance.xOffset * 0.5}px)`, `calc(-50% + ${instance.xOffset}px)`, `calc(-50% + ${instance.xOffset * 1.5}px)`],
+        scale: [0.3, instance.scale, instance.scale * 1.1, instance.scale * 0.8],
       }}
       transition={{
-        duration: 1.4,
+        duration: 2,
         delay: instance.delay,
         ease: "easeOut",
-        times: [0, 0.25, 0.6, 1],
+        times: [0, 0.2, 0.6, 1],
       }}
     >
       <Image
@@ -152,10 +161,10 @@ function CarouselDots({
           key={i}
           onClick={() => onDotClick(i)}
           aria-label={`Go to slide ${i + 1}`}
-          className={`w-2 h-2 rounded-full transition-all duration-300 ${
+          className={`h-2 rounded-full transition-all duration-300 ${
             i === current
               ? "bg-white w-6"
-              : "bg-white/50 hover:bg-white/70"
+              : "bg-white/50 hover:bg-white/70 w-2"
           }`}
         />
       ))}
@@ -179,10 +188,13 @@ export function StoryStreetSection({
   const [currentSlide, setCurrentSlide] = useState(0);
   const [hasPlayedSlide2, setHasPlayedSlide2] = useState(false);
   const [reactions, setReactions] = useState<ReactionInstance[]>([]);
-  const carouselRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
   const oldCardsSectionId = "old-cards-section";
 
   const totalSlides = 2;
+  const swipeThreshold = 50;
 
   // Preload images
   useEffect(() => {
@@ -195,127 +207,130 @@ export function StoryStreetSection({
   // Spawn reactions
   const spawnReactions = useCallback(() => {
     const newReactions: ReactionInstance[] = [
-      { id: "heart-1", type: "heart", scale: 0.9, xOffset: -30, delay: 0.2 },
-      { id: "heart-2", type: "heart", scale: 1.1, xOffset: 25, delay: 0.4 },
-      { id: "heart-3", type: "heart", scale: 0.75, xOffset: 0, delay: 0.6 },
-      { id: "thumbs-1", type: "thumbsUp", scale: 0.95, xOffset: -15, delay: 0.8 },
+      { id: "heart-1", type: "heart", scale: 0.85, xOffset: -60, delay: 0.3 },
+      { id: "heart-2", type: "heart", scale: 1.1, xOffset: 50, delay: 0.6 },
+      { id: "heart-3", type: "heart", scale: 0.7, xOffset: 0, delay: 0.9 },
+      { id: "thumbs-1", type: "thumbsUp", scale: 0.95, xOffset: -30, delay: 1.2 },
     ];
     setReactions(newReactions);
-    setTimeout(() => setReactions([]), 3500);
+    setTimeout(() => setReactions([]), 4000);
   }, []);
 
-  // Handle scroll to detect current slide
-  const handleScroll = useCallback(() => {
-    if (!carouselRef.current) return;
-    const scrollLeft = carouselRef.current.scrollLeft;
-    const slideWidth = carouselRef.current.offsetWidth;
-    const newSlide = Math.round(scrollLeft / slideWidth);
+  // Navigate to slide
+  const goToSlide = useCallback((index: number) => {
+    if (index < 0 || index >= totalSlides) return;
+    setCurrentSlide(index);
 
-    if (newSlide !== currentSlide) {
-      setCurrentSlide(newSlide);
+    // Trigger slide 2 animations
+    if (index === 1 && !hasPlayedSlide2) {
+      setHasPlayedSlide2(true);
+      setTimeout(spawnReactions, 800);
+    }
+  }, [hasPlayedSlide2, spawnReactions]);
 
-      // Trigger slide 2 animations
-      if (newSlide === 1 && !hasPlayedSlide2) {
-        setHasPlayedSlide2(true);
-        setTimeout(spawnReactions, 600);
+  // Touch handlers for swipe
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    const diff = touchStartX.current - touchEndX.current;
+    if (Math.abs(diff) > swipeThreshold) {
+      if (diff > 0) {
+        // Swipe left - go to next slide
+        goToSlide(Math.min(currentSlide + 1, totalSlides - 1));
+      } else {
+        // Swipe right - go to previous slide
+        goToSlide(Math.max(currentSlide - 1, 0));
       }
     }
-  }, [currentSlide, hasPlayedSlide2, spawnReactions]);
+  };
 
-  // Scroll to specific slide
-  const scrollToSlide = useCallback((index: number) => {
-    if (!carouselRef.current) return;
-    const slideWidth = carouselRef.current.offsetWidth;
-    carouselRef.current.scrollTo({
-      left: slideWidth * index,
-      behavior: reducedMotion ? "auto" : "smooth",
-    });
-  }, [reducedMotion]);
+  // Mouse drag handlers for desktop
+  const handleMouseDown = (e: React.MouseEvent) => {
+    touchStartX.current = e.clientX;
+  };
 
-  // Add scroll listener
-  useEffect(() => {
-    const carousel = carouselRef.current;
-    if (!carousel) return;
-
-    carousel.addEventListener("scroll", handleScroll, { passive: true });
-    return () => carousel.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]);
+  const handleMouseUp = (e: React.MouseEvent) => {
+    const diff = touchStartX.current - e.clientX;
+    if (Math.abs(diff) > swipeThreshold) {
+      if (diff > 0) {
+        goToSlide(Math.min(currentSlide + 1, totalSlides - 1));
+      } else {
+        goToSlide(Math.max(currentSlide - 1, 0));
+      }
+    }
+  };
 
   return (
     <section className="py-12 md:py-20 bg-[#F4F1EC]">
-      {/* Full-width carousel container */}
-      <div className="relative w-full">
-        {/* Carousel scroll container */}
-        <div
-          ref={carouselRef}
-          className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide"
-          style={{
-            scrollbarWidth: "none",
-            msOverflowStyle: "none",
-            WebkitOverflowScrolling: "touch",
-          }}
-        >
-          {/* Slide 1: Base street image only */}
-          <div className="flex-shrink-0 w-full snap-center">
-            <div className="relative w-full aspect-[3/4] sm:aspect-[4/3] md:aspect-[16/9] lg:aspect-[21/9]">
-              <Image
-                src={ASSETS.streetBase}
-                alt="Street scene"
-                fill
-                className="object-cover"
-                priority
-              />
-              {/* Subtle vignette */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-black/10 pointer-events-none" />
+      {/* Full-width carousel container with FIXED background */}
+      <div
+        ref={containerRef}
+        className="relative w-full cursor-grab active:cursor-grabbing select-none"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+      >
+        {/* Fixed base image - never moves */}
+        <div className="relative w-full aspect-[3/4] sm:aspect-[4/3] md:aspect-[16/9] lg:aspect-[21/9] overflow-hidden">
+          <Image
+            src={ASSETS.streetBase}
+            alt="Street scene"
+            fill
+            className="object-cover"
+            priority
+            draggable={false}
+          />
+
+          {/* Overlay content changes based on current slide */}
+
+          {/* Slide 2: Coming Soon Post + Reactions */}
+          <ComingSoonPost
+            isActive={currentSlide === 1}
+            reducedMotion={reducedMotion}
+          />
+
+          {/* Floating reactions */}
+          {currentSlide === 1 && reactions.map((reaction) => (
+            <FloatingReaction
+              key={reaction.id}
+              instance={reaction}
+              reducedMotion={reducedMotion}
+            />
+          ))}
+
+          {/* Reduced motion: show static elements on slide 2 */}
+          {reducedMotion && currentSlide === 1 && (
+            <div
+              className="absolute pointer-events-none z-20"
+              style={{
+                width: 80,
+                height: 80,
+                left: "52%",
+                bottom: "45%",
+                opacity: 0.8,
+              }}
+            >
+              <Image src={ASSETS.heart} alt="" fill className="object-contain" />
             </div>
-          </div>
+          )}
 
-          {/* Slide 2: Base image + Coming Soon post + reactions */}
-          <div className="flex-shrink-0 w-full snap-center">
-            <div className="relative w-full aspect-[3/4] sm:aspect-[4/3] md:aspect-[16/9] lg:aspect-[21/9]">
-              <Image
-                src={ASSETS.streetBase}
-                alt="Street scene"
-                fill
-                className="object-cover"
-              />
-
-              {/* Coming Soon Post - triggers when slide 2 is active */}
-              <ComingSoonPost
-                isActive={currentSlide === 1 || hasPlayedSlide2}
-                reducedMotion={reducedMotion}
-              />
-
-              {/* Floating reactions */}
-              {reactions.map((reaction) => (
-                <FloatingReaction
-                  key={reaction.id}
-                  instance={reaction}
-                  reducedMotion={reducedMotion}
-                />
-              ))}
-
-              {/* Reduced motion: show static heart */}
-              {reducedMotion && (currentSlide === 1 || hasPlayedSlide2) && (
-                <div
-                  className="absolute w-8 h-8 pointer-events-none z-20"
-                  style={{ left: "52%", top: "35%", opacity: 0.8 }}
-                >
-                  <Image src={ASSETS.heart} alt="" fill className="object-contain" />
-                </div>
-              )}
-
-              {/* Subtle vignette */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-black/10 pointer-events-none" />
-            </div>
-          </div>
+          {/* Subtle vignette */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-black/10 pointer-events-none" />
         </div>
 
         {/* Carousel dots */}
         <CarouselDots
           total={totalSlides}
           current={currentSlide}
-          onDotClick={scrollToSlide}
+          onDotClick={goToSlide}
         />
 
         {/* Swipe hint on first slide */}
@@ -327,7 +342,7 @@ export function StoryStreetSection({
             transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
           >
             <svg
-              className="w-8 h-8"
+              className="w-10 h-10"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
