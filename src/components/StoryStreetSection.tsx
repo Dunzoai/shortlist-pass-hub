@@ -39,10 +39,10 @@ function ComingSoonPost({
       <div
         className="absolute pointer-events-none z-[5]"
         style={{
-          width: "clamp(140px, 28vw, 280px)",
-          height: "clamp(170px, 34vw, 340px)",
+          width: "clamp(210px, 42vw, 420px)",
+          height: "clamp(255px, 51vw, 510px)",
           left: "50%",
-          top: "15%",
+          top: "8%",
           transform: "translateX(-50%)",
         }}
       >
@@ -63,8 +63,8 @@ function ComingSoonPost({
         <motion.div
           className="absolute pointer-events-none z-[5]"
           style={{
-            width: "clamp(140px, 28vw, 280px)",
-            height: "clamp(170px, 34vw, 340px)",
+            width: "clamp(210px, 42vw, 420px)",
+            height: "clamp(255px, 51vw, 510px)",
             left: "50%",
             x: "-50%",
           }}
@@ -74,7 +74,7 @@ function ComingSoonPost({
             rotate: -3,
           }}
           animate={{
-            top: "15%",
+            top: "8%",
             opacity: 1,
             rotate: [-3, 2, -1, 1, 0],
           }}
@@ -133,7 +133,7 @@ function FloatingReaction({
         width: baseSize * instance.scale,
         height: baseSize * instance.scale,
         left: `calc(50% + ${instance.xOffset}px)`,
-        top: "25%",
+        top: "18%",
       }}
       initial={{
         opacity: 0,
@@ -226,6 +226,17 @@ export function StoryStreetSection({
     });
   }, []);
 
+  // Continuous reaction loop - spawn new reactions every 3.5 seconds
+  useEffect(() => {
+    if (currentSlide !== 1 || !showReactions || reducedMotion) return;
+
+    const interval = setInterval(() => {
+      spawnReactions();
+    }, 3500);
+
+    return () => clearInterval(interval);
+  }, [currentSlide, showReactions, spawnReactions, reducedMotion]);
+
   // Spawn reactions - called repeatedly while on slide 2
   const spawnReactions = useCallback(() => {
     const newReactions: ReactionInstance[] = [
@@ -245,11 +256,11 @@ export function StoryStreetSection({
     // Trigger slide 2 animations
     if (index === 1 && !hasPlayedSlide2) {
       setHasPlayedSlide2(true);
-      // Wait for post to rise, then spawn reactions
+      // Wait for post to rise and breathe, then spawn reactions
       setTimeout(() => {
         setShowReactions(true);
         spawnReactions();
-      }, 1800);
+      }, 2800);
     }
   }, [hasPlayedSlide2, spawnReactions]);
 
