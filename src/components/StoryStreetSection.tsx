@@ -553,7 +553,7 @@ export function StoryStreetSection({
                     </div>
                     <div className="flex justify-center mt-3">
                       <Link
-                        href="/smartpage"
+                        href="/smartpages"
                         className="inline-block px-6 py-3 bg-[#2B3A44] text-[#F4F1EC] text-sm font-semibold rounded-lg hover:bg-[#1f2b33] transition-colors duration-200 pointer-events-auto shadow-md"
                       >
                         Meet your SmartPage
