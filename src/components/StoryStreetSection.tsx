@@ -26,12 +26,16 @@ interface ReactionInstance {
 function ComingSoonPost({
   isActive,
   reducedMotion,
+  isMobile,
 }: {
   isActive: boolean;
   reducedMotion: boolean;
+  isMobile: boolean;
 }) {
   const [hasError, setHasError] = useState(false);
   if (hasError) return null;
+
+  const topPosition = isMobile ? "-42%" : "-10%";
 
   // Reduced motion: show statically above building
   if (reducedMotion && isActive) {
@@ -42,7 +46,7 @@ function ComingSoonPost({
           width: "clamp(210px, 42vw, 420px)",
           height: "clamp(255px, 51vw, 510px)",
           left: "50%",
-          top: "-35%",
+          top: topPosition,
           transform: "translateX(-50%)",
         }}
       >
@@ -74,7 +78,7 @@ function ComingSoonPost({
             rotate: -3,
           }}
           animate={{
-            top: "-35%",
+            top: topPosition,
             opacity: 1,
             rotate: [-3, 2, -1, 1, 0],
           }}
@@ -128,7 +132,7 @@ function FloatingReaction({
 
   return (
     <motion.div
-      className="absolute pointer-events-none z-20"
+      className="absolute pointer-events-none z-[7]"
       style={{
         width: baseSize * instance.scale,
         height: baseSize * instance.scale,
@@ -210,6 +214,7 @@ export function StoryStreetSection({
   const [hasPlayedSlide2, setHasPlayedSlide2] = useState(false);
   const [reactions, setReactions] = useState<ReactionInstance[]>([]);
   const [showReactions, setShowReactions] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
@@ -217,6 +222,14 @@ export function StoryStreetSection({
 
   const totalSlides = 2;
   const swipeThreshold = 50;
+
+  // Detect mobile vs desktop for responsive post positioning
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   // Preload images
   useEffect(() => {
@@ -327,6 +340,7 @@ export function StoryStreetSection({
           <ComingSoonPost
             isActive={currentSlide === 1}
             reducedMotion={reducedMotion}
+            isMobile={isMobile}
           />
 
           {/* Floating reactions - spawn from post area */}
@@ -341,7 +355,7 @@ export function StoryStreetSection({
           {/* Reduced motion: show static heart */}
           {reducedMotion && currentSlide === 1 && (
             <div
-              className="absolute pointer-events-none z-20"
+              className="absolute pointer-events-none z-[7]"
               style={{
                 width: 50,
                 height: 50,
