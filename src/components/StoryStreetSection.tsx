@@ -358,7 +358,7 @@ export function StoryStreetSection({
                   {currentSlide === 2 && (
                     <motion.div
                       key={`answer-bubble-${slide3Key}`}
-                      className="absolute pointer-events-none left-1/2 bottom-[58%] md:bottom-[55%] w-[220px] h-[110px] md:w-[280px] md:h-[140px]"
+                      className="absolute pointer-events-none left-1/2 bottom-[65%] md:bottom-[62%] w-[220px] h-[110px] md:w-[280px] md:h-[140px]"
                       style={{ zIndex: 30 }}
                       initial={{
                         x: "-50%",
@@ -442,7 +442,7 @@ export function StoryStreetSection({
                   {currentSlide === 2 && (
                     <motion.div
                       key={`question-bubble-${slide3Key}`}
-                      className="absolute pointer-events-none left-[28%] md:left-[32%] bottom-[38%] md:bottom-[42%] w-[180px] h-[90px] md:w-[220px] md:h-[110px]"
+                      className="absolute pointer-events-none left-[45%] md:left-[48%] bottom-[33%] md:bottom-[37%] w-[180px] h-[90px] md:w-[220px] md:h-[110px]"
                       style={{ zIndex: 42 }}
                       initial={{
                         y: "50%",
