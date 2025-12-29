@@ -21,10 +21,10 @@ interface ReactionInstance {
   delay: number;
 }
 
-// Floating reaction component - animates up then back down in a loop
+// Floating reaction component - BEHIND IG post, loops continuously
 function FloatingReaction({ instance }: { instance: ReactionInstance }) {
   const src = instance.type === "heart" ? ASSETS.heart : ASSETS.thumbsUp;
-  const baseSize = instance.type === "heart" ? 65 : 58;
+  const baseSize = instance.type === "heart" ? 60 : 55;
 
   return (
     <motion.div
@@ -33,26 +33,26 @@ function FloatingReaction({ instance }: { instance: ReactionInstance }) {
         width: baseSize * instance.scale,
         height: baseSize * instance.scale,
         left: `calc(50% + ${instance.xOffset}px)`,
-        bottom: "20%",
-        zIndex: 10,
+        bottom: "25%",
+        zIndex: 10, // BOTTOM layer - behind IG post and building
       }}
       initial={{
         opacity: 0,
         y: 0,
-        scale: 0.5,
+        scale: 0.3,
       }}
       animate={{
-        opacity: [0, 1, 1, 1, 1, 0],
-        y: [0, -100, -200, -280, -200, -100], // Up then back down
-        scale: [0.5, instance.scale, instance.scale * 1.1, instance.scale, instance.scale * 0.9, 0.5],
+        opacity: [0, 1, 1, 0],
+        y: [0, -75, -180, -300], // 50% higher animation
+        scale: [0.3, instance.scale, instance.scale * 0.9, instance.scale * 0.5],
       }}
       transition={{
-        duration: 5,
+        duration: 3.5,
         delay: instance.delay,
-        ease: "easeInOut",
-        times: [0, 0.15, 0.35, 0.5, 0.7, 1],
+        ease: "easeOut",
+        times: [0, 0.2, 0.6, 1],
         repeat: Infinity,
-        repeatDelay: 0.3,
+        repeatDelay: 0.5,
       }}
     >
       <Image src={src} alt="" fill className="object-contain" />
@@ -181,15 +181,15 @@ export function StoryStreetSection({
     if (currentSlide === 1 && !hasEnteredSlide2.current) {
       hasEnteredSlide2.current = true;
 
-      // Show reactions shortly after IG post starts rising
+      // Show reactions after a short delay (they loop continuously)
       reactionTimer = setTimeout(() => {
         setShowReactions(true);
-      }, 600);
+      }, 800);
 
-      // Show caption AFTER hearts/thumbs are visible and animating (post + reactions flow)
+      // Show caption 300ms after IG post lands (post animation is 1.4s)
       captionTimer = setTimeout(() => {
         setShowCaption(true);
-      }, 3200);
+      }, 1700);
     }
 
     // Reset when leaving slide 2
