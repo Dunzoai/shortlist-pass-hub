@@ -338,11 +338,78 @@ export function StoryStreetSection({
 
                 {/* ========== SLIDE 3: SmartPages ========== */}
 
-                {/* Slide 3: The Business layer */}
+                {/* Slide 3: Dim overlay - same as Slide 2 */}
+                <AnimatePresence>
+                  {currentSlide === 2 && (
+                    <motion.div
+                      key="slide3-dim-overlay"
+                      className="absolute inset-0 bg-black/15 pointer-events-none"
+                      style={{ zIndex: 20 }}
+                      initial={{ opacity: 0.8 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0, transition: { duration: 0.08 } }}
+                      transition={{ duration: 0.15 }}
+                    />
+                  )}
+                </AnimatePresence>
+
+                {/* Slide 3: Answer bubble - animates up from behind business, then hovers */}
+                <AnimatePresence>
+                  {currentSlide === 2 && (
+                    <motion.div
+                      key={`answer-bubble-${slide3Key}`}
+                      className="absolute pointer-events-none left-1/2 bottom-[48%] md:bottom-[42%] w-[180px] h-[90px] md:w-[240px] md:h-[120px]"
+                      style={{ zIndex: 30 }}
+                      initial={{
+                        x: "-40%",
+                        y: "50%",
+                        opacity: 0,
+                        scale: 0.95,
+                      }}
+                      animate={{
+                        x: "-40%",
+                        y: "0%",
+                        opacity: 1,
+                        scale: 1,
+                      }}
+                      exit={{
+                        opacity: 0,
+                        transition: { duration: 0.1 },
+                      }}
+                      transition={{
+                        duration: 0.4,
+                        ease: "easeOut",
+                        delay: 0.55,
+                      }}
+                    >
+                      {/* Subtle hover animation */}
+                      <motion.div
+                        className="w-full h-full relative"
+                        animate={{ y: [0, -6, 0, -4, 0] }}
+                        transition={{
+                          duration: 5,
+                          ease: "easeInOut",
+                          repeat: Infinity,
+                          delay: 1.0,
+                        }}
+                      >
+                        <Image
+                          src={ASSETS.answerBubble}
+                          alt="Business response"
+                          fill
+                          className="object-contain drop-shadow-xl"
+                          draggable={false}
+                        />
+                      </motion.div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Slide 3: The Business layer - on TOP so answer emerges from behind */}
                 {currentSlide === 2 && (
                   <div
                     className="absolute inset-0 pointer-events-none"
-                    style={{ zIndex: 25 }}
+                    style={{ zIndex: 38 }}
                   >
                     <Image
                       src={ASSETS.theBusiness3}
@@ -354,11 +421,11 @@ export function StoryStreetSection({
                   </div>
                 )}
 
-                {/* Slide 3: Man character - foreground, visible immediately */}
+                {/* Slide 3: Man character - foreground */}
                 {currentSlide === 2 && (
                   <div
                     className="absolute inset-0 pointer-events-none"
-                    style={{ zIndex: 30 }}
+                    style={{ zIndex: 39 }}
                   >
                     <Image
                       src={ASSETS.man}
@@ -370,57 +437,17 @@ export function StoryStreetSection({
                   </div>
                 )}
 
-                {/* Slide 3: Business answer bubble - animates from behind building */}
-                <AnimatePresence>
-                  {currentSlide === 2 && (
-                    <motion.div
-                      key={`answer-bubble-${slide3Key}`}
-                      className="absolute pointer-events-none left-1/2 bottom-[45%] md:bottom-[38%] w-[280px] h-[140px] md:w-[350px] md:h-[175px]"
-                      style={{ zIndex: 28 }}
-                      initial={{
-                        x: "-30%",
-                        y: "80%",
-                        opacity: 0,
-                        scale: 0.9,
-                      }}
-                      animate={{
-                        x: "-30%",
-                        y: "0%",
-                        opacity: 1,
-                        scale: 1,
-                      }}
-                      exit={{
-                        opacity: 0,
-                        transition: { duration: 0.1 },
-                      }}
-                      transition={{
-                        duration: 0.45,
-                        ease: "easeOut",
-                        delay: 0.6, // After question bubble starts
-                      }}
-                    >
-                      <Image
-                        src={ASSETS.answerBubble}
-                        alt="Business response"
-                        fill
-                        className="object-contain drop-shadow-xl"
-                        draggable={false}
-                      />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
-                {/* Slide 3: Customer question bubble - animates from man's head */}
+                {/* Slide 3: Question bubble - near man's head, hovers */}
                 <AnimatePresence>
                   {currentSlide === 2 && (
                     <motion.div
                       key={`question-bubble-${slide3Key}`}
-                      className="absolute pointer-events-none left-[15%] md:left-[25%] bottom-[25%] md:bottom-[22%] w-[220px] h-[110px] md:w-[280px] md:h-[140px]"
-                      style={{ zIndex: 35 }}
+                      className="absolute pointer-events-none left-[8%] md:left-[18%] bottom-[32%] md:bottom-[30%] w-[140px] h-[70px] md:w-[180px] md:h-[90px]"
+                      style={{ zIndex: 42 }}
                       initial={{
-                        y: "60%",
+                        y: "40%",
                         opacity: 0,
-                        scale: 0.85,
+                        scale: 0.9,
                       }}
                       animate={{
                         y: "0%",
@@ -432,18 +459,30 @@ export function StoryStreetSection({
                         transition: { duration: 0.1 },
                       }}
                       transition={{
-                        duration: 0.45,
+                        duration: 0.4,
                         ease: "easeOut",
-                        delay: 0.15, // Starts first
+                        delay: 0.15,
                       }}
                     >
-                      <Image
-                        src={ASSETS.questionBubble}
-                        alt="Customer question"
-                        fill
-                        className="object-contain drop-shadow-lg"
-                        draggable={false}
-                      />
+                      {/* Subtle hover animation */}
+                      <motion.div
+                        className="w-full h-full relative"
+                        animate={{ y: [0, -5, 0, -3, 0] }}
+                        transition={{
+                          duration: 4.5,
+                          ease: "easeInOut",
+                          repeat: Infinity,
+                          delay: 0.6,
+                        }}
+                      >
+                        <Image
+                          src={ASSETS.questionBubble}
+                          alt="Customer question"
+                          fill
+                          className="object-contain drop-shadow-lg"
+                          draggable={false}
+                        />
+                      </motion.div>
                     </motion.div>
                   )}
                 </AnimatePresence>
