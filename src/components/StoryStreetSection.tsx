@@ -1,16 +1,16 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import useEmblaCarousel from "embla-carousel-react";
 
-// Asset paths - using root public/slide-0.png as base
+// Asset paths
 const ASSETS = {
-  streetBase: "/slide-0.png",
-  igPost: "/story/overlays/coming-soon.png",
-  heart: "/story/overlays/heart-overlay.png",
-  thumbsUp: "/story/overlays/thumbs-up.png",
+  streetBase: "/storystreet/slide-0.jpg",
+  igPost: "/storystreet/coming-soon.png",
+  heart: "/storystreet/heart-overlay.png",
+  thumbsUp: "/storystreet/thumbs-up.png",
 };
 
 // Reaction instance type
@@ -22,113 +22,157 @@ interface ReactionInstance {
   delay: number;
 }
 
-// Coming Soon Post overlay - rises from behind building, then hovers
-function ComingSoonPost({
+// Slide 1: Swipe education
+function Slide1Content({ isActive }: { isActive: boolean }) {
+  if (!isActive) return null;
+
+  return (
+    <div className="absolute inset-0 flex flex-col items-center justify-end pb-8 md:pb-12 pointer-events-none z-20">
+      <div className="text-center px-6">
+        <h2
+          className="text-3xl md:text-4xl lg:text-5xl font-normal text-[#1A1F24] mb-4"
+          style={{ fontFamily: "var(--font-libre-baskerville)" }}
+        >
+          Get noticed.
+        </h2>
+        <p className="text-base md:text-lg text-[#5A6570] flex items-center justify-center gap-2">
+          <span>Swipe to see how it works</span>
+          <motion.span
+            animate={{ x: [0, 8, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          >
+            →
+          </motion.span>
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// Slide 2: IG Post with animations
+function Slide2Content({
   isActive,
+  hasEntered,
+  onEnter,
   reducedMotion,
-  isMobile,
 }: {
   isActive: boolean;
+  hasEntered: boolean;
+  onEnter: () => void;
   reducedMotion: boolean;
-  isMobile: boolean;
 }) {
-  const [hasError, setHasError] = useState(false);
-  if (hasError) return null;
+  const [showCaption, setShowCaption] = useState(false);
+  const [reactions, setReactions] = useState<ReactionInstance[]>([]);
 
-  const topPosition = isMobile ? "-42%" : "-15%";
+  // Trigger animations when slide becomes active
+  useEffect(() => {
+    if (isActive && !hasEntered) {
+      onEnter();
+      // Show caption after IG post lands
+      setTimeout(() => setShowCaption(true), 1500);
 
-  // Reduced motion: show statically above building
-  if (reducedMotion && isActive) {
-    return (
-      <div
-        className="absolute pointer-events-none z-[5]"
+      // Spawn reactions once
+      if (!reducedMotion) {
+        setTimeout(() => {
+          setReactions([
+            { id: "heart-1", type: "heart", scale: 0.9, xOffset: -80, delay: 0 },
+            { id: "heart-2", type: "heart", scale: 1.1, xOffset: 60, delay: 0.3 },
+            { id: "heart-3", type: "heart", scale: 0.85, xOffset: 0, delay: 0.6 },
+            { id: "thumbs-1", type: "thumbsUp", scale: 0.95, xOffset: -40, delay: 0.2 },
+            { id: "thumbs-2", type: "thumbsUp", scale: 0.8, xOffset: 80, delay: 0.5 },
+          ]);
+        }, 1800);
+      }
+    }
+
+    if (!isActive) {
+      setShowCaption(false);
+      setReactions([]);
+    }
+  }, [isActive, hasEntered, onEnter, reducedMotion]);
+
+  if (!isActive) return null;
+
+  return (
+    <>
+      {/* Dim overlay */}
+      <motion.div
+        className="absolute inset-0 bg-black pointer-events-none z-[6]"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.15 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3 }}
+      />
+
+      {/* IG Post - large and centered */}
+      <motion.div
+        className="absolute pointer-events-none z-[7]"
         style={{
-          width: "clamp(210px, 42vw, 420px)",
-          height: "clamp(255px, 51vw, 510px)",
+          width: "clamp(280px, 70vw, 560px)",
+          height: "clamp(340px, 85vw, 680px)",
           left: "50%",
-          top: topPosition,
-          transform: "translateX(-50%)",
+          x: "-50%",
+        }}
+        initial={{
+          top: "60%",
+          opacity: 0,
+          scale: 0.7,
+        }}
+        animate={{
+          top: "50%",
+          y: "-50%",
+          opacity: 1,
+          scale: 1,
+        }}
+        exit={{ opacity: 0, scale: 0.7 }}
+        transition={{
+          duration: 0.8,
+          ease: [0.16, 1, 0.3, 1], // easeOutCubic-ish
         }}
       >
         <Image
           src={ASSETS.igPost}
-          alt=""
+          alt="Coming soon post"
           fill
           className="object-contain drop-shadow-2xl"
-          onError={() => setHasError(true)}
+          priority
         />
-      </div>
-    );
-  }
+      </motion.div>
 
-  return (
-    <AnimatePresence>
-      {isActive && (
-        <motion.div
-          className="absolute pointer-events-none z-[5]"
-          style={{
-            width: "clamp(210px, 42vw, 420px)",
-            height: "clamp(255px, 51vw, 510px)",
-            left: "50%",
-            x: "-50%",
-          }}
-          initial={{
-            top: "70%",
-            opacity: 0,
-            rotate: -3,
-          }}
-          animate={{
-            top: topPosition,
-            opacity: 1,
-            rotate: [-3, 2, -1, 1, 0],
-          }}
-          transition={{
-            top: { duration: 1.5, ease: "easeOut" },
-            opacity: { duration: 0.8 },
-            rotate: { duration: 2, ease: "easeInOut", delay: 1.5 },
-          }}
-        >
-          {/* Inner div for continuous subtle hover */}
+      {/* Floating reactions */}
+      {!reducedMotion && reactions.map((reaction) => (
+        <FloatingReaction key={reaction.id} instance={reaction} />
+      ))}
+
+      {/* Caption card */}
+      <AnimatePresence>
+        {showCaption && (
           <motion.div
-            className="w-full h-full relative"
-            animate={{
-              y: [0, -6, 0, -4, 0],
-              rotate: [0, 1, 0, -1, 0],
-            }}
-            transition={{
-              duration: 6,
-              ease: "easeInOut",
-              repeat: Infinity,
-              delay: 2,
-            }}
+            className="absolute bottom-[8%] md:bottom-[12%] left-1/2 -translate-x-1/2 z-[8] pointer-events-none"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4, delay: 0.3 }}
           >
-            <Image
-              src={ASSETS.igPost}
-              alt=""
-              fill
-              className="object-contain drop-shadow-2xl"
-              onError={() => setHasError(true)}
-            />
+            <div className="bg-[#F4F1EC] rounded-lg shadow-lg px-6 py-4 max-w-sm mx-auto border border-[#E0DCD4]">
+              <p className="font-semibold text-[#1A1F24] mb-1 text-sm md:text-base">
+                Social is the introduction.
+              </p>
+              <p className="text-[#5A6570] text-xs md:text-sm">
+                It's how people meet your business before they ever click.
+              </p>
+            </div>
           </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
 
-// Single floating reaction - floats up from post and fades out
-function FloatingReaction({
-  instance,
-  reducedMotion,
-}: {
-  instance: ReactionInstance;
-  reducedMotion: boolean;
-}) {
-  const [hasError, setHasError] = useState(false);
+// Single floating reaction
+function FloatingReaction({ instance }: { instance: ReactionInstance }) {
   const src = instance.type === "heart" ? ASSETS.heart : ASSETS.thumbsUp;
-  const baseSize = instance.type === "heart" ? 60 : 54;
-
-  if (hasError || reducedMotion) return null;
+  const baseSize = instance.type === "heart" ? 50 : 45;
 
   return (
     <motion.div
@@ -137,59 +181,62 @@ function FloatingReaction({
         width: baseSize * instance.scale,
         height: baseSize * instance.scale,
         left: `calc(50% + ${instance.xOffset}px)`,
-        top: "68%",
+        top: "55%",
       }}
       initial={{
         opacity: 0,
         y: 0,
         scale: 0.4,
-        x: "-50%",
       }}
       animate={{
         opacity: [0, 1, 1, 0],
-        y: [0, -150, -350, -570],
-        x: ["-50%", `calc(-50% + ${instance.xOffset * 0.4}px)`, `calc(-50% + ${instance.xOffset * 0.8}px)`, `calc(-50% + ${instance.xOffset * 1.2}px)`],
+        y: [0, -80, -180, -300],
         scale: [0.4, instance.scale, instance.scale * 0.9, instance.scale * 0.5],
       }}
       transition={{
-        duration: 2.5,
+        duration: 3,
         delay: instance.delay,
         ease: "easeOut",
         times: [0, 0.2, 0.6, 1],
       }}
     >
-      <Image
-        src={src}
-        alt=""
-        fill
-        className="object-contain"
-        onError={() => setHasError(true)}
-      />
+      <Image src={src} alt="" fill className="object-contain" />
     </motion.div>
   );
 }
 
-// Carousel dot indicator
-function CarouselDots({
-  total,
-  current,
+// Slide 3: Placeholder
+function Slide3Content({ isActive }: { isActive: boolean }) {
+  if (!isActive) return null;
+
+  return (
+    <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
+      <p className="text-[#5A6570] text-lg">Slide 3 - SmartPages coming soon</p>
+    </div>
+  );
+}
+
+// Pagination dots
+function PaginationDots({
+  slideCount,
+  currentIndex,
   onDotClick,
 }: {
-  total: number;
-  current: number;
+  slideCount: number;
+  currentIndex: number;
   onDotClick: (index: number) => void;
 }) {
   return (
     <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-30">
-      {Array.from({ length: total }).map((_, i) => (
+      {Array.from({ length: slideCount }).map((_, i) => (
         <button
           key={i}
           onClick={() => onDotClick(i)}
           aria-label={`Go to slide ${i + 1}`}
           className={`h-2 rounded-full transition-all duration-300 ${
-            i === current
-              ? "bg-white w-6"
-              : "bg-white/50 hover:bg-white/70 w-2"
+            i === currentIndex
+              ? "bg-[#2B3A44] w-6"
+              : "bg-[#2B3A44]/30 hover:bg-[#2B3A44]/50 w-2"
           }`}
         />
       ))}
@@ -210,26 +257,24 @@ export function StoryStreetSection({
   const prefersReducedMotion = useReducedMotion();
   const reducedMotion = prefersReducedMotion ?? false;
 
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [hasPlayedSlide2, setHasPlayedSlide2] = useState(false);
-  const [reactions, setReactions] = useState<ReactionInstance[]>([]);
-  const [showReactions, setShowReactions] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const touchStartX = useRef(0);
-  const touchEndX = useRef(0);
-  const oldCardsSectionId = "old-cards-section";
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [hasEnteredSlide2, setHasEnteredSlide2] = useState(false);
 
-  const totalSlides = 2;
-  const swipeThreshold = 50;
+  // Sync current slide with Embla
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setCurrentIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
 
-  // Detect mobile vs desktop for responsive post positioning
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on("select", onSelect);
+    return () => {
+      emblaApi.off("select", onSelect);
+    };
+  }, [emblaApi, onSelect]);
 
   // Preload images
   useEffect(() => {
@@ -239,187 +284,64 @@ export function StoryStreetSection({
     });
   }, []);
 
-  // Spawn reactions - called repeatedly while on slide 2
-  const spawnReactions = useCallback(() => {
-    const newReactions: ReactionInstance[] = [
-      { id: `heart-1-${Date.now()}`, type: "heart", scale: 0.9, xOffset: -40, delay: 0 },
-      { id: `heart-2-${Date.now()}`, type: "heart", scale: 1.1, xOffset: 35, delay: 0.4 },
-      { id: `thumbs-1-${Date.now()}`, type: "thumbsUp", scale: 0.85, xOffset: -10, delay: 0.8 },
-      { id: `heart-3-${Date.now()}`, type: "heart", scale: 0.75, xOffset: 20, delay: 1.2 },
-    ];
-    setReactions(newReactions);
-  }, []);
-
-  // Continuous reaction loop - spawn new reactions every 3.5 seconds
-  useEffect(() => {
-    if (currentSlide !== 1 || !showReactions || reducedMotion) return;
-
-    const interval = setInterval(() => {
-      spawnReactions();
-    }, 3500);
-
-    return () => clearInterval(interval);
-  }, [currentSlide, showReactions, spawnReactions, reducedMotion]);
-
-  // Navigate to slide
-  const goToSlide = useCallback((index: number) => {
-    if (index < 0 || index >= totalSlides) return;
-    setCurrentSlide(index);
-
-    // Trigger slide 2 animations
-    if (index === 1 && !hasPlayedSlide2) {
-      setHasPlayedSlide2(true);
-      // Wait for post to rise and breathe, then spawn reactions
-      setTimeout(() => {
-        setShowReactions(true);
-        spawnReactions();
-      }, 2800);
-    }
-  }, [hasPlayedSlide2, spawnReactions]);
-
-  // Touch handlers for swipe
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    touchEndX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchEnd = () => {
-    const diff = touchStartX.current - touchEndX.current;
-    if (Math.abs(diff) > swipeThreshold) {
-      if (diff > 0) {
-        goToSlide(Math.min(currentSlide + 1, totalSlides - 1));
-      } else {
-        goToSlide(Math.max(currentSlide - 1, 0));
-      }
-    }
-  };
-
-  // Mouse drag handlers for desktop
-  const handleMouseDown = (e: React.MouseEvent) => {
-    touchStartX.current = e.clientX;
-  };
-
-  const handleMouseUp = (e: React.MouseEvent) => {
-    const diff = touchStartX.current - e.clientX;
-    if (Math.abs(diff) > swipeThreshold) {
-      if (diff > 0) {
-        goToSlide(Math.min(currentSlide + 1, totalSlides - 1));
-      } else {
-        goToSlide(Math.max(currentSlide - 1, 0));
-      }
-    }
-  };
+  const scrollTo = useCallback(
+    (index: number) => emblaApi?.scrollTo(index),
+    [emblaApi]
+  );
 
   return (
     <section className="py-12 md:py-20 bg-[#F4F1EC]">
-      {/* Full-width container with FIXED background */}
-      <div
-        ref={containerRef}
-        className="relative w-full cursor-grab active:cursor-grabbing select-none"
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
-      >
-        {/* Fixed base image - the street/building scene */}
-        <div className="relative w-full aspect-[320/189] sm:aspect-[16/9] md:aspect-[16/9] lg:aspect-[2/1] overflow-visible sm:overflow-hidden">
+      {/* Carousel container */}
+      <div className="relative max-w-7xl mx-auto">
+        {/* Fixed base scene - doesn't move */}
+        <div className="relative w-full aspect-[4/5] sm:aspect-[3/4] md:aspect-[16/9] lg:aspect-[2/1]">
           <Image
             src={ASSETS.streetBase}
-            alt="Street scene with storefronts"
+            alt="Street scene"
             fill
-            className="object-cover object-center z-10"
+            className="object-cover object-center"
             priority
-            draggable={false}
           />
 
-          {/* Slide 2: Instagram post rises and hovers above building */}
-          <ComingSoonPost
-            isActive={currentSlide === 1}
-            reducedMotion={reducedMotion}
-            isMobile={isMobile}
+          {/* Overlay content based on current slide */}
+          <AnimatePresence mode="wait">
+            {currentIndex === 0 && <Slide1Content key="slide1" isActive={currentIndex === 0} />}
+            {currentIndex === 1 && (
+              <Slide2Content
+                key="slide2"
+                isActive={currentIndex === 1}
+                hasEntered={hasEnteredSlide2}
+                onEnter={() => setHasEnteredSlide2(true)}
+                reducedMotion={reducedMotion}
+              />
+            )}
+            {currentIndex === 2 && <Slide3Content key="slide3" isActive={currentIndex === 2} />}
+          </AnimatePresence>
+
+          {/* Pagination dots */}
+          <PaginationDots
+            slideCount={3}
+            currentIndex={currentIndex}
+            onDotClick={scrollTo}
           />
-
-          {/* Floating reactions - spawn from post area */}
-          {showReactions && currentSlide === 1 && reactions.map((reaction) => (
-            <FloatingReaction
-              key={reaction.id}
-              instance={reaction}
-              reducedMotion={reducedMotion}
-            />
-          ))}
-
-          {/* Reduced motion: show static heart */}
-          {reducedMotion && currentSlide === 1 && (
-            <div
-              className="absolute pointer-events-none z-[7]"
-              style={{
-                width: 50,
-                height: 50,
-                left: "54%",
-                top: "-25%",
-                opacity: 0.85,
-              }}
-            >
-              <Image src={ASSETS.heart} alt="" fill className="object-contain" />
-            </div>
-          )}
         </div>
 
-        {/* Carousel dots */}
-        <CarouselDots
-          total={totalSlides}
-          current={currentSlide}
-          onDotClick={goToSlide}
-        />
-
-        {/* Swipe hint on first slide */}
-        {currentSlide === 0 && !hasPlayedSlide2 && (
-          <motion.div
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-white/60 z-20 pointer-events-none"
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: [0, 0.8, 0.8, 0], x: [-10, 0, 0, 10] }}
-            transition={{ duration: 2, repeat: Infinity, repeatDelay: 1.5 }}
-          >
-            <svg
-              className="w-8 h-8"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-            </svg>
-          </motion.div>
-        )}
+        {/* Hidden Embla viewport - controls pagination only */}
+        <div className="overflow-hidden" ref={emblaRef}>
+          <div className="flex">
+            <div className="flex-[0_0_100%] min-w-0 h-0" />
+            <div className="flex-[0_0_100%] min-w-0 h-0" />
+            <div className="flex-[0_0_100%] min-w-0 h-0" />
+          </div>
+        </div>
       </div>
 
-      {/* Copy, CTA, and toggle - contained width */}
-      <div className="max-w-4xl mx-auto px-6 mt-10">
+      {/* Accordion below carousel - separate section */}
+      <div className="max-w-4xl mx-auto px-6 mt-12">
         <div className="text-center">
-          <p
-            className="text-2xl md:text-3xl lg:text-4xl font-normal text-[#1A1F24] mb-6"
-            style={{ fontFamily: "var(--font-libre-baskerville)" }}
-          >
-            Get noticed.
-          </p>
-          <Link
-            href="/social"
-            className="inline-block px-8 py-3 bg-[#2B3A44] text-[#F4F1EC] font-medium rounded-full hover:bg-[#1A1F24] transition-colors duration-300"
-          >
-            Social that shows up
-          </Link>
-        </div>
-
-        {/* Toggle button */}
-        <div className="mt-10 text-center">
           <button
             onClick={onToggleOldCards}
             aria-expanded={showOldCards}
-            aria-controls={oldCardsSectionId}
             className="inline-flex items-center gap-2 text-sm text-[#5A6570] hover:text-[#2B3A44] transition-colors duration-200"
           >
             <span>
@@ -439,9 +361,8 @@ export function StoryStreetSection({
           </button>
         </div>
 
-        {/* Old cards section - revealed IN PLACE */}
+        {/* Old cards section */}
         <div
-          id={oldCardsSectionId}
           className={`overflow-hidden transition-all ${
             reducedMotion ? "duration-0" : "duration-300 ease-out"
           }`}
