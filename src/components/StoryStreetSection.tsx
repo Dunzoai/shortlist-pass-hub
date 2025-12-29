@@ -15,7 +15,8 @@ const ASSETS = {
   theBusiness3: "/storystreet/the-business-3.png",
   man: "/storystreet/man.png",
   questionBubble: "/storystreet/man-availability-question.png",
-  answerBubble: "/storystreet/business-availability-answer.png",
+  smartpage3: "/storystreet/smartpage-3.png",
+  smartpage3Text: "/storystreet/smartpage-3-text.png",
 };
 
 // Reaction instance type with z-index for depth
@@ -353,16 +354,16 @@ export function StoryStreetSection({
                   )}
                 </AnimatePresence>
 
-                {/* Slide 3: Answer bubble - animates up from behind business after question fades in */}
+                {/* Slide 3: SmartPage - rises from behind business after question fades in */}
                 <AnimatePresence>
                   {currentSlide === 2 && (
                     <motion.div
-                      key={`answer-bubble-${slide3Key}`}
-                      className="absolute pointer-events-none left-[47%] bottom-[58%] md:bottom-[58%] w-[440px] h-[220px] md:w-[560px] md:h-[280px]"
+                      key={`smartpage-${slide3Key}`}
+                      className="absolute pointer-events-none left-1/2 bottom-[35%] md:bottom-[22%] w-[280px] h-[380px] md:w-[420px] md:h-[570px]"
                       style={{ zIndex: 30 }}
                       initial={{
                         x: "-50%",
-                        y: "120%",
+                        y: "80%",
                         opacity: 0,
                         scale: 0.95,
                       }}
@@ -385,7 +386,7 @@ export function StoryStreetSection({
                       {/* Subtle hover animation */}
                       <motion.div
                         className="w-full h-full relative"
-                        animate={{ y: [0, -6, 0, -4, 0] }}
+                        animate={{ y: [0, -8, 0, -5, 0] }}
                         transition={{
                           duration: 5,
                           ease: "easeInOut",
@@ -394,12 +395,31 @@ export function StoryStreetSection({
                         }}
                       >
                         <Image
-                          src={ASSETS.answerBubble}
-                          alt="Business response"
+                          src={ASSETS.smartpage3}
+                          alt="SmartPage interface"
                           fill
-                          className="object-contain drop-shadow-xl"
+                          className="object-contain drop-shadow-2xl"
                           draggable={false}
                         />
+                        {/* Text that appears on the SmartPage input field */}
+                        <motion.div
+                          className="absolute left-[12%] md:left-[10%] bottom-[22%] md:bottom-[21%] w-[55%] md:w-[58%] h-[6%]"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{
+                            duration: 0.4,
+                            ease: "easeOut",
+                            delay: 1.2,
+                          }}
+                        >
+                          <Image
+                            src={ASSETS.smartpage3Text}
+                            alt=""
+                            fill
+                            className="object-contain object-left"
+                            draggable={false}
+                          />
+                        </motion.div>
                       </motion.div>
                     </motion.div>
                   )}
