@@ -20,7 +20,7 @@ interface ReactionInstance {
   xOffset: number;
   yOffset: number;
   delay: number;
-  zIndex: number; // 15 = behind IG post, 25 = in front of IG post
+  zIndex: number; // 25 = behind IG post, 35 = in front of IG post
 }
 
 // Floating reaction component - normal speed, starts after IG post, loops
@@ -57,7 +57,7 @@ function FloatingReaction({ instance }: { instance: ReactionInstance }) {
         ease: "easeInOut",
         times: [0, 0.15, 0.45, 0.75, 1],
         repeat: Infinity,
-        repeatDelay: 0.5,
+        repeatDelay: 0.15,
       }}
     >
       <Image src={src} alt="" fill className="object-contain drop-shadow-lg" />
@@ -117,13 +117,13 @@ export function StoryStreetSection({
   const totalSlides = 3;
   const swipeThreshold = 50;
 
-  // Reaction configs - start right when IG post settles (0.3s), staggered quickly
+  // Reaction configs - start immediately with IG post, staggered quickly
   const reactionConfigs: ReactionInstance[] = useMemo(() => [
-    { id: "heart-1", type: "heart", scale: 1.1, xOffset: -90, yOffset: 0, delay: 0.2, zIndex: 15 },
-    { id: "thumbs-1", type: "thumbsUp", scale: 1.15, xOffset: 70, yOffset: 4, delay: 0.28, zIndex: 25 },
-    { id: "heart-2", type: "heart", scale: 1.3, xOffset: 20, yOffset: -2, delay: 0.38, zIndex: 25 },
-    { id: "thumbs-2", type: "thumbsUp", scale: 1.0, xOffset: -50, yOffset: 5, delay: 0.5, zIndex: 15 },
-    { id: "heart-3", type: "heart", scale: 0.95, xOffset: 100, yOffset: -3, delay: 0.65, zIndex: 15 },
+    { id: "heart-1", type: "heart", scale: 1.1, xOffset: -90, yOffset: 0, delay: 0, zIndex: 25 },
+    { id: "thumbs-1", type: "thumbsUp", scale: 1.15, xOffset: 70, yOffset: 4, delay: 0.08, zIndex: 35 },
+    { id: "heart-2", type: "heart", scale: 1.3, xOffset: 20, yOffset: -2, delay: 0.18, zIndex: 35 },
+    { id: "thumbs-2", type: "thumbsUp", scale: 1.0, xOffset: -50, yOffset: 5, delay: 0.3, zIndex: 25 },
+    { id: "heart-3", type: "heart", scale: 0.95, xOffset: 100, yOffset: -3, delay: 0.45, zIndex: 25 },
   ], []);
 
   const goToSlide = (index: number) => {
@@ -229,7 +229,7 @@ export function StoryStreetSection({
                   alt="Street scene"
                   fill
                   className="object-cover object-bottom pointer-events-none"
-                  style={{ zIndex: 30 }}
+                  style={{ zIndex: 10 }}
                   priority
                   draggable={false}
                 />
@@ -248,8 +248,8 @@ export function StoryStreetSection({
                   {currentSlide === 1 && (
                     <motion.div
                       key={`igpost-${slide2Key}`}
-                      className="absolute pointer-events-none left-1/2 bottom-[42%] md:bottom-[27%] w-[325px] h-[395px] md:w-[495px] md:h-[601px]"
-                      style={{ zIndex: 20 }}
+                      className="absolute pointer-events-none left-1/2 bottom-[39%] md:bottom-[27%] w-[325px] h-[395px] md:w-[495px] md:h-[601px]"
+                      style={{ zIndex: 30 }}
                       initial={{
                         x: "-50%",
                         y: "18%",
@@ -301,7 +301,7 @@ export function StoryStreetSection({
                     <motion.div
                       key="dim-overlay"
                       className="absolute inset-0 bg-black/15 pointer-events-none"
-                      style={{ zIndex: 8 }}
+                      style={{ zIndex: 20 }}
                       initial={{ opacity: 0.8 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0, transition: { duration: 0.08 } }}
@@ -316,7 +316,7 @@ export function StoryStreetSection({
                     <motion.div
                       key="slide3-text"
                       className="absolute inset-0 flex items-center justify-center pointer-events-none"
-                      style={{ zIndex: 35 }}
+                      style={{ zIndex: 40 }}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
@@ -334,11 +334,11 @@ export function StoryStreetSection({
                   <motion.div
                     key={`slide2-caption-${slide2Key}`}
                     className="relative -mt-24 sm:-mt-28 md:-mt-20 mx-auto w-[85%] sm:w-[80%] max-w-md pointer-events-none"
-                    style={{ zIndex: 35 }}
+                    style={{ zIndex: 40 }}
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, transition: { duration: 0.08 } }}
-                    transition={{ duration: 0.35, ease: "easeOut", delay: 1.0 }}
+                    transition={{ duration: 0.35, ease: "easeOut", delay: 0.8 }}
                   >
                     <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-3 md:px-5 md:py-4 border-2 border-[#5b8fc9]/35 ring-1 ring-[#5b8fc9]/15">
                       <h3 className="font-semibold text-[#1A1F24] text-sm sm:text-base md:text-lg mb-1">
