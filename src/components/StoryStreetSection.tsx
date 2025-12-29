@@ -307,15 +307,15 @@ export function StoryStreetSection({
                 </AnimatePresence>
 
                 {/* Dim overlay - behind IG post & emojis, in front of scene */}
-                <AnimatePresence>
+                <AnimatePresence mode="sync">
                   {currentSlide === 1 && (
                     <motion.div
-                      key="dim-overlay"
+                      key="slide2-dim-overlay"
                       className="absolute inset-0 bg-black/15 pointer-events-none"
                       style={{ zIndex: 20 }}
-                      initial={{ opacity: 0.8 }}
+                      initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      exit={{ opacity: 0, transition: { duration: 0.08 } }}
+                      exit={{ opacity: 0 }}
                       transition={{ duration: 0.15 }}
                     />
                   )}
@@ -519,7 +519,7 @@ export function StoryStreetSection({
                     <div className="flex justify-center mt-3">
                       <Link
                         href="/social"
-                        className="inline-block px-5 py-2 bg-[#5b8fc9] text-[#F4F1EC] text-sm font-medium rounded-lg hover:bg-[#4a7eb8] transition-colors duration-200 pointer-events-auto"
+                        className="inline-block px-6 py-3 bg-[#2B3A44] text-[#F4F1EC] text-sm font-semibold rounded-lg hover:bg-[#1f2b33] transition-colors duration-200 pointer-events-auto shadow-md"
                       >
                         Why social comes first
                       </Link>
@@ -554,7 +554,7 @@ export function StoryStreetSection({
                     <div className="flex justify-center mt-3">
                       <Link
                         href="/smartpage"
-                        className="inline-block px-5 py-2 bg-[#5b8fc9] text-[#F4F1EC] text-sm font-medium rounded-lg hover:bg-[#4a7eb8] transition-colors duration-200 pointer-events-auto"
+                        className="inline-block px-6 py-3 bg-[#2B3A44] text-[#F4F1EC] text-sm font-semibold rounded-lg hover:bg-[#1f2b33] transition-colors duration-200 pointer-events-auto shadow-md"
                       >
                         Meet your SmartPage
                       </Link>
