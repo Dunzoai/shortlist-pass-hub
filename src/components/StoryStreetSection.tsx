@@ -17,6 +17,12 @@ const ASSETS = {
   man: "/storystreet/man.png",
   questionBubble: "/storystreet/man-availability-question.png",
   smartpage3: "/storystreet/smartpage-3.png",
+  // Slide 4 assets
+  laptopWebsite: "/storystreet/laptop-website.png",
+  calendar: "/storystreet/calendar.png",
+  apps: "/storystreet/apps.png",
+  bubblesHomepage: "/storystreet/bubbles-homepage.png",
+  review: "/storystreet/review.png",
 };
 
 // Reaction instance type with z-index for depth
@@ -117,12 +123,13 @@ export function StoryStreetSection({
   // Keys to force remount animations on each slide entry
   const [slide2Key, setSlide2Key] = useState(0);
   const [slide3Key, setSlide3Key] = useState(0);
+  const [slide4Key, setSlide4Key] = useState(0);
 
   const sectionRef = useRef<HTMLElement>(null);
   const dragStartX = useRef<number | null>(null);
   const isDragging = useRef(false);
 
-  const totalSlides = 3;
+  const totalSlides = 4;
   const swipeThreshold = 50;
 
   // Reaction configs - pause slightly after IG post, then stagger
@@ -142,6 +149,9 @@ export function StoryStreetSection({
       }
       if (index === 2) {
         setSlide3Key((k) => k + 1);
+      }
+      if (index === 3) {
+        setSlide4Key((k) => k + 1);
       }
       setCurrentSlide(index);
     }
@@ -485,6 +495,154 @@ export function StoryStreetSection({
                     </motion.div>
                   )}
                 </AnimatePresence>
+
+                {/* ========== SLIDE 4: Digital Systems ========== */}
+
+                {/* Slide 4: Dim overlay */}
+                <AnimatePresence>
+                  {currentSlide === 3 && (
+                    <motion.div
+                      key="slide4-dim-overlay"
+                      className="absolute inset-0 bg-black/15 pointer-events-none"
+                      style={{ zIndex: 20 }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0, transition: { duration: 0 } }}
+                      transition={{ duration: 0.2, delay: 0.05 }}
+                    />
+                  )}
+                </AnimatePresence>
+
+                {/* Slide 4: Laptop Website - appears first, anchors the idea */}
+                <AnimatePresence>
+                  {currentSlide === 3 && (
+                    <motion.div
+                      key={`laptop-${slide4Key}`}
+                      className="absolute pointer-events-none left-1/2 bottom-[42%] md:bottom-[38%] w-[200px] h-[140px] md:w-[280px] md:h-[200px]"
+                      style={{ zIndex: 30 }}
+                      initial={{ x: "-50%", y: "40%", opacity: 0, scale: 0.95 }}
+                      animate={{ x: "-50%", y: "0%", opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, transition: { duration: 0.1 } }}
+                      transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
+                    >
+                      <Image
+                        src={ASSETS.laptopWebsite}
+                        alt="Website"
+                        fill
+                        className="object-contain drop-shadow-xl"
+                        draggable={false}
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Slide 4: Calendar - appears second */}
+                <AnimatePresence>
+                  {currentSlide === 3 && (
+                    <motion.div
+                      key={`calendar-${slide4Key}`}
+                      className="absolute pointer-events-none left-[15%] md:left-[22%] bottom-[48%] md:bottom-[45%] w-[100px] h-[100px] md:w-[140px] md:h-[140px]"
+                      style={{ zIndex: 31 }}
+                      initial={{ y: "50%", opacity: 0, scale: 0.95 }}
+                      animate={{ y: "0%", opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, transition: { duration: 0.1 } }}
+                      transition={{ duration: 0.5, ease: "easeOut", delay: 0.25 }}
+                    >
+                      <Image
+                        src={ASSETS.calendar}
+                        alt="Calendar"
+                        fill
+                        className="object-contain drop-shadow-lg"
+                        draggable={false}
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Slide 4: Apps - appears third */}
+                <AnimatePresence>
+                  {currentSlide === 3 && (
+                    <motion.div
+                      key={`apps-${slide4Key}`}
+                      className="absolute pointer-events-none right-[15%] md:right-[22%] bottom-[48%] md:bottom-[45%] w-[100px] h-[100px] md:w-[140px] md:h-[140px]"
+                      style={{ zIndex: 31 }}
+                      initial={{ y: "50%", opacity: 0, scale: 0.95 }}
+                      animate={{ y: "0%", opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, transition: { duration: 0.1 } }}
+                      transition={{ duration: 0.5, ease: "easeOut", delay: 0.4 }}
+                    >
+                      <Image
+                        src={ASSETS.apps}
+                        alt="Apps"
+                        fill
+                        className="object-contain drop-shadow-lg"
+                        draggable={false}
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Slide 4: Bubbles Homepage - appears fourth */}
+                <AnimatePresence>
+                  {currentSlide === 3 && (
+                    <motion.div
+                      key={`bubbles-${slide4Key}`}
+                      className="absolute pointer-events-none left-[8%] md:left-[15%] bottom-[58%] md:bottom-[55%] w-[90px] h-[90px] md:w-[120px] md:h-[120px]"
+                      style={{ zIndex: 32 }}
+                      initial={{ y: "50%", opacity: 0, scale: 0.95 }}
+                      animate={{ y: "0%", opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, transition: { duration: 0.1 } }}
+                      transition={{ duration: 0.5, ease: "easeOut", delay: 0.55 }}
+                    >
+                      <Image
+                        src={ASSETS.bubblesHomepage}
+                        alt="SmartPage"
+                        fill
+                        className="object-contain drop-shadow-lg"
+                        draggable={false}
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Slide 4: Review - appears last */}
+                <AnimatePresence>
+                  {currentSlide === 3 && (
+                    <motion.div
+                      key={`review-${slide4Key}`}
+                      className="absolute pointer-events-none right-[8%] md:right-[15%] bottom-[58%] md:bottom-[55%] w-[90px] h-[90px] md:w-[120px] md:h-[120px]"
+                      style={{ zIndex: 32 }}
+                      initial={{ y: "50%", opacity: 0, scale: 0.95 }}
+                      animate={{ y: "0%", opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, transition: { duration: 0.1 } }}
+                      transition={{ duration: 0.5, ease: "easeOut", delay: 0.7 }}
+                    >
+                      <Image
+                        src={ASSETS.review}
+                        alt="Review"
+                        fill
+                        className="object-contain drop-shadow-lg"
+                        draggable={false}
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Slide 4: The Business layer - on top so overlays emerge from behind */}
+                {currentSlide === 3 && (
+                  <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{ zIndex: 38 }}
+                  >
+                    <Image
+                      src={ASSETS.theBusiness3}
+                      alt=""
+                      fill
+                      className="object-cover object-bottom"
+                      draggable={false}
+                    />
+                  </div>
+                )}
               </div>
 
               {/* Slide 2 Caption overlay - appears AFTER emojis with a breath */}
@@ -563,6 +721,38 @@ export function StoryStreetSection({
                 )}
               </AnimatePresence>
 
+              {/* Slide 4 Caption overlay - appears AFTER digital tools emerge */}
+              <AnimatePresence>
+                {currentSlide === 3 && (
+                  <motion.div
+                    key={`slide4-caption-${slide4Key}`}
+                    className="relative -mt-24 sm:-mt-28 md:-mt-20 mx-auto w-[90%] sm:w-[85%] max-w-lg"
+                    style={{ zIndex: 40 }}
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, transition: { duration: 0.08 } }}
+                    transition={{ duration: 0.35, ease: "easeOut", delay: 1.2 }}
+                  >
+                    <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-3 md:px-5 md:py-4 border-2 border-[#5b8fc9]/35 ring-1 ring-[#5b8fc9]/15 pointer-events-none">
+                      <h3 className="font-semibold text-[#1A1F24] text-sm sm:text-base md:text-lg mb-1">
+                        This is where it becomes digital.
+                      </h3>
+                      <p className="text-[#5A6570] text-xs sm:text-sm md:text-base">
+                        Websites, apps, and SmartPages working together — booking customers, answering questions, and moving money without constant effort from you.
+                      </p>
+                    </div>
+                    <div className="flex justify-center mt-3">
+                      <Link
+                        href="/digital"
+                        className="inline-block px-6 py-3 bg-[#2B3A44] text-[#F4F1EC] text-sm font-semibold rounded-lg hover:bg-[#1f2b33] transition-colors duration-200 pointer-events-auto shadow-md"
+                      >
+                        Explore our digital builds
+                      </Link>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
               {/* Caption area BELOW the stage image */}
               <div className="mt-6 text-center">
                 <AnimatePresence mode="wait">
@@ -612,6 +802,17 @@ export function StoryStreetSection({
                   {currentSlide === 2 && (
                     <motion.div
                       key="slide3-placeholder"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="h-[60px]"
+                    />
+                  )}
+
+                  {/* Slide 4 - placeholder space (caption is overlay) */}
+                  {currentSlide === 3 && (
+                    <motion.div
+                      key="slide4-placeholder"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
