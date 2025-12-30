@@ -53,8 +53,8 @@ function FloatingDigitalIcon({ instance, isMobile }: { instance: DigitalIconInst
   };
   const src = srcMap[instance.type];
   const baseSize = 70;
-  // Pinch 17% on mobile (10% + 7% additional) - reduce xOffset spread
-  const mobileScale = isMobile ? 0.83 : 1;
+  // Pinch 35% on mobile to keep icons inside building container
+  const mobileScale = isMobile ? 0.65 : 1;
   const adjustedXOffset = instance.xOffset * mobileScale;
   const driftDir = adjustedXOffset > 0 ? 1 : -1;
   // More natural sway - gentle sine-wave-like movement
@@ -614,18 +614,18 @@ export function StoryStreetSection({
                     visibility: currentSlide === 3 ? 'visible' : 'hidden',
                   }}
                 >
-                  {/* Strong light flicker effect */}
+                  {/* Light flicker effect - toned down 25% */}
                   <motion.div
                     className="w-full h-full relative"
                     animate={currentSlide === 3 ? {
                       filter: [
                         "brightness(1)",
-                        "brightness(1.12)",
-                        "brightness(1)",
-                        "brightness(1.08)",
-                        "brightness(1.15)",
+                        "brightness(1.09)",
                         "brightness(1)",
                         "brightness(1.06)",
+                        "brightness(1.11)",
+                        "brightness(1)",
+                        "brightness(1.045)",
                         "brightness(1)",
                       ],
                     } : {}}
@@ -644,15 +644,15 @@ export function StoryStreetSection({
                       draggable={false}
                       priority
                     />
-                    {/* Warm amber glow overlay for windows/doors - stronger */}
+                    {/* Warm amber glow overlay for windows/doors - toned down 25% */}
                     <motion.div
                       className="absolute inset-0"
                       style={{
-                        background: "radial-gradient(ellipse 40% 30% at 50% 72%, rgba(255, 191, 105, 0.5) 0%, rgba(255, 166, 77, 0.3) 40%, transparent 70%)",
+                        background: "radial-gradient(ellipse 40% 30% at 50% 72%, rgba(255, 191, 105, 0.38) 0%, rgba(255, 166, 77, 0.22) 40%, transparent 70%)",
                         mixBlendMode: "soft-light",
                       }}
                       animate={currentSlide === 3 ? {
-                        opacity: [0.5, 1, 0.6, 1, 0.7, 0.9, 0.5],
+                        opacity: [0.4, 0.75, 0.45, 0.75, 0.52, 0.67, 0.4],
                       } : { opacity: 0 }}
                       transition={{
                         duration: 2.5,
@@ -661,15 +661,15 @@ export function StoryStreetSection({
                         times: [0, 0.15, 0.35, 0.5, 0.7, 0.85, 1],
                       }}
                     />
-                    {/* Secondary warmer glow pulse - stronger */}
+                    {/* Secondary warmer glow pulse - toned down 25% */}
                     <motion.div
                       className="absolute inset-0"
                       style={{
-                        background: "radial-gradient(ellipse 30% 22% at 48% 75%, rgba(255, 147, 41, 0.4) 0%, transparent 60%)",
+                        background: "radial-gradient(ellipse 30% 22% at 48% 75%, rgba(255, 147, 41, 0.3) 0%, transparent 60%)",
                         mixBlendMode: "overlay",
                       }}
                       animate={currentSlide === 3 ? {
-                        opacity: [0.3, 0.9, 0.4, 1, 0.5, 0.8, 0.3],
+                        opacity: [0.22, 0.67, 0.3, 0.75, 0.38, 0.6, 0.22],
                       } : { opacity: 0 }}
                       transition={{
                         duration: 2,
@@ -796,25 +796,6 @@ export function StoryStreetSection({
                 )}
               </AnimatePresence>
 
-              {/* Slide 1: Swipe arrow overlay on the image */}
-              {currentSlide === 0 && (
-                <motion.div
-                  className="absolute bottom-[12%] md:bottom-[8%] left-1/2 -translate-x-1/2 flex items-center justify-center"
-                  style={{ zIndex: 15 }}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.5, duration: 0.4 }}
-                >
-                  <motion.span
-                    className="text-[#2B3A44] text-3xl md:text-4xl"
-                    animate={{ x: [0, 12, 0] }}
-                    transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
-                  >
-                    →
-                  </motion.span>
-                </motion.div>
-              )}
-
               {/* Caption area BELOW the stage image */}
               <div className="mt-6 text-center">
                 <AnimatePresence mode="wait">
@@ -836,16 +817,28 @@ export function StoryStreetSection({
                       <p className="text-base md:text-lg text-[#5A6570] mb-2">
                         Most never make it past the scroll.
                       </p>
-                      <p className="text-sm md:text-base text-[#2B3A44] flex items-center justify-center gap-2">
-                        <span>Swipe to see what separates the ones that do</span>
+                      <motion.p
+                        className="text-sm md:text-base text-[#2B3A44] flex items-center justify-center gap-2 overflow-hidden"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.6, duration: 0.4 }}
+                      >
+                        <motion.span
+                          initial={{ x: -100, opacity: 0 }}
+                          animate={{ x: 0, opacity: 1 }}
+                          transition={{ delay: 0.8, duration: 1.2, ease: "easeOut" }}
+                        >
+                          Swipe to see what separates the ones that do
+                        </motion.span>
                         <motion.span
                           className="inline-flex text-[#2B3A44]"
-                          animate={{ x: [0, 8, 0] }}
-                          transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+                          initial={{ x: -20, opacity: 0 }}
+                          animate={{ x: 0, opacity: 1 }}
+                          transition={{ delay: 1.6, duration: 0.6, ease: "easeOut" }}
                         >
                           →
                         </motion.span>
-                      </p>
+                      </motion.p>
                     </motion.div>
                   )}
 
