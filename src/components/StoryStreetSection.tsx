@@ -384,14 +384,14 @@ export function StoryStreetSection({
                       className="absolute pointer-events-none left-1/2 bottom-[39%] md:bottom-[27%] w-[325px] h-[395px] md:w-[495px] md:h-[601px]"
                       style={{ zIndex: 30 }}
                       initial={{
-                        x: "-50%",
-                        y: "3%",
+                        x: "-47%",
+                        y: "7%",
                         opacity: 0.85,
                         scale: 0.97,
                       }}
                       animate={{
-                        x: "-50%",
-                        y: "-3%",
+                        x: "-47%",
+                        y: "1%",
                         opacity: 1,
                         scale: 1,
                       }}
