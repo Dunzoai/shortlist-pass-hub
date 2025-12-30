@@ -91,7 +91,7 @@ function HeroSection() {
 
       <Container>
         <div className="relative z-20 max-w-[1000px] mx-auto text-center px-4 -mt-16 md:-mt-8 lg:mt-0">
-          {/* Ink background behind headline - sketches in to reveal text */}
+          {/* Ink background sketches in to reveal hidden text */}
           <div className="relative">
             <motion.img
               src="/ink-background.png"
@@ -99,22 +99,19 @@ function HeroSection() {
               className="absolute inset-0 w-full h-full -z-10"
               style={{
                 objectFit: "fill",
-                transform: "scale(1.4, 1.6)",
+                transform: "scale(1.25, 1.45)",
               }}
-              initial={{ opacity: 0, clipPath: "inset(0 100% 0 0)" }}
-              animate={{ opacity: 0.85, clipPath: "inset(0 0% 0 0)" }}
-              transition={{ duration: 1.5, ease: "easeOut" }}
+              initial={{ clipPath: "inset(0 100% 0 0)" }}
+              animate={{ clipPath: "inset(0 0% 0 0)" }}
+              transition={{ duration: 1.8, ease: [0.25, 0.1, 0.25, 1] }}
             />
-            {/* H1 - Serif - bone colored text revealed by ink */}
-            <motion.h1
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.8, ease: "easeOut" }}
+            {/* H1 - bone colored text, invisible until ink reveals it */}
+            <h1
               className="text-[28px] md:text-[44px] lg:text-[56px] font-normal text-[#F4F1EC] leading-[1.15] tracking-[-0.01em] py-10 md:py-14 px-6"
               style={{ fontFamily: "var(--font-libre-baskerville)", textWrap: "balance" }}
             >
               We build websites and apps for small businesses that help customers choose you.
-            </motion.h1>
+            </h1>
           </div>
 
           {/* Anchor - Sans - below ink background */}
