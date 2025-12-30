@@ -20,6 +20,12 @@ export function Nav() {
         {/* Desktop Nav Links */}
         <div className="hidden md:flex items-center gap-4">
           <Link
+            href="/"
+            className="text-sm text-[#F4F1EC] px-4 py-2 rounded-full transition-all duration-300 hover:bg-[#5A6570] hover:text-[#F4F1EC]"
+          >
+            Home
+          </Link>
+          <Link
             href="/social"
             className="text-sm text-[#F4F1EC] px-4 py-2 rounded-full transition-all duration-300 hover:bg-[#5A6570] hover:text-[#F4F1EC]"
           >
@@ -66,6 +72,13 @@ export function Nav() {
       {mobileOpen && (
         <div className="md:hidden border-t border-[#F4F1EC]/10 bg-[#2B3A44]">
           <div className="px-6 py-4 flex flex-col gap-4">
+            <Link
+              href="/"
+              className="text-sm text-[#F4F1EC] hover:text-[#F4F1EC]/70 transition-colors"
+              onClick={() => setMobileOpen(false)}
+            >
+              Home
+            </Link>
             <Link
               href="/social"
               className="text-sm text-[#F4F1EC] hover:text-[#F4F1EC]/70 transition-colors"

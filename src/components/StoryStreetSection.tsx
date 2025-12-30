@@ -30,7 +30,7 @@ const ASSETS = {
 // Digital icon instance type - matches hearts/thumbs pattern
 interface DigitalIconInstance {
   id: string;
-  type: "calendar" | "facebook" | "laptop" | "messages" | "money" | "reviews" | "sales";
+  type: "calendar" | "facebook" | "laptop" | "messages" | "money" | "reviews" | "sales" | "heart" | "thumbsUp";
   scale: number;
   xOffset: number; // pixels from center
   delay: number;
@@ -47,6 +47,8 @@ function FloatingDigitalIcon({ instance }: { instance: DigitalIconInstance }) {
     money: ASSETS.moneySignStreet,
     reviews: ASSETS.reviewsStreet,
     sales: ASSETS.salesStreet,
+    heart: ASSETS.heart,
+    thumbsUp: ASSETS.thumbsUp,
   };
   const src = srcMap[instance.type];
   const baseSize = 70;
@@ -76,12 +78,12 @@ function FloatingDigitalIcon({ instance }: { instance: DigitalIconInstance }) {
         x: [0, driftDir * driftAmount * 0.4, driftDir * -driftAmount * 0.3, driftDir * driftAmount * 0.5, driftDir * driftAmount * 0.2],
       }}
       transition={{
-        duration: 5,
+        duration: 5.25,
         delay: instance.delay,
         ease: "easeInOut",
         times: [0, 0.15, 0.45, 0.75, 1],
         repeat: Infinity,
-        repeatDelay: 0.2,
+        repeatDelay: 0.25,
       }}
     >
       <Image src={src} alt="" fill className="object-contain drop-shadow-lg" />
@@ -205,15 +207,18 @@ export function StoryStreetSection({
     { id: "heart-3", type: "heart", scale: 0.95, xOffset: 100, yOffset: -3, delay: 0.65, zIndex: 25 },
   ], []);
 
-  // Digital icon configs - grouped like hearts/thumbs, varied fade heights (350-550px to use more sky)
+  // Digital icon configs - grouped like hearts/thumbs, varied fade heights, more spacing
   const digitalIconConfigs: DigitalIconInstance[] = useMemo(() => [
-    { id: "laptop-1", type: "laptop", scale: 1.15, xOffset: -25, delay: 0.15, maxY: 480 },
-    { id: "calendar-1", type: "calendar", scale: 0.95, xOffset: -85, delay: 0.35, maxY: 420 },
-    { id: "facebook-1", type: "facebook", scale: 1.0, xOffset: 70, delay: 0.55, maxY: 550 },
-    { id: "messages-1", type: "messages", scale: 1.1, xOffset: 15, delay: 0.75, maxY: 380 },
-    { id: "money-1", type: "money", scale: 0.9, xOffset: -55, delay: 0.95, maxY: 500 },
-    { id: "reviews-1", type: "reviews", scale: 1.05, xOffset: 90, delay: 1.15, maxY: 450 },
-    { id: "sales-1", type: "sales", scale: 0.95, xOffset: -10, delay: 1.35, maxY: 520 },
+    { id: "laptop-1", type: "laptop", scale: 1.1, xOffset: -30, delay: 0.2, maxY: 500 },
+    { id: "calendar-1", type: "calendar", scale: 0.9, xOffset: -110, delay: 0.5, maxY: 440 },
+    { id: "facebook-1", type: "facebook", scale: 0.95, xOffset: 95, delay: 0.8, maxY: 560 },
+    { id: "messages-1", type: "messages", scale: 1.05, xOffset: 25, delay: 1.1, maxY: 400 },
+    { id: "money-1", type: "money", scale: 0.85, xOffset: -70, delay: 1.4, maxY: 520 },
+    { id: "reviews-1", type: "reviews", scale: 1.0, xOffset: 120, delay: 1.7, maxY: 470 },
+    { id: "sales-1", type: "sales", scale: 0.9, xOffset: -5, delay: 2.0, maxY: 540 },
+    // Hearts and thumbs mixed in
+    { id: "heart-s4-1", type: "heart", scale: 1.0, xOffset: 55, delay: 0.35, maxY: 480 },
+    { id: "thumbs-s4-1", type: "thumbsUp", scale: 0.95, xOffset: -90, delay: 1.25, maxY: 510 },
   ], []);
 
   const goToSlide = (index: number) => {
@@ -391,20 +396,13 @@ export function StoryStreetSection({
                   )}
                 </AnimatePresence>
 
-                {/* Persistent dim overlay for slides 2-4 - prevents flash on transitions */}
-                <AnimatePresence>
-                  {currentSlide >= 1 && (
-                    <motion.div
-                      key="persistent-dim-overlay"
-                      className="absolute inset-0 bg-black/15 pointer-events-none"
-                      style={{ zIndex: 20 }}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.25 }}
-                    />
-                  )}
-                </AnimatePresence>
+                {/* Persistent dim overlay for slides 2-4 - instant, no animation */}
+                {currentSlide >= 1 && (
+                  <div
+                    className="absolute inset-0 bg-black/15 pointer-events-none"
+                    style={{ zIndex: 20 }}
+                  />
+                )}
 
                 {/* The Business layer - on top so IG post & emojis emerge from behind */}
                 {currentSlide === 1 && (
@@ -567,39 +565,43 @@ export function StoryStreetSection({
                   </>
                 )}
 
-                {/* Slide 4: The Business layer - on top so overlays emerge from behind */}
+                {/* Slide 4: The Business layer - instant, no animation on mount */}
                 {currentSlide === 3 && (
-                  <motion.div
-                    key={`business4-${slide4Key}`}
+                  <div
                     className="absolute inset-0 pointer-events-none"
                     style={{ zIndex: 38 }}
-                    animate={{
-                      filter: [
-                        "brightness(1)",
-                        "brightness(1.03)",
-                        "brightness(1)",
-                        "brightness(1.02)",
-                        "brightness(1.04)",
-                        "brightness(1)",
-                        "brightness(1.01)",
-                        "brightness(1)",
-                      ],
-                    }}
-                    transition={{
-                      duration: 4,
-                      ease: "easeInOut",
-                      repeat: Infinity,
-                      times: [0, 0.15, 0.3, 0.45, 0.6, 0.75, 0.9, 1],
-                    }}
                   >
-                    <Image
-                      src={ASSETS.theBusiness3}
-                      alt=""
-                      fill
-                      className="object-cover object-bottom"
-                      draggable={false}
-                    />
-                  </motion.div>
+                    {/* Light flicker effect nested inside */}
+                    <motion.div
+                      className="w-full h-full relative"
+                      animate={{
+                        filter: [
+                          "brightness(1)",
+                          "brightness(1.03)",
+                          "brightness(1)",
+                          "brightness(1.02)",
+                          "brightness(1.04)",
+                          "brightness(1)",
+                          "brightness(1.01)",
+                          "brightness(1)",
+                        ],
+                      }}
+                      transition={{
+                        duration: 4,
+                        ease: "easeInOut",
+                        repeat: Infinity,
+                        times: [0, 0.15, 0.3, 0.45, 0.6, 0.75, 0.9, 1],
+                      }}
+                    >
+                      <Image
+                        src={ASSETS.theBusiness3}
+                        alt=""
+                        fill
+                        className="object-cover object-bottom"
+                        draggable={false}
+                      />
+                    </motion.div>
+                  </div>
                 )}
               </div>
 
