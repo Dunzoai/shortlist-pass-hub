@@ -91,20 +91,26 @@ function HeroSection() {
 
       <Container>
         <div className="relative z-20 max-w-[1000px] mx-auto text-center px-4 -mt-16 md:-mt-8 lg:mt-0">
-          {/* Ink background behind headline */}
+          {/* Ink background behind headline - sketches in to reveal text */}
           <div className="relative">
-            <img
+            <motion.img
               src="/ink-background.png"
               alt=""
-              className="absolute inset-0 w-full h-full object-cover opacity-70 -z-10 scale-110"
-              style={{ objectFit: "fill" }}
+              className="absolute inset-0 w-full h-full -z-10"
+              style={{
+                objectFit: "fill",
+                transform: "scale(1.4, 1.6)",
+              }}
+              initial={{ opacity: 0, clipPath: "inset(0 100% 0 0)" }}
+              animate={{ opacity: 0.85, clipPath: "inset(0 0% 0 0)" }}
+              transition={{ duration: 1.5, ease: "easeOut" }}
             />
-            {/* H1 - Serif */}
+            {/* H1 - Serif - bone colored text revealed by ink */}
             <motion.h1
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 1, ease: "easeOut" }}
-              className="text-[28px] md:text-[44px] lg:text-[56px] font-normal text-[#F4F1EC] leading-[1.15] tracking-[-0.01em] py-8 md:py-12 px-4"
+              transition={{ duration: 0.8, delay: 0.8, ease: "easeOut" }}
+              className="text-[28px] md:text-[44px] lg:text-[56px] font-normal text-[#F4F1EC] leading-[1.15] tracking-[-0.01em] py-10 md:py-14 px-6"
               style={{ fontFamily: "var(--font-libre-baskerville)", textWrap: "balance" }}
             >
               We build websites and apps for small businesses that help customers choose you.
