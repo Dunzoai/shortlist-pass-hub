@@ -27,19 +27,22 @@ const ASSETS = {
   salesStreet: "/storystreet/sales-street.png",
 };
 
-// Digital icon instance type for Slide 4 floating animations
-interface DigitalIconInstance {
-  id: string;
+// Digital icon config for sequential animation
+interface DigitalIconConfig {
   type: "calendar" | "facebook" | "laptop" | "messages" | "money" | "reviews" | "sales";
+  xDrift: number; // horizontal drift direction and amount
   scale: number;
-  xOffset: number; // pixels from center of business area
-  delay: number;
-  maxHeight: number; // how far up to float before fading (varies per icon)
 }
 
-// Floating digital icon component - floats up from behind business and fades
-function FloatingDigitalIcon({ instance }: { instance: DigitalIconInstance }) {
-  const srcMap: Record<DigitalIconInstance["type"], string> = {
+// Single floating icon that appears, bobs gently while rising, then fades
+function FloatingDigitalIcon({
+  config,
+  isActive
+}: {
+  config: DigitalIconConfig;
+  isActive: boolean;
+}) {
+  const srcMap: Record<DigitalIconConfig["type"], string> = {
     calendar: ASSETS.calendarStreet,
     facebook: ASSETS.facebookStreet,
     laptop: ASSETS.laptopStreet,
@@ -48,45 +51,98 @@ function FloatingDigitalIcon({ instance }: { instance: DigitalIconInstance }) {
     reviews: ASSETS.reviewsStreet,
     sales: ASSETS.salesStreet,
   };
-  const src = srcMap[instance.type];
-  const baseSize = 65;
-  const driftDir = instance.xOffset > 0 ? 1 : -1;
-  const driftAmount = 12 + Math.abs(instance.xOffset) * 0.05;
-  const h = instance.maxHeight;
+  const src = srcMap[config.type];
+  const baseSize = 75;
 
   return (
-    <motion.div
-      className="absolute pointer-events-none"
-      style={{
-        width: baseSize * instance.scale,
-        height: baseSize * instance.scale,
-        // Position 25% to the right (centered around 55%)
-        left: `calc(55% + ${instance.xOffset}px)`,
-        bottom: "42%",
-        zIndex: 30,
-      }}
-      initial={{
-        opacity: 0,
-        y: 0,
-        scale: instance.scale * 0.9,
-      }}
-      animate={{
-        opacity: [0, 0.9, 1, 0.85, 0],
-        y: [0, -h * 0.2, -h * 0.5, -h * 0.8, -h],
-        scale: [instance.scale * 0.9, instance.scale, instance.scale * 0.97, instance.scale * 0.9, instance.scale * 0.7],
-        x: [0, driftDir * driftAmount * 0.3, driftDir * -driftAmount * 0.2, driftDir * driftAmount * 0.4, driftDir * driftAmount * 0.15],
-      }}
-      transition={{
-        duration: 7,
-        delay: instance.delay,
-        ease: [0.25, 0.1, 0.25, 1], // smooth cubic bezier
-        times: [0, 0.2, 0.5, 0.8, 1],
-        repeat: Infinity,
-        repeatDelay: 0.5,
-      }}
-    >
-      <Image src={src} alt="" fill className="object-contain drop-shadow-lg" />
-    </motion.div>
+    <AnimatePresence>
+      {isActive && (
+        <motion.div
+          key={config.type}
+          className="absolute pointer-events-none left-1/2"
+          style={{
+            width: baseSize * config.scale,
+            height: baseSize * config.scale,
+            bottom: "38%",
+            zIndex: 30,
+          }}
+          initial={{
+            opacity: 0,
+            y: 0,
+            x: "-50%",
+            scale: 0.8,
+          }}
+          animate={{
+            opacity: [0, 1, 1, 1, 0],
+            y: [0, -60, -120, -180, -240],
+            x: ["-50%", `calc(-50% + ${config.xDrift * 0.3}px)`, `calc(-50% + ${config.xDrift * 0.6}px)`, `calc(-50% + ${config.xDrift * 0.4}px)`, `calc(-50% + ${config.xDrift * 0.5}px)`],
+            scale: [0.8, config.scale, config.scale * 1.02, config.scale * 0.98, config.scale * 0.85],
+          }}
+          transition={{
+            duration: 4,
+            ease: "easeInOut",
+            times: [0, 0.15, 0.5, 0.85, 1],
+          }}
+        >
+          {/* Gentle bob animation while floating */}
+          <motion.div
+            className="w-full h-full relative"
+            animate={{
+              y: [0, -8, 0, -6, 0],
+              rotate: [0, 1, 0, -1, 0],
+            }}
+            transition={{
+              duration: 2.5,
+              ease: "easeInOut",
+              repeat: Infinity,
+            }}
+          >
+            <Image src={src} alt="" fill className="object-contain drop-shadow-xl" />
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
+// Controller component that cycles through icons one at a time
+function FloatingIconsController({ slideKey }: { slideKey: number }) {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const iconConfigs: DigitalIconConfig[] = useMemo(() => [
+    { type: "laptop", xDrift: -30, scale: 1.1 },
+    { type: "calendar", xDrift: 45, scale: 0.95 },
+    { type: "facebook", xDrift: -50, scale: 1.0 },
+    { type: "messages", xDrift: 35, scale: 1.05 },
+    { type: "money", xDrift: -25, scale: 0.9 },
+    { type: "reviews", xDrift: 55, scale: 1.0 },
+    { type: "sales", xDrift: -40, scale: 0.95 },
+  ], []);
+
+  useEffect(() => {
+    // Reset to first icon when slide key changes
+    setActiveIndex(0);
+  }, [slideKey]);
+
+  useEffect(() => {
+    // Cycle to next icon every 4.5 seconds (4s animation + 0.5s pause)
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % iconConfigs.length);
+    }, 4500);
+
+    return () => clearInterval(interval);
+  }, [iconConfigs.length]);
+
+  return (
+    <>
+      {iconConfigs.map((config, index) => (
+        <FloatingDigitalIcon
+          key={`${config.type}-${slideKey}`}
+          config={config}
+          isActive={index === activeIndex}
+        />
+      ))}
+    </>
   );
 }
 
@@ -204,45 +260,6 @@ export function StoryStreetSection({
     { id: "heart-2", type: "heart", scale: 1.3, xOffset: 20, yOffset: -2, delay: 0.38, zIndex: 35 },
     { id: "thumbs-2", type: "thumbsUp", scale: 1.0, xOffset: -50, yOffset: 5, delay: 0.5, zIndex: 25 },
     { id: "heart-3", type: "heart", scale: 0.95, xOffset: 100, yOffset: -3, delay: 0.65, zIndex: 25 },
-  ], []);
-
-  // Digital icon configs for Slide 4 - 4 variations of each icon with varied sizes, positions, and fade heights
-  const digitalIconConfigs: DigitalIconInstance[] = useMemo(() => [
-    // Wave 1 - initial spread
-    { id: "laptop-1", type: "laptop", scale: 1.15, xOffset: -15, delay: 0.2, maxHeight: 280 },
-    { id: "calendar-1", type: "calendar", scale: 0.95, xOffset: -70, delay: 1.0, maxHeight: 320 },
-    { id: "facebook-1", type: "facebook", scale: 0.85, xOffset: 55, delay: 1.8, maxHeight: 250 },
-    { id: "messages-1", type: "messages", scale: 1.0, xOffset: 15, delay: 2.6, maxHeight: 340 },
-    { id: "money-1", type: "money", scale: 0.9, xOffset: -45, delay: 3.4, maxHeight: 290 },
-    { id: "reviews-1", type: "reviews", scale: 1.05, xOffset: 70, delay: 4.2, maxHeight: 260 },
-    { id: "sales-1", type: "sales", scale: 0.95, xOffset: -5, delay: 5.0, maxHeight: 310 },
-
-    // Wave 2 - offset positions
-    { id: "laptop-2", type: "laptop", scale: 0.9, xOffset: 40, delay: 5.8, maxHeight: 300 },
-    { id: "calendar-2", type: "calendar", scale: 1.1, xOffset: -30, delay: 6.6, maxHeight: 270 },
-    { id: "facebook-2", type: "facebook", scale: 1.0, xOffset: -60, delay: 7.4, maxHeight: 330 },
-    { id: "messages-2", type: "messages", scale: 0.85, xOffset: 50, delay: 8.2, maxHeight: 260 },
-    { id: "money-2", type: "money", scale: 1.1, xOffset: 25, delay: 9.0, maxHeight: 350 },
-    { id: "reviews-2", type: "reviews", scale: 0.9, xOffset: -50, delay: 9.8, maxHeight: 280 },
-    { id: "sales-2", type: "sales", scale: 1.05, xOffset: 65, delay: 10.6, maxHeight: 240 },
-
-    // Wave 3 - different cluster
-    { id: "laptop-3", type: "laptop", scale: 1.0, xOffset: -55, delay: 11.4, maxHeight: 320 },
-    { id: "calendar-3", type: "calendar", scale: 0.85, xOffset: 35, delay: 12.2, maxHeight: 290 },
-    { id: "facebook-3", type: "facebook", scale: 1.1, xOffset: 10, delay: 13.0, maxHeight: 270 },
-    { id: "messages-3", type: "messages", scale: 0.95, xOffset: -40, delay: 13.8, maxHeight: 310 },
-    { id: "money-3", type: "money", scale: 1.0, xOffset: 60, delay: 14.6, maxHeight: 250 },
-    { id: "reviews-3", type: "reviews", scale: 1.15, xOffset: -20, delay: 15.4, maxHeight: 340 },
-    { id: "sales-3", type: "sales", scale: 0.9, xOffset: 45, delay: 16.2, maxHeight: 280 },
-
-    // Wave 4 - final variation
-    { id: "laptop-4", type: "laptop", scale: 0.95, xOffset: 30, delay: 17.0, maxHeight: 260 },
-    { id: "calendar-4", type: "calendar", scale: 1.05, xOffset: -10, delay: 17.8, maxHeight: 330 },
-    { id: "facebook-4", type: "facebook", scale: 0.9, xOffset: -75, delay: 18.6, maxHeight: 300 },
-    { id: "messages-4", type: "messages", scale: 1.1, xOffset: 75, delay: 19.4, maxHeight: 280 },
-    { id: "money-4", type: "money", scale: 0.85, xOffset: -25, delay: 20.2, maxHeight: 320 },
-    { id: "reviews-4", type: "reviews", scale: 1.0, xOffset: 20, delay: 21.0, maxHeight: 290 },
-    { id: "sales-4", type: "sales", scale: 1.1, xOffset: -65, delay: 21.8, maxHeight: 350 },
   ], []);
 
   const goToSlide = (index: number) => {
@@ -420,17 +437,17 @@ export function StoryStreetSection({
                   )}
                 </AnimatePresence>
 
-                {/* Dim overlay - behind IG post & emojis, in front of scene */}
+                {/* Persistent dim overlay for slides 2-4 - prevents flash on transitions */}
                 <AnimatePresence>
-                  {currentSlide === 1 && (
+                  {currentSlide >= 1 && (
                     <motion.div
-                      key="slide2-dim-overlay"
+                      key="persistent-dim-overlay"
                       className="absolute inset-0 bg-black/15 pointer-events-none"
                       style={{ zIndex: 20 }}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      exit={{ opacity: 0, transition: { duration: 0 } }}
-                      transition={{ duration: 0.2, delay: 0.05 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.25 }}
                     />
                   )}
                 </AnimatePresence>
@@ -452,21 +469,6 @@ export function StoryStreetSection({
                 )}
 
                 {/* ========== SLIDE 3: SmartPages ========== */}
-
-                {/* Slide 3: Dim overlay - same as Slide 2 */}
-                <AnimatePresence>
-                  {currentSlide === 2 && (
-                    <motion.div
-                      key="slide3-dim-overlay"
-                      className="absolute inset-0 bg-black/15 pointer-events-none"
-                      style={{ zIndex: 20 }}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0, transition: { duration: 0 } }}
-                      transition={{ duration: 0.2, delay: 0.05 }}
-                    />
-                  )}
-                </AnimatePresence>
 
                 {/* Slide 3: SmartPage - rises from behind business after question fades in */}
                 <AnimatePresence>
@@ -602,28 +604,9 @@ export function StoryStreetSection({
 
                 {/* ========== SLIDE 4: Digital Systems ========== */}
 
-                {/* Slide 4: Dim overlay */}
-                <AnimatePresence>
-                  {currentSlide === 3 && (
-                    <motion.div
-                      key="slide4-dim-overlay"
-                      className="absolute inset-0 bg-black/15 pointer-events-none"
-                      style={{ zIndex: 20 }}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0, transition: { duration: 0 } }}
-                      transition={{ duration: 0.2, delay: 0.05 }}
-                    />
-                  )}
-                </AnimatePresence>
-
-                {/* Slide 4: Floating digital icons - loop and float up from behind business */}
+                {/* Slide 4: Floating digital icons - one at a time with gentle bob */}
                 {currentSlide === 3 && (
-                  <>
-                    {digitalIconConfigs.map((icon) => (
-                      <FloatingDigitalIcon key={`${icon.id}-${slide4Key}`} instance={icon} />
-                    ))}
-                  </>
+                  <FloatingIconsController slideKey={slide4Key} />
                 )}
 
                 {/* Slide 4: The Business layer - on top so overlays emerge from behind */}
@@ -674,14 +657,14 @@ export function StoryStreetSection({
                     exit={{ opacity: 0, transition: { duration: 0.08 } }}
                     transition={{ duration: 0.35, ease: "easeOut", delay: 0.8 }}
                   >
-                    <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-3 md:px-5 md:py-4 border-2 border-[#5b8fc9]/35 ring-1 ring-[#5b8fc9]/15 pointer-events-none">
+                    <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-4 md:px-6 md:py-5 border-2 border-[#5b8fc9]/35 ring-1 ring-[#5b8fc9]/15">
                       <h3 className="font-semibold text-[#1A1F24] text-sm sm:text-base md:text-lg mb-1">
                         Social is how you get noticed
                       </h3>
                       <p className="text-[#5A6570] text-xs sm:text-sm md:text-base">
                         Before websites. Before clicks. It&apos;s how strangers become familiar and familiar turns into trust.
                       </p>
-                      <p className="text-[#5A6570]/70 text-[10px] sm:text-xs md:text-sm mt-2 flex items-center justify-center gap-1">
+                      <p className="text-[#5A6570]/70 text-[10px] sm:text-xs md:text-sm mt-2 mb-3 flex items-center justify-center gap-1">
                         <span>Swipe for the next step</span>
                         <motion.span
                           animate={{ x: [0, 4, 0] }}
@@ -690,14 +673,14 @@ export function StoryStreetSection({
                           →
                         </motion.span>
                       </p>
-                    </div>
-                    <div className="flex justify-center mt-3">
-                      <Link
-                        href="/social"
-                        className="inline-block px-6 py-3 bg-[#2B3A44] text-[#F4F1EC] text-sm font-semibold rounded-lg hover:bg-[#1f2b33] transition-colors duration-200 pointer-events-auto shadow-md"
-                      >
-                        Why social comes first
-                      </Link>
+                      <div className="flex justify-center">
+                        <Link
+                          href="/social"
+                          className="inline-block px-6 py-3 bg-[#2B3A44] text-[#F4F1EC] text-sm font-semibold rounded-lg hover:bg-[#1f2b33] transition-colors duration-200 pointer-events-auto shadow-md"
+                        >
+                          Why social comes first
+                        </Link>
+                      </div>
                     </div>
                   </motion.div>
                 )}
@@ -715,24 +698,24 @@ export function StoryStreetSection({
                     exit={{ opacity: 0, transition: { duration: 0.08 } }}
                     transition={{ duration: 0.35, ease: "easeOut", delay: 1.5 }}
                   >
-                    <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-3 md:px-5 md:py-4 border-2 border-[#5b8fc9]/35 ring-1 ring-[#5b8fc9]/15 pointer-events-none">
+                    <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-4 md:px-6 md:py-5 border-2 border-[#5b8fc9]/35 ring-1 ring-[#5b8fc9]/15">
                       <h3 className="font-semibold text-[#1A1F24] text-sm sm:text-base md:text-lg mb-1">
                         Your business assistant, online.
                       </h3>
                       <p className="text-[#5A6570] text-xs sm:text-sm md:text-base">
                         A SmartPage knows your hours, availability, links, services, and next steps — and hands the right answer directly to customers when they ask.
                       </p>
-                      <p className="text-[#5A6570] text-xs sm:text-sm md:text-base mt-2">
+                      <p className="text-[#5A6570] text-xs sm:text-sm md:text-base mt-2 mb-3">
                         Think of it as a lightweight website with superpowers. One place. Every answer. No searching. No confusion.
                       </p>
-                    </div>
-                    <div className="flex justify-center mt-3">
-                      <Link
-                        href="/smartpages"
-                        className="inline-block px-6 py-3 bg-[#2B3A44] text-[#F4F1EC] text-sm font-semibold rounded-lg hover:bg-[#1f2b33] transition-colors duration-200 pointer-events-auto shadow-md"
-                      >
-                        Meet your SmartPage
-                      </Link>
+                      <div className="flex justify-center">
+                        <Link
+                          href="/smartpages"
+                          className="inline-block px-6 py-3 bg-[#2B3A44] text-[#F4F1EC] text-sm font-semibold rounded-lg hover:bg-[#1f2b33] transition-colors duration-200 pointer-events-auto shadow-md"
+                        >
+                          Meet your SmartPage
+                        </Link>
+                      </div>
                     </div>
                   </motion.div>
                 )}
@@ -750,21 +733,21 @@ export function StoryStreetSection({
                     exit={{ opacity: 0, transition: { duration: 0.08 } }}
                     transition={{ duration: 0.35, ease: "easeOut", delay: 1.2 }}
                   >
-                    <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-3 md:px-5 md:py-4 border-2 border-[#5b8fc9]/35 ring-1 ring-[#5b8fc9]/15 pointer-events-none">
+                    <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-4 md:px-6 md:py-5 border-2 border-[#5b8fc9]/35 ring-1 ring-[#5b8fc9]/15">
                       <h3 className="font-semibold text-[#1A1F24] text-sm sm:text-base md:text-lg mb-1">
                         This is where it becomes digital.
                       </h3>
-                      <p className="text-[#5A6570] text-xs sm:text-sm md:text-base">
+                      <p className="text-[#5A6570] text-xs sm:text-sm md:text-base mb-3">
                         Websites, apps, and SmartPages working together — booking customers, answering questions, and moving money without constant effort from you.
                       </p>
-                    </div>
-                    <div className="flex justify-center mt-3">
-                      <Link
-                        href="/digital"
-                        className="inline-block px-6 py-3 bg-[#2B3A44] text-[#F4F1EC] text-sm font-semibold rounded-lg hover:bg-[#1f2b33] transition-colors duration-200 pointer-events-auto shadow-md"
-                      >
-                        Explore our digital builds
-                      </Link>
+                      <div className="flex justify-center">
+                        <Link
+                          href="/digital"
+                          className="inline-block px-6 py-3 bg-[#2B3A44] text-[#F4F1EC] text-sm font-semibold rounded-lg hover:bg-[#1f2b33] transition-colors duration-200 pointer-events-auto shadow-md"
+                        >
+                          Explore our digital builds
+                        </Link>
+                      </div>
                     </div>
                   </motion.div>
                 )}
