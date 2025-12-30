@@ -53,8 +53,8 @@ function FloatingDigitalIcon({ instance, isMobile }: { instance: DigitalIconInst
   };
   const src = srcMap[instance.type];
   const baseSize = 70;
-  // Pinch 10% on mobile - reduce xOffset spread
-  const mobileScale = isMobile ? 0.9 : 1;
+  // Pinch 17% on mobile (10% + 7% additional) - reduce xOffset spread
+  const mobileScale = isMobile ? 0.83 : 1;
   const adjustedXOffset = instance.xOffset * mobileScale;
   const driftDir = adjustedXOffset > 0 ? 1 : -1;
   // More natural sway - gentle sine-wave-like movement
@@ -511,20 +511,24 @@ export function StoryStreetSection({
                 </AnimatePresence>
 
                 {/* Slide 3: The Business layer - on TOP so SmartPage emerges from behind */}
-                {currentSlide === 2 && (
-                  <div
-                    className="absolute inset-0 pointer-events-none"
-                    style={{ zIndex: 38 }}
-                  >
-                    <Image
-                      src={ASSETS.theBusiness3}
-                      alt=""
-                      fill
-                      className="object-cover object-bottom"
-                      draggable={false}
-                    />
-                  </div>
-                )}
+                {/* Always rendered to prevent blink, visibility controlled */}
+                <div
+                  className="absolute inset-0 pointer-events-none"
+                  style={{
+                    zIndex: 38,
+                    opacity: currentSlide === 2 ? 1 : 0,
+                    visibility: currentSlide === 2 ? 'visible' : 'hidden',
+                  }}
+                >
+                  <Image
+                    src={ASSETS.theBusiness3}
+                    alt=""
+                    fill
+                    className="object-cover object-bottom"
+                    draggable={false}
+                    priority
+                  />
+                </div>
 
                 {/* Slide 3: Man character - foreground */}
                 {currentSlide === 2 && (
@@ -601,78 +605,81 @@ export function StoryStreetSection({
                   </>
                 )}
 
-                {/* Slide 4: The Business layer - instant, no animation on mount */}
-                {currentSlide === 3 && (
-                  <div
-                    className="absolute inset-0 pointer-events-none"
-                    style={{ zIndex: 38 }}
+                {/* Slide 4: The Business layer - always rendered to prevent blink */}
+                <div
+                  className="absolute inset-0 pointer-events-none"
+                  style={{
+                    zIndex: 38,
+                    opacity: currentSlide === 3 ? 1 : 0,
+                    visibility: currentSlide === 3 ? 'visible' : 'hidden',
+                  }}
+                >
+                  {/* Strong light flicker effect */}
+                  <motion.div
+                    className="w-full h-full relative"
+                    animate={currentSlide === 3 ? {
+                      filter: [
+                        "brightness(1)",
+                        "brightness(1.12)",
+                        "brightness(1)",
+                        "brightness(1.08)",
+                        "brightness(1.15)",
+                        "brightness(1)",
+                        "brightness(1.06)",
+                        "brightness(1)",
+                      ],
+                    } : {}}
+                    transition={{
+                      duration: 3,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      times: [0, 0.15, 0.3, 0.45, 0.6, 0.75, 0.9, 1],
+                    }}
                   >
-                    {/* Light flicker effect nested inside */}
+                    <Image
+                      src={ASSETS.theBusiness3}
+                      alt=""
+                      fill
+                      className="object-cover object-bottom"
+                      draggable={false}
+                      priority
+                    />
+                    {/* Warm amber glow overlay for windows/doors - stronger */}
                     <motion.div
-                      className="w-full h-full relative"
-                      animate={{
-                        filter: [
-                          "brightness(1)",
-                          "brightness(1.03)",
-                          "brightness(1)",
-                          "brightness(1.02)",
-                          "brightness(1.04)",
-                          "brightness(1)",
-                          "brightness(1.01)",
-                          "brightness(1)",
-                        ],
+                      className="absolute inset-0"
+                      style={{
+                        background: "radial-gradient(ellipse 40% 30% at 50% 72%, rgba(255, 191, 105, 0.5) 0%, rgba(255, 166, 77, 0.3) 40%, transparent 70%)",
+                        mixBlendMode: "soft-light",
                       }}
+                      animate={currentSlide === 3 ? {
+                        opacity: [0.5, 1, 0.6, 1, 0.7, 0.9, 0.5],
+                      } : { opacity: 0 }}
                       transition={{
-                        duration: 4,
+                        duration: 2.5,
                         ease: "easeInOut",
                         repeat: Infinity,
-                        times: [0, 0.15, 0.3, 0.45, 0.6, 0.75, 0.9, 1],
+                        times: [0, 0.15, 0.35, 0.5, 0.7, 0.85, 1],
                       }}
-                    >
-                      <Image
-                        src={ASSETS.theBusiness3}
-                        alt=""
-                        fill
-                        className="object-cover object-bottom"
-                        draggable={false}
-                      />
-                      {/* Warm amber glow overlay for windows/doors */}
-                      <motion.div
-                        className="absolute inset-0"
-                        style={{
-                          background: "radial-gradient(ellipse 35% 25% at 50% 75%, rgba(255, 191, 105, 0.35) 0%, rgba(255, 166, 77, 0.2) 40%, transparent 70%)",
-                          mixBlendMode: "soft-light",
-                        }}
-                        animate={{
-                          opacity: [0.6, 0.9, 0.7, 1, 0.75, 0.85, 0.6],
-                        }}
-                        transition={{
-                          duration: 3.5,
-                          ease: "easeInOut",
-                          repeat: Infinity,
-                          times: [0, 0.15, 0.35, 0.5, 0.7, 0.85, 1],
-                        }}
-                      />
-                      {/* Secondary warmer glow pulse */}
-                      <motion.div
-                        className="absolute inset-0"
-                        style={{
-                          background: "radial-gradient(ellipse 25% 18% at 48% 78%, rgba(255, 147, 41, 0.25) 0%, transparent 60%)",
-                          mixBlendMode: "overlay",
-                        }}
-                        animate={{
-                          opacity: [0.4, 0.7, 0.5, 0.8, 0.45, 0.65, 0.4],
-                        }}
-                        transition={{
-                          duration: 2.8,
-                          ease: "easeInOut",
-                          repeat: Infinity,
-                          times: [0, 0.2, 0.4, 0.55, 0.7, 0.85, 1],
-                        }}
-                      />
-                    </motion.div>
-                  </div>
-                )}
+                    />
+                    {/* Secondary warmer glow pulse - stronger */}
+                    <motion.div
+                      className="absolute inset-0"
+                      style={{
+                        background: "radial-gradient(ellipse 30% 22% at 48% 75%, rgba(255, 147, 41, 0.4) 0%, transparent 60%)",
+                        mixBlendMode: "overlay",
+                      }}
+                      animate={currentSlide === 3 ? {
+                        opacity: [0.3, 0.9, 0.4, 1, 0.5, 0.8, 0.3],
+                      } : { opacity: 0 }}
+                      transition={{
+                        duration: 2,
+                        ease: "easeInOut",
+                        repeat: Infinity,
+                        times: [0, 0.2, 0.4, 0.55, 0.7, 0.85, 1],
+                      }}
+                    />
+                  </motion.div>
+                </div>
               </div>
 
               {/* Slide 2 Caption overlay - appears AFTER emojis with a breath */}
@@ -732,11 +739,17 @@ export function StoryStreetSection({
                       <h3 className="font-semibold text-[#1A1F24] text-sm sm:text-base md:text-lg mb-1">
                         Your business assistant, online.
                       </h3>
-                      <p className="text-[#5A6570] text-xs sm:text-sm md:text-base">
-                        A SmartPage knows your hours, availability, links, services, and next steps — and hands the right answer directly to customers when they ask.
+                      <p className="text-[#5A6570] text-xs sm:text-sm md:text-base mb-2">
+                        Think of a SmartPage as a lightweight website with superpowers. It knows your hours, availability, links, services, and delivers it to your customers. One link. Every Answer. Customers satisfied.
                       </p>
-                      <p className="text-[#5A6570] text-xs sm:text-sm md:text-base mt-2 mb-3">
-                        Think of it as a lightweight website with superpowers. One place. Every answer. No searching. No confusion.
+                      <p className="text-[#5A6570]/70 text-[10px] sm:text-xs md:text-sm mt-2 mb-3 flex items-center justify-center gap-1">
+                        <span>Swipe for the next step</span>
+                        <motion.span
+                          animate={{ x: [0, 4, 0] }}
+                          transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+                        >
+                          →
+                        </motion.span>
                       </p>
                       <div className="flex justify-center">
                         <Link
@@ -783,6 +796,25 @@ export function StoryStreetSection({
                 )}
               </AnimatePresence>
 
+              {/* Slide 1: Swipe arrow overlay on the image */}
+              {currentSlide === 0 && (
+                <motion.div
+                  className="absolute bottom-[12%] md:bottom-[8%] left-1/2 -translate-x-1/2 flex items-center justify-center"
+                  style={{ zIndex: 15 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.5, duration: 0.4 }}
+                >
+                  <motion.span
+                    className="text-[#2B3A44] text-3xl md:text-4xl"
+                    animate={{ x: [0, 12, 0] }}
+                    transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    →
+                  </motion.span>
+                </motion.div>
+              )}
+
               {/* Caption area BELOW the stage image */}
               <div className="mt-6 text-center">
                 <AnimatePresence mode="wait">
@@ -804,10 +836,10 @@ export function StoryStreetSection({
                       <p className="text-base md:text-lg text-[#5A6570] mb-2">
                         Most never make it past the scroll.
                       </p>
-                      <p className="text-sm md:text-base text-[#5A6570]/80 flex items-center justify-center gap-2">
+                      <p className="text-sm md:text-base text-[#2B3A44] flex items-center justify-center gap-2">
                         <span>Swipe to see what separates the ones that do</span>
                         <motion.span
-                          className="inline-flex"
+                          className="inline-flex text-[#2B3A44]"
                           animate={{ x: [0, 8, 0] }}
                           transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
                         >
