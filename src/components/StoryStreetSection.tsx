@@ -513,12 +513,12 @@ export function StoryStreetSection({
                   )}
                 </AnimatePresence>
 
-                {/* Slide 4: Laptop Website - appears first, anchors the idea */}
+                {/* Slide 4: Laptop Website - appears first, centered over business */}
                 <AnimatePresence>
                   {currentSlide === 3 && (
                     <motion.div
                       key={`laptop-${slide4Key}`}
-                      className="absolute pointer-events-none left-1/2 bottom-[42%] md:bottom-[38%] w-[200px] h-[140px] md:w-[280px] md:h-[200px]"
+                      className="absolute pointer-events-none left-[28%] md:left-[32%] bottom-[42%] md:bottom-[38%] w-[200px] h-[140px] md:w-[280px] md:h-[200px]"
                       style={{ zIndex: 30 }}
                       initial={{ x: "-50%", y: "40%", opacity: 0, scale: 0.95 }}
                       animate={{ x: "-50%", y: "0%", opacity: 1, scale: 1 }}
@@ -536,12 +536,12 @@ export function StoryStreetSection({
                   )}
                 </AnimatePresence>
 
-                {/* Slide 4: Calendar - appears second */}
+                {/* Slide 4: Calendar - appears second, left of laptop */}
                 <AnimatePresence>
                   {currentSlide === 3 && (
                     <motion.div
                       key={`calendar-${slide4Key}`}
-                      className="absolute pointer-events-none left-[15%] md:left-[22%] bottom-[48%] md:bottom-[45%] w-[100px] h-[100px] md:w-[140px] md:h-[140px]"
+                      className="absolute pointer-events-none left-[8%] md:left-[18%] bottom-[46%] md:bottom-[42%] w-[100px] h-[100px] md:w-[140px] md:h-[140px]"
                       style={{ zIndex: 31 }}
                       initial={{ y: "50%", opacity: 0, scale: 0.95 }}
                       animate={{ y: "0%", opacity: 1, scale: 1 }}
@@ -559,12 +559,12 @@ export function StoryStreetSection({
                   )}
                 </AnimatePresence>
 
-                {/* Slide 4: Apps - appears third */}
+                {/* Slide 4: Apps - appears third, right of laptop */}
                 <AnimatePresence>
                   {currentSlide === 3 && (
                     <motion.div
                       key={`apps-${slide4Key}`}
-                      className="absolute pointer-events-none right-[15%] md:right-[22%] bottom-[48%] md:bottom-[45%] w-[100px] h-[100px] md:w-[140px] md:h-[140px]"
+                      className="absolute pointer-events-none left-[48%] md:left-[46%] bottom-[46%] md:bottom-[42%] w-[100px] h-[100px] md:w-[140px] md:h-[140px]"
                       style={{ zIndex: 31 }}
                       initial={{ y: "50%", opacity: 0, scale: 0.95 }}
                       animate={{ y: "0%", opacity: 1, scale: 1 }}
@@ -582,12 +582,12 @@ export function StoryStreetSection({
                   )}
                 </AnimatePresence>
 
-                {/* Slide 4: Bubbles Homepage - appears fourth */}
+                {/* Slide 4: Bubbles Homepage - appears fourth, upper left */}
                 <AnimatePresence>
                   {currentSlide === 3 && (
                     <motion.div
                       key={`bubbles-${slide4Key}`}
-                      className="absolute pointer-events-none left-[8%] md:left-[15%] bottom-[58%] md:bottom-[55%] w-[90px] h-[90px] md:w-[120px] md:h-[120px]"
+                      className="absolute pointer-events-none left-[12%] md:left-[22%] bottom-[54%] md:bottom-[52%] w-[90px] h-[90px] md:w-[120px] md:h-[120px]"
                       style={{ zIndex: 32 }}
                       initial={{ y: "50%", opacity: 0, scale: 0.95 }}
                       animate={{ y: "0%", opacity: 1, scale: 1 }}
@@ -605,12 +605,12 @@ export function StoryStreetSection({
                   )}
                 </AnimatePresence>
 
-                {/* Slide 4: Review - appears last */}
+                {/* Slide 4: Review - appears last, upper right */}
                 <AnimatePresence>
                   {currentSlide === 3 && (
                     <motion.div
                       key={`review-${slide4Key}`}
-                      className="absolute pointer-events-none right-[8%] md:right-[15%] bottom-[58%] md:bottom-[55%] w-[90px] h-[90px] md:w-[120px] md:h-[120px]"
+                      className="absolute pointer-events-none left-[42%] md:left-[42%] bottom-[54%] md:bottom-[52%] w-[90px] h-[90px] md:w-[120px] md:h-[120px]"
                       style={{ zIndex: 32 }}
                       initial={{ y: "50%", opacity: 0, scale: 0.95 }}
                       animate={{ y: "0%", opacity: 1, scale: 1 }}
@@ -630,9 +630,28 @@ export function StoryStreetSection({
 
                 {/* Slide 4: The Business layer - on top so overlays emerge from behind */}
                 {currentSlide === 3 && (
-                  <div
+                  <motion.div
+                    key={`business4-${slide4Key}`}
                     className="absolute inset-0 pointer-events-none"
                     style={{ zIndex: 38 }}
+                    animate={{
+                      filter: [
+                        "brightness(1)",
+                        "brightness(1.03)",
+                        "brightness(1)",
+                        "brightness(1.02)",
+                        "brightness(1.04)",
+                        "brightness(1)",
+                        "brightness(1.01)",
+                        "brightness(1)",
+                      ],
+                    }}
+                    transition={{
+                      duration: 4,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      times: [0, 0.15, 0.3, 0.45, 0.6, 0.75, 0.9, 1],
+                    }}
                   >
                     <Image
                       src={ASSETS.theBusiness3}
@@ -641,7 +660,7 @@ export function StoryStreetSection({
                       className="object-cover object-bottom"
                       draggable={false}
                     />
-                  </div>
+                  </motion.div>
                 )}
               </div>
 
