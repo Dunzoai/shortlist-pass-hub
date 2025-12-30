@@ -91,23 +91,32 @@ function HeroSection() {
 
       <Container>
         <div className="relative z-20 max-w-[1000px] mx-auto text-center px-4 -mt-16 md:-mt-8 lg:mt-0">
-          {/* H1 - Serif */}
-          <motion.h1
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="text-[28px] md:text-[44px] lg:text-[56px] font-normal text-[#1A1F24] leading-[1.15] tracking-[-0.01em] mb-6 md:mb-8"
-            style={{ fontFamily: "var(--font-libre-baskerville)", textWrap: "balance" }}
-          >
-            We build websites and apps for small businesses that help customers choose you.
-          </motion.h1>
+          {/* Ink background behind headline */}
+          <div className="relative">
+            <img
+              src="/ink-background.png"
+              alt=""
+              className="absolute inset-0 w-full h-full object-cover opacity-70 -z-10 scale-110"
+              style={{ objectFit: "fill" }}
+            />
+            {/* H1 - Serif */}
+            <motion.h1
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              className="text-[28px] md:text-[44px] lg:text-[56px] font-normal text-[#F4F1EC] leading-[1.15] tracking-[-0.01em] py-8 md:py-12 px-4"
+              style={{ fontFamily: "var(--font-libre-baskerville)", textWrap: "balance" }}
+            >
+              We build websites and apps for small businesses that help customers choose you.
+            </motion.h1>
+          </div>
 
-          {/* Anchor - Sans */}
+          {/* Anchor - Sans - below ink background */}
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
-            className="text-sm md:text-lg text-[#5A6570]"
+            className="text-sm md:text-lg text-[#5A6570] mt-6 md:mt-8"
           >
             Not cookie-cutter. Because your business deserves to stand out.
           </motion.p>
