@@ -21,7 +21,7 @@ function HeroSection() {
         <motion.img
           src="/storystreet/laptop-website.png"
           alt=""
-          className="absolute w-52 md:w-[345px] lg:w-[460px] mobile-corner-1 md:opacity-[0.65] top-[5%] md:top-[-15%]"
+          className="absolute w-52 md:w-[345px] lg:w-[460px] mobile-corner-1 md:opacity-[0.65] top-[-5%] md:top-[-15%]"
           style={{ left: "2%" }}
           animate={{
             x: [0, 8, 0, -6, 0],
@@ -56,7 +56,7 @@ function HeroSection() {
         <motion.img
           src="/storystreet/calendar.png"
           alt=""
-          className="absolute w-52 md:w-[370px] lg:w-[490px] mobile-corner-3 md:opacity-[0.65] top-[2%] md:top-[-8%] lg:top-[-12%]"
+          className="absolute w-52 md:w-[370px] lg:w-[490px] mobile-corner-3 md:opacity-[0.65] top-[-8%] md:top-[-8%] lg:top-[-12%]"
           style={{ right: "0%" }}
           animate={{
             x: [0, -14, 0, 10, 0],
@@ -126,7 +126,7 @@ function HeroSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
-            className="text-sm md:text-lg text-[#5A6570] mt-6 md:mt-8"
+            className="text-sm md:text-lg text-[#5A6570] mt-2 md:mt-4"
           >
             Not cookie-cutter. Because your business deserves to stand out.
           </motion.p>
