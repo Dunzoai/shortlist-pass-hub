@@ -91,32 +91,28 @@ function HeroSection() {
 
       <Container>
         <div className="relative z-20 max-w-[1000px] mx-auto text-center px-4 -mt-16 md:-mt-8 lg:mt-0">
-          {/* Text is stationary, blends with background until ink reveals it */}
+          {/* Text on screen first, ink shades in behind like pencil stroke */}
           <div className="relative">
-            {/* Ink layer - BEHIND the text, animates in to provide contrast */}
-            <motion.div
-              className="absolute inset-0 -z-10 flex items-center justify-center"
-              initial={{ clipPath: "polygon(0% 50%, 0% 50%, 0% 50%, 0% 50%)" }}
-              animate={{ clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)" }}
-              transition={{ duration: 2.2, ease: [0.4, 0, 0.2, 1], delay: 0.3 }}
-            >
-              <img
-                src="/ink-background.png"
-                alt=""
-                className="w-full h-full"
-                style={{
-                  objectFit: "fill",
-                  transform: "scale(1.3, 1.5)",
-                }}
-              />
-            </motion.div>
-            {/* H1 - bone colored, blends with bg, revealed when ink appears behind */}
+            {/* H1 - bone colored, already visible, blends with bg */}
             <h1
               className="relative z-10 text-[28px] md:text-[44px] lg:text-[56px] font-normal text-[#F4F1EC] leading-[1.15] tracking-[-0.01em] py-10 md:py-14 px-6"
               style={{ fontFamily: "var(--font-libre-baskerville)", textWrap: "balance" }}
             >
               We build websites and apps for small businesses that help customers choose you.
             </h1>
+            {/* Ink layer - shades in from left like colored pencil */}
+            <motion.img
+              src="/ink-background.png"
+              alt=""
+              className="absolute inset-0 w-full h-full -z-10"
+              style={{
+                objectFit: "fill",
+                transform: "scale(1.3, 1.5)",
+              }}
+              initial={{ clipPath: "inset(0 100% 0 0)" }}
+              animate={{ clipPath: "inset(0 0% 0 0)" }}
+              transition={{ duration: 2, ease: "easeOut", delay: 0.5 }}
+            />
           </div>
 
           {/* Anchor - Sans - below ink background */}
