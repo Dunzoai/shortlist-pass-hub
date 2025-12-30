@@ -348,12 +348,12 @@ function ProofStrip() {
             <p className="text-base md:text-lg text-[#5A6570] mb-6">
               Designed around how customers actually behave.
             </p>
-            <Link
-              href="/contact"
+            <a
+              href="mailto:hello@shortlistpass.com"
               className="inline-block px-6 py-3 bg-[#2B3A44] text-[#F4F1EC] font-medium rounded-lg hover:bg-[#1f2b33] transition-colors duration-200"
             >
               Tell us your business needs
-            </Link>
+            </a>
           </motion.div>
         </motion.div>
       </Container>

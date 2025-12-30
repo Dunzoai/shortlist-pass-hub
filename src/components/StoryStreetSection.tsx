@@ -37,7 +37,7 @@ interface DigitalIconInstance {
   maxY: number; // how far up to float (varied fade heights)
 }
 
-// Floating digital icon - matches hearts/thumbs animation style
+// Floating digital icon - matches hearts/thumbs animation style with natural sway
 function FloatingDigitalIcon({ instance }: { instance: DigitalIconInstance }) {
   const srcMap: Record<DigitalIconInstance["type"], string> = {
     calendar: ASSETS.calendarStreet,
@@ -53,7 +53,8 @@ function FloatingDigitalIcon({ instance }: { instance: DigitalIconInstance }) {
   const src = srcMap[instance.type];
   const baseSize = 70;
   const driftDir = instance.xOffset > 0 ? 1 : -1;
-  const driftAmount = 18 + Math.abs(instance.xOffset) * 0.1;
+  // More natural sway - gentle sine-wave-like movement
+  const swayAmount = 12 + Math.abs(instance.xOffset) * 0.08;
   const h = instance.maxY;
 
   return (
@@ -75,15 +76,32 @@ function FloatingDigitalIcon({ instance }: { instance: DigitalIconInstance }) {
         opacity: [0.9, 1, 1, 0.85, 0],
         y: [0, -h * 0.2, -h * 0.5, -h * 0.8, -h],
         scale: [instance.scale * 0.9, instance.scale, instance.scale * 0.95, instance.scale * 0.85, instance.scale * 0.6],
-        x: [0, driftDir * driftAmount * 0.4, driftDir * -driftAmount * 0.3, driftDir * driftAmount * 0.5, driftDir * driftAmount * 0.2],
+        // Natural sine-wave sway pattern - smoother oscillation
+        x: [
+          0,
+          driftDir * swayAmount * 0.6,
+          driftDir * -swayAmount * 0.4,
+          driftDir * swayAmount * 0.5,
+          driftDir * -swayAmount * 0.2,
+          driftDir * swayAmount * 0.3,
+          0,
+        ],
       }}
       transition={{
         duration: 5.25,
         delay: instance.delay,
         ease: "easeInOut",
         times: [0, 0.15, 0.45, 0.75, 1],
+        x: {
+          duration: 5.25,
+          delay: instance.delay,
+          ease: [0.37, 0, 0.63, 1], // Smooth sine-like easing
+          times: [0, 0.15, 0.35, 0.55, 0.75, 0.9, 1],
+          repeat: Infinity,
+          repeatDelay: 0,
+        },
         repeat: Infinity,
-        repeatDelay: 0.25,
+        repeatDelay: 0, // No pause - continuous flow
       }}
     >
       <Image src={src} alt="" fill className="object-contain drop-shadow-lg" />
@@ -600,6 +618,40 @@ export function StoryStreetSection({
                         className="object-cover object-bottom"
                         draggable={false}
                       />
+                      {/* Warm amber glow overlay for windows/doors */}
+                      <motion.div
+                        className="absolute inset-0"
+                        style={{
+                          background: "radial-gradient(ellipse 35% 25% at 50% 75%, rgba(255, 191, 105, 0.35) 0%, rgba(255, 166, 77, 0.2) 40%, transparent 70%)",
+                          mixBlendMode: "soft-light",
+                        }}
+                        animate={{
+                          opacity: [0.6, 0.9, 0.7, 1, 0.75, 0.85, 0.6],
+                        }}
+                        transition={{
+                          duration: 3.5,
+                          ease: "easeInOut",
+                          repeat: Infinity,
+                          times: [0, 0.15, 0.35, 0.5, 0.7, 0.85, 1],
+                        }}
+                      />
+                      {/* Secondary warmer glow pulse */}
+                      <motion.div
+                        className="absolute inset-0"
+                        style={{
+                          background: "radial-gradient(ellipse 25% 18% at 48% 78%, rgba(255, 147, 41, 0.25) 0%, transparent 60%)",
+                          mixBlendMode: "overlay",
+                        }}
+                        animate={{
+                          opacity: [0.4, 0.7, 0.5, 0.8, 0.45, 0.65, 0.4],
+                        }}
+                        transition={{
+                          duration: 2.8,
+                          ease: "easeInOut",
+                          repeat: Infinity,
+                          times: [0, 0.2, 0.4, 0.55, 0.7, 0.85, 1],
+                        }}
+                      />
                     </motion.div>
                   </div>
                 )}
@@ -617,7 +669,7 @@ export function StoryStreetSection({
                     exit={{ opacity: 0, transition: { duration: 0.08 } }}
                     transition={{ duration: 0.35, ease: "easeOut", delay: 0.8 }}
                   >
-                    <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-4 md:px-6 md:py-5 border-2 border-[#5b8fc9]/35 ring-1 ring-[#5b8fc9]/15">
+                    <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-4 md:px-6 md:py-5 border-2 border-[#5b8fc9]/35 ring-1 ring-[#5b8fc9]/15 text-center">
                       <h3 className="font-semibold text-[#1A1F24] text-sm sm:text-base md:text-lg mb-1">
                         Social is how you get noticed
                       </h3>
@@ -658,7 +710,7 @@ export function StoryStreetSection({
                     exit={{ opacity: 0, transition: { duration: 0.08 } }}
                     transition={{ duration: 0.35, ease: "easeOut", delay: 1.5 }}
                   >
-                    <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-4 md:px-6 md:py-5 border-2 border-[#5b8fc9]/35 ring-1 ring-[#5b8fc9]/15">
+                    <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-4 md:px-6 md:py-5 border-2 border-[#5b8fc9]/35 ring-1 ring-[#5b8fc9]/15 text-center">
                       <h3 className="font-semibold text-[#1A1F24] text-sm sm:text-base md:text-lg mb-1">
                         Your business assistant, online.
                       </h3>
@@ -693,7 +745,7 @@ export function StoryStreetSection({
                     exit={{ opacity: 0, transition: { duration: 0.08 } }}
                     transition={{ duration: 0.35, ease: "easeOut", delay: 1.2 }}
                   >
-                    <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-4 md:px-6 md:py-5 border-2 border-[#5b8fc9]/35 ring-1 ring-[#5b8fc9]/15">
+                    <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-4 md:px-6 md:py-5 border-2 border-[#5b8fc9]/35 ring-1 ring-[#5b8fc9]/15 text-center">
                       <h3 className="font-semibold text-[#1A1F24] text-sm sm:text-base md:text-lg mb-1">
                         This is where it becomes digital.
                       </h3>
