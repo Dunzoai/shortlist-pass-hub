@@ -19,10 +19,10 @@ function HeroSection() {
       <div className="absolute inset-0 pointer-events-none z-0">
         {/* Top left icon - laptop */}
         <motion.img
-          src="/laptop-website.png"
+          src="/storystreet/laptop-website.png"
           alt=""
           className="absolute w-52 md:w-[345px] lg:w-[460px] mobile-corner-1 md:opacity-[0.65]"
-          style={{ left: "2%", top: "-10%" }}
+          style={{ left: "2%", top: "5%" }}
           animate={{
             x: [0, 8, 0, -6, 0],
             y: [0, -8, 0, 6, 0],
@@ -54,10 +54,10 @@ function HeroSection() {
 
         {/* Top right icon - calendar (staggered higher) */}
         <motion.img
-          src="/calendar.png"
+          src="/storystreet/calendar.png"
           alt=""
           className="absolute w-52 md:w-[370px] lg:w-[490px] mobile-corner-3 md:opacity-[0.65]"
-          style={{ right: "0%", top: "-18%" }}
+          style={{ right: "0%", top: "2%" }}
           animate={{
             x: [0, -14, 0, 10, 0],
             y: [0, 10, 0, -8, 0],
