@@ -53,8 +53,8 @@ function FloatingDigitalIcon({ instance, isMobile }: { instance: DigitalIconInst
   };
   const src = srcMap[instance.type];
   const baseSize = 70;
-  // Pinch 35% on mobile to keep icons inside building container
-  const mobileScale = isMobile ? 0.65 : 1;
+  // Pinch 40% on mobile to keep icons inside building container
+  const mobileScale = isMobile ? 0.60 : 1;
   const adjustedXOffset = instance.xOffset * mobileScale;
   const driftDir = adjustedXOffset > 0 ? 1 : -1;
   // More natural sway - gentle sine-wave-like movement
@@ -614,71 +614,55 @@ export function StoryStreetSection({
                     visibility: currentSlide === 3 ? 'visible' : 'hidden',
                   }}
                 >
-                  {/* Light flicker effect - toned down 25% */}
+                  {/* Static building image - no brightness filter */}
+                  <Image
+                    src={ASSETS.theBusiness3}
+                    alt=""
+                    fill
+                    className="object-cover object-bottom"
+                    draggable={false}
+                    priority
+                  />
+                  {/* Window glow - positioned specifically over window areas, smooth fade */}
                   <motion.div
-                    className="w-full h-full relative"
+                    className="absolute inset-0"
+                    style={{
+                      background: `
+                        radial-gradient(ellipse 18% 12% at 35% 68%, rgba(255, 191, 105, 0.45) 0%, transparent 70%),
+                        radial-gradient(ellipse 18% 12% at 50% 68%, rgba(255, 191, 105, 0.4) 0%, transparent 70%),
+                        radial-gradient(ellipse 18% 12% at 65% 68%, rgba(255, 191, 105, 0.45) 0%, transparent 70%)
+                      `,
+                      mixBlendMode: "soft-light",
+                    }}
                     animate={currentSlide === 3 ? {
-                      filter: [
-                        "brightness(1)",
-                        "brightness(1.09)",
-                        "brightness(1)",
-                        "brightness(1.06)",
-                        "brightness(1.11)",
-                        "brightness(1)",
-                        "brightness(1.045)",
-                        "brightness(1)",
-                      ],
-                    } : {}}
+                      opacity: [0.5, 0.8, 0.5],
+                    } : { opacity: 0 }}
                     transition={{
-                      duration: 3,
+                      duration: 4,
                       ease: "easeInOut",
                       repeat: Infinity,
-                      times: [0, 0.15, 0.3, 0.45, 0.6, 0.75, 0.9, 1],
                     }}
-                  >
-                    <Image
-                      src={ASSETS.theBusiness3}
-                      alt=""
-                      fill
-                      className="object-cover object-bottom"
-                      draggable={false}
-                      priority
-                    />
-                    {/* Warm amber glow overlay for windows/doors - toned down 25% */}
-                    <motion.div
-                      className="absolute inset-0"
-                      style={{
-                        background: "radial-gradient(ellipse 40% 30% at 50% 72%, rgba(255, 191, 105, 0.38) 0%, rgba(255, 166, 77, 0.22) 40%, transparent 70%)",
-                        mixBlendMode: "soft-light",
-                      }}
-                      animate={currentSlide === 3 ? {
-                        opacity: [0.4, 0.75, 0.45, 0.75, 0.52, 0.67, 0.4],
-                      } : { opacity: 0 }}
-                      transition={{
-                        duration: 2.5,
-                        ease: "easeInOut",
-                        repeat: Infinity,
-                        times: [0, 0.15, 0.35, 0.5, 0.7, 0.85, 1],
-                      }}
-                    />
-                    {/* Secondary warmer glow pulse - toned down 25% */}
-                    <motion.div
-                      className="absolute inset-0"
-                      style={{
-                        background: "radial-gradient(ellipse 30% 22% at 48% 75%, rgba(255, 147, 41, 0.3) 0%, transparent 60%)",
-                        mixBlendMode: "overlay",
-                      }}
-                      animate={currentSlide === 3 ? {
-                        opacity: [0.22, 0.67, 0.3, 0.75, 0.38, 0.6, 0.22],
-                      } : { opacity: 0 }}
-                      transition={{
-                        duration: 2,
-                        ease: "easeInOut",
-                        repeat: Infinity,
-                        times: [0, 0.2, 0.4, 0.55, 0.7, 0.85, 1],
-                      }}
-                    />
-                  </motion.div>
+                  />
+                  {/* Secondary warm glow - smooth fade */}
+                  <motion.div
+                    className="absolute inset-0"
+                    style={{
+                      background: `
+                        radial-gradient(ellipse 15% 10% at 35% 70%, rgba(255, 166, 77, 0.35) 0%, transparent 60%),
+                        radial-gradient(ellipse 15% 10% at 50% 70%, rgba(255, 166, 77, 0.3) 0%, transparent 60%),
+                        radial-gradient(ellipse 15% 10% at 65% 70%, rgba(255, 166, 77, 0.35) 0%, transparent 60%)
+                      `,
+                      mixBlendMode: "overlay",
+                    }}
+                    animate={currentSlide === 3 ? {
+                      opacity: [0.4, 0.7, 0.4],
+                    } : { opacity: 0 }}
+                    transition={{
+                      duration: 3.5,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                    }}
+                  />
                 </div>
               </div>
 
@@ -694,7 +678,7 @@ export function StoryStreetSection({
                     exit={{ opacity: 0, transition: { duration: 0.08 } }}
                     transition={{ duration: 0.35, ease: "easeOut", delay: 0.8 }}
                   >
-                    <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-4 md:px-6 md:py-5 border-2 border-[#5b8fc9]/35 ring-1 ring-[#5b8fc9]/15 text-center">
+                    <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-4 md:px-6 md:py-5 border-2 border-[#2B3A44]/40 ring-1 ring-[#2B3A44]/15 text-center">
                       <h3 className="font-semibold text-[#1A1F24] text-sm sm:text-base md:text-lg mb-1">
                         Social is how you get noticed
                       </h3>
@@ -735,7 +719,7 @@ export function StoryStreetSection({
                     exit={{ opacity: 0, transition: { duration: 0.08 } }}
                     transition={{ duration: 0.35, ease: "easeOut", delay: 1.5 }}
                   >
-                    <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-4 md:px-6 md:py-5 border-2 border-[#5b8fc9]/35 ring-1 ring-[#5b8fc9]/15 text-center">
+                    <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-4 md:px-6 md:py-5 border-2 border-[#2B3A44]/40 ring-1 ring-[#2B3A44]/15 text-center">
                       <h3 className="font-semibold text-[#1A1F24] text-sm sm:text-base md:text-lg mb-1">
                         Your business assistant, online.
                       </h3>
@@ -776,7 +760,7 @@ export function StoryStreetSection({
                     exit={{ opacity: 0, transition: { duration: 0.08 } }}
                     transition={{ duration: 0.35, ease: "easeOut", delay: 1.2 }}
                   >
-                    <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-4 md:px-6 md:py-5 border-2 border-[#5b8fc9]/35 ring-1 ring-[#5b8fc9]/15 text-center">
+                    <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-4 md:px-6 md:py-5 border-2 border-[#2B3A44]/40 ring-1 ring-[#2B3A44]/15 text-center">
                       <h3 className="font-semibold text-[#1A1F24] text-sm sm:text-base md:text-lg mb-1">
                         This is where it becomes digital.
                       </h3>
