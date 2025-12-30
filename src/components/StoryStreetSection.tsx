@@ -17,13 +17,76 @@ const ASSETS = {
   man: "/storystreet/man.png",
   questionBubble: "/storystreet/man-availability-question.png",
   smartpage3: "/storystreet/smartpage-3.png",
-  // Slide 4 assets
-  laptopWebsite: "/storystreet/laptop-website.png",
-  calendar: "/storystreet/calendar.png",
-  apps: "/storystreet/apps.png",
-  bubblesHomepage: "/storystreet/bubbles-homepage.png",
-  review: "/storystreet/review.png",
+  // Slide 4 floating icons
+  calendarStreet: "/storystreet/calendar-street.png",
+  facebookStreet: "/storystreet/facebook-street.png",
+  laptopStreet: "/storystreet/latptop-street.png",
+  messagesStreet: "/storystreet/messages-street.png",
+  moneySignStreet: "/storystreet/money-sign-street.png",
+  reviewsStreet: "/storystreet/reviews.png",
+  salesStreet: "/storystreet/sales-street.png",
 };
+
+// Digital icon instance type for Slide 4 floating animations
+interface DigitalIconInstance {
+  id: string;
+  type: "calendar" | "facebook" | "laptop" | "messages" | "money" | "reviews" | "sales";
+  scale: number;
+  xOffset: number; // percentage from center of business area
+  delay: number;
+}
+
+// Floating digital icon component - floats up from behind business and fades
+function FloatingDigitalIcon({ instance }: { instance: DigitalIconInstance }) {
+  const srcMap: Record<DigitalIconInstance["type"], string> = {
+    calendar: ASSETS.calendarStreet,
+    facebook: ASSETS.facebookStreet,
+    laptop: ASSETS.laptopStreet,
+    messages: ASSETS.messagesStreet,
+    money: ASSETS.moneySignStreet,
+    reviews: ASSETS.reviewsStreet,
+    sales: ASSETS.salesStreet,
+  };
+  const src = srcMap[instance.type];
+  const baseSize = 70;
+  const driftDir = instance.xOffset > 0 ? 1 : -1;
+  const driftAmount = 15 + Math.abs(instance.xOffset) * 0.08;
+
+  return (
+    <motion.div
+      className="absolute pointer-events-none"
+      style={{
+        width: baseSize * instance.scale,
+        height: baseSize * instance.scale,
+        // Position relative to business area (left ~30% of screen)
+        left: `calc(30% + ${instance.xOffset}px)`,
+        bottom: "42%", // Start at ~top 25% of business layer
+        zIndex: 30,
+      }}
+      initial={{
+        opacity: 0,
+        y: 0,
+        scale: instance.scale * 0.85,
+      }}
+      animate={{
+        opacity: [0, 0.95, 1, 0.9, 0],
+        y: [0, -80, -180, -300, -420],
+        scale: [instance.scale * 0.85, instance.scale, instance.scale * 0.95, instance.scale * 0.85, instance.scale * 0.6],
+        x: [0, driftDir * driftAmount * 0.4, driftDir * -driftAmount * 0.3, driftDir * driftAmount * 0.5, driftDir * driftAmount * 0.2],
+      }}
+      transition={{
+        duration: 5,
+        delay: instance.delay,
+        ease: "easeInOut",
+        times: [0, 0.15, 0.4, 0.7, 1],
+        repeat: Infinity,
+        repeatDelay: 0.2,
+      }}
+    >
+      <Image src={src} alt="" fill className="object-contain drop-shadow-lg" />
+    </motion.div>
+  );
+}
 
 // Reaction instance type with z-index for depth
 interface ReactionInstance {
@@ -139,6 +202,17 @@ export function StoryStreetSection({
     { id: "heart-2", type: "heart", scale: 1.3, xOffset: 20, yOffset: -2, delay: 0.38, zIndex: 35 },
     { id: "thumbs-2", type: "thumbsUp", scale: 1.0, xOffset: -50, yOffset: 5, delay: 0.5, zIndex: 25 },
     { id: "heart-3", type: "heart", scale: 0.95, xOffset: 100, yOffset: -3, delay: 0.65, zIndex: 25 },
+  ], []);
+
+  // Digital icon configs for Slide 4 - varied sizes and positions within business area
+  const digitalIconConfigs: DigitalIconInstance[] = useMemo(() => [
+    { id: "laptop-1", type: "laptop", scale: 1.2, xOffset: -20, delay: 0.1 },
+    { id: "calendar-1", type: "calendar", scale: 1.0, xOffset: -80, delay: 0.4 },
+    { id: "facebook-1", type: "facebook", scale: 0.9, xOffset: 60, delay: 0.7 },
+    { id: "messages-1", type: "messages", scale: 1.1, xOffset: 20, delay: 1.1 },
+    { id: "money-1", type: "money", scale: 0.95, xOffset: -50, delay: 1.5 },
+    { id: "reviews-1", type: "reviews", scale: 1.05, xOffset: 80, delay: 1.9 },
+    { id: "sales-1", type: "sales", scale: 1.0, xOffset: -10, delay: 2.3 },
   ], []);
 
   const goToSlide = (index: number) => {
@@ -513,120 +587,14 @@ export function StoryStreetSection({
                   )}
                 </AnimatePresence>
 
-                {/* Slide 4: Laptop Website - appears first, centered over business */}
-                <AnimatePresence>
-                  {currentSlide === 3 && (
-                    <motion.div
-                      key={`laptop-${slide4Key}`}
-                      className="absolute pointer-events-none left-[28%] md:left-[32%] bottom-[42%] md:bottom-[38%] w-[200px] h-[140px] md:w-[280px] md:h-[200px]"
-                      style={{ zIndex: 30 }}
-                      initial={{ x: "-50%", y: "40%", opacity: 0, scale: 0.95 }}
-                      animate={{ x: "-50%", y: "0%", opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, transition: { duration: 0.1 } }}
-                      transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
-                    >
-                      <Image
-                        src={ASSETS.laptopWebsite}
-                        alt="Website"
-                        fill
-                        className="object-contain drop-shadow-xl"
-                        draggable={false}
-                      />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
-                {/* Slide 4: Calendar - appears second, left of laptop */}
-                <AnimatePresence>
-                  {currentSlide === 3 && (
-                    <motion.div
-                      key={`calendar-${slide4Key}`}
-                      className="absolute pointer-events-none left-[8%] md:left-[18%] bottom-[46%] md:bottom-[42%] w-[100px] h-[100px] md:w-[140px] md:h-[140px]"
-                      style={{ zIndex: 31 }}
-                      initial={{ y: "50%", opacity: 0, scale: 0.95 }}
-                      animate={{ y: "0%", opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, transition: { duration: 0.1 } }}
-                      transition={{ duration: 0.5, ease: "easeOut", delay: 0.25 }}
-                    >
-                      <Image
-                        src={ASSETS.calendar}
-                        alt="Calendar"
-                        fill
-                        className="object-contain drop-shadow-lg"
-                        draggable={false}
-                      />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
-                {/* Slide 4: Apps - appears third, right of laptop */}
-                <AnimatePresence>
-                  {currentSlide === 3 && (
-                    <motion.div
-                      key={`apps-${slide4Key}`}
-                      className="absolute pointer-events-none left-[48%] md:left-[46%] bottom-[46%] md:bottom-[42%] w-[100px] h-[100px] md:w-[140px] md:h-[140px]"
-                      style={{ zIndex: 31 }}
-                      initial={{ y: "50%", opacity: 0, scale: 0.95 }}
-                      animate={{ y: "0%", opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, transition: { duration: 0.1 } }}
-                      transition={{ duration: 0.5, ease: "easeOut", delay: 0.4 }}
-                    >
-                      <Image
-                        src={ASSETS.apps}
-                        alt="Apps"
-                        fill
-                        className="object-contain drop-shadow-lg"
-                        draggable={false}
-                      />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
-                {/* Slide 4: Bubbles Homepage - appears fourth, upper left */}
-                <AnimatePresence>
-                  {currentSlide === 3 && (
-                    <motion.div
-                      key={`bubbles-${slide4Key}`}
-                      className="absolute pointer-events-none left-[12%] md:left-[22%] bottom-[54%] md:bottom-[52%] w-[90px] h-[90px] md:w-[120px] md:h-[120px]"
-                      style={{ zIndex: 32 }}
-                      initial={{ y: "50%", opacity: 0, scale: 0.95 }}
-                      animate={{ y: "0%", opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, transition: { duration: 0.1 } }}
-                      transition={{ duration: 0.5, ease: "easeOut", delay: 0.55 }}
-                    >
-                      <Image
-                        src={ASSETS.bubblesHomepage}
-                        alt="SmartPage"
-                        fill
-                        className="object-contain drop-shadow-lg"
-                        draggable={false}
-                      />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
-                {/* Slide 4: Review - appears last, upper right */}
-                <AnimatePresence>
-                  {currentSlide === 3 && (
-                    <motion.div
-                      key={`review-${slide4Key}`}
-                      className="absolute pointer-events-none left-[42%] md:left-[42%] bottom-[54%] md:bottom-[52%] w-[90px] h-[90px] md:w-[120px] md:h-[120px]"
-                      style={{ zIndex: 32 }}
-                      initial={{ y: "50%", opacity: 0, scale: 0.95 }}
-                      animate={{ y: "0%", opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, transition: { duration: 0.1 } }}
-                      transition={{ duration: 0.5, ease: "easeOut", delay: 0.7 }}
-                    >
-                      <Image
-                        src={ASSETS.review}
-                        alt="Review"
-                        fill
-                        className="object-contain drop-shadow-lg"
-                        draggable={false}
-                      />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                {/* Slide 4: Floating digital icons - loop and float up from behind business */}
+                {currentSlide === 3 && (
+                  <>
+                    {digitalIconConfigs.map((icon) => (
+                      <FloatingDigitalIcon key={`${icon.id}-${slide4Key}`} instance={icon} />
+                    ))}
+                  </>
+                )}
 
                 {/* Slide 4: The Business layer - on top so overlays emerge from behind */}
                 {currentSlide === 3 && (
