@@ -52,12 +52,12 @@ function HeroSection() {
           }}
         />
 
-        {/* Top right icon - calendar (staggered higher) */}
+        {/* Top right icon - calendar (staggered higher on desktop) */}
         <motion.img
           src="/storystreet/calendar.png"
           alt=""
-          className="absolute w-52 md:w-[370px] lg:w-[490px] mobile-corner-3 md:opacity-[0.65]"
-          style={{ right: "0%", top: "2%" }}
+          className="absolute w-52 md:w-[370px] lg:w-[490px] mobile-corner-3 md:opacity-[0.65] top-[2%] md:top-[-8%] lg:top-[-12%]"
+          style={{ right: "0%" }}
           animate={{
             x: [0, -14, 0, 10, 0],
             y: [0, 10, 0, -8, 0],
