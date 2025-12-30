@@ -27,22 +27,19 @@ const ASSETS = {
   salesStreet: "/storystreet/sales-street.png",
 };
 
-// Digital icon config for sequential animation
-interface DigitalIconConfig {
+// Digital icon instance type - matches hearts/thumbs pattern
+interface DigitalIconInstance {
+  id: string;
   type: "calendar" | "facebook" | "laptop" | "messages" | "money" | "reviews" | "sales";
-  xDrift: number; // horizontal drift direction and amount
   scale: number;
+  xOffset: number; // pixels from center
+  delay: number;
+  maxY: number; // how far up to float (varied fade heights)
 }
 
-// Single floating icon that appears, bobs gently while rising, then fades
-function FloatingDigitalIcon({
-  config,
-  isActive
-}: {
-  config: DigitalIconConfig;
-  isActive: boolean;
-}) {
-  const srcMap: Record<DigitalIconConfig["type"], string> = {
+// Floating digital icon - matches hearts/thumbs animation style
+function FloatingDigitalIcon({ instance }: { instance: DigitalIconInstance }) {
+  const srcMap: Record<DigitalIconInstance["type"], string> = {
     calendar: ASSETS.calendarStreet,
     facebook: ASSETS.facebookStreet,
     laptop: ASSETS.laptopStreet,
@@ -51,98 +48,44 @@ function FloatingDigitalIcon({
     reviews: ASSETS.reviewsStreet,
     sales: ASSETS.salesStreet,
   };
-  const src = srcMap[config.type];
-  const baseSize = 75;
+  const src = srcMap[instance.type];
+  const baseSize = 70;
+  const driftDir = instance.xOffset > 0 ? 1 : -1;
+  const driftAmount = 18 + Math.abs(instance.xOffset) * 0.1;
+  const h = instance.maxY;
 
   return (
-    <AnimatePresence>
-      {isActive && (
-        <motion.div
-          key={config.type}
-          className="absolute pointer-events-none left-1/2"
-          style={{
-            width: baseSize * config.scale,
-            height: baseSize * config.scale,
-            bottom: "38%",
-            zIndex: 30,
-          }}
-          initial={{
-            opacity: 0,
-            y: 0,
-            x: "-50%",
-            scale: 0.8,
-          }}
-          animate={{
-            opacity: [0, 1, 1, 1, 0],
-            y: [0, -60, -120, -180, -240],
-            x: ["-50%", `calc(-50% + ${config.xDrift * 0.3}px)`, `calc(-50% + ${config.xDrift * 0.6}px)`, `calc(-50% + ${config.xDrift * 0.4}px)`, `calc(-50% + ${config.xDrift * 0.5}px)`],
-            scale: [0.8, config.scale, config.scale * 1.02, config.scale * 0.98, config.scale * 0.85],
-          }}
-          transition={{
-            duration: 4,
-            ease: "easeInOut",
-            times: [0, 0.15, 0.5, 0.85, 1],
-          }}
-        >
-          {/* Gentle bob animation while floating */}
-          <motion.div
-            className="w-full h-full relative"
-            animate={{
-              y: [0, -8, 0, -6, 0],
-              rotate: [0, 1, 0, -1, 0],
-            }}
-            transition={{
-              duration: 2.5,
-              ease: "easeInOut",
-              repeat: Infinity,
-            }}
-          >
-            <Image src={src} alt="" fill className="object-contain drop-shadow-xl" />
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-}
-
-// Controller component that cycles through icons one at a time
-function FloatingIconsController({ slideKey }: { slideKey: number }) {
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  const iconConfigs: DigitalIconConfig[] = useMemo(() => [
-    { type: "laptop", xDrift: -30, scale: 1.1 },
-    { type: "calendar", xDrift: 45, scale: 0.95 },
-    { type: "facebook", xDrift: -50, scale: 1.0 },
-    { type: "messages", xDrift: 35, scale: 1.05 },
-    { type: "money", xDrift: -25, scale: 0.9 },
-    { type: "reviews", xDrift: 55, scale: 1.0 },
-    { type: "sales", xDrift: -40, scale: 0.95 },
-  ], []);
-
-  useEffect(() => {
-    // Reset to first icon when slide key changes
-    setActiveIndex(0);
-  }, [slideKey]);
-
-  useEffect(() => {
-    // Cycle to next icon every 4.5 seconds (4s animation + 0.5s pause)
-    const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % iconConfigs.length);
-    }, 4500);
-
-    return () => clearInterval(interval);
-  }, [iconConfigs.length]);
-
-  return (
-    <>
-      {iconConfigs.map((config, index) => (
-        <FloatingDigitalIcon
-          key={`${config.type}-${slideKey}`}
-          config={config}
-          isActive={index === activeIndex}
-        />
-      ))}
-    </>
+    <motion.div
+      className="absolute pointer-events-none"
+      style={{
+        width: baseSize * instance.scale,
+        height: baseSize * instance.scale,
+        left: `calc(50% + ${instance.xOffset}px)`,
+        bottom: "38%",
+        zIndex: 30,
+      }}
+      initial={{
+        opacity: 0.9,
+        y: 0,
+        scale: instance.scale * 0.9,
+      }}
+      animate={{
+        opacity: [0.9, 1, 1, 0.85, 0],
+        y: [0, -h * 0.2, -h * 0.5, -h * 0.8, -h],
+        scale: [instance.scale * 0.9, instance.scale, instance.scale * 0.95, instance.scale * 0.85, instance.scale * 0.6],
+        x: [0, driftDir * driftAmount * 0.4, driftDir * -driftAmount * 0.3, driftDir * driftAmount * 0.5, driftDir * driftAmount * 0.2],
+      }}
+      transition={{
+        duration: 5,
+        delay: instance.delay,
+        ease: "easeInOut",
+        times: [0, 0.15, 0.45, 0.75, 1],
+        repeat: Infinity,
+        repeatDelay: 0.2,
+      }}
+    >
+      <Image src={src} alt="" fill className="object-contain drop-shadow-lg" />
+    </motion.div>
   );
 }
 
@@ -260,6 +203,17 @@ export function StoryStreetSection({
     { id: "heart-2", type: "heart", scale: 1.3, xOffset: 20, yOffset: -2, delay: 0.38, zIndex: 35 },
     { id: "thumbs-2", type: "thumbsUp", scale: 1.0, xOffset: -50, yOffset: 5, delay: 0.5, zIndex: 25 },
     { id: "heart-3", type: "heart", scale: 0.95, xOffset: 100, yOffset: -3, delay: 0.65, zIndex: 25 },
+  ], []);
+
+  // Digital icon configs - grouped like hearts/thumbs, varied fade heights (350-550px to use more sky)
+  const digitalIconConfigs: DigitalIconInstance[] = useMemo(() => [
+    { id: "laptop-1", type: "laptop", scale: 1.15, xOffset: -25, delay: 0.15, maxY: 480 },
+    { id: "calendar-1", type: "calendar", scale: 0.95, xOffset: -85, delay: 0.35, maxY: 420 },
+    { id: "facebook-1", type: "facebook", scale: 1.0, xOffset: 70, delay: 0.55, maxY: 550 },
+    { id: "messages-1", type: "messages", scale: 1.1, xOffset: 15, delay: 0.75, maxY: 380 },
+    { id: "money-1", type: "money", scale: 0.9, xOffset: -55, delay: 0.95, maxY: 500 },
+    { id: "reviews-1", type: "reviews", scale: 1.05, xOffset: 90, delay: 1.15, maxY: 450 },
+    { id: "sales-1", type: "sales", scale: 0.95, xOffset: -10, delay: 1.35, maxY: 520 },
   ], []);
 
   const goToSlide = (index: number) => {
@@ -604,9 +558,13 @@ export function StoryStreetSection({
 
                 {/* ========== SLIDE 4: Digital Systems ========== */}
 
-                {/* Slide 4: Floating digital icons - one at a time with gentle bob */}
+                {/* Slide 4: Floating digital icons - grouped like hearts/thumbs */}
                 {currentSlide === 3 && (
-                  <FloatingIconsController slideKey={slide4Key} />
+                  <>
+                    {digitalIconConfigs.map((icon) => (
+                      <FloatingDigitalIcon key={`${icon.id}-${slide4Key}`} instance={icon} />
+                    ))}
+                  </>
                 )}
 
                 {/* Slide 4: The Business layer - on top so overlays emerge from behind */}
