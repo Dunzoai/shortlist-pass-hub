@@ -91,20 +91,19 @@ function HeroSection() {
 
       <Container>
         <div className="relative z-20 max-w-[1000px] mx-auto text-center px-4 -mt-16 md:-mt-8 lg:mt-0">
-          {/* Text on screen first, ink shades in behind like pencil stroke */}
-          <div className="relative">
-            {/* H1 - bone colored, already visible, blends with bg */}
-            <h1
-              className="relative z-10 text-[28px] md:text-[44px] lg:text-[56px] font-normal text-[#F4F1EC] leading-[1.15] tracking-[-0.01em] py-10 md:py-14 px-6"
-              style={{ fontFamily: "var(--font-libre-baskerville)", textWrap: "balance" }}
-            >
-              We build websites and apps for small businesses that help customers choose you.
-            </h1>
-            {/* Ink layer - shades in from left like colored pencil */}
+          {/*
+            HOW THIS WORKS:
+            - Text is bone colored (#F4F1EC) on bone background = INVISIBLE (blends)
+            - Ink layer sits BETWEEN page background and text
+            - When ink animates in, it creates contrast behind text = TEXT BECOMES VISIBLE
+            - It's like invisible ink being revealed
+          */}
+          <div className="relative isolate">
+            {/* Ink layer - sits between page bg and text, animates left→right */}
             <motion.img
               src="/ink-background.png"
               alt=""
-              className="absolute inset-0 w-full h-full -z-10"
+              className="absolute inset-0 w-full h-full z-0"
               style={{
                 objectFit: "fill",
                 transform: "scale(1.3, 1.5)",
@@ -113,6 +112,13 @@ function HeroSection() {
               animate={{ clipPath: "inset(0 0% 0 0)" }}
               transition={{ duration: 2, ease: "easeOut", delay: 0.5 }}
             />
+            {/* Text - bone colored, blends with bg until ink reveals it */}
+            <h1
+              className="relative z-10 text-[28px] md:text-[44px] lg:text-[56px] font-normal text-[#F4F1EC] leading-[1.15] tracking-[-0.01em] py-10 md:py-14 px-6"
+              style={{ fontFamily: "var(--font-libre-baskerville)", textWrap: "balance" }}
+            >
+              We build websites and apps for small businesses that help customers choose you.
+            </h1>
           </div>
 
           {/* Anchor - Sans - below ink background */}
