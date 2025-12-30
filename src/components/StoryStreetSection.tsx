@@ -32,8 +32,9 @@ interface DigitalIconInstance {
   id: string;
   type: "calendar" | "facebook" | "laptop" | "messages" | "money" | "reviews" | "sales";
   scale: number;
-  xOffset: number; // percentage from center of business area
+  xOffset: number; // pixels from center of business area
   delay: number;
+  maxHeight: number; // how far up to float before fading (varies per icon)
 }
 
 // Floating digital icon component - floats up from behind business and fades
@@ -48,9 +49,10 @@ function FloatingDigitalIcon({ instance }: { instance: DigitalIconInstance }) {
     sales: ASSETS.salesStreet,
   };
   const src = srcMap[instance.type];
-  const baseSize = 70;
+  const baseSize = 65;
   const driftDir = instance.xOffset > 0 ? 1 : -1;
-  const driftAmount = 15 + Math.abs(instance.xOffset) * 0.08;
+  const driftAmount = 12 + Math.abs(instance.xOffset) * 0.05;
+  const h = instance.maxHeight;
 
   return (
     <motion.div
@@ -58,29 +60,29 @@ function FloatingDigitalIcon({ instance }: { instance: DigitalIconInstance }) {
       style={{
         width: baseSize * instance.scale,
         height: baseSize * instance.scale,
-        // Position relative to business area (left ~30% of screen)
-        left: `calc(30% + ${instance.xOffset}px)`,
-        bottom: "42%", // Start at ~top 25% of business layer
+        // Position 25% to the right (centered around 55%)
+        left: `calc(55% + ${instance.xOffset}px)`,
+        bottom: "42%",
         zIndex: 30,
       }}
       initial={{
         opacity: 0,
         y: 0,
-        scale: instance.scale * 0.85,
+        scale: instance.scale * 0.9,
       }}
       animate={{
-        opacity: [0, 0.95, 1, 0.9, 0],
-        y: [0, -80, -180, -300, -420],
-        scale: [instance.scale * 0.85, instance.scale, instance.scale * 0.95, instance.scale * 0.85, instance.scale * 0.6],
-        x: [0, driftDir * driftAmount * 0.4, driftDir * -driftAmount * 0.3, driftDir * driftAmount * 0.5, driftDir * driftAmount * 0.2],
+        opacity: [0, 0.9, 1, 0.85, 0],
+        y: [0, -h * 0.2, -h * 0.5, -h * 0.8, -h],
+        scale: [instance.scale * 0.9, instance.scale, instance.scale * 0.97, instance.scale * 0.9, instance.scale * 0.7],
+        x: [0, driftDir * driftAmount * 0.3, driftDir * -driftAmount * 0.2, driftDir * driftAmount * 0.4, driftDir * driftAmount * 0.15],
       }}
       transition={{
-        duration: 5,
+        duration: 7,
         delay: instance.delay,
-        ease: "easeInOut",
-        times: [0, 0.15, 0.4, 0.7, 1],
+        ease: [0.25, 0.1, 0.25, 1], // smooth cubic bezier
+        times: [0, 0.2, 0.5, 0.8, 1],
         repeat: Infinity,
-        repeatDelay: 0.2,
+        repeatDelay: 0.5,
       }}
     >
       <Image src={src} alt="" fill className="object-contain drop-shadow-lg" />
@@ -204,15 +206,43 @@ export function StoryStreetSection({
     { id: "heart-3", type: "heart", scale: 0.95, xOffset: 100, yOffset: -3, delay: 0.65, zIndex: 25 },
   ], []);
 
-  // Digital icon configs for Slide 4 - varied sizes and positions within business area
+  // Digital icon configs for Slide 4 - 4 variations of each icon with varied sizes, positions, and fade heights
   const digitalIconConfigs: DigitalIconInstance[] = useMemo(() => [
-    { id: "laptop-1", type: "laptop", scale: 1.2, xOffset: -20, delay: 0.1 },
-    { id: "calendar-1", type: "calendar", scale: 1.0, xOffset: -80, delay: 0.4 },
-    { id: "facebook-1", type: "facebook", scale: 0.9, xOffset: 60, delay: 0.7 },
-    { id: "messages-1", type: "messages", scale: 1.1, xOffset: 20, delay: 1.1 },
-    { id: "money-1", type: "money", scale: 0.95, xOffset: -50, delay: 1.5 },
-    { id: "reviews-1", type: "reviews", scale: 1.05, xOffset: 80, delay: 1.9 },
-    { id: "sales-1", type: "sales", scale: 1.0, xOffset: -10, delay: 2.3 },
+    // Wave 1 - initial spread
+    { id: "laptop-1", type: "laptop", scale: 1.15, xOffset: -15, delay: 0.2, maxHeight: 280 },
+    { id: "calendar-1", type: "calendar", scale: 0.95, xOffset: -70, delay: 1.0, maxHeight: 320 },
+    { id: "facebook-1", type: "facebook", scale: 0.85, xOffset: 55, delay: 1.8, maxHeight: 250 },
+    { id: "messages-1", type: "messages", scale: 1.0, xOffset: 15, delay: 2.6, maxHeight: 340 },
+    { id: "money-1", type: "money", scale: 0.9, xOffset: -45, delay: 3.4, maxHeight: 290 },
+    { id: "reviews-1", type: "reviews", scale: 1.05, xOffset: 70, delay: 4.2, maxHeight: 260 },
+    { id: "sales-1", type: "sales", scale: 0.95, xOffset: -5, delay: 5.0, maxHeight: 310 },
+
+    // Wave 2 - offset positions
+    { id: "laptop-2", type: "laptop", scale: 0.9, xOffset: 40, delay: 5.8, maxHeight: 300 },
+    { id: "calendar-2", type: "calendar", scale: 1.1, xOffset: -30, delay: 6.6, maxHeight: 270 },
+    { id: "facebook-2", type: "facebook", scale: 1.0, xOffset: -60, delay: 7.4, maxHeight: 330 },
+    { id: "messages-2", type: "messages", scale: 0.85, xOffset: 50, delay: 8.2, maxHeight: 260 },
+    { id: "money-2", type: "money", scale: 1.1, xOffset: 25, delay: 9.0, maxHeight: 350 },
+    { id: "reviews-2", type: "reviews", scale: 0.9, xOffset: -50, delay: 9.8, maxHeight: 280 },
+    { id: "sales-2", type: "sales", scale: 1.05, xOffset: 65, delay: 10.6, maxHeight: 240 },
+
+    // Wave 3 - different cluster
+    { id: "laptop-3", type: "laptop", scale: 1.0, xOffset: -55, delay: 11.4, maxHeight: 320 },
+    { id: "calendar-3", type: "calendar", scale: 0.85, xOffset: 35, delay: 12.2, maxHeight: 290 },
+    { id: "facebook-3", type: "facebook", scale: 1.1, xOffset: 10, delay: 13.0, maxHeight: 270 },
+    { id: "messages-3", type: "messages", scale: 0.95, xOffset: -40, delay: 13.8, maxHeight: 310 },
+    { id: "money-3", type: "money", scale: 1.0, xOffset: 60, delay: 14.6, maxHeight: 250 },
+    { id: "reviews-3", type: "reviews", scale: 1.15, xOffset: -20, delay: 15.4, maxHeight: 340 },
+    { id: "sales-3", type: "sales", scale: 0.9, xOffset: 45, delay: 16.2, maxHeight: 280 },
+
+    // Wave 4 - final variation
+    { id: "laptop-4", type: "laptop", scale: 0.95, xOffset: 30, delay: 17.0, maxHeight: 260 },
+    { id: "calendar-4", type: "calendar", scale: 1.05, xOffset: -10, delay: 17.8, maxHeight: 330 },
+    { id: "facebook-4", type: "facebook", scale: 0.9, xOffset: -75, delay: 18.6, maxHeight: 300 },
+    { id: "messages-4", type: "messages", scale: 1.1, xOffset: 75, delay: 19.4, maxHeight: 280 },
+    { id: "money-4", type: "money", scale: 0.85, xOffset: -25, delay: 20.2, maxHeight: 320 },
+    { id: "reviews-4", type: "reviews", scale: 1.0, xOffset: 20, delay: 21.0, maxHeight: 290 },
+    { id: "sales-4", type: "sales", scale: 1.1, xOffset: -65, delay: 21.8, maxHeight: 350 },
   ], []);
 
   const goToSlide = (index: number) => {
