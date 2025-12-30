@@ -35,10 +35,11 @@ interface DigitalIconInstance {
   xOffset: number; // pixels from center
   delay: number;
   maxY: number; // how far up to float (varied fade heights)
+  duration: number; // varied durations for continuous flow
 }
 
 // Floating digital icon - matches hearts/thumbs animation style with natural sway
-function FloatingDigitalIcon({ instance }: { instance: DigitalIconInstance }) {
+function FloatingDigitalIcon({ instance, isMobile }: { instance: DigitalIconInstance; isMobile: boolean }) {
   const srcMap: Record<DigitalIconInstance["type"], string> = {
     calendar: ASSETS.calendarStreet,
     facebook: ASSETS.facebookStreet,
@@ -52,10 +53,14 @@ function FloatingDigitalIcon({ instance }: { instance: DigitalIconInstance }) {
   };
   const src = srcMap[instance.type];
   const baseSize = 70;
-  const driftDir = instance.xOffset > 0 ? 1 : -1;
+  // Pinch 10% on mobile - reduce xOffset spread
+  const mobileScale = isMobile ? 0.9 : 1;
+  const adjustedXOffset = instance.xOffset * mobileScale;
+  const driftDir = adjustedXOffset > 0 ? 1 : -1;
   // More natural sway - gentle sine-wave-like movement
-  const swayAmount = 12 + Math.abs(instance.xOffset) * 0.08;
+  const swayAmount = 12 + Math.abs(adjustedXOffset) * 0.08;
   const h = instance.maxY;
+  const dur = instance.duration;
 
   return (
     <motion.div
@@ -63,7 +68,7 @@ function FloatingDigitalIcon({ instance }: { instance: DigitalIconInstance }) {
       style={{
         width: baseSize * instance.scale,
         height: baseSize * instance.scale,
-        left: `calc(50% + ${instance.xOffset}px)`,
+        left: `calc(50% + ${adjustedXOffset}px)`,
         bottom: "38%",
         zIndex: 30,
       }}
@@ -88,12 +93,12 @@ function FloatingDigitalIcon({ instance }: { instance: DigitalIconInstance }) {
         ],
       }}
       transition={{
-        duration: 5.25,
+        duration: dur,
         delay: instance.delay,
         ease: "easeInOut",
         times: [0, 0.15, 0.45, 0.75, 1],
         x: {
-          duration: 5.25,
+          duration: dur,
           delay: instance.delay,
           ease: [0.37, 0, 0.63, 1], // Smooth sine-like easing
           times: [0, 0.15, 0.35, 0.55, 0.75, 0.9, 1],
@@ -204,6 +209,15 @@ export function StoryStreetSection({
   const reducedMotion = prefersReducedMotion ?? false;
 
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile for icon positioning
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
   // Keys to force remount animations on each slide entry
   const [slide2Key, setSlide2Key] = useState(0);
   const [slide3Key, setSlide3Key] = useState(0);
@@ -225,18 +239,18 @@ export function StoryStreetSection({
     { id: "heart-3", type: "heart", scale: 0.95, xOffset: 100, yOffset: -3, delay: 0.65, zIndex: 25 },
   ], []);
 
-  // Digital icon configs - grouped like hearts/thumbs, varied fade heights, more spacing
+  // Digital icon configs - varied durations for continuous flow (no pause between loops)
   const digitalIconConfigs: DigitalIconInstance[] = useMemo(() => [
-    { id: "laptop-1", type: "laptop", scale: 1.1, xOffset: -30, delay: 0.2, maxY: 500 },
-    { id: "calendar-1", type: "calendar", scale: 0.9, xOffset: -110, delay: 0.5, maxY: 440 },
-    { id: "facebook-1", type: "facebook", scale: 0.95, xOffset: 95, delay: 0.8, maxY: 560 },
-    { id: "messages-1", type: "messages", scale: 1.05, xOffset: 25, delay: 1.1, maxY: 400 },
-    { id: "money-1", type: "money", scale: 0.85, xOffset: -70, delay: 1.4, maxY: 520 },
-    { id: "reviews-1", type: "reviews", scale: 1.0, xOffset: 120, delay: 1.7, maxY: 470 },
-    { id: "sales-1", type: "sales", scale: 0.9, xOffset: -5, delay: 2.0, maxY: 540 },
+    { id: "laptop-1", type: "laptop", scale: 1.1, xOffset: -30, delay: 0.2, maxY: 500, duration: 4.8 },
+    { id: "calendar-1", type: "calendar", scale: 0.9, xOffset: -110, delay: 0.5, maxY: 440, duration: 5.4 },
+    { id: "facebook-1", type: "facebook", scale: 0.95, xOffset: 95, delay: 0.8, maxY: 560, duration: 5.1 },
+    { id: "messages-1", type: "messages", scale: 1.05, xOffset: 25, delay: 1.1, maxY: 400, duration: 4.6 },
+    { id: "money-1", type: "money", scale: 0.85, xOffset: -70, delay: 1.4, maxY: 520, duration: 5.7 },
+    { id: "reviews-1", type: "reviews", scale: 1.0, xOffset: 120, delay: 1.7, maxY: 470, duration: 5.0 },
+    { id: "sales-1", type: "sales", scale: 0.9, xOffset: -5, delay: 2.0, maxY: 540, duration: 5.3 },
     // Hearts and thumbs mixed in
-    { id: "heart-s4-1", type: "heart", scale: 1.0, xOffset: 55, delay: 0.35, maxY: 480 },
-    { id: "thumbs-s4-1", type: "thumbsUp", scale: 0.95, xOffset: -90, delay: 1.25, maxY: 510 },
+    { id: "heart-s4-1", type: "heart", scale: 1.0, xOffset: 55, delay: 0.35, maxY: 480, duration: 4.9 },
+    { id: "thumbs-s4-1", type: "thumbsUp", scale: 0.95, xOffset: -90, delay: 1.25, maxY: 510, duration: 5.5 },
   ], []);
 
   const goToSlide = (index: number) => {
@@ -423,20 +437,24 @@ export function StoryStreetSection({
                 )}
 
                 {/* The Business layer - on top so IG post & emojis emerge from behind */}
-                {currentSlide === 1 && (
-                  <div
-                    className="absolute inset-0 pointer-events-none"
-                    style={{ zIndex: 38 }}
-                  >
-                    <Image
-                      src={ASSETS.theBusiness}
-                      alt=""
-                      fill
-                      className="object-cover object-bottom"
-                      draggable={false}
-                    />
-                  </div>
-                )}
+                {/* Always rendered to prevent mobile blink, visibility controlled via opacity */}
+                <div
+                  className="absolute inset-0 pointer-events-none transition-opacity duration-0"
+                  style={{
+                    zIndex: 38,
+                    opacity: currentSlide === 1 ? 1 : 0,
+                    visibility: currentSlide === 1 ? 'visible' : 'hidden',
+                  }}
+                >
+                  <Image
+                    src={ASSETS.theBusiness}
+                    alt=""
+                    fill
+                    className="object-cover object-bottom"
+                    draggable={false}
+                    priority
+                  />
+                </div>
 
                 {/* ========== SLIDE 3: SmartPages ========== */}
 
@@ -578,7 +596,7 @@ export function StoryStreetSection({
                 {currentSlide === 3 && (
                   <>
                     {digitalIconConfigs.map((icon) => (
-                      <FloatingDigitalIcon key={`${icon.id}-${slide4Key}`} instance={icon} />
+                      <FloatingDigitalIcon key={`${icon.id}-${slide4Key}`} instance={icon} isMobile={isMobile} />
                     ))}
                   </>
                 )}
