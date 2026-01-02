@@ -285,7 +285,7 @@ function LinkTile({
       <div className={`w-6 h-6 ${isHighlighted ? 'text-black' : 'text-[#F4F1EC]'}`}>
         <Icon className="w-full h-full" />
       </div>
-      <span className={`text-[10px] md:text-xs ${isHighlighted ? 'text-black font-medium' : 'text-slate-300'}`}>
+      <span className={`text-[10px] md:text-xs ${isHighlighted ? 'text-black font-medium' : 'text-neutral-300'}`}>
         {label}
       </span>
     </motion.div>
@@ -302,7 +302,7 @@ function NotificationTile({ isHighlighted }: { isHighlighted: boolean }) {
       className={`rounded-xl px-3 py-2.5 flex items-center gap-2 transition-colors duration-300 ${
         isHighlighted
           ? 'bg-[#F4F1EC]'
-          : 'bg-slate-900/80'
+          : 'bg-neutral-900/80'
       }`}
       animate={isHighlighted ? { scale: [1, 1.02, 1] } : {}}
       transition={{ duration: 0.3 }}
@@ -314,7 +314,7 @@ function NotificationTile({ isHighlighted }: { isHighlighted: boolean }) {
         <div className={`text-[11px] font-medium ${isHighlighted ? 'text-black' : 'text-white'}`}>
           Notifications On
         </div>
-        <div className={`text-[9px] ${isHighlighted ? 'text-[#5A6570]' : 'text-slate-400'}`}>
+        <div className={`text-[9px] ${isHighlighted ? 'text-[#5A6570]' : 'text-neutral-400'}`}>
           You&apos;ll get updates from us.
         </div>
       </div>
@@ -402,7 +402,7 @@ function ShortyModal() {
         </div>
         {/* Title */}
         <h2 className="text-xs md:text-sm font-semibold text-white">The Shortlist Co</h2>
-        <p className="text-[9px] md:text-[10px] text-slate-400 text-center mt-0.5">
+        <p className="text-[9px] md:text-[10px] text-neutral-400 text-center mt-0.5">
           Shorty handles the questions. You handle the business.
         </p>
         {/* Social icons */}
@@ -421,13 +421,13 @@ function ShortyModal() {
 
       {/* Pill toggle */}
       <div className="flex justify-center py-1.5 border-b border-white/10">
-        <div className="inline-flex rounded-full bg-slate-900/80 p-0.5">
+        <div className="inline-flex rounded-full bg-neutral-900/80 p-0.5">
           <button
             onClick={() => { setMode('chat'); setVisibleMessages(0); }}
             className={`px-2.5 py-0.5 text-[9px] md:text-[10px] font-medium rounded-full transition-colors ${
               mode === 'chat'
-                ? 'bg-[#F4F1EC] text-slate-900'
-                : 'text-slate-300'
+                ? 'bg-[#F4F1EC] text-neutral-900'
+                : 'text-neutral-300'
             }`}
           >
             Chat
@@ -436,8 +436,8 @@ function ShortyModal() {
             onClick={() => setMode('links')}
             className={`px-2.5 py-0.5 text-[9px] md:text-[10px] font-medium rounded-full transition-colors ${
               mode === 'links'
-                ? 'bg-[#F4F1EC] text-slate-900'
-                : 'text-slate-300'
+                ? 'bg-[#F4F1EC] text-neutral-900'
+                : 'text-neutral-300'
             }`}
           >
             Links
@@ -492,12 +492,12 @@ function ShortyModal() {
 
       {/* Input bar - always visible */}
       <div className="px-2.5 pb-2 shrink-0">
-        <div className="flex items-center gap-1.5 rounded-full bg-slate-900/80 px-2.5 py-1">
-          <span className="flex-1 text-[9px] md:text-[10px] text-slate-400">
+        <div className="flex items-center gap-1.5 rounded-full bg-neutral-900/80 px-2.5 py-1">
+          <span className="flex-1 text-[9px] md:text-[10px] text-neutral-400">
             Ask Shorty anything…
           </span>
           <button className="flex h-5 w-5 md:h-6 md:w-6 items-center justify-center rounded-full bg-[#F4F1EC] shadow-md">
-            <ArrowRightIcon className="w-2.5 h-2.5 md:w-3 md:h-3 text-slate-900" />
+            <ArrowRightIcon className="w-2.5 h-2.5 md:w-3 md:h-3 text-neutral-900" />
           </button>
         </div>
       </div>
@@ -505,13 +505,13 @@ function ShortyModal() {
       {/* Suggestion chips - only in chat mode */}
       {mode === 'chat' && (
         <div className="px-2.5 pb-2.5 flex flex-wrap justify-center gap-1">
-          <span className="px-1.5 py-0.5 text-[8px] rounded-full bg-white/5 text-slate-300 border border-white/10">
+          <span className="px-1.5 py-0.5 text-[8px] rounded-full bg-white/5 text-neutral-300 border border-white/10">
             What do you offer?
           </span>
-          <span className="px-1.5 py-0.5 text-[8px] rounded-full bg-white/5 text-slate-300 border border-white/10">
+          <span className="px-1.5 py-0.5 text-[8px] rounded-full bg-white/5 text-neutral-300 border border-white/10">
             Hours & location?
           </span>
-          <span className="px-1.5 py-0.5 text-[8px] rounded-full bg-white/5 text-slate-300 border border-white/10">
+          <span className="px-1.5 py-0.5 text-[8px] rounded-full bg-white/5 text-neutral-300 border border-white/10">
             Why The Shortlist Co?
           </span>
         </div>
@@ -539,7 +539,7 @@ function AppGridSection() {
           Your very own app.
         </motion.h2>
         <motion.p
-          className="mt-5 md:mt-6 text-sm sm:text-base md:text-lg text-slate-400 max-w-2xl mx-auto"
+          className="mt-5 md:mt-6 text-sm sm:text-base md:text-lg text-neutral-400 max-w-2xl mx-auto"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -551,7 +551,7 @@ function AppGridSection() {
 
       {/* Try These Header */}
       <motion.p
-        className="text-center text-base md:text-lg text-slate-300 mb-3"
+        className="text-center text-base md:text-lg text-neutral-300 mb-3"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
@@ -583,7 +583,7 @@ function AppGridSection() {
               style={{ width: '350px', height: '350px', minWidth: '350px', minHeight: '350px' }}
               className="rounded-2xl"
             />
-            <span className="text-sm text-slate-400 mt-2">{app.alt}</span>
+            <span className="text-sm text-neutral-400 mt-2">{app.alt}</span>
           </motion.a>
         ))}
       </div>
@@ -610,7 +610,7 @@ function AppGridSection() {
               style={{ width: '350px', height: '350px', minWidth: '350px', minHeight: '350px' }}
               className="rounded-2xl"
             />
-            <span className="text-sm text-slate-400 mt-2">{app.alt}</span>
+            <span className="text-sm text-neutral-400 mt-2">{app.alt}</span>
           </motion.a>
         ))}
       </div>
@@ -674,7 +674,7 @@ function AppGridSection() {
             <h3 className="text-2xl sm:text-3xl md:text-4xl text-white font-semibold leading-tight">
               Send push notifications straight to their lock screen.
             </h3>
-            <p className="mt-4 md:mt-6 text-base sm:text-lg text-slate-400">
+            <p className="mt-4 md:mt-6 text-base sm:text-lg text-neutral-400">
               No DMs to miss. No emails to skip. No feed to scroll past. <span className="text-[#F4F1EC] font-semibold">98% open rate.</span>
             </p>
           </motion.div>
@@ -696,9 +696,9 @@ function AppGridSection() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
                     <span className="text-white font-semibold text-sm">Nito&apos;s Empanadas</span>
-                    <span className="text-slate-500 text-xs">now</span>
+                    <span className="text-neutral-500 text-xs">now</span>
                   </div>
-                  <p className="text-slate-300 text-sm mt-0.5 line-clamp-2">Find us in Waterbridge! 10% off empanadas 5-6pm</p>
+                  <p className="text-neutral-300 text-sm mt-0.5 line-clamp-2">Find us in Waterbridge! 10% off empanadas 5-6pm</p>
                 </div>
               </div>
             </motion.div>
@@ -717,9 +717,9 @@ function AppGridSection() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
                     <span className="text-white font-semibold text-sm">Honey Salon</span>
-                    <span className="text-slate-500 text-xs">2m ago</span>
+                    <span className="text-neutral-500 text-xs">2m ago</span>
                   </div>
-                  <p className="text-slate-300 text-sm mt-0.5 line-clamp-2">New appointment availability — tap to book</p>
+                  <p className="text-neutral-300 text-sm mt-0.5 line-clamp-2">New appointment availability — tap to book</p>
                 </div>
               </div>
             </motion.div>
@@ -738,9 +738,9 @@ function AppGridSection() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
                     <span className="text-white font-semibold text-sm">Palmetto Taps</span>
-                    <span className="text-slate-500 text-xs">5m ago</span>
+                    <span className="text-neutral-500 text-xs">5m ago</span>
                   </div>
-                  <p className="text-slate-300 text-sm mt-0.5 line-clamp-2">Holiday party with food truck 12/20 🎄</p>
+                  <p className="text-neutral-300 text-sm mt-0.5 line-clamp-2">Holiday party with food truck 12/20 🎄</p>
                 </div>
               </div>
             </motion.div>
@@ -762,9 +762,9 @@ function AppGridSection() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
                     <span className="text-white font-semibold text-sm">Nito&apos;s Empanadas</span>
-                    <span className="text-slate-500 text-xs">now</span>
+                    <span className="text-neutral-500 text-xs">now</span>
                   </div>
-                  <p className="text-slate-300 text-sm mt-0.5">Find us in Waterbridge! 10% off empanadas 5-6pm</p>
+                  <p className="text-neutral-300 text-sm mt-0.5">Find us in Waterbridge! 10% off empanadas 5-6pm</p>
                 </div>
               </div>
             </motion.div>
@@ -783,9 +783,9 @@ function AppGridSection() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
                     <span className="text-white font-semibold text-sm">Honey Salon</span>
-                    <span className="text-slate-500 text-xs">2m ago</span>
+                    <span className="text-neutral-500 text-xs">2m ago</span>
                   </div>
-                  <p className="text-slate-300 text-sm mt-0.5">New appointment availability — tap to book</p>
+                  <p className="text-neutral-300 text-sm mt-0.5">New appointment availability — tap to book</p>
                 </div>
               </div>
             </motion.div>
@@ -804,9 +804,9 @@ function AppGridSection() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
                     <span className="text-white font-semibold text-sm">Palmetto Taps</span>
-                    <span className="text-slate-500 text-xs">5m ago</span>
+                    <span className="text-neutral-500 text-xs">5m ago</span>
                   </div>
-                  <p className="text-slate-300 text-sm mt-0.5">Holiday party with food truck 12/20 🎄</p>
+                  <p className="text-neutral-300 text-sm mt-0.5">Holiday party with food truck 12/20 🎄</p>
                 </div>
               </div>
             </motion.div>
@@ -939,7 +939,7 @@ function FeatureVisual({ type }: { type: string }) {
               </div>
               <span className="text-white text-sm font-medium">Your Business</span>
             </div>
-            <p className="text-slate-400 text-xs text-center">Added to Home Screen</p>
+            <p className="text-neutral-400 text-xs text-center">Added to Home Screen</p>
           </div>
         </div>
       );
@@ -967,7 +967,7 @@ function FeatureVisual({ type }: { type: string }) {
               </div>
               <div className="flex-1">
                 <p className="text-white font-medium text-sm">Your Business</p>
-                <p className="text-slate-400 text-xs">Tap to chat with Shorty</p>
+                <p className="text-neutral-400 text-xs">Tap to chat with Shorty</p>
               </div>
             </div>
           </div>
@@ -998,7 +998,7 @@ function FeatureVisual({ type }: { type: string }) {
                 className="object-contain"
               />
             </div>
-            <p className="text-slate-400 text-sm text-center">Scan to visit your SmartPage</p>
+            <p className="text-neutral-400 text-sm text-center">Scan to visit your SmartPage</p>
           </div>
         </div>
       );
@@ -1047,7 +1047,7 @@ function FeaturesSection() {
                   )}
                   {feature.headline}
                 </h3>
-                <div className="mt-3 md:mt-4 text-base sm:text-lg text-slate-400">
+                <div className="mt-3 md:mt-4 text-base sm:text-lg text-neutral-400">
                   <p>{feature.description}</p>
                   {feature.items && (
                     <ul className="mt-3 space-y-1.5 list-disc list-inside">
