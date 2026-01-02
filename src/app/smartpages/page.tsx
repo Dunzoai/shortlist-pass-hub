@@ -524,144 +524,243 @@ function ShortyModal() {
 // APP GRID SECTION - Static grid with staggered animations
 // =============================================================================
 
-function AppGridSection() {
+// =============================================================================
+// SMARTPAGE CAROUSEL DATA
+// =============================================================================
+
+const smartPageCards = [
+  {
+    name: "Nito's Empanadas",
+    type: "Food Truck",
+    description: "Quick ordering, menu questions, locations, hours — handled instantly while they're on the move.",
+    icon: "/nitos_app.png",
+    url: "https://nitos.shortlistpass.com",
+  },
+  {
+    name: "Palmetto Taps",
+    type: "Self-Serve Taproom",
+    description: "Tap lists, events, hours, directions, and updates — all in one place, always current.",
+    icon: "/palmetto_taps_app.png",
+    url: "https://palmettotaps.shortlistpass.com",
+  },
+  {
+    name: "Honey Hair Studio",
+    type: "Beauty Salon",
+    description: "Services, pricing, policies, booking links, and reminders — without missed messages or follow-ups.",
+    icon: "/honey_app.png",
+    url: "https://honeyhairstudio.shortlistpass.com",
+  },
+  {
+    name: "The Shortlist Assistant",
+    type: "Your Business HQ",
+    description: "This is the engine behind every SmartPage — trained once, working everywhere your customers interact.",
+    icon: "/shorty_app.png",
+    url: "https://shorty.shortlistpass.com",
+  },
+];
+
+// =============================================================================
+// APP CAROUSEL SECTION
+// =============================================================================
+
+function AppCarouselSection() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  // Track scroll and update active card
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const containerRect = container.getBoundingClientRect();
+      const containerCenter = containerRect.left + containerRect.width / 2;
+
+      let closestIndex = 0;
+      let closestDistance = Infinity;
+
+      cardRefs.current.forEach((card, index) => {
+        if (card) {
+          const cardRect = card.getBoundingClientRect();
+          const cardCenter = cardRect.left + cardRect.width / 2;
+          const distance = Math.abs(containerCenter - cardCenter);
+
+          if (distance < closestDistance) {
+            closestDistance = distance;
+            closestIndex = index;
+          }
+        }
+      });
+
+      setActiveIndex(closestIndex);
+    };
+
+    container.addEventListener("scroll", handleScroll);
+    setTimeout(handleScroll, 100);
+
+    return () => container.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToCard = (index: number) => {
+    const card = cardRefs.current[index];
+    const container = scrollContainerRef.current;
+    if (card && container) {
+      const cardRect = card.getBoundingClientRect();
+      const containerRect = container.getBoundingClientRect();
+      const scrollLeft = container.scrollLeft + (cardRect.left - containerRect.left) - (containerRect.width / 2) + (cardRect.width / 2);
+      container.scrollTo({ left: scrollLeft, behavior: "smooth" });
+    }
+  };
+
   return (
-    <section className="bg-[#333333] py-10 md:py-14 px-4 overflow-x-hidden">
+    <section className="bg-[#333333] py-16 md:py-20 px-4 overflow-hidden">
       {/* Header */}
-      <div className="max-w-4xl mx-auto text-center mb-10 md:mb-14">
+      <div className="max-w-3xl mx-auto text-center mb-10 md:mb-14">
         <motion.h2
-          className="text-2xl sm:text-3xl md:text-4xl text-white font-semibold"
+          className="text-3xl sm:text-4xl md:text-5xl text-[#F4F1EC] font-normal leading-tight"
+          style={{ fontFamily: "var(--font-libre-baskerville)" }}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          Your very own app.
+          Your business. Installed like an app.
         </motion.h2>
         <motion.p
-          className="mt-5 md:mt-6 text-sm sm:text-base md:text-lg text-neutral-400 max-w-2xl mx-auto"
+          className="mt-5 md:mt-6 text-base md:text-lg text-[#F4F1EC]/70 max-w-2xl mx-auto leading-relaxed"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          What was once reserved for big brands is now yours. Clients download your SmartPage directly to their home screen—no links to type, no searching. Just direct access to your business.
+          What used to be reserved for big brands is now yours.<br />
+          Customers add your SmartPage to their home screen for instant access — no links to remember, no searching, no friction.
         </motion.p>
       </div>
 
-      {/* Try These Header */}
-      <motion.p
-        className="text-center text-base md:text-lg text-neutral-300 mb-3"
+      {/* Horizontal Carousel */}
+      <div
+        ref={scrollContainerRef}
+        className="flex gap-4 md:gap-6 overflow-x-auto pb-6 snap-x snap-mandatory"
+        style={{
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+          WebkitOverflowScrolling: "touch",
+        }}
+      >
+        {/* Left spacer for centering first card */}
+        <div className="shrink-0 w-[calc(50%-160px)] md:w-[calc(50%-200px)]" />
+
+        {smartPageCards.map((card, index) => (
+          <div
+            key={card.name}
+            ref={(el) => { cardRefs.current[index] = el; }}
+            onClick={() => scrollToCard(index)}
+            className="shrink-0 w-[320px] md:w-[400px] snap-center cursor-pointer"
+          >
+            <motion.div
+              className="rounded-3xl p-6 md:p-8 h-[380px] md:h-[420px] flex flex-col transition-all duration-300"
+              animate={{
+                scale: index === activeIndex ? 1 : 0.9,
+                opacity: index === activeIndex ? 1 : 0.4,
+              }}
+              transition={{ duration: 0.3 }}
+              style={{
+                background: index === activeIndex
+                  ? "linear-gradient(180deg, rgba(244, 241, 236, 0.1) 0%, rgba(244, 241, 236, 0.05) 100%)"
+                  : "rgba(244, 241, 236, 0.03)",
+                border: index === activeIndex
+                  ? "1px solid rgba(244, 241, 236, 0.2)"
+                  : "1px solid rgba(244, 241, 236, 0.08)",
+                filter: index === activeIndex ? "none" : "grayscale(50%)",
+                boxShadow: index === activeIndex
+                  ? "0 0 60px rgba(244, 241, 236, 0.1)"
+                  : "none",
+              }}
+            >
+              {/* App Icon */}
+              <div className="relative w-20 h-20 md:w-24 md:h-24 mx-auto mb-4 md:mb-6 rounded-2xl overflow-hidden">
+                <Image
+                  src={card.icon}
+                  alt={card.name}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+
+              {/* Card Content */}
+              <div className="text-center flex-1 flex flex-col">
+                <h3 className="text-xl md:text-2xl font-semibold text-[#F4F1EC] mb-1">
+                  {card.name}
+                </h3>
+                <p className="text-sm text-[#F4F1EC]/50 uppercase tracking-wider mb-4">
+                  {card.type}
+                </p>
+                <p className="text-sm md:text-base text-[#F4F1EC]/70 leading-relaxed flex-1">
+                  {card.description}
+                </p>
+
+                {/* Try button - only visible on active card */}
+                {index === activeIndex && (
+                  <motion.a
+                    href={card.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-4 inline-flex items-center justify-center gap-2 text-sm text-[#F4F1EC]/60 hover:text-[#F4F1EC] transition-colors"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    Try this SmartPage
+                    <ArrowRightIcon className="w-4 h-4" />
+                  </motion.a>
+                )}
+              </div>
+            </motion.div>
+          </div>
+        ))}
+
+        {/* Right spacer for centering last card */}
+        <div className="shrink-0 w-[calc(50%-160px)] md:w-[calc(50%-200px)]" />
+      </div>
+
+      {/* Dot indicators */}
+      <div className="flex justify-center gap-2 mt-6">
+        {smartPageCards.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => scrollToCard(index)}
+            className={`w-2 h-2 rounded-full transition-all duration-300 ${
+              index === activeIndex
+                ? "bg-[#F4F1EC] w-6"
+                : "bg-[#F4F1EC]/30 hover:bg-[#F4F1EC]/50"
+            }`}
+          />
+        ))}
+      </div>
+
+      {/* Micro-CTA */}
+      <motion.div
+        className="text-center mt-8"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
       >
-        Try these real live SmartPages
-      </motion.p>
-
-      {/* App Icons - 350px, desktop: one row, mobile: 2x2 */}
-      {/* Mobile: 2x2 grid */}
-      <div className="md:hidden grid grid-cols-2 gap-4 w-fit mx-auto">
-        {appIcons.map((app, index) => (
-          <motion.a
-            key={`mobile-${index}`}
-            href={app.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex flex-col items-center"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.4, delay: index * 0.08, ease: 'easeOut' }}
-          >
-            <Image
-              src={app.src}
-              alt={app.alt}
-              width={350}
-              height={350}
-              style={{ width: '350px', height: '350px', minWidth: '350px', minHeight: '350px' }}
-              className="rounded-2xl"
-            />
-            <span className="text-sm text-neutral-400 mt-2">{app.alt}</span>
-          </motion.a>
-        ))}
-      </div>
-
-      {/* Desktop: single row */}
-      <div className="hidden md:flex justify-center gap-8">
-        {appIcons.map((app, index) => (
-          <motion.a
-            key={`desktop-${index}`}
-            href={app.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex flex-col items-center"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.4, delay: index * 0.08, ease: 'easeOut' }}
-          >
-            <Image
-              src={app.src}
-              alt={app.alt}
-              width={350}
-              height={350}
-              style={{ width: '350px', height: '350px', minWidth: '350px', minHeight: '350px' }}
-              className="rounded-2xl"
-            />
-            <span className="text-sm text-neutral-400 mt-2">{app.alt}</span>
-          </motion.a>
-        ))}
-      </div>
-
-      {/* Scrolling Business Types - Yellow background with dark pills */}
-      <div className="mt-12 md:mt-16 -mx-4 bg-[#333333] py-8">
-        <motion.p
-          className="text-center text-lg sm:text-xl md:text-2xl text-white font-semibold mb-6 px-4"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+        <a
+          href="https://shorty.shortlistpass.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-sm text-[#F4F1EC]/50 hover:text-[#F4F1EC]/80 transition-colors inline-flex items-center gap-1"
         >
-          The SmartPage assistant for every business
-        </motion.p>
-
-        <div className="overflow-hidden">
-          <div
-            className="flex whitespace-nowrap"
-            style={{
-              animation: 'scrollText 25s linear infinite',
-            }}
-          >
-            {[...Array(2)].map((_, i) => (
-              <span key={i} className="flex items-center gap-3">
-                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Food Trucks</span>
-                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Breweries</span>
-                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Coffee Shops</span>
-                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Salons</span>
-                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Barbershops</span>
-                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Smoothie Bars</span>
-                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Restaurants</span>
-                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Boutiques</span>
-                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Gyms</span>
-                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Spas</span>
-                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Food Vendors</span>
-                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Bakeries</span>
-                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Juice Bars</span>
-                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Pet Groomers</span>
-                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Tattoo Studios</span>
-                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Yoga Studios</span>
-                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Auto Shops</span>
-                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Florists</span>
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
+          Try a live SmartPage
+          <ArrowRightIcon className="w-3 h-3" />
+        </a>
+      </motion.div>
 
       {/* Push Notifications Showcase */}
-      <div className="mt-12 md:mt-16 py-8 md:py-12 px-4">
+      <div className="mt-16 md:mt-20 py-8 md:py-12 px-4 border-t border-[#F4F1EC]/10">
         <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-8 md:gap-10 items-center">
           {/* Copy - Left on desktop, top on mobile */}
           <motion.div
@@ -679,11 +778,10 @@ function AppGridSection() {
             </p>
           </motion.div>
 
-          {/* Notification Cards - stacked on mobile, floating on desktop */}
-          {/* Mobile: stacked cards with alternating slide directions */}
-          <div className="md:hidden flex flex-col gap-3 overflow-hidden">
+          {/* Notification Cards - stacked */}
+          <div className="flex flex-col gap-3 overflow-hidden">
             <motion.div
-              className="bg-neutral-800/80 backdrop-blur-sm rounded-2xl p-3 shadow-lg"
+              className="bg-neutral-800/80 backdrop-blur-sm rounded-2xl p-3 md:p-4 shadow-lg md:-rotate-1"
               initial={{ opacity: 0, x: 100 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -704,7 +802,7 @@ function AppGridSection() {
             </motion.div>
 
             <motion.div
-              className="bg-neutral-800/80 backdrop-blur-sm rounded-2xl p-3 shadow-lg"
+              className="bg-neutral-800/80 backdrop-blur-sm rounded-2xl p-3 md:p-4 shadow-lg"
               initial={{ opacity: 0, x: -100 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -716,7 +814,7 @@ function AppGridSection() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
-                    <span className="text-white font-semibold text-sm">Honey Salon</span>
+                    <span className="text-white font-semibold text-sm">Honey Hair Studio</span>
                     <span className="text-neutral-500 text-xs">2m ago</span>
                   </div>
                   <p className="text-neutral-300 text-sm mt-0.5 line-clamp-2">New appointment availability — tap to book</p>
@@ -725,7 +823,7 @@ function AppGridSection() {
             </motion.div>
 
             <motion.div
-              className="bg-neutral-800/80 backdrop-blur-sm rounded-2xl p-3 shadow-lg"
+              className="bg-neutral-800/80 backdrop-blur-sm rounded-2xl p-3 md:p-4 shadow-lg md:rotate-1"
               initial={{ opacity: 0, x: 100 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -740,73 +838,7 @@ function AppGridSection() {
                     <span className="text-white font-semibold text-sm">Palmetto Taps</span>
                     <span className="text-neutral-500 text-xs">5m ago</span>
                   </div>
-                  <p className="text-neutral-300 text-sm mt-0.5 line-clamp-2">Holiday party with food truck 12/20 🎄</p>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Desktop: stacked cards with alternating slide directions */}
-          <div className="hidden md:flex flex-col gap-3 overflow-hidden">
-            <motion.div
-              className="bg-neutral-800/80 backdrop-blur-sm rounded-2xl p-4 shadow-lg transform -rotate-1"
-              initial={{ opacity: 0, x: 100 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0 }}
-            >
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#333333]/20 border border-[#333333]/40 flex items-center justify-center text-lg flex-shrink-0">
-                  🥟
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between">
-                    <span className="text-white font-semibold text-sm">Nito&apos;s Empanadas</span>
-                    <span className="text-neutral-500 text-xs">now</span>
-                  </div>
-                  <p className="text-neutral-300 text-sm mt-0.5">Find us in Waterbridge! 10% off empanadas 5-6pm</p>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              className="bg-neutral-800/80 backdrop-blur-sm rounded-2xl p-4 shadow-lg"
-              initial={{ opacity: 0, x: -100 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#333333]/20 border border-[#333333]/40 flex items-center justify-center text-lg flex-shrink-0">
-                  💇
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between">
-                    <span className="text-white font-semibold text-sm">Honey Salon</span>
-                    <span className="text-neutral-500 text-xs">2m ago</span>
-                  </div>
-                  <p className="text-neutral-300 text-sm mt-0.5">New appointment availability — tap to book</p>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              className="bg-neutral-800/80 backdrop-blur-sm rounded-2xl p-4 shadow-lg transform rotate-1"
-              initial={{ opacity: 0, x: 100 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.8 }}
-            >
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#333333]/20 border border-[#333333]/40 flex items-center justify-center text-lg flex-shrink-0">
-                  🍺
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between">
-                    <span className="text-white font-semibold text-sm">Palmetto Taps</span>
-                    <span className="text-neutral-500 text-xs">5m ago</span>
-                  </div>
-                  <p className="text-neutral-300 text-sm mt-0.5">Holiday party with food truck 12/20 🎄</p>
+                  <p className="text-neutral-300 text-sm mt-0.5 line-clamp-2">Holiday party with food truck 12/20</p>
                 </div>
               </div>
             </motion.div>
@@ -1115,14 +1147,17 @@ function ResponsibilityTile({
   index: number;
   isHighlighted?: boolean;
 }) {
+  // Alternate slide direction: even from left (-60), odd from right (+60)
+  const slideDirection = index % 2 === 0 ? -60 : 60;
+
   return (
     <motion.div
-      className={`rounded-2xl px-5 py-4 md:px-6 md:py-5 ${
+      className={`rounded-2xl px-5 py-4 md:px-6 md:py-5 cursor-pointer transition-all duration-300 ${
         isHighlighted
           ? "bg-[#F4F1EC]/10 border-2 border-[#F4F1EC]/20"
           : "bg-[#F4F1EC]/5 border border-[#F4F1EC]/10"
-      }`}
-      initial={{ opacity: 0, x: -60 }}
+      } hover:bg-[#F4F1EC]/15 hover:border-[#F4F1EC]/25 hover:scale-[1.02]`}
+      initial={{ opacity: 0, x: slideDirection }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{
@@ -1130,6 +1165,8 @@ function ResponsibilityTile({
         delay: index * 0.1,
         ease: "easeOut"
       }}
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
     >
       <h3 className={`text-[#F4F1EC] text-base md:text-lg mb-1.5 ${
         isHighlighted ? "font-semibold" : "font-medium"
@@ -1375,7 +1412,7 @@ export default function ShortyLandingPage() {
       </section>
 
       {/* Bottom part - Dark background like modal */}
-      <AppGridSection />
+      <AppCarouselSection />
 
       {/* Features Section */}
       <FeaturesSection />
