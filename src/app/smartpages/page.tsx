@@ -679,8 +679,8 @@ function AppCarouselSection() {
                   : "none",
               }}
             >
-              {/* App Icon */}
-              <div className="relative w-20 h-20 md:w-24 md:h-24 mx-auto mb-4 md:mb-6 rounded-2xl overflow-hidden">
+              {/* App Icon - 4x larger */}
+              <div className="relative w-28 h-28 md:w-36 md:h-36 mx-auto mb-4 md:mb-6 rounded-3xl overflow-hidden shadow-lg">
                 <Image
                   src={card.icon}
                   alt={card.name}
@@ -740,7 +740,7 @@ function AppCarouselSection() {
         ))}
       </div>
 
-      {/* Micro-CTA */}
+      {/* Micro-CTA with pulsing glow */}
       <motion.div
         className="text-center mt-8"
         initial={{ opacity: 0 }}
@@ -748,15 +748,36 @@ function AppCarouselSection() {
         viewport={{ once: true }}
         transition={{ duration: 0.5, delay: 0.3 }}
       >
-        <a
+        <motion.a
           href="https://shorty.shortlistpass.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-sm text-[#F4F1EC]/50 hover:text-[#F4F1EC]/80 transition-colors inline-flex items-center gap-1"
+          className="text-sm text-[#F4F1EC]/70 hover:text-[#F4F1EC] transition-colors inline-flex items-center gap-2"
+          animate={{
+            textShadow: [
+              "0 0 0px rgba(244, 241, 236, 0)",
+              "0 0 20px rgba(244, 241, 236, 0.5)",
+              "0 0 0px rgba(244, 241, 236, 0)",
+            ],
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
         >
           Try a live SmartPage
-          <ArrowRightIcon className="w-3 h-3" />
-        </a>
+          <motion.span
+            animate={{ x: [0, 4, 0] }}
+            transition={{
+              duration: 1,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          >
+            <ArrowRightIcon className="w-4 h-4" />
+          </motion.span>
+        </motion.a>
       </motion.div>
 
       {/* Push Notifications Showcase */}
@@ -778,14 +799,14 @@ function AppCarouselSection() {
             </p>
           </motion.div>
 
-          {/* Notification Cards - stacked */}
+          {/* Notification Cards - stacked with smooth animations */}
           <div className="flex flex-col gap-3 overflow-hidden">
             <motion.div
               className="bg-neutral-800/80 backdrop-blur-sm rounded-2xl p-3 md:p-4 shadow-lg md:-rotate-1"
-              initial={{ opacity: 0, x: 100 }}
+              initial={{ opacity: 0, x: 40 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.7, delay: 0, ease: [0.25, 0.1, 0.25, 1] }}
             >
               <div className="flex items-start gap-3">
                 <div className="w-10 h-10 rounded-xl bg-[#333333]/20 border border-[#333333]/40 flex items-center justify-center text-lg flex-shrink-0">
@@ -803,10 +824,10 @@ function AppCarouselSection() {
 
             <motion.div
               className="bg-neutral-800/80 backdrop-blur-sm rounded-2xl p-3 md:p-4 shadow-lg"
-              initial={{ opacity: 0, x: -100 }}
+              initial={{ opacity: 0, x: -40 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.4 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.7, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
             >
               <div className="flex items-start gap-3">
                 <div className="w-10 h-10 rounded-xl bg-[#333333]/20 border border-[#333333]/40 flex items-center justify-center text-lg flex-shrink-0">
@@ -824,10 +845,10 @@ function AppCarouselSection() {
 
             <motion.div
               className="bg-neutral-800/80 backdrop-blur-sm rounded-2xl p-3 md:p-4 shadow-lg md:rotate-1"
-              initial={{ opacity: 0, x: 100 }}
+              initial={{ opacity: 0, x: 40 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.8 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.7, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
             >
               <div className="flex items-start gap-3">
                 <div className="w-10 h-10 rounded-xl bg-[#333333]/20 border border-[#333333]/40 flex items-center justify-center text-lg flex-shrink-0">
@@ -1041,29 +1062,29 @@ function FeatureVisual({ type }: { type: string }) {
 
 function FeaturesSection() {
   return (
-    <section className="bg-[#333333] py-12 md:py-16 px-4">
+    <section className="bg-[#3a3a3a] py-16 md:py-20 px-4">
       <div className="max-w-5xl mx-auto">
         <motion.h2
-          className="text-2xl sm:text-3xl md:text-4xl text-white font-semibold text-center mb-10 md:mb-12"
+          className="text-2xl sm:text-3xl md:text-4xl text-white font-semibold text-center mb-12 md:mb-16"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
         >
           Everything your business needs
         </motion.h2>
 
-        <div className="space-y-12 md:space-y-16">
+        <div className="space-y-16 md:space-y-20">
           {features.map((feature, index) => (
             <motion.div
               key={index}
-              className={`grid md:grid-cols-2 gap-6 md:gap-8 items-center ${
+              className={`grid md:grid-cols-2 gap-8 md:gap-12 items-center ${
                 feature.textLeft ? '' : 'md:[direction:rtl]'
               }`}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.5 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
             >
               <div className={`text-center md:text-left ${feature.textLeft ? '' : 'md:[direction:ltr]'}`}>
                 <h3 className="text-xl sm:text-2xl md:text-3xl text-white font-semibold flex items-center gap-3 justify-center md:justify-start">
@@ -1147,8 +1168,8 @@ function ResponsibilityTile({
   index: number;
   isHighlighted?: boolean;
 }) {
-  // Alternate slide direction: even from left (-60), odd from right (+60)
-  const slideDirection = index % 2 === 0 ? -60 : 60;
+  // Alternate slide direction: even from left, odd from right (reduced distance for smoother mobile)
+  const slideDirection = index % 2 === 0 ? -30 : 30;
 
   return (
     <motion.div
@@ -1159,11 +1180,11 @@ function ResponsibilityTile({
       } hover:bg-[#F4F1EC]/15 hover:border-[#F4F1EC]/25 hover:scale-[1.02]`}
       initial={{ opacity: 0, x: slideDirection }}
       whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
+      viewport={{ once: true, amount: 0.1 }}
       transition={{
-        duration: isHighlighted ? 0.7 : 0.5,
-        delay: index * 0.1,
-        ease: "easeOut"
+        duration: 0.7,
+        delay: index * 0.08,
+        ease: [0.25, 0.1, 0.25, 1],
       }}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
@@ -1251,15 +1272,15 @@ export default function ShortyLandingPage() {
       {/* =========================================================================== */}
       {/* SECTION 2 — HERE'S WHAT IT DOES (Bullet tiles) */}
       {/* =========================================================================== */}
-      <section className="bg-[#333333] py-12 md:py-16 px-4">
+      <section className="bg-[#333333] py-14 md:py-20 px-4">
         <div className="max-w-2xl mx-auto">
           {/* Section Header */}
           <motion.div
-            className="text-center mb-8 md:mb-10"
-            initial={{ opacity: 0, y: 20 }}
+            className="text-center mb-10 md:mb-12"
+            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
           >
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal text-[#F4F1EC] leading-tight" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
               Here&apos;s what your Digital Assistant actually handles.
@@ -1284,34 +1305,34 @@ export default function ShortyLandingPage() {
       {/* =========================================================================== */}
       {/* SECTION 3 — THE "FRONT COUNTER" MOMENT (Reinforcement) */}
       {/* =========================================================================== */}
-      <section className="bg-[#333333] py-16 md:py-24 px-4 border-t border-[#F4F1EC]/10">
+      <section className="bg-[#2d2d2d] py-20 md:py-28 px-4">
         <div className="max-w-2xl mx-auto text-center">
           <motion.p
             className="text-[#F4F1EC]/70 text-lg md:text-xl leading-relaxed"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
           >
             Customers interact naturally — like they&apos;re talking to someone at the front counter.
           </motion.p>
           <motion.p
             className="mt-6 text-[#F4F1EC]/70 text-lg md:text-xl leading-relaxed"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.7, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
           >
             Behind the scenes, everything stays organized, up to date, and easy to manage.
           </motion.p>
 
           {/* Power statement */}
           <motion.p
-            className="mt-10 text-[#F4F1EC] text-xl md:text-2xl font-medium leading-relaxed"
-            initial={{ opacity: 0, y: 20 }}
+            className="mt-12 text-[#F4F1EC] text-xl md:text-2xl font-medium leading-relaxed"
+            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.7, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
           >
             Always on.<br />
             Always consistent.<br />
@@ -1320,11 +1341,11 @@ export default function ShortyLandingPage() {
 
           {/* Footer line */}
           <motion.p
-            className="mt-10 text-sm text-[#F4F1EC]/40"
+            className="mt-12 text-sm text-[#F4F1EC]/40"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.3 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.7, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
           >
             Not a chatbot. Your business, handled.
           </motion.p>
@@ -1332,78 +1353,11 @@ export default function ShortyLandingPage() {
           {/* CTA Button - moved here after Section 3 */}
           <motion.a
             href="https://buy.stripe.com/3cI4gyfB1eg65uZ02Q4sE05"
-            className="mt-10 inline-flex items-center justify-center gap-2 rounded-full bg-[#F4F1EC] text-[#333333] font-semibold px-8 py-4 text-base md:text-lg shadow-lg hover:bg-white transition"
-            initial={{ opacity: 0, y: 20 }}
+            className="mt-12 inline-flex items-center justify-center gap-2 rounded-full bg-[#F4F1EC] text-[#333333] font-semibold px-8 py-4 text-base md:text-lg shadow-lg hover:bg-white transition"
+            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-          >
-            Get Your SmartPage — $25/mo
-            <ArrowRightIcon className="w-5 h-5" />
-          </motion.a>
-        </div>
-      </section>
-
-      {/* =========================================================================== */}
-      {/* SECTION 2 - Let's Be Real */}
-      {/* =========================================================================== */}
-
-      <section ref={finalCtaRef} className="bg-[#F4F1EC] py-20 md:py-28 px-4">
-        <div className="max-w-3xl mx-auto text-center space-y-6">
-          {/* Headline */}
-          <motion.h2
-            className="text-3xl md:text-4xl lg:text-5xl font-normal text-[#222222]"
-            style={{ fontFamily: "var(--font-libre-baskerville)" }}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            Let&apos;s be real:
-          </motion.h2>
-
-          {/* Body copy */}
-          <motion.p
-            className="text-lg md:text-xl text-[#5A6570] leading-relaxed"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
-            Your customers aren&apos;t reading pages of content. They ask your SmartPage anything about your business and get the answer instantly. 24/7.
-          </motion.p>
-
-          <motion.p
-            className="text-lg md:text-xl text-[#5A6570] leading-relaxed"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.15 }}
-          >
-            Hours, menus, links, booking, updates, FAQs — all in one place.
-          </motion.p>
-
-          {/* Solution */}
-          <motion.div
-            className="py-4"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <span className="text-2xl md:text-3xl font-semibold text-[#222222]">
-              SmartPages make it happen.
-            </span>
-          </motion.div>
-
-          {/* CTA Button */}
-          <motion.a
-            href="https://buy.stripe.com/3cI4gyfB1eg65uZ02Q4sE05"
-            className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-[#333333] text-[#F4F1EC] font-semibold px-8 py-4 text-lg shadow-lg hover:bg-[#222222] transition"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.3 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.7, delay: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
           >
             Get Your SmartPage — $25/mo
             <ArrowRightIcon className="w-5 h-5" />
