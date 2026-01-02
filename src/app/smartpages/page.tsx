@@ -1107,20 +1107,40 @@ export default function ShortyLandingPage() {
     <main className="min-h-screen bg-[#F4F1EC] w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
       <section className="relative min-h-screen overflow-hidden pt-16 md:pt-24 pb-16 md:pb-20 flex flex-col items-center px-4 bg-[#333333]">
         {/* Headline + Subheadline - above modal */}
-        <div className="text-center max-w-2xl mb-6 md:mb-8 z-10 mt-10 md:mt-6">
+        <div className="text-center max-w-3xl mb-6 md:mb-8 z-10 mt-10 md:mt-6 px-4">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal tracking-tight leading-tight text-[#F4F1EC]" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
-            What is a SmartPage?
+            We install a digital employee trained on your business.
           </h1>
           <p className="mt-4 text-base md:text-lg text-[#F4F1EC]/80">
-            Think of it as a lightweight website—an intelligent version of Linktree that keeps your most important links organized but chats with clients and answers any questions about your business.
+            It delivers the information you would — instantly, accurately, and everywhere your customers look.
+          </p>
+          <p className="mt-6 text-sm md:text-base text-[#F4F1EC]/60 leading-relaxed max-w-2xl mx-auto">
+            Your customers check details before they decide to call, visit, book, or move on. Instead of missing questions or repeating the same answers all day, this assistant handles the front-of-house work for you — sharing updates, explaining what you offer, and pointing people in the right direction. It stays on the clock, speaks consistently, and always reflects the real version of your business.
           </p>
         </div>
 
         {/* Icon belt - behind modal */}
         <IconBelt />
 
+        {/* Phone label */}
+        <p className="text-xs text-[#F4F1EC]/50 mb-2 z-10">Your Business Assistant — Live</p>
+
         {/* Modal */}
         <ShortyModal />
+
+        {/* Primary CTA */}
+        <div className="mt-8 z-10 text-center">
+          <a
+            href="#see-how-it-works"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-[#F4F1EC] text-[#333333] font-semibold rounded-full hover:bg-white transition-colors"
+          >
+            See how the assistant works
+            <ArrowRightIcon className="w-4 h-4" />
+          </a>
+          <p className="mt-3 text-xs text-[#F4F1EC]/40">
+            Powered by your SmartPage — the control center behind the scenes.
+          </p>
+        </div>
 
       </section>
 
