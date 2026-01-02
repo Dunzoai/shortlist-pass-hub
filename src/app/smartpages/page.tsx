@@ -679,13 +679,13 @@ function AppCarouselSection() {
                   : "none",
               }}
             >
-              {/* App Icon - no box container, just the image */}
+              {/* App Icon - large, nearly full card width */}
               <Image
                 src={card.icon}
                 alt={card.name}
-                width={180}
-                height={180}
-                className="mx-auto mb-4 md:mb-6 rounded-3xl shadow-lg object-cover w-40 h-40 md:w-48 md:h-48"
+                width={320}
+                height={320}
+                className="mx-auto mb-4 md:mb-6 rounded-3xl shadow-lg object-contain w-56 h-56 md:w-72 md:h-72"
               />
 
               {/* Card Content */}
