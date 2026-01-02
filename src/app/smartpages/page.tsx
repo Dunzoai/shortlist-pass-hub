@@ -187,11 +187,11 @@ const appIcons = [
 
 function IconBelt() {
   return (
-    <div className="pointer-events-none absolute inset-x-0 top-[320px] md:top-[380px] h-[200px] md:h-[240px] flex items-center justify-center overflow-visible z-0">
+    <div className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 h-[200px] md:h-[240px] flex items-center justify-center overflow-visible z-0">
       {/* Left glow - icons entering/feeding info */}
-      <div className="absolute left-[15%] md:left-[20%] top-1/2 -translate-y-1/2 w-32 h-32 md:w-40 md:h-40 bg-[#F4F1EC]/30 rounded-full blur-3xl" />
+      <div className="absolute left-[5%] md:left-[10%] top-1/2 -translate-y-1/2 w-32 h-32 md:w-40 md:h-40 bg-[#F4F1EC]/30 rounded-full blur-3xl" />
       {/* Right glow - icons exiting/sending to customers */}
-      <div className="absolute right-[15%] md:right-[20%] top-1/2 -translate-y-1/2 w-32 h-32 md:w-40 md:h-40 bg-[#F4F1EC]/30 rounded-full blur-3xl" />
+      <div className="absolute right-[5%] md:right-[10%] top-1/2 -translate-y-1/2 w-32 h-32 md:w-40 md:h-40 bg-[#F4F1EC]/30 rounded-full blur-3xl" />
 
       {/* Full width continuous icon flow */}
       <motion.div
@@ -1078,21 +1078,21 @@ function FeaturesSection() {
 
 const responsibilities = [
   {
-    title: "Answers the questions that matter",
-    description: "Hours, offerings, pricing, policies, directions — delivered instantly, clearly, and correctly.",
+    title: "Handles customer conversations for you",
+    description: "Questions, details, directions, policies — delivered instantly, clearly, and the same way every time.",
   },
   {
     title: "Handles real business actions",
-    description: "Reservations, orders, bookings, updates — confirmed, routed, and added to the calendar for you and the customer.",
+    description: "Bookings, reservations, orders, updates — confirmed, routed, and added to calendars for you and your customer.",
     isHighlighted: true,
   },
   {
     title: "Keeps your business organized behind the scenes",
-    description: "Your information lives in one place and stays in sync everywhere it shows up. No scattered pages. No outdated details. No second-guessing.",
+    description: "All your information lives in one place and stays in sync everywhere it shows up. No scattered pages. No outdated details. No second-guessing.",
   },
   {
-    title: "Makes it easy for customers to take the next step",
-    description: "Links, notifications, follow-ups, and reminders — right when they're needed. Nothing to search for. Nothing to explain twice.",
+    title: "Makes it easy for customers to move forward",
+    description: "Links, notifications, follow-ups, reminders — right when they're needed. Nothing to search for. Nothing to explain twice.",
   },
   {
     title: "Represents your business the way you would",
@@ -1202,28 +1202,17 @@ export default function ShortyLandingPage() {
           Always on. Always consistent. Always working in your best interest.
         </p>
 
-        {/* Icon belt - behind modal */}
-        <IconBelt />
-
-        {/* Modal */}
-        <ShortyModal />
-
-        {/* CTA Button */}
-        <motion.a
-          href="https://buy.stripe.com/3cI4gyfB1eg65uZ02Q4sE05"
-          className="mt-8 md:mt-10 z-10 inline-flex items-center justify-center gap-2 rounded-full bg-[#F4F1EC] text-[#333333] font-semibold px-8 py-4 text-base md:text-lg shadow-lg hover:bg-white transition"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          Get Your SmartPage — $25/mo
-          <ArrowRightIcon className="w-5 h-5" />
-        </motion.a>
+        {/* Modal container with Icon belt locked to modal center */}
+        <div className="relative w-full flex justify-center">
+          {/* Icon belt - locked to middle of modal */}
+          <IconBelt />
+          {/* Modal */}
+          <ShortyModal />
+        </div>
       </section>
 
       {/* =========================================================================== */}
-      {/* SECTION 2 — WHAT IT ACTUALLY DOES (Bullet tiles) */}
+      {/* SECTION 2 — HERE'S WHAT IT DOES (Bullet tiles) */}
       {/* =========================================================================== */}
       <section className="bg-[#333333] py-12 md:py-16 px-4">
         <div className="max-w-2xl mx-auto">
@@ -1236,8 +1225,7 @@ export default function ShortyLandingPage() {
             transition={{ duration: 0.5 }}
           >
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal text-[#F4F1EC] leading-tight" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
-              This assistant doesn&apos;t just answer questions.<br />
-              It runs parts of your business.
+              Here&apos;s what your Digital Assistant actually handles.
             </h2>
           </motion.div>
 
@@ -1257,12 +1245,12 @@ export default function ShortyLandingPage() {
       </section>
 
       {/* =========================================================================== */}
-      {/* SECTION 3 — HOW IT FEELS TO CUSTOMERS (Reinforcement) */}
+      {/* SECTION 3 — THE "FRONT COUNTER" MOMENT (Reinforcement) */}
       {/* =========================================================================== */}
-      <section className="bg-[#333333] py-12 md:py-16 px-4 border-t border-[#F4F1EC]/10">
+      <section className="bg-[#333333] py-16 md:py-24 px-4 border-t border-[#F4F1EC]/10">
         <div className="max-w-2xl mx-auto text-center">
           <motion.p
-            className="text-[#F4F1EC]/70 text-base md:text-lg leading-relaxed"
+            className="text-[#F4F1EC]/70 text-lg md:text-xl leading-relaxed"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -1271,7 +1259,7 @@ export default function ShortyLandingPage() {
             Customers interact naturally — like they&apos;re talking to someone at the front counter.
           </motion.p>
           <motion.p
-            className="mt-4 text-[#F4F1EC]/70 text-base md:text-lg leading-relaxed"
+            className="mt-6 text-[#F4F1EC]/70 text-lg md:text-xl leading-relaxed"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -1282,7 +1270,7 @@ export default function ShortyLandingPage() {
 
           {/* Power statement */}
           <motion.p
-            className="mt-8 text-[#F4F1EC] text-lg md:text-xl font-medium"
+            className="mt-10 text-[#F4F1EC] text-xl md:text-2xl font-medium leading-relaxed"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -1295,7 +1283,7 @@ export default function ShortyLandingPage() {
 
           {/* Footer line */}
           <motion.p
-            className="mt-8 text-xs text-[#F4F1EC]/40"
+            className="mt-10 text-sm text-[#F4F1EC]/40"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -1303,6 +1291,19 @@ export default function ShortyLandingPage() {
           >
             Not a chatbot. Your business, handled.
           </motion.p>
+
+          {/* CTA Button - moved here after Section 3 */}
+          <motion.a
+            href="https://buy.stripe.com/3cI4gyfB1eg65uZ02Q4sE05"
+            className="mt-10 inline-flex items-center justify-center gap-2 rounded-full bg-[#F4F1EC] text-[#333333] font-semibold px-8 py-4 text-base md:text-lg shadow-lg hover:bg-white transition"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            Get Your SmartPage — $25/mo
+            <ArrowRightIcon className="w-5 h-5" />
+          </motion.a>
         </div>
       </section>
 
