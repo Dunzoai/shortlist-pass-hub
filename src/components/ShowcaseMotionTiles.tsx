@@ -58,7 +58,7 @@ export function ShowcaseMotionTiles() {
               </div>
 
               {/* Title */}
-              <p className="text-sm font-medium text-[#1A1F24]/80 group-hover:text-[#1A1F24] transition-colors">
+              <p className="text-sm font-medium text-[#1F2937]/80 group-hover:text-[#1F2937] transition-colors">
                 {tile.title}
               </p>
             </div>

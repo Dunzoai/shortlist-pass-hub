@@ -7,7 +7,7 @@ export function Nav() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#2B3A44]">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#374151]">
       <div className="max-w-[1200px] mx-auto px-6 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link
@@ -70,7 +70,7 @@ export function Nav() {
 
       {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="md:hidden border-t border-[#F4F1EC]/10 bg-[#2B3A44]">
+        <div className="md:hidden border-t border-[#F4F1EC]/10 bg-[#374151]">
           <div className="px-6 py-4 flex flex-col gap-4">
             <Link
               href="/"

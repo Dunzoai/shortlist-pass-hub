@@ -93,7 +93,7 @@ function ComingSoonSection() {
             transition={{ duration: 0.8, delay: 0.8, ease: "easeOut" }}
           >
             <h1
-              className="text-[28px] md:text-[36px] lg:text-[42px] font-normal text-[#1A1F24] leading-tight mb-6"
+              className="text-[28px] md:text-[36px] lg:text-[42px] font-normal text-[#1F2937] leading-tight mb-6"
               style={{ fontFamily: "var(--font-libre-baskerville)" }}
             >
               We&apos;re rebuilding this page.
@@ -105,7 +105,7 @@ function ComingSoonSection() {
               small businesses stop blending in and start getting noticed.
             </p>
 
-            <p className="text-base md:text-lg text-[#1A1F24] font-medium">
+            <p className="text-base md:text-lg text-[#1F2937] font-medium">
               Check back soon — or better yet, become one of the businesses we showcase.
             </p>
 
@@ -118,7 +118,7 @@ function ComingSoonSection() {
             >
               <a
                 href="mailto:hello@shortlistpass.com?subject=I want to show up"
-                className="inline-flex items-center justify-center px-8 py-4 text-base font-medium bg-[#2B3A44] text-[#F4F1EC] rounded-full hover:bg-[#1A1F24] transition-all duration-300"
+                className="inline-flex items-center justify-center px-8 py-4 text-base font-medium bg-[#374151] text-[#F4F1EC] rounded-full hover:bg-[#1F2937] transition-all duration-300"
               >
                 Let&apos;s talk
               </a>
@@ -220,7 +220,7 @@ function HeroSection() {
           <motion.h1
             variants={fadeUpVariant}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="text-[42px] md:text-[56px] lg:text-[64px] font-normal text-[#1A1F24] leading-[1.08] mb-6"
+            className="text-[42px] md:text-[56px] lg:text-[64px] font-normal text-[#1F2937] leading-[1.08] mb-6"
             style={{ fontFamily: "var(--font-libre-baskerville)" }}
           >
             Social that actually shows up.
@@ -239,13 +239,13 @@ function HeroSection() {
           >
             <a
               href="#how-it-works"
-              className="inline-flex items-center justify-center px-7 py-3.5 text-sm font-medium bg-[#2B3A44] text-[#F4F1EC] rounded-full hover:bg-[#1A1F24] transition-all duration-300"
+              className="inline-flex items-center justify-center px-7 py-3.5 text-sm font-medium bg-[#374151] text-[#F4F1EC] rounded-full hover:bg-[#1F2937] transition-all duration-300"
             >
               See how it works
             </a>
             <a
               href="#examples"
-              className="text-sm text-[#5A6570] hover:text-[#1A1F24] transition-colors duration-300"
+              className="text-sm text-[#5A6570] hover:text-[#1F2937] transition-colors duration-300"
             >
               View examples
             </a>
@@ -261,7 +261,7 @@ function MovingBelt() {
   const beltText = "SCROLL-STOPPING CONTENT • POSTS THAT SOUND LIKE YOU • SHOW UP WHERE IT MATTERS • BUILT FOR REAL BUSINESSES • NO TREND CHASING • CONSISTENT VISIBILITY • CONTENT WITH A POINT";
 
   return (
-    <div className="relative overflow-hidden h-14 bg-gradient-to-r from-[#2B3A44] via-[#2B3A44] to-[#2B3A44] flex items-center">
+    <div className="relative overflow-hidden h-14 bg-gradient-to-r from-[#374151] via-[#374151] to-[#374151] flex items-center">
       <div
         className="flex items-center whitespace-nowrap animate-scroll-social"
         style={{
@@ -310,7 +310,7 @@ function AnimatedFeedVisualization() {
             key={post.id}
             className={`absolute left-4 right-4 h-16 rounded-lg ${
               post.highlight
-                ? "bg-gradient-to-r from-[#2B3A44]/30 to-[#2B3A44]/10 border border-[#2B3A44]/40"
+                ? "bg-gradient-to-r from-[#374151]/30 to-[#374151]/10 border border-[#374151]/40"
                 : "bg-white/5 border border-white/5"
             }`}
             initial={{ y: 280, opacity: 0 }}
@@ -327,14 +327,14 @@ function AnimatedFeedVisualization() {
           >
             <div className="p-3 h-full flex items-center gap-3">
               <div className={`w-8 h-8 rounded-full flex-shrink-0 ${
-                post.highlight ? "bg-[#2B3A44]/40" : "bg-white/10"
+                post.highlight ? "bg-[#374151]/40" : "bg-white/10"
               }`} />
               <div className="flex-1 space-y-2">
                 <div className={`h-2 rounded ${
-                  post.highlight ? "bg-[#2B3A44]/40 w-3/4" : "bg-white/10 w-2/3"
+                  post.highlight ? "bg-[#374151]/40 w-3/4" : "bg-white/10 w-2/3"
                 }`} />
                 <div className={`h-2 rounded ${
-                  post.highlight ? "bg-[#2B3A44]/20 w-1/2" : "bg-white/5 w-1/2"
+                  post.highlight ? "bg-[#374151]/20 w-1/2" : "bg-white/5 w-1/2"
                 }`} />
               </div>
             </div>
@@ -360,7 +360,7 @@ function ProblemSection() {
           <motion.h2
             variants={fadeUpVariant}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="text-[28px] md:text-[36px] lg:text-[42px] font-normal text-[#1A1F24] leading-tight mb-12 text-center"
+            className="text-[28px] md:text-[36px] lg:text-[42px] font-normal text-[#1F2937] leading-tight mb-12 text-center"
             style={{ fontFamily: "var(--font-libre-baskerville)" }}
           >
             Most businesses don&apos;t lose on social — they disappear.
@@ -375,7 +375,7 @@ function ProblemSection() {
               <p className="text-base md:text-lg text-[#5A6570]">Guessing what works.</p>
               <p className="text-base md:text-lg text-[#5A6570]">Getting buried by the algorithm.</p>
               <p className="text-base md:text-lg text-[#5A6570]">Too busy to do this right.</p>
-              <p className="text-base md:text-lg text-[#1A1F24] font-medium pt-4">
+              <p className="text-base md:text-lg text-[#1F2937] font-medium pt-4">
                 And while you&apos;re busy running your business, someone else is showing up consistently.
               </p>
             </motion.div>

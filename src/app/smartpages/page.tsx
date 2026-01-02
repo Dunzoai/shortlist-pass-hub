@@ -388,7 +388,7 @@ function ShortyModal() {
   const displayedMessages = currentMessages.slice(0, visibleMessages);
 
   return (
-    <div className="relative w-full max-w-[220px] sm:max-w-[260px] md:max-w-[320px] h-[440px] md:h-[475px] mx-auto rounded-3xl bg-[#2B3A44] border border-white/10 shadow-[0_0_60px_rgba(251,191,36,0.15)] z-10 flex flex-col overflow-hidden">
+    <div className="relative w-full max-w-[220px] sm:max-w-[260px] md:max-w-[320px] h-[440px] md:h-[475px] mx-auto rounded-3xl bg-[#374151] border border-white/10 shadow-[0_0_60px_rgba(251,191,36,0.15)] z-10 flex flex-col overflow-hidden">
       {/* Header */}
       <div className="flex flex-col items-center pt-3 pb-2 px-3 border-b border-white/10">
         {/* Avatar */}
@@ -526,7 +526,7 @@ function ShortyModal() {
 
 function AppGridSection() {
   return (
-    <section className="bg-[#2B3A44] py-10 md:py-14 px-4 overflow-x-hidden">
+    <section className="bg-[#374151] py-10 md:py-14 px-4 overflow-x-hidden">
       {/* Header */}
       <div className="max-w-4xl mx-auto text-center mb-10 md:mb-14">
         <motion.h2
@@ -616,7 +616,7 @@ function AppGridSection() {
       </div>
 
       {/* Scrolling Business Types - Yellow background with dark pills */}
-      <div className="mt-12 md:mt-16 -mx-4 bg-[#2B3A44] py-8">
+      <div className="mt-12 md:mt-16 -mx-4 bg-[#374151] py-8">
         <motion.p
           className="text-center text-lg sm:text-xl md:text-2xl text-white font-semibold mb-6 px-4"
           initial={{ opacity: 0, y: 20 }}
@@ -690,7 +690,7 @@ function AppGridSection() {
               transition={{ duration: 0.6, delay: 0 }}
             >
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#2B3A44]/20 border border-[#2B3A44]/40 flex items-center justify-center text-lg flex-shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-[#374151]/20 border border-[#374151]/40 flex items-center justify-center text-lg flex-shrink-0">
                   🥟
                 </div>
                 <div className="flex-1 min-w-0">
@@ -711,7 +711,7 @@ function AppGridSection() {
               transition={{ duration: 0.6, delay: 0.4 }}
             >
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#2B3A44]/20 border border-[#2B3A44]/40 flex items-center justify-center text-lg flex-shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-[#374151]/20 border border-[#374151]/40 flex items-center justify-center text-lg flex-shrink-0">
                   💇
                 </div>
                 <div className="flex-1 min-w-0">
@@ -732,7 +732,7 @@ function AppGridSection() {
               transition={{ duration: 0.6, delay: 0.8 }}
             >
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#2B3A44]/20 border border-[#2B3A44]/40 flex items-center justify-center text-lg flex-shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-[#374151]/20 border border-[#374151]/40 flex items-center justify-center text-lg flex-shrink-0">
                   🍺
                 </div>
                 <div className="flex-1 min-w-0">
@@ -756,7 +756,7 @@ function AppGridSection() {
               transition={{ duration: 0.6, delay: 0 }}
             >
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#2B3A44]/20 border border-[#2B3A44]/40 flex items-center justify-center text-lg flex-shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-[#374151]/20 border border-[#374151]/40 flex items-center justify-center text-lg flex-shrink-0">
                   🥟
                 </div>
                 <div className="flex-1 min-w-0">
@@ -777,7 +777,7 @@ function AppGridSection() {
               transition={{ duration: 0.6, delay: 0.4 }}
             >
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#2B3A44]/20 border border-[#2B3A44]/40 flex items-center justify-center text-lg flex-shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-[#374151]/20 border border-[#374151]/40 flex items-center justify-center text-lg flex-shrink-0">
                   💇
                 </div>
                 <div className="flex-1 min-w-0">
@@ -798,7 +798,7 @@ function AppGridSection() {
               transition={{ duration: 0.6, delay: 0.8 }}
             >
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#2B3A44]/20 border border-[#2B3A44]/40 flex items-center justify-center text-lg flex-shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-[#374151]/20 border border-[#374151]/40 flex items-center justify-center text-lg flex-shrink-0">
                   🍺
                 </div>
                 <div className="flex-1 min-w-0">
@@ -874,7 +874,7 @@ function FeatureVisual({ type }: { type: string }) {
               </div>
             </div>
             <div className="flex justify-end">
-              <div className="bg-[#F4F1EC] rounded-2xl px-4 py-2.5 text-sm text-[#1A1F24] max-w-[80%]">
+              <div className="bg-[#F4F1EC] rounded-2xl px-4 py-2.5 text-sm text-[#1F2937] max-w-[80%]">
                 We close at 9pm tonight! Come by before then.
               </div>
             </div>
@@ -884,7 +884,7 @@ function FeatureVisual({ type }: { type: string }) {
               </div>
             </div>
             <div className="flex justify-end">
-              <div className="bg-[#F4F1EC] rounded-2xl px-4 py-2.5 text-sm text-[#1A1F24] max-w-[80%]">
+              <div className="bg-[#F4F1EC] rounded-2xl px-4 py-2.5 text-sm text-[#1F2937] max-w-[80%]">
                 Yes! Free parking in the lot behind us.
               </div>
             </div>
@@ -949,7 +949,7 @@ function FeatureVisual({ type }: { type: string }) {
           <div className="space-y-4">
             {/* Announcement banner */}
             <div className="bg-[#F4F1EC] rounded-lg px-4 py-3 text-center">
-              <p className="text-[#1A1F24] font-semibold text-sm md:text-base">Holiday Hours: Closed Dec 25-26</p>
+              <p className="text-[#1F2937] font-semibold text-sm md:text-base">Holiday Hours: Closed Dec 25-26</p>
             </div>
             {/* Separator */}
             <div className="border-t border-white/10" />
@@ -1009,7 +1009,7 @@ function FeatureVisual({ type }: { type: string }) {
 
 function FeaturesSection() {
   return (
-    <section className="bg-[#2B3A44] py-12 md:py-16 px-4">
+    <section className="bg-[#374151] py-12 md:py-16 px-4">
       <div className="max-w-5xl mx-auto">
         <motion.h2
           className="text-2xl sm:text-3xl md:text-4xl text-white font-semibold text-center mb-10 md:mb-12"
@@ -1105,7 +1105,7 @@ export default function ShortyLandingPage() {
 
   return (
     <main className="min-h-screen bg-[#F4F1EC] w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
-      <section className="relative min-h-screen overflow-hidden pt-16 md:pt-24 pb-16 md:pb-20 flex flex-col items-center px-4 bg-[#2B3A44]">
+      <section className="relative min-h-screen overflow-hidden pt-16 md:pt-24 pb-16 md:pb-20 flex flex-col items-center px-4 bg-[#374151]">
         {/* Headline + Subheadline - above modal */}
         <div className="text-center max-w-2xl mb-6 md:mb-8 z-10 mt-10 md:mt-6">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal tracking-tight leading-tight text-[#F4F1EC]" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
@@ -1132,7 +1132,7 @@ export default function ShortyLandingPage() {
         <div className="max-w-3xl mx-auto text-center space-y-6">
           {/* Headline */}
           <motion.h2
-            className="text-3xl md:text-4xl lg:text-5xl font-normal text-[#1A1F24]"
+            className="text-3xl md:text-4xl lg:text-5xl font-normal text-[#1F2937]"
             style={{ fontFamily: "var(--font-libre-baskerville)" }}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -1171,7 +1171,7 @@ export default function ShortyLandingPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <span className="text-2xl md:text-3xl font-semibold text-[#1A1F24]">
+            <span className="text-2xl md:text-3xl font-semibold text-[#1F2937]">
               SmartPages make it happen.
             </span>
           </motion.div>
@@ -1179,7 +1179,7 @@ export default function ShortyLandingPage() {
           {/* CTA Button */}
           <motion.a
             href="https://buy.stripe.com/3cI4gyfB1eg65uZ02Q4sE05"
-            className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-[#2B3A44] text-[#F4F1EC] font-semibold px-8 py-4 text-lg shadow-lg hover:bg-[#1A1F24] transition"
+            className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-[#374151] text-[#F4F1EC] font-semibold px-8 py-4 text-lg shadow-lg hover:bg-[#1F2937] transition"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -1202,7 +1202,7 @@ export default function ShortyLandingPage() {
       {/* =========================================================================== */}
 
       {/* Positioning clarifier section */}
-      <section className="bg-[#2B3A44] py-16 md:py-20 px-4">
+      <section className="bg-[#374151] py-16 md:py-20 px-4">
         <div className="max-w-3xl mx-auto text-center space-y-6">
           {/* Positioning Statement */}
           <div className="space-y-4 text-lg md:text-xl text-[#F4F1EC]/80 leading-relaxed">
@@ -1225,7 +1225,7 @@ export default function ShortyLandingPage() {
           {/* CTA Button */}
           <a
             href="https://buy.stripe.com/3cI4gyfB1eg65uZ02Q4sE05"
-            className="mt-10 inline-flex items-center justify-center rounded-full bg-[#F4F1EC] px-8 py-3 text-sm sm:text-base font-semibold text-[#2B3A44] shadow-lg hover:bg-[#F4F1EC]/90 transition"
+            className="mt-10 inline-flex items-center justify-center rounded-full bg-[#F4F1EC] px-8 py-3 text-sm sm:text-base font-semibold text-[#374151] shadow-lg hover:bg-[#F4F1EC]/90 transition"
           >
             Get started
           </a>
@@ -1235,7 +1235,7 @@ export default function ShortyLandingPage() {
       {/* Floating CTA Bubble */}
       <a
         href="https://buy.stripe.com/3cI4gyfB1eg65uZ02Q4sE05"
-        className={`fixed bottom-6 left-1/2 -translate-x-1/2 bg-[#2B3A44] text-[#F4F1EC] font-semibold px-5 py-3 rounded-full shadow-lg z-50 text-center max-w-[250px] text-sm md:text-base transition-opacity duration-300 hover:bg-[#1A1F24] ${
+        className={`fixed bottom-6 left-1/2 -translate-x-1/2 bg-[#374151] text-[#F4F1EC] font-semibold px-5 py-3 rounded-full shadow-lg z-50 text-center max-w-[250px] text-sm md:text-base transition-opacity duration-300 hover:bg-[#1F2937] ${
           showCTA ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
       >

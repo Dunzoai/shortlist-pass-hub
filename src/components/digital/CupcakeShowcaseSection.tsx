@@ -220,7 +220,7 @@ export function CupcakeShowcaseSection() {
     return (
       <>
         {/* Combined Hero + Cupcake with manual controls */}
-        <section className="bg-[#2B3A44] py-16 lg:py-24">
+        <section className="bg-[#374151] py-16 lg:py-24">
           <div className="max-w-[800px] mx-auto px-6">
             {/* Hero text */}
             <div className="text-center mb-8 lg:mb-10">
@@ -286,7 +286,7 @@ export function CupcakeShowcaseSection() {
                 <button
                   onClick={handleNext}
                   disabled={activeIndex === TOTAL_STATES - 1}
-                  className="px-4 py-2 text-sm bg-[#F4F1EC] text-[#2B3A44] font-medium rounded-lg disabled:opacity-30"
+                  className="px-4 py-2 text-sm bg-[#F4F1EC] text-[#374151] font-medium rounded-lg disabled:opacity-30"
                 >
                   Next
                 </button>
@@ -314,7 +314,7 @@ export function CupcakeShowcaseSection() {
       {/* Combined Hero + Cupcake Section - all visible when locked */}
       <section
         ref={sectionRef}
-        className="relative bg-[#2B3A44] min-h-screen flex flex-col items-center justify-center py-12 lg:py-16"
+        className="relative bg-[#374151] min-h-screen flex flex-col items-center justify-center py-12 lg:py-16"
       >
         <div className="w-full max-w-[800px] mx-auto px-6">
           {/* Hero text - stays visible during build */}
@@ -403,7 +403,7 @@ export function CupcakeShowcaseSection() {
       </section>
 
       {/* Why block - after the build */}
-      <div className="bg-[#2B3A44] pt-4 pb-16 lg:pt-6 lg:pb-24">
+      <div className="bg-[#374151] pt-4 pb-16 lg:pt-6 lg:pb-24">
         <div className="max-w-[800px] mx-auto px-6">
           <WhyBlock heading={CUPCAKE_COPY.why.heading} lines={CUPCAKE_COPY.why.lines} variant="dark" />
         </div>
