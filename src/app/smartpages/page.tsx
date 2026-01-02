@@ -659,7 +659,7 @@ function AppCarouselSection() {
             <div
               className={`rounded-3xl p-6 md:p-8 h-[420px] md:h-[480px] flex flex-col transition-all duration-300 ${
                 isActive
-                  ? "bg-[#F4F1EC] shadow-xl"
+                  ? "bg-[#4a4a4a] border border-[#F4F1EC]/20 shadow-[0_0_40px_rgba(244,241,236,0.1)]"
                   : "bg-[#333333]/50 border border-[#F4F1EC]/10"
               }`}
             >
@@ -679,24 +679,24 @@ function AppCarouselSection() {
               {/* Card Content */}
               <div className="text-center flex-1 flex flex-col">
                 <h3 className={`text-xl md:text-2xl font-semibold mb-1 transition-colors duration-300 ${
-                  isActive ? "text-[#333333]" : "text-[#F4F1EC]"
+                  isActive ? "text-[#F4F1EC]" : "text-[#F4F1EC]/70"
                 }`}>
                   {card.name}
                 </h3>
                 <p className={`text-sm uppercase tracking-wider mb-4 transition-colors duration-300 ${
-                  isActive ? "text-[#5A6570]" : "text-[#F4F1EC]/50"
+                  isActive ? "text-[#F4F1EC]/60" : "text-[#F4F1EC]/40"
                 }`}>
                   {card.type}
                 </p>
                 <p className={`text-sm md:text-base leading-relaxed flex-1 transition-colors duration-300 ${
-                  isActive ? "text-[#5A6570]" : "text-[#F4F1EC]/60"
+                  isActive ? "text-[#F4F1EC]/80" : "text-[#F4F1EC]/50"
                 }`}>
                   {card.description}
                 </p>
 
                 {/* Try button text - only visible on active card */}
                 {isActive && (
-                  <span className="mt-4 inline-flex items-center justify-center gap-2 text-sm text-[#333333]/70">
+                  <span className="mt-4 inline-flex items-center justify-center gap-2 text-sm text-[#F4F1EC]/70">
                     Try this SmartPage
                     <ArrowRightIcon className="w-4 h-4" />
                   </span>
