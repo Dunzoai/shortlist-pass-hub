@@ -679,14 +679,16 @@ function AppCarouselSection() {
                   : "none",
               }}
             >
-              {/* App Icon - large, nearly full card width */}
-              <Image
-                src={card.icon}
-                alt={card.name}
-                width={320}
-                height={320}
-                className="mx-auto mb-4 md:mb-6 rounded-3xl shadow-lg object-contain w-56 h-56 md:w-72 md:h-72"
-              />
+              {/* App Icon - zoomed in to crop the large transparent canvas */}
+              <div className="relative w-44 h-44 md:w-56 md:h-56 mx-auto mb-4 md:mb-6 overflow-hidden rounded-3xl shadow-lg">
+                <Image
+                  src={card.icon}
+                  alt={card.name}
+                  width={320}
+                  height={320}
+                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 scale-[3] md:scale-[3.5]"
+                />
+              </div>
 
               {/* Card Content */}
               <div className="text-center flex-1 flex flex-col">
