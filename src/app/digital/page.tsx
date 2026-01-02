@@ -107,6 +107,7 @@ function HeroSection() {
               style={{
                 objectFit: "fill",
                 transform: "scale(1.3, 1.5)",
+                filter: "grayscale(100%) brightness(0.4)",
               }}
               initial={{ clipPath: "inset(0 100% 0 0)" }}
               animate={{ clipPath: "inset(0 0% 0 0)" }}

@@ -83,11 +83,11 @@ export function FoodTruckTimeline() {
 
   return (
     <div className="relative">
-      {/* Glass panel container - slate blue */}
+      {/* Glass panel container - charcoal */}
       <div
         className="relative rounded-[28px] p-6 md:p-8 overflow-hidden"
         style={{
-          background: "linear-gradient(180deg, rgba(43, 58, 68, 0.95) 0%, rgba(35, 48, 56, 0.98) 100%)",
+          background: "linear-gradient(180deg, rgba(51, 51, 51, 0.95) 0%, rgba(34, 34, 34, 0.98) 100%)",
           border: "1px solid rgba(255, 255, 255, 0.1)",
           boxShadow: "0 40px 80px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05)",
         }}
