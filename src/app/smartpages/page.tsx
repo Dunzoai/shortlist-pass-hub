@@ -654,65 +654,80 @@ function AppCarouselSection() {
 
         {smartPageCards.map((card, index) => {
           const isActive = index === activeIndex;
+
+          const cardContent = (
+            <div
+              className={`rounded-3xl p-6 md:p-8 h-[420px] md:h-[480px] flex flex-col transition-all duration-300 ${
+                isActive
+                  ? "bg-[#F4F1EC] shadow-xl"
+                  : "bg-[#333333]/50 border border-[#F4F1EC]/10"
+              }`}
+            >
+              {/* App Icon - zoomed in to crop the large transparent canvas */}
+              <div className={`relative w-44 h-44 md:w-56 md:h-56 mx-auto mb-4 md:mb-6 overflow-hidden rounded-3xl shadow-lg transition-opacity duration-300 ${
+                isActive ? "opacity-100" : "opacity-50 grayscale-[30%]"
+              }`}>
+                <Image
+                  src={card.icon}
+                  alt={card.name}
+                  width={320}
+                  height={320}
+                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 scale-[3] md:scale-[3.5]"
+                />
+              </div>
+
+              {/* Card Content */}
+              <div className="text-center flex-1 flex flex-col">
+                <h3 className={`text-xl md:text-2xl font-semibold mb-1 transition-colors duration-300 ${
+                  isActive ? "text-[#333333]" : "text-[#F4F1EC]"
+                }`}>
+                  {card.name}
+                </h3>
+                <p className={`text-sm uppercase tracking-wider mb-4 transition-colors duration-300 ${
+                  isActive ? "text-[#5A6570]" : "text-[#F4F1EC]/50"
+                }`}>
+                  {card.type}
+                </p>
+                <p className={`text-sm md:text-base leading-relaxed flex-1 transition-colors duration-300 ${
+                  isActive ? "text-[#5A6570]" : "text-[#F4F1EC]/60"
+                }`}>
+                  {card.description}
+                </p>
+
+                {/* Try button text - only visible on active card */}
+                {isActive && (
+                  <span className="mt-4 inline-flex items-center justify-center gap-2 text-sm text-[#333333]/70">
+                    Try this SmartPage
+                    <ArrowRightIcon className="w-4 h-4" />
+                  </span>
+                )}
+              </div>
+            </div>
+          );
+
           return (
             <div
               key={card.name}
               ref={(el) => { cardRefs.current[index] = el; }}
-              onClick={() => scrollToCard(index)}
-              className="shrink-0 w-[320px] md:w-[400px] snap-center cursor-pointer"
+              className="shrink-0 w-[320px] md:w-[400px] snap-center"
             >
-              <div
-                className={`rounded-3xl p-6 md:p-8 h-[420px] md:h-[480px] flex flex-col transition-all duration-300 ${
-                  isActive
-                    ? "bg-[#F4F1EC] shadow-xl"
-                    : "bg-[#333333]/50 border border-[#F4F1EC]/10"
-                }`}
-              >
-                {/* App Icon - zoomed in to crop the large transparent canvas */}
-                <div className={`relative w-44 h-44 md:w-56 md:h-56 mx-auto mb-4 md:mb-6 overflow-hidden rounded-3xl shadow-lg transition-opacity duration-300 ${
-                  isActive ? "opacity-100" : "opacity-50 grayscale-[30%]"
-                }`}>
-                  <Image
-                    src={card.icon}
-                    alt={card.name}
-                    width={320}
-                    height={320}
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 scale-[3] md:scale-[3.5]"
-                  />
+              {isActive ? (
+                <a
+                  href={card.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block cursor-pointer"
+                >
+                  {cardContent}
+                </a>
+              ) : (
+                <div
+                  onClick={() => scrollToCard(index)}
+                  className="cursor-pointer"
+                >
+                  {cardContent}
                 </div>
-
-                {/* Card Content */}
-                <div className="text-center flex-1 flex flex-col">
-                  <h3 className={`text-xl md:text-2xl font-semibold mb-1 transition-colors duration-300 ${
-                    isActive ? "text-[#333333]" : "text-[#F4F1EC]"
-                  }`}>
-                    {card.name}
-                  </h3>
-                  <p className={`text-sm uppercase tracking-wider mb-4 transition-colors duration-300 ${
-                    isActive ? "text-[#5A6570]" : "text-[#F4F1EC]/50"
-                  }`}>
-                    {card.type}
-                  </p>
-                  <p className={`text-sm md:text-base leading-relaxed flex-1 transition-colors duration-300 ${
-                    isActive ? "text-[#5A6570]" : "text-[#F4F1EC]/60"
-                  }`}>
-                    {card.description}
-                  </p>
-
-                  {/* Try button - only visible on active card */}
-                  {isActive && (
-                    <a
-                      href={card.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-4 inline-flex items-center justify-center gap-2 text-sm text-[#333333]/70 hover:text-[#333333] transition-colors"
-                    >
-                      Try this SmartPage
-                      <ArrowRightIcon className="w-4 h-4" />
-                    </a>
-                  )}
-                </div>
-              </div>
+              )}
             </div>
           );
         })}
