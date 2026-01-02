@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 
@@ -660,7 +660,7 @@ function AppCarouselSection() {
             className="shrink-0 w-[320px] md:w-[400px] snap-center cursor-pointer"
           >
             <motion.div
-              className="rounded-3xl p-6 md:p-8 h-[380px] md:h-[420px] flex flex-col transition-all duration-300"
+              className="rounded-3xl p-6 md:p-8 h-[420px] md:h-[480px] flex flex-col transition-all duration-300"
               animate={{
                 scale: index === activeIndex ? 1 : 0.9,
                 opacity: index === activeIndex ? 1 : 0.4,
@@ -679,15 +679,14 @@ function AppCarouselSection() {
                   : "none",
               }}
             >
-              {/* App Icon - 4x larger */}
-              <div className="relative w-28 h-28 md:w-36 md:h-36 mx-auto mb-4 md:mb-6 rounded-3xl overflow-hidden shadow-lg">
-                <Image
-                  src={card.icon}
-                  alt={card.name}
-                  fill
-                  className="object-cover"
-                />
-              </div>
+              {/* App Icon - no box container, just the image */}
+              <Image
+                src={card.icon}
+                alt={card.name}
+                width={180}
+                height={180}
+                className="mx-auto mb-4 md:mb-6 rounded-3xl shadow-lg object-cover w-40 h-40 md:w-48 md:h-48"
+              />
 
               {/* Card Content */}
               <div className="text-center flex-1 flex flex-col">
@@ -1060,24 +1059,41 @@ function FeatureVisual({ type }: { type: string }) {
   }
 }
 
+// Alternating backgrounds for features section
+const featureBackgrounds = [
+  "bg-[#3a3a3a]",  // Feature 1
+  "bg-[#333333]",  // Feature 2
+  "bg-[#3a3a3a]",  // Feature 3
+  "bg-[#333333]",  // Feature 4
+  "bg-[#3a3a3a]",  // Feature 5
+];
+
 function FeaturesSection() {
   return (
-    <section className="bg-[#3a3a3a] py-16 md:py-20 px-4">
-      <div className="max-w-5xl mx-auto">
-        <motion.h2
-          className="text-2xl sm:text-3xl md:text-4xl text-white font-semibold text-center mb-12 md:mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
-        >
-          Everything your business needs
-        </motion.h2>
+    <section className="overflow-hidden">
+      {/* Section header */}
+      <div className="bg-[#3a3a3a] pt-16 md:pt-20 pb-8 md:pb-12 px-4">
+        <div className="max-w-5xl mx-auto">
+          <motion.h2
+            className="text-2xl sm:text-3xl md:text-4xl text-white font-semibold text-center"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+          >
+            Everything your business needs
+          </motion.h2>
+        </div>
+      </div>
 
-        <div className="space-y-16 md:space-y-20">
-          {features.map((feature, index) => (
+      {/* Individual feature cards with alternating backgrounds */}
+      {features.map((feature, index) => (
+        <div
+          key={index}
+          className={`${featureBackgrounds[index]} py-12 md:py-16 px-4`}
+        >
+          <div className="max-w-5xl mx-auto">
             <motion.div
-              key={index}
               className={`grid md:grid-cols-2 gap-8 md:gap-12 items-center ${
                 feature.textLeft ? '' : 'md:[direction:rtl]'
               }`}
@@ -1118,9 +1134,9 @@ function FeaturesSection() {
                 <FeatureVisual type={feature.visual} />
               </div>
             </motion.div>
-          ))}
+          </div>
         </div>
-      </div>
+      ))}
     </section>
   );
 }
@@ -1154,7 +1170,7 @@ const responsibilities = [
 ];
 
 // =============================================================================
-// RESPONSIBILITY TILE COMPONENT
+// RESPONSIBILITY TILE COMPONENT - Scroll-linked smooth animation
 // =============================================================================
 
 function ResponsibilityTile({
@@ -1168,24 +1184,36 @@ function ResponsibilityTile({
   index: number;
   isHighlighted?: boolean;
 }) {
-  // Alternate slide direction: even from left, odd from right (reduced distance for smoother mobile)
-  const slideDirection = index % 2 === 0 ? -30 : 30;
+  const tileRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: tileRef,
+    offset: ["start end", "end start"]
+  });
+
+  // Alternate slide direction: even from left, odd from right
+  const slideDirection = index % 2 === 0 ? "-60%" : "60%";
+
+  // Scroll-linked transforms for buttery smooth animation
+  const x = useTransform(
+    scrollYProgress,
+    [0, 0.3, 0.5, 1],
+    [slideDirection, "0%", "0%", "0%"]
+  );
+  const opacity = useTransform(
+    scrollYProgress,
+    [0, 0.25, 0.5, 1],
+    [0, 1, 1, 1]
+  );
 
   return (
     <motion.div
-      className={`rounded-2xl px-5 py-4 md:px-6 md:py-5 cursor-pointer transition-all duration-300 ${
+      ref={tileRef}
+      className={`rounded-2xl px-5 py-4 md:px-6 md:py-5 cursor-pointer transition-colors duration-300 ${
         isHighlighted
           ? "bg-[#F4F1EC]/10 border-2 border-[#F4F1EC]/20"
           : "bg-[#F4F1EC]/5 border border-[#F4F1EC]/10"
-      } hover:bg-[#F4F1EC]/15 hover:border-[#F4F1EC]/25 hover:scale-[1.02]`}
-      initial={{ opacity: 0, x: slideDirection }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, amount: 0.1 }}
-      transition={{
-        duration: 0.7,
-        delay: index * 0.08,
-        ease: [0.25, 0.1, 0.25, 1],
-      }}
+      } hover:bg-[#F4F1EC]/15 hover:border-[#F4F1EC]/25`}
+      style={{ x, opacity }}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
     >
@@ -1381,13 +1409,13 @@ export default function ShortyLandingPage() {
           {/* Positioning Statement */}
           <div className="space-y-4 text-lg md:text-xl text-[#F4F1EC]/80 leading-relaxed">
             <p>
-              <span className="font-semibold text-[#F4F1EC]">Social gets attention.</span>
+              <span className="font-semibold text-[#F4F1EC]">Social media is your introduction.</span>
             </p>
             <p>
-              <span className="font-semibold text-[#F4F1EC]">SmartPages give clarity.</span>
+              <span className="font-semibold text-[#F4F1EC]">SmartPages is your business assistant.</span>
             </p>
             <p>
-              <span className="font-semibold text-[#F4F1EC]">Websites go deeper when needed.</span>
+              <span className="font-semibold text-[#F4F1EC]">Websites and apps legitimize your brand.</span>
             </p>
           </div>
 
