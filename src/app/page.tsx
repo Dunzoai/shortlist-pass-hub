@@ -463,6 +463,9 @@ export default function Home() {
               variants={staggerContainer}
               className="max-w-4xl mx-auto text-center"
             >
+              {/* TEST HEADER */}
+              <h1 className="text-6xl font-bold text-red-500 mb-8">HORSE</h1>
+
               {/* Headline - OPTION 2 & 3: appears first, BIG has visual weight */}
               <motion.h1
                 variants={fadeUpVariant}
