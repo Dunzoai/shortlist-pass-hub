@@ -135,7 +135,7 @@ function ScrollingBelt() {
   }, []);
 
   return (
-    <div className="relative overflow-hidden h-14 bg-gradient-to-r from-[#374151] via-[#374151] to-[#374151] flex items-center">
+    <div className="relative overflow-hidden h-14 bg-gradient-to-r from-[#333333] via-[#333333] to-[#333333] flex items-center">
       <div
         className="flex items-center whitespace-nowrap animate-scroll"
         style={{
@@ -172,9 +172,9 @@ function ServiceTile({ title, subhead, description, href, index, image, cta }: S
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
     >
-      <div className="h-full p-8 bg-[#F4F1EC] border border-transparent rounded-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#374151] hover:shadow-lg hover:shadow-[#374151]/10 flex flex-col text-center">
-        <h3 className="text-2xl font-semibold text-[#1F2937] mb-2">{title}</h3>
-        <p className="text-sm font-medium text-[#374151] mb-4">{subhead}</p>
+      <div className="h-full p-8 bg-[#F4F1EC] border border-transparent rounded-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#333333] hover:shadow-lg hover:shadow-[#333333]/10 flex flex-col text-center">
+        <h3 className="text-2xl font-semibold text-[#222222] mb-2">{title}</h3>
+        <p className="text-sm font-medium text-[#333333] mb-4">{subhead}</p>
         <p className="text-base text-[#5A6570] leading-relaxed flex-1">{description}</p>
         <div className="mt-2 flex justify-center overflow-hidden">
           <motion.div
@@ -210,7 +210,7 @@ function ServiceTile({ title, subhead, description, href, index, image, cta }: S
         </div>
         <Link
           href={href}
-          className="mt-4 inline-block px-6 py-3 bg-[#374151] text-[#F4F1EC] font-medium rounded-full hover:bg-[#1F2937] transition-colors duration-300"
+          className="mt-4 inline-block px-6 py-3 bg-[#333333] text-[#F4F1EC] font-medium rounded-full hover:bg-[#222222] transition-colors duration-300"
         >
           {cta}
         </Link>
@@ -227,9 +227,9 @@ interface HelpCardProps {
 
 function HelpCard({ icon, title, description }: HelpCardProps) {
   return (
-    <div className="group p-6 bg-[#F4F1EC] border border-[#1F2937]/30 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#F4F1EC] hover:shadow-lg hover:shadow-[#F4F1EC]/20">
+    <div className="group p-6 bg-[#F4F1EC] border border-[#222222]/30 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#F4F1EC] hover:shadow-lg hover:shadow-[#F4F1EC]/20">
       <div className="mb-4">{icon}</div>
-      <h3 className="text-xl font-semibold text-[#1F2937] mb-3">{title}</h3>
+      <h3 className="text-xl font-semibold text-[#222222] mb-3">{title}</h3>
       <p className="text-base text-[#5A6570] leading-relaxed">{description}</p>
     </div>
   );
@@ -298,7 +298,7 @@ function HowWeHelp() {
   }, [startTyping]);
 
   return (
-    <section className="pt-24 pb-12 bg-[#374151]">
+    <section className="pt-24 pb-12 bg-[#333333]">
       <Container>
         <h2
           ref={headingRef}
@@ -325,7 +325,7 @@ function HowWeHelp() {
 
 function ProofStrip() {
   return (
-    <section className="pt-8 pb-24 bg-[#374151]">
+    <section className="pt-8 pb-24 bg-[#333333]">
       <Container>
         <motion.div
           variants={staggerContainer}
@@ -340,7 +340,7 @@ function ProofStrip() {
             className="bg-[#F4F1EC] rounded-2xl px-8 py-12 md:px-16 md:py-16 max-w-2xl mx-auto"
           >
             <h2
-              className="text-3xl md:text-4xl font-normal text-[#1F2937] mb-4"
+              className="text-3xl md:text-4xl font-normal text-[#222222] mb-4"
               style={{ fontFamily: "var(--font-libre-baskerville)" }}
             >
               Built for real business owners.
@@ -350,7 +350,7 @@ function ProofStrip() {
             </p>
             <a
               href="mailto:hello@shortlistpass.com"
-              className="inline-block px-6 py-3 bg-[#374151] text-[#F4F1EC] font-medium rounded-lg hover:bg-[#111827] transition-colors duration-200"
+              className="inline-block px-6 py-3 bg-[#333333] text-[#F4F1EC] font-medium rounded-lg hover:bg-[#1a1a1a] transition-colors duration-200"
             >
               Tell us your business needs
             </a>
@@ -374,7 +374,7 @@ function Footer() {
               href="https://instagram.com/shortlistpass"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-[#1F2937] transition-colors duration-200"
+              className="hover:text-[#222222] transition-colors duration-200"
               aria-label="Instagram"
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -463,14 +463,11 @@ export default function Home() {
               variants={staggerContainer}
               className="max-w-4xl mx-auto text-center"
             >
-              {/* TEST HEADER */}
-              <h1 className="text-6xl font-bold text-red-500 mb-8">HORSE</h1>
-
               {/* Headline - OPTION 2 & 3: appears first, BIG has visual weight */}
               <motion.h1
                 variants={fadeUpVariant}
                 transition={{ duration: 0.5, ease: "easeOut" }}
-                className="text-[26px] sm:text-[32px] md:text-[44px] lg:text-[52px] font-normal text-[#1F2937] leading-[1.15] mb-6"
+                className="text-[26px] sm:text-[32px] md:text-[44px] lg:text-[52px] font-normal text-[#222222] leading-[1.15] mb-6"
                 style={{ fontFamily: "var(--font-libre-baskerville)" }}
               >
                 <span className="block">

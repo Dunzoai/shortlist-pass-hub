@@ -26,10 +26,10 @@ export function WhyBlock({ heading, lines, variant = "light" }: WhyBlockProps) {
       {/* Heading with left border */}
       <h4
         className={`text-sm md:text-base font-semibold mb-3 pl-3 ${
-          isDark ? "text-[#F4F1EC]" : "text-[#1F2937]"
+          isDark ? "text-[#F4F1EC]" : "text-[#222222]"
         }`}
         style={{
-          borderLeft: isDark ? "2px solid #F4F1EC" : "2px solid #374151",
+          borderLeft: isDark ? "2px solid #F4F1EC" : "2px solid #333333",
         }}
       >
         {heading}

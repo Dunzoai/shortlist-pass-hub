@@ -153,7 +153,7 @@ function DrawUnderline({ isVisible }: { isVisible: boolean }) {
     >
       <motion.path
         d="M0 6c30-2 60 2 90 0s60 2 90 1c20-0.5 18 1 20 0"
-        stroke="#374151"
+        stroke="#333333"
         strokeWidth="2.5"
         strokeLinecap="round"
         fill="none"
@@ -313,8 +313,8 @@ function ValuePropositionSection() {
       </div>
 
       {/* Hairline framing rules */}
-      <div className="absolute top-12 left-8 md:left-16 w-16 md:w-24 h-px bg-[#1F2937] opacity-[0.1]" />
-      <div className="absolute bottom-12 right-8 md:right-16 w-16 md:w-24 h-px bg-[#1F2937] opacity-[0.1]" />
+      <div className="absolute top-12 left-8 md:left-16 w-16 md:w-24 h-px bg-[#222222] opacity-[0.1]" />
+      <div className="absolute bottom-12 right-8 md:right-16 w-16 md:w-24 h-px bg-[#222222] opacity-[0.1]" />
 
       <Container>
         <div className="relative max-w-[820px] mx-auto text-center px-4">
@@ -327,7 +327,7 @@ function ValuePropositionSection() {
           />
           {/* Headline - static, no animation */}
           <h2
-            className="relative z-10 text-[24px] md:text-[36px] lg:text-[44px] font-normal text-[#1F2937] leading-[1.22] mb-6 md:mb-8"
+            className="relative z-10 text-[24px] md:text-[36px] lg:text-[44px] font-normal text-[#222222] leading-[1.22] mb-6 md:mb-8"
             style={{ fontFamily: "var(--font-libre-baskerville)" }}
           >
             Most small businesses don&apos;t get custom websites. They get{" "}
@@ -356,7 +356,7 @@ function ValuePropositionSection() {
 
           {/* Body copy */}
           <motion.p
-            className="relative z-10 text-[17px] md:text-[22px] lg:text-[26px] font-normal text-[#1F2937]/85 leading-[1.45] -mt-1 md:mt-0"
+            className="relative z-10 text-[17px] md:text-[22px] lg:text-[26px] font-normal text-[#222222]/85 leading-[1.45] -mt-1 md:mt-0"
             style={{ fontFamily: "var(--font-libre-baskerville)" }}
             initial={{ opacity: 0, y: 10 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -380,7 +380,7 @@ function TalkVsWalkWithArrow() {
   return (
     <>
       {/* TalkVsWalk Section */}
-      <section className="py-20 lg:py-28 bg-[#374151]">
+      <section className="py-20 lg:py-28 bg-[#333333]">
         <Container>
           <div className="max-w-2xl mx-auto text-center">
             {/* Headline - static */}
@@ -412,9 +412,9 @@ function TalkVsWalkWithArrow() {
             <div>
               <Container>
                 <div className="text-center mb-12">
-                  <h3 className="text-[32px] md:text-[44px] font-normal text-[#1F2937] leading-tight mb-4" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
+                  <h3 className="text-[32px] md:text-[44px] font-normal text-[#222222] leading-tight mb-4" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
                     <span className="block">You move.</span>
-                    <span className="block text-[#1F2937]/70">Your site should too.</span>
+                    <span className="block text-[#222222]/70">Your site should too.</span>
                   </h3>
                   <p className="text-lg text-[#5A6570]">
                     Real schedules change week to week. We build pages that keep up.
@@ -579,9 +579,9 @@ function AISchedulingDemo() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-normal text-[#1F2937] leading-tight mb-6" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
+          <h2 className="text-[32px] md:text-[44px] lg:text-[52px] font-normal text-[#222222] leading-tight mb-6" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
             <span className="block">{AI_DEMO_COPY.headline}</span>
-            <span className="block text-[#374151]">{AI_DEMO_COPY.headlineBrass}</span>
+            <span className="block text-[#333333]">{AI_DEMO_COPY.headlineBrass}</span>
           </h2>
           <p className="text-lg text-[#5A6570] max-w-2xl mx-auto">
             {AI_DEMO_COPY.subhead}
@@ -613,7 +613,7 @@ function AISchedulingDemo() {
               style={{ display: showCalendar ? "none" : "block" }}
             >
               <div className="flex items-center gap-2 mb-6">
-                <div className="w-2 h-2 rounded-full bg-[#374151]" />
+                <div className="w-2 h-2 rounded-full bg-[#333333]" />
                 <span className="text-xs text-[#5A6570]/60 uppercase tracking-wider">{AI_DEMO_COPY.chatLabel}</span>
               </div>
 
@@ -631,8 +631,8 @@ function AISchedulingDemo() {
                       <div
                         className={`max-w-[85%] rounded-2xl px-4 py-3 ${
                           msg.role === "customer"
-                            ? "bg-[#374151] text-[#F4F1EC]"
-                            : "bg-white/90 text-[#1F2937] border border-[#374151]/10"
+                            ? "bg-[#333333] text-[#F4F1EC]"
+                            : "bg-white/90 text-[#222222] border border-[#333333]/10"
                         }`}
                       >
                         <p className="text-sm leading-relaxed">{msg.text}</p>
@@ -655,7 +655,7 @@ function AISchedulingDemo() {
               style={{ pointerEvents: showCalendar && !showBooked ? "auto" : "none" }}
             >
               <div className="flex items-center gap-2 mb-4">
-                <svg className="w-4 h-4 text-[#374151]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <svg className="w-4 h-4 text-[#333333]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
                 <span className="text-xs text-[#5A6570]/60 uppercase tracking-wider">{AI_DEMO_COPY.confirmedLabel}</span>
@@ -678,14 +678,14 @@ function AISchedulingDemo() {
                           key={d.day}
                           className={`flex flex-col items-center px-3 py-2 rounded-xl transition-all ${
                             isSelected
-                              ? "bg-[#374151] text-[#F4F1EC]"
+                              ? "bg-[#333333] text-[#F4F1EC]"
                               : "bg-white/60 text-[#5A6570]/60"
                           }`}
                         >
                           <span className={`text-[10px] uppercase tracking-wider font-medium ${isSelected ? "text-[#F4F1EC]/70" : ""}`}>
                             {d.day}
                           </span>
-                          <span className={`text-lg font-bold ${isSelected ? "" : "text-[#1F2937]/40"}`}>
+                          <span className={`text-lg font-bold ${isSelected ? "" : "text-[#222222]/40"}`}>
                             {d.date}
                           </span>
                         </div>
@@ -707,7 +707,7 @@ function AISchedulingDemo() {
                   >
                     {/* Time badge */}
                     <div className="flex items-center gap-2 mb-3">
-                      <div className="px-2.5 py-1 rounded-md bg-[#374151]/20 text-[#374151] text-xs font-semibold">
+                      <div className="px-2.5 py-1 rounded-md bg-[#333333]/20 text-[#333333] text-xs font-semibold">
                         {appointment.time}
                       </div>
                       <div className="w-1 h-1 rounded-full bg-[#5A6570]/30" />
@@ -715,7 +715,7 @@ function AISchedulingDemo() {
                     </div>
 
                     {/* Service & Name */}
-                    <h3 className="text-xl md:text-2xl font-bold text-[#1F2937] mb-1">
+                    <h3 className="text-xl md:text-2xl font-bold text-[#222222] mb-1">
                       {appointment.service}
                     </h3>
                     <p className="text-base text-[#5A6570]/80 mb-3">
@@ -723,9 +723,9 @@ function AISchedulingDemo() {
                     </p>
 
                     {/* Stylist */}
-                    <div className="flex items-center gap-2 pt-3 border-t border-[#374151]/10">
-                      <div className="w-7 h-7 rounded-full bg-[#374151]/20 flex items-center justify-center">
-                        <span className="text-xs font-semibold text-[#374151]">
+                    <div className="flex items-center gap-2 pt-3 border-t border-[#333333]/10">
+                      <div className="w-7 h-7 rounded-full bg-[#333333]/20 flex items-center justify-center">
+                        <span className="text-xs font-semibold text-[#333333]">
                           {appointment.stylist.charAt(0)}
                         </span>
                       </div>
@@ -748,7 +748,7 @@ function AISchedulingDemo() {
             >
               {/* Slate blue circle with checkmark */}
               <motion.div
-                className="relative w-28 h-28 md:w-36 md:h-36 rounded-full bg-[#374151] flex items-center justify-center mb-6"
+                className="relative w-28 h-28 md:w-36 md:h-36 rounded-full bg-[#333333] flex items-center justify-center mb-6"
                 initial={{ scale: 0, rotate: -20 }}
                 animate={showBooked ? { scale: 1, rotate: 0 } : { scale: 0, rotate: -20 }}
                 transition={{
@@ -788,7 +788,7 @@ function AISchedulingDemo() {
                     {[...Array(8)].map((_, i) => (
                       <motion.div
                         key={i}
-                        className="absolute w-2 h-2 rounded-full bg-[#374151]/30"
+                        className="absolute w-2 h-2 rounded-full bg-[#333333]/30"
                         style={{
                           top: "50%",
                           left: "50%",
@@ -813,7 +813,7 @@ function AISchedulingDemo() {
 
               {/* Text */}
               <motion.h3
-                className="text-2xl md:text-3xl font-bold text-[#1F2937] mb-2"
+                className="text-2xl md:text-3xl font-bold text-[#222222] mb-2"
                 initial={{ opacity: 0, y: 10 }}
                 animate={showBooked ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
                 transition={{ delay: 0.25, duration: 0.35, ease: "easeOut" }}
@@ -861,7 +861,7 @@ function OutcomesSection() {
   return (
     <section ref={sectionRef} className="py-12 lg:py-16 bg-[#F4F1EC] overflow-hidden">
       <motion.div
-        className="bg-[#374151] py-16 lg:py-24 px-6 md:px-12 lg:px-20"
+        className="bg-[#333333] py-16 lg:py-24 px-6 md:px-12 lg:px-20"
         style={{ x, opacity }}
       >
         <div className="max-w-2xl mx-auto">
@@ -908,7 +908,7 @@ function ScopeSection() {
       >
         <div className="max-w-2xl mx-auto text-center">
           <h2
-            className="text-[32px] md:text-[44px] font-normal text-[#1F2937] leading-tight mb-8"
+            className="text-[32px] md:text-[44px] font-normal text-[#222222] leading-tight mb-8"
             style={{ fontFamily: "var(--font-libre-baskerville)" }}
           >
             Websites. Apps. Custom tools.
@@ -917,7 +917,7 @@ function ScopeSection() {
           <p className="text-lg md:text-xl text-[#5A6570] leading-relaxed mb-4">
             We learn your business first — then build around it. Not from templates. Not from assumptions.
           </p>
-          <p className="text-lg md:text-xl text-[#1F2937] leading-relaxed">
+          <p className="text-lg md:text-xl text-[#222222] leading-relaxed">
             We take on the hard stuff — because that&apos;s what makes your business stand out.
           </p>
         </div>
@@ -945,7 +945,7 @@ function FinalCTASection() {
   return (
     <section ref={sectionRef} className="bg-[#F4F1EC] overflow-hidden">
       <motion.div
-        className="bg-[#374151] py-28 lg:py-40"
+        className="bg-[#333333] py-28 lg:py-40"
         style={{ y, opacity }}
       >
         <Container>
@@ -958,7 +958,7 @@ function FinalCTASection() {
             <div className="flex justify-center mb-10">
               <a
                 href="mailto:hello@shortlistpass.com?subject=Let's talk"
-                className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold bg-[#F4F1EC] text-[#374151] rounded-full hover:bg-white transition-colors"
+                className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold bg-[#F4F1EC] text-[#333333] rounded-full hover:bg-white transition-colors"
               >
                 Start the conversation.
               </a>

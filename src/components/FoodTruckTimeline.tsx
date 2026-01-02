@@ -166,12 +166,12 @@ export function FoodTruckTimeline() {
               >
                 <div>
                   <p className={`text-[10px] uppercase tracking-[0.2em] mb-2 font-medium ${
-                    index === activeIndex ? "text-[#374151]" : "text-[#5A6570]/40"
+                    index === activeIndex ? "text-[#333333]" : "text-[#5A6570]/40"
                   }`}>
                     {day.fullDay}
                   </p>
                   <h4 className={`text-xl font-bold italic ${
-                    index === activeIndex ? "text-[#1F2937]" : "text-[#1F2937]/50"
+                    index === activeIndex ? "text-[#222222]" : "text-[#222222]/50"
                   }`}>
                     {day.location}
                   </h4>
@@ -197,7 +197,7 @@ export function FoodTruckTimeline() {
               onClick={() => scrollToCard(index)}
               className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 ${
                 index === activeIndex
-                  ? "bg-[#F4F1EC] text-[#374151]"
+                  ? "bg-[#F4F1EC] text-[#333333]"
                   : "bg-[#F4F1EC]/10 text-[#F4F1EC]/60 hover:bg-[#F4F1EC]/20 hover:text-[#F4F1EC]"
               }`}
             >

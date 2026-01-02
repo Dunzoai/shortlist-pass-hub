@@ -69,7 +69,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${sora.variable} ${libreBaskerville.variable} font-sans antialiased bg-[#F4F1EC] text-[#1F2937]`}>
+      <body className={`${sora.variable} ${libreBaskerville.variable} font-sans antialiased bg-[#F4F1EC] text-[#222222]`}>
         <Nav />
         {children}
       </body>

@@ -186,8 +186,8 @@ function PaginationDots({
           aria-label={`Go to slide ${i + 1}`}
           className={`h-2 rounded-full transition-all duration-300 ${
             i === currentIndex
-              ? "bg-[#374151] w-6"
-              : "bg-[#374151]/30 hover:bg-[#374151]/50 w-2"
+              ? "bg-[#333333] w-6"
+              : "bg-[#333333]/30 hover:bg-[#333333]/50 w-2"
           }`}
         />
       ))}
@@ -678,8 +678,8 @@ export function StoryStreetSection({
                     exit={{ opacity: 0, transition: { duration: 0.08 } }}
                     transition={{ duration: 0.35, ease: "easeOut", delay: 0.8 }}
                   >
-                    <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-4 md:px-6 md:py-5 border-2 border-[#374151]/40 ring-1 ring-[#374151]/15 text-center">
-                      <h3 className="font-semibold text-[#1F2937] text-sm sm:text-base md:text-lg mb-1">
+                    <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-4 md:px-6 md:py-5 border-2 border-[#333333]/40 ring-1 ring-[#333333]/15 text-center">
+                      <h3 className="font-semibold text-[#222222] text-sm sm:text-base md:text-lg mb-1">
                         Social is how you get noticed
                       </h3>
                       <p className="text-[#5A6570] text-xs sm:text-sm md:text-base">
@@ -697,7 +697,7 @@ export function StoryStreetSection({
                       <div className="flex justify-center">
                         <Link
                           href="/social"
-                          className="inline-block px-6 py-3 bg-[#374151] text-[#F4F1EC] text-sm font-semibold rounded-lg hover:bg-[#111827] transition-colors duration-200 pointer-events-auto shadow-md"
+                          className="inline-block px-6 py-3 bg-[#333333] text-[#F4F1EC] text-sm font-semibold rounded-lg hover:bg-[#1a1a1a] transition-colors duration-200 pointer-events-auto shadow-md"
                         >
                           Why social comes first
                         </Link>
@@ -719,8 +719,8 @@ export function StoryStreetSection({
                     exit={{ opacity: 0, transition: { duration: 0.08 } }}
                     transition={{ duration: 0.35, ease: "easeOut", delay: 1.5 }}
                   >
-                    <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-4 md:px-6 md:py-5 border-2 border-[#374151]/40 ring-1 ring-[#374151]/15 text-center">
-                      <h3 className="font-semibold text-[#1F2937] text-sm sm:text-base md:text-lg mb-1">
+                    <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-4 md:px-6 md:py-5 border-2 border-[#333333]/40 ring-1 ring-[#333333]/15 text-center">
+                      <h3 className="font-semibold text-[#222222] text-sm sm:text-base md:text-lg mb-1">
                         Your business assistant, online.
                       </h3>
                       <p className="text-[#5A6570] text-xs sm:text-sm md:text-base mb-2">
@@ -738,7 +738,7 @@ export function StoryStreetSection({
                       <div className="flex justify-center">
                         <Link
                           href="/smartpages"
-                          className="inline-block px-6 py-3 bg-[#374151] text-[#F4F1EC] text-sm font-semibold rounded-lg hover:bg-[#111827] transition-colors duration-200 pointer-events-auto shadow-md"
+                          className="inline-block px-6 py-3 bg-[#333333] text-[#F4F1EC] text-sm font-semibold rounded-lg hover:bg-[#1a1a1a] transition-colors duration-200 pointer-events-auto shadow-md"
                         >
                           Meet your SmartPage
                         </Link>
@@ -760,8 +760,8 @@ export function StoryStreetSection({
                     exit={{ opacity: 0, transition: { duration: 0.08 } }}
                     transition={{ duration: 0.35, ease: "easeOut", delay: 1.2 }}
                   >
-                    <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-4 md:px-6 md:py-5 border-2 border-[#374151]/40 ring-1 ring-[#374151]/15 text-center">
-                      <h3 className="font-semibold text-[#1F2937] text-sm sm:text-base md:text-lg mb-1">
+                    <div className="bg-white/65 backdrop-blur-sm rounded-xl shadow-lg px-4 py-4 md:px-6 md:py-5 border-2 border-[#333333]/40 ring-1 ring-[#333333]/15 text-center">
+                      <h3 className="font-semibold text-[#222222] text-sm sm:text-base md:text-lg mb-1">
                         This is where it becomes digital.
                       </h3>
                       <p className="text-[#5A6570] text-xs sm:text-sm md:text-base mb-3">
@@ -770,7 +770,7 @@ export function StoryStreetSection({
                       <div className="flex justify-center">
                         <Link
                           href="/digital"
-                          className="inline-block px-6 py-3 bg-[#374151] text-[#F4F1EC] text-sm font-semibold rounded-lg hover:bg-[#111827] transition-colors duration-200 pointer-events-auto shadow-md"
+                          className="inline-block px-6 py-3 bg-[#333333] text-[#F4F1EC] text-sm font-semibold rounded-lg hover:bg-[#1a1a1a] transition-colors duration-200 pointer-events-auto shadow-md"
                         >
                           Explore our digital builds
                         </Link>
@@ -793,7 +793,7 @@ export function StoryStreetSection({
                       transition={{ duration: 0.3 }}
                     >
                       <h2
-                        className="text-3xl md:text-4xl lg:text-5xl font-normal text-[#1F2937] mb-3"
+                        className="text-3xl md:text-4xl lg:text-5xl font-normal text-[#222222] mb-3"
                         style={{ fontFamily: "var(--font-libre-baskerville)" }}
                       >
                         Your business belongs here.
@@ -802,7 +802,7 @@ export function StoryStreetSection({
                         Most never make it past the scroll.
                       </p>
                       <motion.p
-                        className="text-sm md:text-base text-[#374151] flex items-center justify-center gap-2 overflow-hidden"
+                        className="text-sm md:text-base text-[#333333] flex items-center justify-center gap-2 overflow-hidden"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.6, duration: 0.4 }}
@@ -815,7 +815,7 @@ export function StoryStreetSection({
                           Swipe to see what separates the ones that do
                         </motion.span>
                         <motion.span
-                          className="inline-flex text-[#374151]"
+                          className="inline-flex text-[#333333]"
                           initial={{ x: -20, opacity: 0 }}
                           animate={{ x: 0, opacity: 1 }}
                           transition={{ delay: 1.6, duration: 0.6, ease: "easeOut" }}
@@ -873,7 +873,7 @@ export function StoryStreetSection({
             <div className="text-center mt-8">
               <button
                 onClick={onToggleOldCards}
-                className="inline-flex items-center gap-2 text-sm text-[#5A6570] hover:text-[#374151] transition-colors duration-200"
+                className="inline-flex items-center gap-2 text-sm text-[#5A6570] hover:text-[#333333] transition-colors duration-200"
               >
                 <span>Want to read about it instead?</span>
                 <svg
@@ -949,7 +949,7 @@ export function StoryStreetSection({
               >
                 <button
                   onClick={handleCloseOverlay}
-                  className="inline-flex items-center gap-2 text-sm text-[#5A6570] hover:text-[#374151] transition-colors duration-200"
+                  className="inline-flex items-center gap-2 text-sm text-[#5A6570] hover:text-[#333333] transition-colors duration-200"
                 >
                   <span>←</span>
                   <span>Back to the visual story</span>
@@ -974,7 +974,7 @@ export function StoryStreetSection({
               >
                 <button
                   onClick={handleCloseOverlay}
-                  className="inline-flex items-center gap-2 text-sm text-[#5A6570] hover:text-[#374151] transition-colors duration-200"
+                  className="inline-flex items-center gap-2 text-sm text-[#5A6570] hover:text-[#333333] transition-colors duration-200"
                 >
                   <span>←</span>
                   <span>Back to the visual story</span>
