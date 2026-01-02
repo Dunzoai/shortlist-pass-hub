@@ -187,7 +187,7 @@ const appIcons = [
 
 function IconBelt() {
   return (
-    <div className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 h-[200px] md:h-[240px] flex items-center justify-center overflow-visible z-0">
+    <div className="pointer-events-none absolute inset-x-0 top-[320px] md:top-[380px] h-[200px] md:h-[240px] flex items-center justify-center overflow-visible z-0">
       {/* Left glow - icons entering/feeding info */}
       <div className="absolute left-[15%] md:left-[20%] top-1/2 -translate-y-1/2 w-32 h-32 md:w-40 md:h-40 bg-[#F4F1EC]/30 rounded-full blur-3xl" />
       {/* Right glow - icons exiting/sending to customers */}
@@ -1073,29 +1073,30 @@ function FeaturesSection() {
 }
 
 // =============================================================================
-// RESPONSIBILITY TILES DATA
+// RESPONSIBILITY TILES DATA (Ordered for strength)
 // =============================================================================
 
 const responsibilities = [
   {
-    title: "Answering the same questions",
-    description: "Hours, menu, parking, services — every routine question, handled without you.",
+    title: "Answers the questions that matter",
+    description: "Hours, offerings, pricing, policies, directions — delivered instantly, clearly, and correctly.",
   },
   {
-    title: "Sending people to the right link",
-    description: "Customers ask and get pointed to exactly where they need — Instagram, booking, website, wherever.",
+    title: "Handles real business actions",
+    description: "Reservations, orders, bookings, updates — confirmed, routed, and added to the calendar for you and the customer.",
+    isHighlighted: true,
   },
   {
-    title: "Keeping your info in one place",
-    description: "No scattered pages. Everything they need to know, surfaced the moment they ask.",
+    title: "Keeps your business organized behind the scenes",
+    description: "Your information lives in one place and stays in sync everywhere it shows up. No scattered pages. No outdated details. No second-guessing.",
   },
   {
-    title: "Making it easy to engage",
-    description: "Notifications, reservations, orders, links — right there, no searching.",
+    title: "Makes it easy for customers to take the next step",
+    description: "Links, notifications, follow-ups, and reminders — right when they're needed. Nothing to search for. Nothing to explain twice.",
   },
   {
-    title: "Knowing your business as well as you do",
-    description: "Trained on what you offer, how you talk, and what matters most.",
+    title: "Represents your business the way you would",
+    description: "Trained on how you operate, what you offer, and what matters most. It knows what to say — and what not to say.",
   },
 ];
 
@@ -1106,28 +1107,42 @@ const responsibilities = [
 function ResponsibilityTile({
   title,
   description,
-  index
+  index,
+  isHighlighted = false
 }: {
   title: string;
   description: string;
   index: number;
+  isHighlighted?: boolean;
 }) {
+  // Alternate slide direction: even from left, odd from right (desktop)
+  // Mobile: all slide from right (thumb direction)
+  const slideDirection = index % 2 === 0 ? -60 : 60;
+
   return (
     <motion.div
-      className="bg-[#F4F1EC]/5 border border-[#F4F1EC]/10 rounded-2xl px-5 py-4 md:px-6 md:py-5"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      className={`rounded-2xl px-5 py-4 md:px-6 md:py-5 ${
+        isHighlighted
+          ? "bg-[#F4F1EC]/10 border-2 border-[#F4F1EC]/20"
+          : "bg-[#F4F1EC]/5 border border-[#F4F1EC]/10"
+      }`}
+      initial={{ opacity: 0, x: slideDirection }}
+      whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{
-        duration: 0.5,
-        delay: index * 0.1,
+        duration: isHighlighted ? 0.7 : 0.5,
+        delay: index * 0.12,
         ease: "easeOut"
       }}
     >
-      <h3 className="text-[#F4F1EC] font-medium text-base md:text-lg mb-1.5">
+      <h3 className={`text-[#F4F1EC] text-base md:text-lg mb-1.5 ${
+        isHighlighted ? "font-semibold" : "font-medium"
+      }`}>
         {title}
       </h3>
-      <p className="text-[#F4F1EC]/60 text-sm md:text-base leading-relaxed">
+      <p className={`text-sm md:text-base leading-relaxed ${
+        isHighlighted ? "text-[#F4F1EC]/70" : "text-[#F4F1EC]/60"
+      }`}>
         {description}
       </p>
     </motion.div>
@@ -1193,6 +1208,7 @@ export default function ShortyLandingPage() {
                 title={item.title}
                 description={item.description}
                 index={index}
+                isHighlighted={item.isHighlighted}
               />
             ))}
           </div>
