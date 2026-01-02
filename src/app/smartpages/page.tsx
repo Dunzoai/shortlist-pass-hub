@@ -1073,6 +1073,68 @@ function FeaturesSection() {
 }
 
 // =============================================================================
+// RESPONSIBILITY TILES DATA
+// =============================================================================
+
+const responsibilities = [
+  {
+    title: "Answering the same questions",
+    description: "Hours, menu, parking, services — every routine question, handled without you.",
+  },
+  {
+    title: "Sending people to the right link",
+    description: "Customers ask and get pointed to exactly where they need — Instagram, booking, website, wherever.",
+  },
+  {
+    title: "Keeping your info in one place",
+    description: "No scattered pages. Everything they need to know, surfaced the moment they ask.",
+  },
+  {
+    title: "Making it easy to engage",
+    description: "Notifications, reservations, orders, links — right there, no searching.",
+  },
+  {
+    title: "Knowing your business as well as you do",
+    description: "Trained on what you offer, how you talk, and what matters most.",
+  },
+];
+
+// =============================================================================
+// RESPONSIBILITY TILE COMPONENT
+// =============================================================================
+
+function ResponsibilityTile({
+  title,
+  description,
+  index
+}: {
+  title: string;
+  description: string;
+  index: number;
+}) {
+  return (
+    <motion.div
+      className="bg-[#F4F1EC]/5 border border-[#F4F1EC]/10 rounded-2xl px-5 py-4 md:px-6 md:py-5"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{
+        duration: 0.5,
+        delay: index * 0.1,
+        ease: "easeOut"
+      }}
+    >
+      <h3 className="text-[#F4F1EC] font-medium text-base md:text-lg mb-1.5">
+        {title}
+      </h3>
+      <p className="text-[#F4F1EC]/60 text-sm md:text-base leading-relaxed">
+        {description}
+      </p>
+    </motion.div>
+  );
+}
+
+// =============================================================================
 // MAIN PAGE
 // =============================================================================
 
@@ -1109,10 +1171,10 @@ export default function ShortyLandingPage() {
         {/* Headline + Subheadline - ABOVE modal */}
         <div className="text-center max-w-3xl mb-6 md:mb-8 z-10 mt-10 md:mt-6 px-4">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal tracking-tight leading-tight text-[#F4F1EC]" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
-            Meet your Digital Assistant.
+            The digital business assistant that replaces more than you think.
           </h1>
           <p className="mt-4 text-lg md:text-xl text-[#F4F1EC]/80">
-            The employee your business has been missing.
+            What you&apos;re looking at isn&apos;t a chatbot. It&apos;s a trained part of your business, doing real work for you.
           </p>
         </div>
 
@@ -1122,27 +1184,58 @@ export default function ShortyLandingPage() {
         {/* Modal */}
         <ShortyModal />
 
-        {/* Body copy - BELOW modal */}
-        <div className="mt-10 md:mt-12 z-10 text-center max-w-2xl px-4">
-          <p className="text-base md:text-lg text-[#F4F1EC]/80 leading-relaxed">
-            Your Digital Assistant works like a real employee — trained on how your business runs.
-          </p>
-          <p className="mt-4 text-base md:text-lg text-[#F4F1EC]/80 leading-relaxed">
-            It helps handle bookings, updates, marketing tools, and everyday tasks from one place.
-          </p>
-          <p className="mt-6 text-sm md:text-base text-[#F4F1EC]/60 leading-relaxed">
-            Customers interact naturally.<br />
-            Behind the scenes, it keeps everything organized and on track.
-          </p>
-          <p className="mt-6 text-sm md:text-base text-[#F4F1EC]/60 leading-relaxed">
-            Always on.<br />
-            Always accurate.<br />
-            Always working for your business.
-          </p>
-          {/* Micro-line */}
-          <p className="mt-8 text-xs text-[#F4F1EC]/40">
+        {/* Animated Responsibility Tiles - BELOW modal */}
+        <div className="mt-10 md:mt-14 z-10 w-full max-w-2xl px-4">
+          <div className="space-y-3 md:space-y-4">
+            {responsibilities.map((item, index) => (
+              <ResponsibilityTile
+                key={index}
+                title={item.title}
+                description={item.description}
+                index={index}
+              />
+            ))}
+          </div>
+
+          {/* Reframe Block - visually separated */}
+          <motion.div
+            className="mt-10 md:mt-12 pt-8 md:pt-10 border-t border-[#F4F1EC]/10"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+          >
+            <p className="text-[#F4F1EC]/70 text-base md:text-lg leading-relaxed text-center">
+              Customers interact naturally, like they&apos;re talking to someone at the front counter.
+            </p>
+            <p className="mt-3 text-[#F4F1EC]/70 text-base md:text-lg leading-relaxed text-center">
+              Behind the scenes, it keeps everything organized, up to date, and easy to find.
+            </p>
+          </motion.div>
+
+          {/* Power Close */}
+          <motion.div
+            className="mt-10 md:mt-12 text-center"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.7 }}
+          >
+            <p className="text-[#F4F1EC] text-lg md:text-xl font-medium">
+              Always on. Always consistent. Always working in your best interest.
+            </p>
+          </motion.div>
+
+          {/* Final Micro-line */}
+          <motion.p
+            className="mt-8 text-xs text-[#F4F1EC]/40 text-center"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.8 }}
+          >
             Not a chatbot. Your business, handled.
-          </p>
+          </motion.p>
         </div>
 
       </section>
