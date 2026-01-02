@@ -652,75 +652,70 @@ function AppCarouselSection() {
         {/* Left spacer for centering first card */}
         <div className="shrink-0 w-[calc(50%-160px)] md:w-[calc(50%-200px)]" />
 
-        {smartPageCards.map((card, index) => (
-          <div
-            key={card.name}
-            ref={(el) => { cardRefs.current[index] = el; }}
-            onClick={() => scrollToCard(index)}
-            className="shrink-0 w-[320px] md:w-[400px] snap-center cursor-pointer"
-          >
-            <motion.div
-              className="rounded-3xl p-6 md:p-8 h-[420px] md:h-[480px] flex flex-col transition-all duration-300"
-              animate={{
-                scale: index === activeIndex ? 1 : 0.9,
-                opacity: index === activeIndex ? 1 : 0.4,
-              }}
-              transition={{ duration: 0.3 }}
-              style={{
-                background: index === activeIndex
-                  ? "linear-gradient(180deg, rgba(244, 241, 236, 0.1) 0%, rgba(244, 241, 236, 0.05) 100%)"
-                  : "rgba(244, 241, 236, 0.03)",
-                border: index === activeIndex
-                  ? "1px solid rgba(244, 241, 236, 0.2)"
-                  : "1px solid rgba(244, 241, 236, 0.08)",
-                filter: index === activeIndex ? "none" : "grayscale(50%)",
-                boxShadow: index === activeIndex
-                  ? "0 0 60px rgba(244, 241, 236, 0.1)"
-                  : "none",
-              }}
+        {smartPageCards.map((card, index) => {
+          const isActive = index === activeIndex;
+          return (
+            <div
+              key={card.name}
+              ref={(el) => { cardRefs.current[index] = el; }}
+              onClick={() => scrollToCard(index)}
+              className="shrink-0 w-[320px] md:w-[400px] snap-center cursor-pointer"
             >
-              {/* App Icon - zoomed in to crop the large transparent canvas */}
-              <div className="relative w-44 h-44 md:w-56 md:h-56 mx-auto mb-4 md:mb-6 overflow-hidden rounded-3xl shadow-lg">
-                <Image
-                  src={card.icon}
-                  alt={card.name}
-                  width={320}
-                  height={320}
-                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 scale-[3] md:scale-[3.5]"
-                />
-              </div>
+              <div
+                className={`rounded-3xl p-6 md:p-8 h-[420px] md:h-[480px] flex flex-col transition-all duration-300 ${
+                  isActive
+                    ? "bg-[#F4F1EC] shadow-xl"
+                    : "bg-[#333333]/50 border border-[#F4F1EC]/10"
+                }`}
+              >
+                {/* App Icon - zoomed in to crop the large transparent canvas */}
+                <div className={`relative w-44 h-44 md:w-56 md:h-56 mx-auto mb-4 md:mb-6 overflow-hidden rounded-3xl shadow-lg transition-opacity duration-300 ${
+                  isActive ? "opacity-100" : "opacity-50 grayscale-[30%]"
+                }`}>
+                  <Image
+                    src={card.icon}
+                    alt={card.name}
+                    width={320}
+                    height={320}
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 scale-[3] md:scale-[3.5]"
+                  />
+                </div>
 
-              {/* Card Content */}
-              <div className="text-center flex-1 flex flex-col">
-                <h3 className="text-xl md:text-2xl font-semibold text-[#F4F1EC] mb-1">
-                  {card.name}
-                </h3>
-                <p className="text-sm text-[#F4F1EC]/50 uppercase tracking-wider mb-4">
-                  {card.type}
-                </p>
-                <p className="text-sm md:text-base text-[#F4F1EC]/70 leading-relaxed flex-1">
-                  {card.description}
-                </p>
+                {/* Card Content */}
+                <div className="text-center flex-1 flex flex-col">
+                  <h3 className={`text-xl md:text-2xl font-semibold mb-1 transition-colors duration-300 ${
+                    isActive ? "text-[#333333]" : "text-[#F4F1EC]"
+                  }`}>
+                    {card.name}
+                  </h3>
+                  <p className={`text-sm uppercase tracking-wider mb-4 transition-colors duration-300 ${
+                    isActive ? "text-[#5A6570]" : "text-[#F4F1EC]/50"
+                  }`}>
+                    {card.type}
+                  </p>
+                  <p className={`text-sm md:text-base leading-relaxed flex-1 transition-colors duration-300 ${
+                    isActive ? "text-[#5A6570]" : "text-[#F4F1EC]/60"
+                  }`}>
+                    {card.description}
+                  </p>
 
-                {/* Try button - only visible on active card */}
-                {index === activeIndex && (
-                  <motion.a
-                    href={card.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-4 inline-flex items-center justify-center gap-2 text-sm text-[#F4F1EC]/60 hover:text-[#F4F1EC] transition-colors"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    Try this SmartPage
-                    <ArrowRightIcon className="w-4 h-4" />
-                  </motion.a>
-                )}
+                  {/* Try button - only visible on active card */}
+                  {isActive && (
+                    <a
+                      href={card.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-4 inline-flex items-center justify-center gap-2 text-sm text-[#333333]/70 hover:text-[#333333] transition-colors"
+                    >
+                      Try this SmartPage
+                      <ArrowRightIcon className="w-4 h-4" />
+                    </a>
+                  )}
+                </div>
               </div>
-            </motion.div>
-          </div>
-        ))}
+            </div>
+          );
+        })}
 
         {/* Right spacer for centering last card */}
         <div className="shrink-0 w-[calc(50%-160px)] md:w-[calc(50%-200px)]" />
