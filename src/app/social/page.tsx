@@ -1,408 +1,393 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Container } from "@/components/Container";
 
 // =============================================================================
-// COMING SOON PAGE WITH PUZZLE ANIMATION
+// EDITORIAL SOCIAL PAGE - Luxury Creative Studio Style
+// Calm, Confident, Minimal, Premium, Timeless
 // =============================================================================
 
-function PuzzlePiece({
-  children,
-  index,
-  totalPieces
-}: {
-  children: React.ReactNode;
-  index: number;
-  totalPieces: number;
-}) {
-  // Different starting positions for each piece
-  const getInitialPosition = (idx: number) => {
-    const positions = [
-      { x: -200, y: -200, rotate: -45 },  // top-left
-      { x: 200, y: -200, rotate: 45 },    // top-right
-      { x: -200, y: 200, rotate: 45 },    // bottom-left
-      { x: 200, y: 200, rotate: -45 },    // bottom-right
-      { x: 0, y: -300, rotate: 0 },       // top-center
-      { x: 0, y: 300, rotate: 0 },        // bottom-center
-    ];
-    return positions[idx % positions.length];
-  };
+// =============================================================================
+// SECTION 1: HERO
+// Abstract texture, no photos, elegant serif headline, no buttons
+// =============================================================================
 
-  const initial = getInitialPosition(index);
-
+function HeroSection() {
   return (
-    <motion.div
-      className="absolute inset-0"
-      initial={{
-        x: initial.x,
-        y: initial.y,
-        rotate: initial.rotate,
-        opacity: 0,
-        scale: 0.8
-      }}
-      animate={{
-        x: 0,
-        y: 0,
-        rotate: 0,
-        opacity: 1,
-        scale: 1
-      }}
-      transition={{
-        duration: 0.8,
-        delay: 0.1 + (index * 0.15),
-        ease: [0.25, 0.46, 0.45, 0.94]
-      }}
-    >
-      {children}
-    </motion.div>
-  );
-}
+    <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-[#333333]">
+      {/* Subtle grain texture overlay */}
+      <div
+        className="absolute inset-0 opacity-[0.04] pointer-events-none"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+        }}
+      />
 
-function ComingSoonSection() {
-  // Create 4 puzzle pieces (2x2 grid)
-  const pieces = [
-    { clipPath: "inset(0 50% 50% 0)" },    // top-left
-    { clipPath: "inset(0 0 50% 50%)" },    // top-right
-    { clipPath: "inset(50% 50% 0 0)" },    // bottom-left
-    { clipPath: "inset(50% 0 0 50%)" },    // bottom-right
-  ];
+      {/* Subtle gradient accent */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-30"
+        style={{
+          background: "radial-gradient(ellipse at 30% 20%, rgba(244, 241, 236, 0.08) 0%, transparent 50%)",
+        }}
+      />
 
-  return (
-    <section className="min-h-[calc(100vh-64px)] flex flex-col items-center justify-center py-16 px-6">
-      <Container>
-        <div className="max-w-2xl mx-auto text-center">
-          {/* Puzzle Image Container */}
-          <div className="relative w-full max-w-md mx-auto aspect-square mb-12">
-            {pieces.map((piece, index) => (
-              <PuzzlePiece key={index} index={index} totalPieces={pieces.length}>
-                <img
-                  src="/storystreet/coming-soon.png"
-                  alt="Coming Soon"
-                  className="w-full h-full object-contain"
-                  style={{ clipPath: piece.clipPath }}
-                />
-              </PuzzlePiece>
-            ))}
-          </div>
+      {/* Decorative line elements */}
+      <div className="absolute top-1/4 left-8 md:left-16 w-px h-24 bg-[#F4F1EC]/10" />
+      <div className="absolute bottom-1/4 right-8 md:right-16 w-px h-24 bg-[#F4F1EC]/10" />
 
-          {/* Editorial Text */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.8, ease: "easeOut" }}
-          >
-            <h1
-              className="text-[28px] md:text-[36px] lg:text-[42px] font-normal text-[#222222] leading-tight mb-6"
-              style={{ fontFamily: "var(--font-libre-baskerville)" }}
-            >
-              We&apos;re rebuilding this page.
-            </h1>
+      <div className="relative z-10 max-w-3xl mx-auto text-center px-6">
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.2 }}
+          className="text-[11px] uppercase tracking-[0.3em] text-[#F4F1EC]/50 mb-8"
+        >
+          Social & Content Studio
+        </motion.p>
 
-            <p className="text-base md:text-lg text-[#5A6570] leading-relaxed mb-8">
-              Our client roster just got a whole lot more interesting. We&apos;re
-              putting together something that actually shows what happens when
-              small businesses stop blending in and start getting noticed.
-            </p>
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+          className="text-[36px] md:text-[48px] lg:text-[56px] font-normal text-[#F4F1EC] leading-[1.1] mb-8"
+          style={{ fontFamily: "var(--font-libre-baskerville)" }}
+        >
+          We shape your presence.
+          <br />
+          <span className="text-[#F4F1EC]/60">We tell your story.</span>
+        </motion.h1>
 
-            <p className="text-base md:text-lg text-[#222222] font-medium">
-              Check back soon — or better yet, become one of the businesses we showcase.
-            </p>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.7 }}
+          className="text-base md:text-lg text-[#F4F1EC]/60 leading-relaxed max-w-xl mx-auto"
+        >
+          Strategic social media and content creation for businesses
+          that want to be remembered — not just seen.
+        </motion.p>
+      </div>
 
-            {/* CTA */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 1.2 }}
-              className="mt-10"
-            >
-              <a
-                href="mailto:hello@shortlistpass.com?subject=I want to show up"
-                className="inline-flex items-center justify-center px-8 py-4 text-base font-medium bg-[#333333] text-[#F4F1EC] rounded-full hover:bg-[#222222] transition-all duration-300"
-              >
-                Let&apos;s talk
-              </a>
-            </motion.div>
-          </motion.div>
-        </div>
-      </Container>
+      {/* Bottom decorative line */}
+      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 w-12 h-px bg-[#F4F1EC]/20" />
     </section>
   );
 }
+
+// =============================================================================
+// SECTION 2: WHAT WE DO
+// Simple section header, one concise paragraph
+// =============================================================================
+
+function WhatWeDoSection() {
+  return (
+    <section className="py-24 md:py-32 bg-[#2a2a2a]">
+      <div className="max-w-3xl mx-auto px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.7 }}
+        >
+          <p className="text-[11px] uppercase tracking-[0.25em] text-[#F4F1EC]/40 mb-6">
+            What We Do
+          </p>
+
+          <p
+            className="text-[22px] md:text-[28px] lg:text-[32px] font-normal text-[#F4F1EC]/90 leading-[1.4]"
+            style={{ fontFamily: "var(--font-libre-baskerville)" }}
+          >
+            We develop social strategy, create content that resonates,
+            and manage your presence with intention. Every post serves a purpose.
+            Every story reinforces who you are.
+          </p>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+// =============================================================================
+// SECTION 3: IMAGE SHAPE FEATURE
+// Decorative placeholders with editorial shapes - asymmetrical layout
+// =============================================================================
+
+function ImageShapeSection() {
+  return (
+    <section className="py-20 md:py-28 bg-[#333333] overflow-hidden">
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="grid grid-cols-12 gap-4 md:gap-6 items-center">
+          {/* Left text */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.7 }}
+            className="col-span-12 md:col-span-5 mb-8 md:mb-0"
+          >
+            <h2
+              className="text-[28px] md:text-[36px] font-normal text-[#F4F1EC] leading-[1.2] mb-6"
+              style={{ fontFamily: "var(--font-libre-baskerville)" }}
+            >
+              Content that
+              <br />
+              <em className="text-[#F4F1EC]/70">feels like you.</em>
+            </h2>
+            <p className="text-base text-[#F4F1EC]/50 leading-relaxed">
+              We learn your voice, your rhythm, your audience.
+              Then we create content that could only come from your brand.
+            </p>
+          </motion.div>
+
+          {/* Right: Editorial image shapes */}
+          <div className="col-span-12 md:col-span-7">
+            <div className="relative h-[400px] md:h-[500px]">
+              {/* Large circle - primary shape */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.8, delay: 0.1 }}
+                className="absolute top-0 right-0 w-[260px] h-[260px] md:w-[320px] md:h-[320px] rounded-full bg-[#4a4a4a] overflow-hidden"
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-[#F4F1EC]/5 to-transparent" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-[10px] uppercase tracking-[0.2em] text-[#F4F1EC]/30">Photography</span>
+                </div>
+              </motion.div>
+
+              {/* Rounded rectangle - secondary shape */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+                className="absolute bottom-0 left-0 w-[180px] h-[240px] md:w-[220px] md:h-[280px] rounded-[32px] bg-[#3d3d3d] overflow-hidden"
+              >
+                <div className="absolute inset-0 bg-gradient-to-t from-[#F4F1EC]/5 to-transparent" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-[10px] uppercase tracking-[0.2em] text-[#F4F1EC]/30">Video</span>
+                </div>
+              </motion.div>
+
+              {/* Small circle - accent shape */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.8, delay: 0.5 }}
+                className="absolute bottom-20 right-16 md:right-24 w-[100px] h-[100px] md:w-[120px] md:h-[120px] rounded-full bg-[#555555] overflow-hidden"
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-[#F4F1EC]/8 to-transparent" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-[8px] uppercase tracking-[0.15em] text-[#F4F1EC]/30">Graphics</span>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// =============================================================================
+// SECTION 4: SERVICES LIST
+// Stacked, text-forward format. Serif titles. No icons. No cards.
+// =============================================================================
+
+const services = [
+  {
+    title: "Social Media Management",
+    description: "Consistent, strategic posting across platforms. We handle the calendar, the captions, and the conversations — so you can focus on what you do best.",
+  },
+  {
+    title: "Content Creation",
+    description: "Photography, graphics, and copy that feel intentional. Every piece designed to stop the scroll and stay in memory.",
+  },
+  {
+    title: "Short-Form Video",
+    description: "Reels, TikToks, and Stories that capture attention in seconds. We bring your brand to life in motion.",
+  },
+  {
+    title: "Paid Social",
+    description: "Targeted campaigns that reach the right people. We manage your ad spend with precision and purpose.",
+  },
+  {
+    title: "Brand Voice & Strategy",
+    description: "Before we post, we listen. We develop a social identity that sounds like you — and resonates with who you want to reach.",
+  },
+];
+
+function ServicesSection() {
+  return (
+    <section className="py-24 md:py-32 bg-[#2a2a2a]">
+      <div className="max-w-3xl mx-auto px-6">
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-[11px] uppercase tracking-[0.25em] text-[#F4F1EC]/40 mb-16 md:mb-20"
+        >
+          Services
+        </motion.p>
+
+        <div className="space-y-16 md:space-y-20">
+          {services.map((service, index) => (
+            <motion.div
+              key={service.title}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+            >
+              <h3
+                className="text-[24px] md:text-[28px] font-normal text-[#F4F1EC] mb-4"
+                style={{ fontFamily: "var(--font-libre-baskerville)" }}
+              >
+                {service.title}
+              </h3>
+              <p className="text-base md:text-lg text-[#F4F1EC]/50 leading-relaxed max-w-2xl">
+                {service.description}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// =============================================================================
+// SECTION 5: SPLIT SECTION
+// Left: serif headline. Right: supporting paragraph. Background shift.
+// =============================================================================
+
+function SplitSection() {
+  return (
+    <section className="py-24 md:py-32 bg-[#1c1c1e]">
+      <div className="max-w-5xl mx-auto px-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-start">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.7 }}
+          >
+            <h2
+              className="text-[32px] md:text-[40px] lg:text-[48px] font-normal text-[#F4F1EC] leading-[1.15]"
+              style={{ fontFamily: "var(--font-libre-baskerville)" }}
+            >
+              Showing up
+              <br />
+              <em className="text-[#F4F1EC]/60">is the strategy.</em>
+            </h2>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="md:pt-4"
+          >
+            <p className="text-base md:text-lg text-[#F4F1EC]/60 leading-relaxed mb-6">
+              Most businesses don't fail at social because they lack creativity.
+              They fail because they disappear. Consistency builds trust.
+              Trust builds business.
+            </p>
+            <p className="text-base md:text-lg text-[#F4F1EC]/80 leading-relaxed">
+              We make sure you never disappear.
+            </p>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// =============================================================================
+// SECTION 6: SIMPLE CTA FOOTER
+// Minimal. One line of serif text. One understated button.
+// =============================================================================
+
+function CTASection() {
+  return (
+    <section className="py-28 md:py-36 bg-[#333333]">
+      <div className="max-w-2xl mx-auto px-6 text-center">
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          className="text-[28px] md:text-[36px] lg:text-[42px] font-normal text-[#F4F1EC] leading-[1.2] mb-10"
+          style={{ fontFamily: "var(--font-libre-baskerville)" }}
+        >
+          Let's build something that lasts.
+        </motion.h2>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
+          <a
+            href="mailto:hello@shortlistpass.com?subject=Social Inquiry"
+            className="inline-flex items-center justify-center px-8 py-4 text-sm font-medium text-[#F4F1EC] border border-[#F4F1EC]/30 rounded-full hover:bg-[#F4F1EC]/10 hover:border-[#F4F1EC]/50 transition-all duration-300"
+          >
+            Start the conversation
+          </a>
+        </motion.div>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+          className="mt-12 text-sm text-[#F4F1EC]/30"
+        >
+          hello@shortlistpass.com
+        </motion.p>
+      </div>
+    </section>
+  );
+}
+
+// =============================================================================
+// FOOTER
+// =============================================================================
+
+function Footer() {
+  return (
+    <footer className="py-8 bg-[#2a2a2a] border-t border-[#F4F1EC]/5">
+      <div className="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <span className="text-xs text-[#F4F1EC]/30">
+          &copy; {new Date().getFullYear()} The Shortlist Co
+        </span>
+        <span className="text-xs text-[#F4F1EC]/30">
+          Social & Content Studio
+        </span>
+      </div>
+    </footer>
+  );
+}
+
+// =============================================================================
+// MAIN PAGE
+// =============================================================================
 
 export default function SocialPage() {
   return (
-    <main className="pt-16 bg-[#F4F1EC] min-h-screen">
-      <ComingSoonSection />
-    </main>
-  );
-}
-
-// =============================================================================
-// TEMPLATE: ORIGINAL SOCIAL PAGE DESIGN (PRESERVED FOR FUTURE USE)
-// =============================================================================
-//
-// Uncomment the code below and replace the current export to restore the
-// full social page with all sections.
-//
-// -----------------------------------------------------------------------------
-
-/*
-import { useRef, useState, useEffect } from "react";
-import Link from "next/link";
-import { useScroll, useTransform } from "framer-motion";
-
-// ANIMATION VARIANTS
-const fadeUpVariant = {
-  hidden: { opacity: 0, y: 16 },
-  visible: { opacity: 1, y: 0 },
-};
-
-const staggerContainer = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
-
-// ICONS
-function ChevronLeftIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <polyline points="15 18 9 12 15 6" />
-    </svg>
-  );
-}
-
-function ChevronRightIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <polyline points="9 18 15 12 9 6" />
-    </svg>
-  );
-}
-
-// SECTION 1: HERO
-function HeroSection() {
-  return (
-    <section className="relative py-28 lg:py-36 overflow-hidden">
-      <div className="absolute inset-0 bg-[#F4F1EC]" />
-      <div
-        className="absolute inset-0 opacity-[0.03] pointer-events-none"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-        }}
-      />
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: "linear-gradient(135deg, transparent 0%, transparent 40%, rgba(176, 141, 87, 0.08) 50%, transparent 60%, transparent 100%)",
-          backgroundSize: "200% 200%",
-        }}
-        animate={{
-          backgroundPosition: ["0% 0%", "100% 100%", "0% 0%"],
-        }}
-        transition={{
-          duration: 12,
-          ease: "linear",
-          repeat: Infinity,
-        }}
-      />
-      <Container>
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={staggerContainer}
-          className="relative z-10 max-w-3xl mx-auto text-center"
-        >
-          <motion.h1
-            variants={fadeUpVariant}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="text-[42px] md:text-[56px] lg:text-[64px] font-normal text-[#222222] leading-[1.08] mb-6"
-            style={{ fontFamily: "var(--font-libre-baskerville)" }}
-          >
-            Social that actually shows up.
-          </motion.h1>
-          <motion.p
-            variants={fadeUpVariant}
-            transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-            className="text-lg md:text-xl text-[#5A6570] leading-relaxed max-w-2xl mx-auto"
-          >
-            Get consistent, scroll-stopping content — without living on social media.
-          </motion.p>
-          <motion.div
-            variants={fadeUpVariant}
-            transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-            className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
-          >
-            <a
-              href="#how-it-works"
-              className="inline-flex items-center justify-center px-7 py-3.5 text-sm font-medium bg-[#333333] text-[#F4F1EC] rounded-full hover:bg-[#222222] transition-all duration-300"
-            >
-              See how it works
-            </a>
-            <a
-              href="#examples"
-              className="text-sm text-[#5A6570] hover:text-[#222222] transition-colors duration-300"
-            >
-              View examples
-            </a>
-          </motion.div>
-        </motion.div>
-      </Container>
-    </section>
-  );
-}
-
-// SECTION 2: MOVING BELT
-function MovingBelt() {
-  const beltText = "SCROLL-STOPPING CONTENT • POSTS THAT SOUND LIKE YOU • SHOW UP WHERE IT MATTERS • BUILT FOR REAL BUSINESSES • NO TREND CHASING • CONSISTENT VISIBILITY • CONTENT WITH A POINT";
-
-  return (
-    <div className="relative overflow-hidden h-14 bg-gradient-to-r from-[#333333] via-[#333333] to-[#333333] flex items-center">
-      <div
-        className="flex items-center whitespace-nowrap animate-scroll-social"
-        style={{
-          animation: "scroll-social 20s linear infinite",
-        }}
-      >
-        <span className="px-4 text-base font-bold tracking-[0.15em] text-[#F4F1EC] uppercase leading-none">
-          {beltText} •
-        </span>
-        <span className="px-4 text-base font-bold tracking-[0.15em] text-[#F4F1EC] uppercase leading-none">
-          {beltText} •
-        </span>
-        <span className="px-4 text-base font-bold tracking-[0.15em] text-[#F4F1EC] uppercase leading-none">
-          {beltText} •
-        </span>
-      </div>
-      <style jsx>{`
-        @keyframes scroll-social {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-33.333%);
-          }
-        }
-      `}</style>
-    </div>
-  );
-}
-
-// SECTION 3: THE PROBLEM
-function AnimatedFeedVisualization() {
-  const posts = [
-    { id: 1, delay: 0, highlight: false },
-    { id: 2, delay: 1.5, highlight: false },
-    { id: 3, delay: 3, highlight: true },
-    { id: 4, delay: 4.5, highlight: false },
-    { id: 5, delay: 6, highlight: false },
-  ];
-
-  return (
-    <div className="relative h-[320px] w-full max-w-[280px] mx-auto overflow-hidden">
-      <div className="absolute inset-0 rounded-xl bg-[#F4F1EC]/50 border border-white/5">
-        {posts.map((post) => (
-          <motion.div
-            key={post.id}
-            className={`absolute left-4 right-4 h-16 rounded-lg ${
-              post.highlight
-                ? "bg-gradient-to-r from-[#333333]/30 to-[#333333]/10 border border-[#333333]/40"
-                : "bg-white/5 border border-white/5"
-            }`}
-            initial={{ y: 280, opacity: 0 }}
-            animate={{
-              y: [-20, -320],
-              opacity: post.highlight ? [0, 1, 1, 0.8] : [0, 0.6, 0.3, 0],
-            }}
-            transition={{
-              duration: 8,
-              delay: post.delay,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-          >
-            <div className="p-3 h-full flex items-center gap-3">
-              <div className={`w-8 h-8 rounded-full flex-shrink-0 ${
-                post.highlight ? "bg-[#333333]/40" : "bg-white/10"
-              }`} />
-              <div className="flex-1 space-y-2">
-                <div className={`h-2 rounded ${
-                  post.highlight ? "bg-[#333333]/40 w-3/4" : "bg-white/10 w-2/3"
-                }`} />
-                <div className={`h-2 rounded ${
-                  post.highlight ? "bg-[#333333]/20 w-1/2" : "bg-white/5 w-1/2"
-                }`} />
-              </div>
-            </div>
-          </motion.div>
-        ))}
-      </div>
-      <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-[#F4F1EC] to-transparent pointer-events-none z-10" />
-      <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#F4F1EC] to-transparent pointer-events-none z-10" />
-    </div>
-  );
-}
-
-function ProblemSection() {
-  return (
-    <section className="py-20 lg:py-28">
-      <Container>
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={staggerContainer}
-        >
-          <motion.h2
-            variants={fadeUpVariant}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="text-[28px] md:text-[36px] lg:text-[42px] font-normal text-[#222222] leading-tight mb-12 text-center"
-            style={{ fontFamily: "var(--font-libre-baskerville)" }}
-          >
-            Most businesses don&apos;t lose on social — they disappear.
-          </motion.h2>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            <motion.div
-              variants={fadeUpVariant}
-              transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-              className="space-y-4"
-            >
-              <p className="text-base md:text-lg text-[#5A6570]">Posting when you remember.</p>
-              <p className="text-base md:text-lg text-[#5A6570]">Guessing what works.</p>
-              <p className="text-base md:text-lg text-[#5A6570]">Getting buried by the algorithm.</p>
-              <p className="text-base md:text-lg text-[#5A6570]">Too busy to do this right.</p>
-              <p className="text-base md:text-lg text-[#222222] font-medium pt-4">
-                And while you&apos;re busy running your business, someone else is showing up consistently.
-              </p>
-            </motion.div>
-            <motion.div
-              variants={fadeUpVariant}
-              transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-            >
-              <AnimatedFeedVisualization />
-            </motion.div>
-          </div>
-        </motion.div>
-      </Container>
-    </section>
-  );
-}
-
-// Additional sections (WorkCarousel, HowWeHelpSection, SystemSection, CTASection, Footer)
-// can be found in git history or restored from backup if needed.
-
-// MAIN PAGE (TEMPLATE VERSION)
-function SocialPageTemplate() {
-  return (
     <main className="pt-16">
       <HeroSection />
-      <MovingBelt />
-      <ProblemSection />
+      <WhatWeDoSection />
+      <ImageShapeSection />
+      <ServicesSection />
+      <SplitSection />
+      <CTASection />
+      <Footer />
     </main>
   );
 }
-*/
