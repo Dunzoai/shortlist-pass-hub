@@ -636,24 +636,24 @@ function AppGridSection() {
           >
             {[...Array(2)].map((_, i) => (
               <span key={i} className="flex items-center gap-3">
-                <span className="bg-gray-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Food Trucks</span>
-                <span className="bg-gray-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Breweries</span>
-                <span className="bg-gray-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Coffee Shops</span>
-                <span className="bg-gray-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Salons</span>
-                <span className="bg-gray-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Barbershops</span>
-                <span className="bg-gray-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Smoothie Bars</span>
-                <span className="bg-gray-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Restaurants</span>
-                <span className="bg-gray-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Boutiques</span>
-                <span className="bg-gray-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Gyms</span>
-                <span className="bg-gray-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Spas</span>
-                <span className="bg-gray-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Food Vendors</span>
-                <span className="bg-gray-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Bakeries</span>
-                <span className="bg-gray-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Juice Bars</span>
-                <span className="bg-gray-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Pet Groomers</span>
-                <span className="bg-gray-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Tattoo Studios</span>
-                <span className="bg-gray-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Yoga Studios</span>
-                <span className="bg-gray-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Auto Shops</span>
-                <span className="bg-gray-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Florists</span>
+                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Food Trucks</span>
+                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Breweries</span>
+                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Coffee Shops</span>
+                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Salons</span>
+                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Barbershops</span>
+                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Smoothie Bars</span>
+                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Restaurants</span>
+                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Boutiques</span>
+                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Gyms</span>
+                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Spas</span>
+                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Food Vendors</span>
+                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Bakeries</span>
+                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Juice Bars</span>
+                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Pet Groomers</span>
+                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Tattoo Studios</span>
+                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Yoga Studios</span>
+                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Auto Shops</span>
+                <span className="bg-neutral-900 text-white rounded-full px-4 py-2 text-sm md:text-base font-medium">Florists</span>
               </span>
             ))}
           </div>
@@ -683,7 +683,7 @@ function AppGridSection() {
           {/* Mobile: stacked cards with alternating slide directions */}
           <div className="md:hidden flex flex-col gap-3 overflow-hidden">
             <motion.div
-              className="bg-gray-800/80 backdrop-blur-sm rounded-2xl p-3 shadow-lg"
+              className="bg-neutral-800/80 backdrop-blur-sm rounded-2xl p-3 shadow-lg"
               initial={{ opacity: 0, x: 100 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -704,7 +704,7 @@ function AppGridSection() {
             </motion.div>
 
             <motion.div
-              className="bg-gray-800/80 backdrop-blur-sm rounded-2xl p-3 shadow-lg"
+              className="bg-neutral-800/80 backdrop-blur-sm rounded-2xl p-3 shadow-lg"
               initial={{ opacity: 0, x: -100 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -725,7 +725,7 @@ function AppGridSection() {
             </motion.div>
 
             <motion.div
-              className="bg-gray-800/80 backdrop-blur-sm rounded-2xl p-3 shadow-lg"
+              className="bg-neutral-800/80 backdrop-blur-sm rounded-2xl p-3 shadow-lg"
               initial={{ opacity: 0, x: 100 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -749,7 +749,7 @@ function AppGridSection() {
           {/* Desktop: stacked cards with alternating slide directions */}
           <div className="hidden md:flex flex-col gap-3 overflow-hidden">
             <motion.div
-              className="bg-gray-800/80 backdrop-blur-sm rounded-2xl p-4 shadow-lg transform -rotate-1"
+              className="bg-neutral-800/80 backdrop-blur-sm rounded-2xl p-4 shadow-lg transform -rotate-1"
               initial={{ opacity: 0, x: 100 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -770,7 +770,7 @@ function AppGridSection() {
             </motion.div>
 
             <motion.div
-              className="bg-gray-800/80 backdrop-blur-sm rounded-2xl p-4 shadow-lg"
+              className="bg-neutral-800/80 backdrop-blur-sm rounded-2xl p-4 shadow-lg"
               initial={{ opacity: 0, x: -100 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -791,7 +791,7 @@ function AppGridSection() {
             </motion.div>
 
             <motion.div
-              className="bg-gray-800/80 backdrop-blur-sm rounded-2xl p-4 shadow-lg transform rotate-1"
+              className="bg-neutral-800/80 backdrop-blur-sm rounded-2xl p-4 shadow-lg transform rotate-1"
               initial={{ opacity: 0, x: 100 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -866,10 +866,10 @@ function FeatureVisual({ type }: { type: string }) {
   switch (type) {
     case 'chat':
       return (
-        <div className="bg-gray-900 rounded-3xl p-6 md:p-8 w-full max-w-sm md:max-w-lg md:min-w-[400px] mx-auto">
+        <div className="bg-neutral-900 rounded-3xl p-6 md:p-8 w-full max-w-sm md:max-w-lg md:min-w-[400px] mx-auto">
           <div className="space-y-3">
             <div className="flex justify-start">
-              <div className="bg-gray-700 rounded-2xl px-4 py-2.5 text-sm text-white max-w-[80%]">
+              <div className="bg-neutral-700 rounded-2xl px-4 py-2.5 text-sm text-white max-w-[80%]">
                 What time do you close?
               </div>
             </div>
@@ -879,7 +879,7 @@ function FeatureVisual({ type }: { type: string }) {
               </div>
             </div>
             <div className="flex justify-start">
-              <div className="bg-gray-700 rounded-2xl px-4 py-2.5 text-sm text-white max-w-[80%]">
+              <div className="bg-neutral-700 rounded-2xl px-4 py-2.5 text-sm text-white max-w-[80%]">
                 Do you have parking?
               </div>
             </div>
@@ -904,7 +904,7 @@ function FeatureVisual({ type }: { type: string }) {
       ];
 
       return (
-        <div className="bg-gray-900 rounded-3xl p-6 md:p-8 w-full max-w-sm md:max-w-lg md:min-w-[400px] mx-auto">
+        <div className="bg-neutral-900 rounded-3xl p-6 md:p-8 w-full max-w-sm md:max-w-lg md:min-w-[400px] mx-auto">
           <div className="flex flex-col items-center gap-4">
             {/* 2x4 grid of app icons */}
             <div className="grid grid-cols-4 gap-3 md:gap-4">
@@ -945,7 +945,7 @@ function FeatureVisual({ type }: { type: string }) {
       );
     case 'banner':
       return (
-        <div className="bg-gray-900 rounded-3xl p-6 md:p-8 w-full max-w-sm md:max-w-lg md:min-w-[400px] mx-auto">
+        <div className="bg-neutral-900 rounded-3xl p-6 md:p-8 w-full max-w-sm md:max-w-lg md:min-w-[400px] mx-auto">
           <div className="space-y-4">
             {/* Announcement banner */}
             <div className="bg-[#F4F1EC] rounded-lg px-4 py-3 text-center">
@@ -955,7 +955,7 @@ function FeatureVisual({ type }: { type: string }) {
             <div className="border-t border-white/10" />
             {/* Mini profile */}
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-full bg-neutral-700 flex items-center justify-center">
                 <div className="relative w-8 h-8">
                   <Image
                     src="/Shortlist_logo.png"
@@ -975,10 +975,10 @@ function FeatureVisual({ type }: { type: string }) {
       );
     case 'links':
       return (
-        <div className="bg-gray-900 rounded-3xl p-6 md:p-8 w-full max-w-sm md:max-w-lg md:min-w-[400px] mx-auto">
+        <div className="bg-neutral-900 rounded-3xl p-6 md:p-8 w-full max-w-sm md:max-w-lg md:min-w-[400px] mx-auto">
           <div className="space-y-3">
             {['Website', 'Instagram', 'Order Online', 'Book Now'].map((label, i) => (
-              <div key={i} className="bg-gray-800 rounded-xl px-4 py-3.5 flex items-center justify-between">
+              <div key={i} className="bg-neutral-800 rounded-xl px-4 py-3.5 flex items-center justify-between">
                 <span className="text-white text-sm md:text-base">{label}</span>
                 <ArrowRightIcon className="w-4 h-4 text-[#F4F1EC]" />
               </div>
@@ -988,7 +988,7 @@ function FeatureVisual({ type }: { type: string }) {
       );
     case 'qr':
       return (
-        <div className="bg-gray-900 rounded-3xl p-6 md:p-8 w-full max-w-sm md:max-w-lg md:min-w-[400px] mx-auto">
+        <div className="bg-neutral-900 rounded-3xl p-6 md:p-8 w-full max-w-sm md:max-w-lg md:min-w-[400px] mx-auto">
           <div className="flex flex-col items-center gap-4">
             <div className="relative w-48 h-48 md:w-56 md:h-56 shadow-[0_0_30px_rgba(229,168,51,0.3)] rounded-xl overflow-hidden">
               <Image

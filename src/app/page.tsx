@@ -491,7 +491,7 @@ export default function Home() {
                   <span className="inline-block">show up like</span>{" "}
                   <motion.span
                     className="inline-block font-semibold tracking-[-0.02em]"
-                    style={{ color: "#0D1117", textShadow: "0 1px 2px rgba(0,0,0,0.06)" }}
+                    style={{ color: "#1a1a1a", textShadow: "0 1px 2px rgba(0,0,0,0.06)" }}
                     initial={{ opacity: 0, scale: 0.6, y: 16 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     transition={{
