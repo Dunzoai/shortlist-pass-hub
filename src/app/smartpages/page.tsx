@@ -1115,10 +1115,6 @@ function ResponsibilityTile({
   index: number;
   isHighlighted?: boolean;
 }) {
-  // Alternate slide direction: even from left, odd from right (desktop)
-  // Mobile: all slide from right (thumb direction)
-  const slideDirection = index % 2 === 0 ? -60 : 60;
-
   return (
     <motion.div
       className={`rounded-2xl px-5 py-4 md:px-6 md:py-5 ${
@@ -1126,12 +1122,12 @@ function ResponsibilityTile({
           ? "bg-[#F4F1EC]/10 border-2 border-[#F4F1EC]/20"
           : "bg-[#F4F1EC]/5 border border-[#F4F1EC]/10"
       }`}
-      initial={{ opacity: 0, x: slideDirection }}
+      initial={{ opacity: 0, x: -60 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{
         duration: isHighlighted ? 0.7 : 0.5,
-        delay: index * 0.12,
+        delay: index * 0.1,
         ease: "easeOut"
       }}
     >
@@ -1182,16 +1178,29 @@ export default function ShortyLandingPage() {
 
   return (
     <main className="min-h-screen bg-[#F4F1EC] w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
-      <section className="relative overflow-hidden pt-16 md:pt-24 pb-16 md:pb-20 flex flex-col items-center px-4 bg-[#333333]">
-        {/* Headline + Subheadline - ABOVE modal */}
-        <div className="text-center max-w-3xl mb-6 md:mb-8 z-10 mt-10 md:mt-6 px-4">
+      {/* =========================================================================== */}
+      {/* SECTION 1 — HERO (Above the fold) */}
+      {/* =========================================================================== */}
+      <section className="relative overflow-hidden pt-16 md:pt-24 pb-12 md:pb-16 flex flex-col items-center px-4 bg-[#333333]">
+        {/* H1 — Headline */}
+        <div className="text-center max-w-3xl mb-4 md:mb-6 z-10 mt-10 md:mt-6 px-4">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal tracking-tight leading-tight text-[#F4F1EC]" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
             The digital business assistant that replaces more than you think.
           </h1>
-          <p className="mt-4 text-lg md:text-xl text-[#F4F1EC]/80">
-            What you&apos;re looking at isn&apos;t a chatbot. It&apos;s a trained part of your business, doing real work for you.
+        </div>
+
+        {/* H2 — Subhead */}
+        <div className="text-center max-w-2xl mb-2 z-10 px-4">
+          <p className="text-lg md:text-xl text-[#F4F1EC]/80 leading-relaxed">
+            What you&apos;re looking at isn&apos;t a chatbot.<br />
+            It&apos;s a trained part of your business, doing real work for you.
           </p>
         </div>
+
+        {/* Supporting line (small, optional) */}
+        <p className="text-sm text-[#F4F1EC]/50 z-10 mb-6 md:mb-8">
+          Always on. Always consistent. Always working in your best interest.
+        </p>
 
         {/* Icon belt - behind modal */}
         <IconBelt />
@@ -1199,8 +1208,40 @@ export default function ShortyLandingPage() {
         {/* Modal */}
         <ShortyModal />
 
-        {/* Animated Responsibility Tiles - BELOW modal */}
-        <div className="mt-10 md:mt-14 z-10 w-full max-w-2xl px-4">
+        {/* CTA Button */}
+        <motion.a
+          href="https://buy.stripe.com/3cI4gyfB1eg65uZ02Q4sE05"
+          className="mt-8 md:mt-10 z-10 inline-flex items-center justify-center gap-2 rounded-full bg-[#F4F1EC] text-[#333333] font-semibold px-8 py-4 text-base md:text-lg shadow-lg hover:bg-white transition"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          Get Your SmartPage — $25/mo
+          <ArrowRightIcon className="w-5 h-5" />
+        </motion.a>
+      </section>
+
+      {/* =========================================================================== */}
+      {/* SECTION 2 — WHAT IT ACTUALLY DOES (Bullet tiles) */}
+      {/* =========================================================================== */}
+      <section className="bg-[#333333] py-12 md:py-16 px-4">
+        <div className="max-w-2xl mx-auto">
+          {/* Section Header */}
+          <motion.div
+            className="text-center mb-8 md:mb-10"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal text-[#F4F1EC] leading-tight" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
+              This assistant doesn&apos;t just answer questions.<br />
+              It runs parts of your business.
+            </h2>
+          </motion.div>
+
+          {/* Responsibility Tiles */}
           <div className="space-y-3 md:space-y-4">
             {responsibilities.map((item, index) => (
               <ResponsibilityTile
@@ -1212,48 +1253,57 @@ export default function ShortyLandingPage() {
               />
             ))}
           </div>
+        </div>
+      </section>
 
-          {/* Reframe Block - visually separated */}
-          <motion.div
-            className="mt-10 md:mt-12 pt-8 md:pt-10 border-t border-[#F4F1EC]/10"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-          >
-            <p className="text-[#F4F1EC]/70 text-base md:text-lg leading-relaxed text-center">
-              Customers interact naturally, like they&apos;re talking to someone at the front counter.
-            </p>
-            <p className="mt-3 text-[#F4F1EC]/70 text-base md:text-lg leading-relaxed text-center">
-              Behind the scenes, it keeps everything organized, up to date, and easy to find.
-            </p>
-          </motion.div>
-
-          {/* Power Close */}
-          <motion.div
-            className="mt-10 md:mt-12 text-center"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.7 }}
-          >
-            <p className="text-[#F4F1EC] text-lg md:text-xl font-medium">
-              Always on. Always consistent. Always working in your best interest.
-            </p>
-          </motion.div>
-
-          {/* Final Micro-line */}
+      {/* =========================================================================== */}
+      {/* SECTION 3 — HOW IT FEELS TO CUSTOMERS (Reinforcement) */}
+      {/* =========================================================================== */}
+      <section className="bg-[#333333] py-12 md:py-16 px-4 border-t border-[#F4F1EC]/10">
+        <div className="max-w-2xl mx-auto text-center">
           <motion.p
-            className="mt-8 text-xs text-[#F4F1EC]/40 text-center"
+            className="text-[#F4F1EC]/70 text-base md:text-lg leading-relaxed"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            Customers interact naturally — like they&apos;re talking to someone at the front counter.
+          </motion.p>
+          <motion.p
+            className="mt-4 text-[#F4F1EC]/70 text-base md:text-lg leading-relaxed"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            Behind the scenes, everything stays organized, up to date, and easy to manage.
+          </motion.p>
+
+          {/* Power statement */}
+          <motion.p
+            className="mt-8 text-[#F4F1EC] text-lg md:text-xl font-medium"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            Always on.<br />
+            Always consistent.<br />
+            Always working in your best interest.
+          </motion.p>
+
+          {/* Footer line */}
+          <motion.p
+            className="mt-8 text-xs text-[#F4F1EC]/40"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.8 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
           >
             Not a chatbot. Your business, handled.
           </motion.p>
         </div>
-
       </section>
 
       {/* =========================================================================== */}
