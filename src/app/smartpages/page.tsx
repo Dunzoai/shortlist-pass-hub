@@ -664,9 +664,7 @@ function AppCarouselSection() {
               }`}
             >
               {/* App Icon - zoomed in to crop the large transparent canvas */}
-              <div className={`relative w-44 h-44 md:w-56 md:h-56 mx-auto mb-4 md:mb-6 overflow-hidden rounded-3xl shadow-lg transition-opacity duration-300 ${
-                isActive ? "opacity-100" : "opacity-50 grayscale-[30%]"
-              }`}>
+              <div className="relative w-44 h-44 md:w-56 md:h-56 mx-auto mb-4 md:mb-6 overflow-hidden rounded-3xl shadow-lg">
                 <Image
                   src={card.icon}
                   alt={card.name}
