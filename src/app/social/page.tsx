@@ -225,7 +225,7 @@ function WhatWeDoSection() {
 
             {/* Large serif paragraph */}
             <p
-              className="text-[22px] md:text-[26px] font-normal text-[#222222]/90 leading-[1.55] tracking-[-0.005em] mb-12"
+              className="text-[22px] md:text-[26px] font-normal text-[#222222]/90 leading-[1.55] tracking-[-0.005em] mb-0 lg:mb-12"
               style={{ fontFamily: "var(--font-serif)" }}
             >
               We develop social strategy, create content that resonates,
@@ -233,8 +233,8 @@ function WhatWeDoSection() {
               Every story reinforces who you are.
             </p>
 
-            {/* Photography, Video, Graphics lines */}
-            <div className="space-y-4">
+            {/* Photography, Video, Graphics lines - hidden on mobile */}
+            <div className="hidden lg:block space-y-4">
               <div className="flex items-center gap-4">
                 <span
                   className="text-[14px] text-[#222222]/50 w-24 shrink-0"
