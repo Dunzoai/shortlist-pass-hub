@@ -33,51 +33,24 @@ function HandDrawnUnderline() {
       whileInView="visible"
       viewport={{ once: true }}
     >
-      {/* First line - top */}
+      {/* One continuous scribble path - back and forth like hand-drawn */}
       <motion.path
-        d="M8 6 C 40 4, 70 7, 100 5 C 140 3, 170 6, 192 5"
+        d="M5 7 C 30 5, 60 8, 100 6 C 140 4, 170 7, 195 6
+           C 197 8, 196 10, 193 11
+           C 160 13, 130 9, 90 12 C 50 14, 25 10, 8 12
+           C 5 14, 6 16, 10 17
+           C 40 15, 70 18, 110 16 C 150 14, 175 17, 190 16"
         stroke="#9CAF88"
-        strokeWidth="2.5"
+        strokeWidth="1.8"
         strokeLinecap="round"
+        strokeLinejoin="round"
         fill="none"
         variants={{
           hidden: { pathLength: 0, opacity: 0 },
           visible: {
             pathLength: 1,
-            opacity: 1,
-            transition: { duration: 0.5, delay: 0.3, ease: "easeOut" }
-          }
-        }}
-      />
-      {/* Second line - middle */}
-      <motion.path
-        d="M5 12 C 35 10, 65 14, 105 11 C 145 9, 175 13, 195 11"
-        stroke="#9CAF88"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        fill="none"
-        variants={{
-          hidden: { pathLength: 0, opacity: 0 },
-          visible: {
-            pathLength: 1,
-            opacity: 0.85,
-            transition: { duration: 0.5, delay: 0.45, ease: "easeOut" }
-          }
-        }}
-      />
-      {/* Third line - bottom */}
-      <motion.path
-        d="M12 18 C 50 16, 80 19, 110 17 C 150 15, 175 18, 188 17"
-        stroke="#9CAF88"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        fill="none"
-        variants={{
-          hidden: { pathLength: 0, opacity: 0 },
-          visible: {
-            pathLength: 1,
-            opacity: 0.7,
-            transition: { duration: 0.5, delay: 0.6, ease: "easeOut" }
+            opacity: 0.9,
+            transition: { duration: 1.2, delay: 0.3, ease: "easeOut" }
           }
         }}
       />
@@ -605,7 +578,7 @@ function CTABand() {
           <span className="whitespace-nowrap">
             Let&apos;s work together.{" "}
             <span className="relative inline-block">
-              <em className="italic">Reach out.</em>
+              <em className="italic">Reach out to us.</em>
               <HandDrawnUnderline />
             </span>
           </span>
