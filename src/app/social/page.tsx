@@ -50,7 +50,7 @@ function HandDrawnUnderline() {
            C 145 4, 120 4, 100 4
            C 80 5, 65 5.5, 52 6
            C 80 5.5, 115 6.5, 147 6"
-        stroke="#F2F0EC"
+        stroke="#DC2626"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
