@@ -25,17 +25,17 @@ import { useEffect, useRef } from "react";
 function HandDrawnUnderline() {
   return (
     <motion.svg
-      className="absolute -bottom-2 left-0 w-full h-4"
-      viewBox="0 0 200 12"
+      className="absolute -bottom-3 left-0 w-full h-6"
+      viewBox="0 0 200 24"
       fill="none"
       preserveAspectRatio="none"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
     >
-      {/* First sketchy line */}
+      {/* First line - top */}
       <motion.path
-        d="M2 6 C 30 4, 50 8, 80 5 C 110 2, 140 9, 170 6 C 185 5, 195 7, 198 6"
+        d="M8 6 C 40 4, 70 7, 100 5 C 140 3, 170 6, 192 5"
         stroke="#9CAF88"
         strokeWidth="2.5"
         strokeLinecap="round"
@@ -45,15 +45,31 @@ function HandDrawnUnderline() {
           visible: {
             pathLength: 1,
             opacity: 1,
-            transition: { duration: 0.8, delay: 0.3, ease: "easeOut" }
+            transition: { duration: 0.5, delay: 0.3, ease: "easeOut" }
           }
         }}
       />
-      {/* Second overlapping line for hand-drawn effect */}
+      {/* Second line - middle */}
       <motion.path
-        d="M4 8 C 25 10, 60 6, 90 9 C 120 11, 150 7, 175 9 C 188 8, 196 10, 198 9"
+        d="M5 12 C 35 10, 65 14, 105 11 C 145 9, 175 13, 195 11"
         stroke="#9CAF88"
-        strokeWidth="2"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        fill="none"
+        variants={{
+          hidden: { pathLength: 0, opacity: 0 },
+          visible: {
+            pathLength: 1,
+            opacity: 0.85,
+            transition: { duration: 0.5, delay: 0.45, ease: "easeOut" }
+          }
+        }}
+      />
+      {/* Third line - bottom */}
+      <motion.path
+        d="M12 18 C 50 16, 80 19, 110 17 C 150 15, 175 18, 188 17"
+        stroke="#9CAF88"
+        strokeWidth="2.5"
         strokeLinecap="round"
         fill="none"
         variants={{
@@ -61,7 +77,7 @@ function HandDrawnUnderline() {
           visible: {
             pathLength: 1,
             opacity: 0.7,
-            transition: { duration: 0.6, delay: 0.5, ease: "easeOut" }
+            transition: { duration: 0.5, delay: 0.6, ease: "easeOut" }
           }
         }}
       />
