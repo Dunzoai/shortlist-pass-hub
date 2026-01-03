@@ -50,7 +50,7 @@ function HandDrawnUnderline() {
            C 145 4, 120 4, 100 4
            C 80 5, 65 5.5, 52 6
            C 80 5.5, 115 6.5, 147 6"
-        stroke="#9CAF88"
+        stroke="#F2F0EC"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -205,7 +205,7 @@ function HeroSection() {
 
 function InterestMediaSection() {
   return (
-    <section className="py-20 md:py-28 border-t border-[rgba(242,240,236,0.08)]">
+    <section className="py-20 md:py-28 bg-[#333333]">
       <div className="max-w-[900px] mx-auto px-6">
         {/* Label */}
         <motion.p
@@ -475,7 +475,7 @@ const services = [
 
 function ServicesSection() {
   return (
-    <section className="py-20 md:py-28 border-t border-[rgba(242,240,236,0.08)]">
+    <section className="py-20 md:py-28 bg-[#333333]">
       <div className="max-w-[900px] mx-auto px-6">
         {/* Label */}
         <motion.p
@@ -525,7 +525,7 @@ function ServicesSection() {
 
 function ShowingUpSection() {
   return (
-    <section className="py-20 md:py-28 border-t border-[rgba(242,240,236,0.08)]">
+    <section className="py-20 md:py-28 bg-[#F2F0EC]">
       <div className="max-w-[900px] mx-auto px-6">
         {/* Label */}
         <motion.p
@@ -533,7 +533,7 @@ function ShowingUpSection() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-[11px] uppercase tracking-[0.25em] text-[#F2F0EC]/45 mb-8"
+          className="text-[11px] uppercase tracking-[0.25em] text-[#222222]/50 mb-8"
           style={{ fontFamily: "var(--font-sans-inter)" }}
         >
           Consistency Wins
@@ -545,7 +545,7 @@ function ShowingUpSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-[28px] md:text-[36px] font-normal text-[#F2F0EC] leading-[1.25] tracking-[-0.01em] mb-8"
+          className="text-[28px] md:text-[36px] font-normal text-[#222222] leading-[1.25] tracking-[-0.01em] mb-8"
           style={{ fontFamily: "var(--font-serif)" }}
         >
           Showing up is the <em className="italic">strategy</em>.
@@ -557,7 +557,7 @@ function ShowingUpSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-[18px] md:text-[20px] text-[#F2F0EC]/65 leading-[1.8] max-w-2xl"
+          className="text-[18px] md:text-[20px] text-[#222222]/70 leading-[1.8] max-w-2xl"
           style={{ fontFamily: "var(--font-serif)" }}
         >
           Most businesses don't fail at social because they lack creativity.
@@ -575,7 +575,7 @@ function ShowingUpSection() {
 
 function CTABand() {
   return (
-    <section className="py-20 md:py-28 border-t border-[rgba(242,240,236,0.08)] bg-[#0e0e10]">
+    <section className="py-20 md:py-28 bg-[#333333]">
       <div className="max-w-[900px] mx-auto px-6 text-center">
         <motion.h2
           initial={{ opacity: 0, y: 12 }}
@@ -612,7 +612,7 @@ function CTABand() {
 
 function Footer() {
   return (
-    <footer className="py-16 md:py-20 border-t border-[rgba(242,240,236,0.06)]">
+    <footer className="py-16 md:py-20 bg-[#333333]">
       <div className="max-w-[1200px] mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 items-start">
           {/* Column 1: Navigation Links */}
@@ -649,14 +649,15 @@ function Footer() {
 
           {/* Column 2: Logo/Wordmark */}
           <div className="flex flex-col items-center justify-center text-center">
+            <Image
+              src="/shortlist-logo-ivory-transparent.png"
+              alt="The Shortlist Co"
+              width={180}
+              height={52}
+              className="h-14 w-auto opacity-90"
+            />
             <p
-              className="text-[20px] tracking-[0.2em] uppercase text-[#F2F0EC]/80 font-light"
-              style={{ fontFamily: "var(--font-sans-inter)" }}
-            >
-              Shortlist Pass Co.
-            </p>
-            <p
-              className="text-[28px] text-[#F2F0EC]/70 -mt-1"
+              className="text-[24px] text-[#F2F0EC]/60 mt-1"
               style={{ fontFamily: "var(--font-serif)" }}
             >
               <em>Social</em>
