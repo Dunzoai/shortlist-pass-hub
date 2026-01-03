@@ -184,19 +184,40 @@ function InterestMediaSection() {
 
 function WhatWeDoSection() {
   return (
-    <section className="py-20 md:py-28 border-t border-[rgba(242,240,236,0.08)]">
-      <div className="max-w-[1100px] mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-start">
-          {/* Left: Text */}
+    <section className="relative min-h-[600px] md:min-h-[700px] lg:min-h-[800px] border-t border-[rgba(242,240,236,0.08)]">
+      {/* Full-width background image - Desktop */}
+      <div className="absolute inset-0 hidden lg:block">
+        <Image
+          src="/social-page/what-we-do.png"
+          alt=""
+          fill
+          className="object-cover"
+        />
+      </div>
+
+      {/* Full-width background image - Mobile */}
+      <div className="absolute inset-0 lg:hidden">
+        <Image
+          src="/social-page/what-we-do-mobile.png"
+          alt=""
+          fill
+          className="object-cover"
+        />
+      </div>
+
+      {/* Text content overlaying on the left negative space */}
+      <div className="relative z-10 h-full">
+        <div className="max-w-[1400px] mx-auto px-6 py-16 md:py-20 lg:py-24">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
+            className="max-w-[500px] lg:max-w-[550px]"
           >
             {/* Label */}
             <p
-              className="text-[11px] uppercase tracking-[0.25em] text-[#F2F0EC]/45 mb-8"
+              className="text-[11px] uppercase tracking-[0.25em] text-[#222222]/60 mb-8"
               style={{ fontFamily: "var(--font-sans-inter)" }}
             >
               What We Do
@@ -204,7 +225,7 @@ function WhatWeDoSection() {
 
             {/* Large serif paragraph */}
             <p
-              className="text-[22px] md:text-[26px] font-normal text-[#F2F0EC]/85 leading-[1.55] tracking-[-0.005em] mb-12"
+              className="text-[22px] md:text-[26px] font-normal text-[#222222]/90 leading-[1.55] tracking-[-0.005em] mb-12"
               style={{ fontFamily: "var(--font-serif)" }}
             >
               We develop social strategy, create content that resonates,
@@ -216,14 +237,14 @@ function WhatWeDoSection() {
             <div className="space-y-4">
               <div className="flex items-center gap-4">
                 <span
-                  className="text-[14px] text-[#F2F0EC]/40 w-24"
+                  className="text-[14px] text-[#222222]/50 w-24 shrink-0"
                   style={{ fontFamily: "var(--font-sans-inter)" }}
                 >
                   Photography
                 </span>
-                <span className="flex-1 h-px bg-[rgba(242,240,236,0.1)]" />
+                <span className="flex-1 h-px bg-[#222222]/15" />
                 <span
-                  className="text-[14px] text-[#F2F0EC]/55"
+                  className="text-[14px] text-[#222222]/70"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
                   Styled shoots that tell your story
@@ -231,14 +252,14 @@ function WhatWeDoSection() {
               </div>
               <div className="flex items-center gap-4">
                 <span
-                  className="text-[14px] text-[#F2F0EC]/40 w-24"
+                  className="text-[14px] text-[#222222]/50 w-24 shrink-0"
                   style={{ fontFamily: "var(--font-sans-inter)" }}
                 >
                   Video
                 </span>
-                <span className="flex-1 h-px bg-[rgba(242,240,236,0.1)]" />
+                <span className="flex-1 h-px bg-[#222222]/15" />
                 <span
-                  className="text-[14px] text-[#F2F0EC]/55"
+                  className="text-[14px] text-[#222222]/70"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
                   Motion that captures attention
@@ -246,55 +267,19 @@ function WhatWeDoSection() {
               </div>
               <div className="flex items-center gap-4">
                 <span
-                  className="text-[14px] text-[#F2F0EC]/40 w-24"
+                  className="text-[14px] text-[#222222]/50 w-24 shrink-0"
                   style={{ fontFamily: "var(--font-sans-inter)" }}
                 >
                   Graphics
                 </span>
-                <span className="flex-1 h-px bg-[rgba(242,240,236,0.1)]" />
+                <span className="flex-1 h-px bg-[#222222]/15" />
                 <span
-                  className="text-[14px] text-[#F2F0EC]/55"
+                  className="text-[14px] text-[#222222]/70"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
                   Designed for the feed
                 </span>
               </div>
-            </div>
-          </motion.div>
-
-          {/* Right: Image (desktop) */}
-          <motion.div
-            initial={{ opacity: 0, x: 24 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="relative hidden lg:block"
-          >
-            <div className="relative w-full aspect-[4/5] rounded-lg overflow-hidden">
-              <Image
-                src="/social-page/what-we-do.png"
-                alt="Content creation showcase"
-                fill
-                className="object-cover"
-              />
-            </div>
-          </motion.div>
-
-          {/* Mobile: Image below text */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="lg:hidden"
-          >
-            <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden">
-              <Image
-                src="/social-page/what-we-do-mobile.png"
-                alt="Content creation showcase"
-                fill
-                className="object-cover"
-              />
             </div>
           </motion.div>
         </div>
