@@ -17,6 +17,8 @@
   --color-accent: var(--accent);
   --color-accent-red: var(--accent-red);
   --font-sans: var(--font-sora);
+  --font-serif: var(--font-serif);
+  --font-inter: var(--font-sans-inter);
 }
 
 body {

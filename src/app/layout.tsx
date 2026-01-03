@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Sora, Libre_Baskerville } from "next/font/google";
+import { Sora, Libre_Baskerville, Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
 import { Nav } from "@/components/Nav";
 
@@ -14,6 +14,22 @@ const libreBaskerville = Libre_Baskerville({
   subsets: ["latin"],
   weight: ["400", "700"],
   style: ["normal", "italic"],
+  display: "swap",
+});
+
+// Editorial fonts for /social page
+const cormorantGaramond = Cormorant_Garamond({
+  variable: "--font-serif",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+  style: ["normal", "italic"],
+  display: "swap",
+});
+
+const inter = Inter({
+  variable: "--font-sans-inter",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
   display: "swap",
 });
 
@@ -69,7 +85,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${sora.variable} ${libreBaskerville.variable} font-sans antialiased bg-[#F4F1EC] text-[#222222]`}>
+      <body className={`${sora.variable} ${libreBaskerville.variable} ${cormorantGaramond.variable} ${inter.variable} font-sans antialiased bg-[#F4F1EC] text-[#222222]`}>
         <Nav />
         {children}
       </body>
