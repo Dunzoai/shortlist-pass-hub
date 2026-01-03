@@ -647,25 +647,16 @@ function Footer() {
             </Link>
           </div>
 
-          {/* Column 2: Wordmark + Logo */}
+          {/* Column 2: Wordmark */}
           <div className="flex flex-col items-center justify-center text-center">
             <p
-              className="text-[18px] tracking-[0.15em] uppercase text-[#F2F0EC]/80 font-light mb-3"
+              className="text-[18px] tracking-[0.15em] uppercase text-[#F2F0EC]/80 font-light"
               style={{ fontFamily: "var(--font-sans-inter)" }}
             >
               The Shortlist Co.
             </p>
-            <div className="relative w-full flex justify-end pr-[-20px]">
-              <Image
-                src="/shortlist-logo-ivory-transparent.png"
-                alt="The Shortlist Co"
-                width={120}
-                height={120}
-                className="h-20 w-20 opacity-80 translate-x-4"
-              />
-            </div>
             <p
-              className="text-[22px] text-[#F2F0EC]/60 mt-2"
+              className="text-[22px] text-[#F2F0EC]/60 mt-1 self-end pr-4"
               style={{ fontFamily: "var(--font-serif)" }}
             >
               <em>Social</em>
