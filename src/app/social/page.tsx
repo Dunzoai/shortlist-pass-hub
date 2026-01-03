@@ -25,8 +25,8 @@ import { useEffect, useRef } from "react";
 function HandDrawnUnderline() {
   return (
     <motion.svg
-      className="absolute -bottom-2 left-0 w-full h-4"
-      viewBox="0 0 200 14"
+      className="absolute -bottom-2 left-0 w-full h-3"
+      viewBox="0 0 200 10"
       fill="none"
       preserveAspectRatio="none"
       initial="hidden"
@@ -34,20 +34,22 @@ function HandDrawnUnderline() {
       viewport={{ once: true }}
     >
       {/*
-        Line 1: left to right (full)
-        Trace back on line 1 to middle
-        Drop down, draw line 2 right to left (75% shorter)
-        Trace back to middle of line 2
-        Drop down, draw line 3 left to right (50%)
+        Line 1: full width (100%), left to right
+        Trace back to middle
+        Drop + move left to start of line 2
+        Line 2: 75% width, left to right
+        Trace back to middle
+        Drop + move left to start of line 3
+        Line 3: 50% width, left to right
       */}
       <motion.path
-        d="M5 3 C 50 2, 100 4, 150 2.5 C 180 2, 193 3, 195 3
-           C 165 3.5, 135 2.5, 100 3
-           C 100 4, 100 5, 100 6
-           C 80 5.5, 60 6.5, 52 6
-           C 55 6, 58 6, 62 6
-           C 62 7, 62 8, 62 9
-           C 85 8.5, 110 9.5, 140 9"
+        d="M5 2 C 50 1.5, 100 2.5, 150 2 C 180 1.5, 193 2, 195 2
+           C 165 2, 135 2.5, 100 2
+           C 70 3, 45 3.5, 29 4
+           C 70 3.5, 120 4.5, 171 4
+           C 145 4, 120 4, 100 4
+           C 80 5, 65 5.5, 52 6
+           C 80 5.5, 115 6.5, 147 6"
         stroke="#9CAF88"
         strokeWidth="1.5"
         strokeLinecap="round"
