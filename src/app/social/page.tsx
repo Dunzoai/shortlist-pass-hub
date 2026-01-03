@@ -33,13 +33,21 @@ function HandDrawnUnderline() {
       whileInView="visible"
       viewport={{ once: true }}
     >
-      {/* Continuous scribble: tight spacing, almost touching */}
+      {/*
+        Line 1: left to right (full)
+        Trace back on line 1 to middle
+        Drop down, draw line 2 right to left (75% shorter)
+        Trace back to middle of line 2
+        Drop down, draw line 3 left to right (50%)
+      */}
       <motion.path
         d="M5 3 C 50 2, 100 4, 150 2.5 C 180 2, 193 3, 195 3
-           C 175 4, 140 5.5, 100 6
-           C 75 5, 55 7, 52 6
-           C 54 7.5, 58 9, 62 9.5
-           C 85 8.5, 110 10.5, 140 9"
+           C 165 3.5, 135 2.5, 100 3
+           C 100 4, 100 5, 100 6
+           C 80 5.5, 60 6.5, 52 6
+           C 55 6, 58 6, 62 6
+           C 62 7, 62 8, 62 9
+           C 85 8.5, 110 9.5, 140 9"
         stroke="#9CAF88"
         strokeWidth="1.5"
         strokeLinecap="round"
