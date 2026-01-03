@@ -656,7 +656,7 @@ function Footer() {
               The Shortlist Co.
             </p>
             <p
-              className="text-[28px] text-[#F2F0EC]/80 -mt-1 ml-[180px]"
+              className="text-[28px] text-[#F2F0EC]/80 -mt-1 ml-[200px]"
               style={{ fontFamily: "var(--font-serif)" }}
             >
               <em>Social</em>
