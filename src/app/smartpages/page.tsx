@@ -153,6 +153,59 @@ function BellIcon({ className }: { className?: string }) {
 }
 
 // =============================================================================
+// VIDEO NOISE COMPONENT - Film grain overlay effect
+// =============================================================================
+
+function VideoNoise({ opacity = 0.04 }: { opacity?: number }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let animationId: number;
+
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+
+    const generateNoise = () => {
+      const imageData = ctx.createImageData(canvas.width, canvas.height);
+      const data = imageData.data;
+      for (let i = 0; i < data.length; i += 4) {
+        const value = Math.random() * 255;
+        data[i] = value;
+        data[i + 1] = value;
+        data[i + 2] = value;
+        data[i + 3] = 255;
+      }
+      ctx.putImageData(imageData, 0, 0);
+      animationId = requestAnimationFrame(generateNoise);
+    };
+
+    resize();
+    generateNoise();
+    window.addEventListener("resize", resize);
+
+    return () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener("resize", resize);
+    };
+  }, []);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="absolute inset-0 pointer-events-none mix-blend-overlay"
+      style={{ opacity }}
+    />
+  );
+}
+
+// =============================================================================
 // ICONS ARRAY
 // =============================================================================
 
@@ -1278,6 +1331,9 @@ export default function ShortyLandingPage() {
       {/* SECTION 1 — HERO (Above the fold) */}
       {/* =========================================================================== */}
       <section className="relative overflow-hidden pt-16 md:pt-24 pb-12 md:pb-16 flex flex-col items-center px-4 bg-[#333333]">
+        {/* Video noise overlay */}
+        <VideoNoise opacity={0.07} />
+
         {/* H1 — Headline */}
         <div className="text-center max-w-3xl mb-4 md:mb-6 z-10 mt-10 md:mt-6 px-4">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal tracking-tight leading-tight text-[#F4F1EC]" style={{ fontFamily: "var(--font-libre-baskerville)" }}>
