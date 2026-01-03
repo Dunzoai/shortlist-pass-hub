@@ -15,6 +15,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 
 // =============================================================================
 // SECTION 1: HERO
@@ -23,8 +24,21 @@ import Link from "next/link";
 
 function HeroSection() {
   return (
-    <section className="relative pt-32 pb-20 md:pt-44 md:pb-28">
-      <div className="max-w-[900px] mx-auto px-6">
+    <section className="relative pt-32 pb-20 md:pt-44 md:pb-28 min-h-[85vh] flex items-center">
+      {/* Background image */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/social-page/social-hero.jpg"
+          alt=""
+          fill
+          className="object-cover"
+          priority
+        />
+        {/* Dark overlay for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0B0B0C]/70 via-[#0B0B0C]/60 to-[#0B0B0C]/90" />
+      </div>
+
+      <div className="max-w-[900px] mx-auto px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -248,37 +262,38 @@ function WhatWeDoSection() {
             </div>
           </motion.div>
 
-          {/* Right: Asymmetrical image-shape placeholders */}
+          {/* Right: Image (desktop) */}
           <motion.div
             initial={{ opacity: 0, x: 24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="relative h-[400px] md:h-[480px] hidden lg:block"
+            className="relative hidden lg:block"
           >
-            {/* Rounded rectangle */}
-            <div
-              className="absolute top-0 right-0 w-[260px] h-[340px] rounded-lg bg-[#141416]"
-              style={{ boxShadow: "0 20px 50px rgba(0,0,0,0.4)" }}
-            >
-              <div
-                className="absolute inset-0 rounded-lg opacity-50"
-                style={{
-                  background: "linear-gradient(145deg, rgba(242,240,236,0.03) 0%, transparent 50%)",
-                }}
+            <div className="relative w-full aspect-[4/5] rounded-lg overflow-hidden">
+              <Image
+                src="/social-page/what-we-do.png"
+                alt="Content creation showcase"
+                fill
+                className="object-cover"
               />
             </div>
+          </motion.div>
 
-            {/* Overlapping circle */}
-            <div
-              className="absolute bottom-0 left-0 w-[180px] h-[180px] rounded-full bg-[#1a1a1c] border border-[rgba(242,240,236,0.06)]"
-              style={{ boxShadow: "0 16px 40px rgba(0,0,0,0.35)" }}
-            >
-              <div
-                className="absolute inset-0 rounded-full"
-                style={{
-                  background: "radial-gradient(circle at 30% 30%, rgba(242,240,236,0.04) 0%, transparent 60%)",
-                }}
+          {/* Mobile: Image below text */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="lg:hidden"
+          >
+            <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden">
+              <Image
+                src="/social-page/what-we-do-mobile.png"
+                alt="Content creation showcase"
+                fill
+                className="object-cover"
               />
             </div>
           </motion.div>
