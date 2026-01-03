@@ -36,6 +36,15 @@ function HeroSection() {
         />
         {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#0B0B0C]/70 via-[#0B0B0C]/60 to-[#0B0B0C]/90" />
+
+        {/* Animated noise overlay - subtle, felt more than seen */}
+        <div
+          className="absolute inset-0 opacity-[0.03] pointer-events-none animate-noise"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+            backgroundSize: '256px 256px',
+          }}
+        />
       </div>
 
       <div className="max-w-[900px] mx-auto px-6 relative z-10">
@@ -184,7 +193,7 @@ function InterestMediaSection() {
 
 function WhatWeDoSection() {
   return (
-    <section className="relative min-h-[500px] md:min-h-[550px] lg:min-h-[600px] border-t border-[rgba(242,240,236,0.08)]">
+    <section className="relative min-h-[580px] md:min-h-[550px] lg:min-h-[600px] border-t border-[rgba(242,240,236,0.08)]">
       {/* Full-width background image - Desktop */}
       <div className="absolute inset-0 hidden lg:block">
         <Image
