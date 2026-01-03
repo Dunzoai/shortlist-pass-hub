@@ -19,6 +19,57 @@ import Image from "next/image";
 import { useEffect, useRef } from "react";
 
 // =============================================================================
+// HAND-DRAWN UNDERLINE - Animated sketchy underline
+// =============================================================================
+
+function HandDrawnUnderline() {
+  return (
+    <motion.svg
+      className="absolute -bottom-2 left-0 w-full h-4"
+      viewBox="0 0 200 12"
+      fill="none"
+      preserveAspectRatio="none"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+    >
+      {/* First sketchy line */}
+      <motion.path
+        d="M2 6 C 30 4, 50 8, 80 5 C 110 2, 140 9, 170 6 C 185 5, 195 7, 198 6"
+        stroke="#9CAF88"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        fill="none"
+        variants={{
+          hidden: { pathLength: 0, opacity: 0 },
+          visible: {
+            pathLength: 1,
+            opacity: 1,
+            transition: { duration: 0.8, delay: 0.3, ease: "easeOut" }
+          }
+        }}
+      />
+      {/* Second overlapping line for hand-drawn effect */}
+      <motion.path
+        d="M4 8 C 25 10, 60 6, 90 9 C 120 11, 150 7, 175 9 C 188 8, 196 10, 198 9"
+        stroke="#9CAF88"
+        strokeWidth="2"
+        strokeLinecap="round"
+        fill="none"
+        variants={{
+          hidden: { pathLength: 0, opacity: 0 },
+          visible: {
+            pathLength: 1,
+            opacity: 0.7,
+            transition: { duration: 0.6, delay: 0.5, ease: "easeOut" }
+          }
+        }}
+      />
+    </motion.svg>
+  );
+}
+
+// =============================================================================
 // VIDEO NOISE COMPONENT - Flickering film grain effect
 // =============================================================================
 
@@ -82,9 +133,9 @@ function VideoNoise({ opacity = 0.04 }: { opacity?: number }) {
 
 function HeroSection() {
   return (
-    <section className="relative pt-32 pb-20 md:pt-44 md:pb-28 min-h-[85vh] flex items-center">
+    <section className="relative pt-32 pb-20 md:pt-44 md:pb-28 min-h-[85vh] flex items-center overflow-hidden">
       {/* Background image */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 overflow-hidden">
         <Image
           src="/social-page/social-hero.jpg"
           alt=""
@@ -93,10 +144,10 @@ function HeroSection() {
           priority
         />
         {/* Dark overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0B0B0C]/70 via-[#0B0B0C]/60 to-[#0B0B0C]/90" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0B0B0C]/70 via-[#0B0B0C]/60 to-[#0B0B0C]" />
 
         {/* Live video noise overlay - flickering film grain */}
-        <VideoNoise opacity={0.035} />
+        <VideoNoise opacity={0.07} />
       </div>
 
       <div className="max-w-[900px] mx-auto px-6 relative z-10">
@@ -532,13 +583,16 @@ function CTABand() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-[28px] md:text-[38px] font-normal text-[#F2F0EC] leading-[1.3] tracking-[-0.01em] mb-10"
+          className="text-[26px] md:text-[38px] font-normal text-[#F2F0EC] leading-[1.3] tracking-[-0.01em] mb-10"
           style={{ fontFamily: "var(--font-serif)" }}
         >
-          Want to work together?{" "}
-          <em className="italic underline decoration-[#F2F0EC]/40 decoration-1 underline-offset-4">
-            Reach out to us.
-          </em>
+          <span className="whitespace-nowrap">
+            Let&apos;s work together.{" "}
+            <span className="relative inline-block">
+              <em className="italic">Reach out.</em>
+              <HandDrawnUnderline />
+            </span>
+          </span>
         </motion.h2>
 
         <motion.a
