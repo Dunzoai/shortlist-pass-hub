@@ -1,341 +1,286 @@
 "use client";
 
 /**
- * /social page - Editorial Studio Style (Sage Social inspired)
+ * /social page - Editorial Studio Style
+ * Inspired by sagesocial.co, aligned to The Shortlist Co brand
  *
- * FONT NOTE: To match Sage exactly, replace Cormorant_Garamond with licensed
- * font WOFF2 files and switch to next/font/local. Current implementation uses
- * Google Fonts as a fallback.
- *
- * Typography scale:
- * - Labels: 12px uppercase tracking-wide
- * - Hero lines: 52-64px desktop, 34-42px mobile
- * - Body serif: 20-22px desktop, 18-20px mobile
- * - Section headlines: 36-44px desktop, 28-34px mobile
+ * LOCKED STRUCTURE:
+ * 1. Hero
+ * 2. Interest Media (immediately after hero)
+ * 3. What We Do (with image shapes)
+ * 4. Services (vertical text list - NO cards)
+ * 5. Showing Up
+ * 6. CTA Band + Footer
  */
 
 import { motion } from "framer-motion";
-
-// =============================================================================
-// BRAND COLORS (charcoal/black theme)
-// =============================================================================
-// Background: #0B0B0C
-// Surface: #111113
-// Text primary: #F2F0EC
-// Text secondary: rgba(242,240,236,0.70)
-// Hairline: rgba(242,240,236,0.10)
-// Button: #2A2A2C → hover #333336
-
-// =============================================================================
-// IMAGE SHAPE PLACEHOLDER COMPONENT
-// Overlapping rectangle + circle like Sage
-// =============================================================================
-
-function ImageShapePlaceholder({ className = "" }: { className?: string }) {
-  return (
-    <div className={`relative ${className}`}>
-      {/* Rectangle placeholder */}
-      <div
-        className="w-[280px] h-[360px] md:w-[340px] md:h-[440px] bg-[#1a1a1c] rounded-sm"
-        style={{
-          boxShadow: "0 20px 60px rgba(0,0,0,0.4)",
-        }}
-      >
-        {/* Inner texture */}
-        <div
-          className="absolute inset-0 opacity-30"
-          style={{
-            background: "linear-gradient(135deg, rgba(242,240,236,0.03) 0%, transparent 50%, rgba(242,240,236,0.02) 100%)",
-          }}
-        />
-      </div>
-
-      {/* Circle placeholder - overlapping */}
-      <div
-        className="absolute -bottom-8 -left-8 md:-bottom-12 md:-left-12 w-[160px] h-[160px] md:w-[200px] md:h-[200px] rounded-full bg-[#232325] border border-[rgba(242,240,236,0.08)]"
-        style={{
-          boxShadow: "0 16px 48px rgba(0,0,0,0.3)",
-        }}
-      >
-        <div
-          className="absolute inset-0 rounded-full opacity-40"
-          style={{
-            background: "radial-gradient(circle at 30% 30%, rgba(242,240,236,0.04) 0%, transparent 60%)",
-          }}
-        />
-      </div>
-    </div>
-  );
-}
-
-// =============================================================================
-// ABSTRACT HERO GRAPHIC
-// =============================================================================
-
-function HeroGraphic() {
-  return (
-    <div className="relative w-full h-[300px] md:h-[400px]">
-      {/* Main rectangle */}
-      <div
-        className="absolute right-0 top-0 w-[240px] h-[300px] md:w-[320px] md:h-[380px] bg-[#131315] rounded-sm"
-        style={{
-          boxShadow: "0 24px 64px rgba(0,0,0,0.5)",
-        }}
-      >
-        <div
-          className="absolute inset-0 opacity-60"
-          style={{
-            background: "linear-gradient(160deg, rgba(242,240,236,0.02) 0%, transparent 40%)",
-          }}
-        />
-        {/* Subtle noise texture */}
-        <div
-          className="absolute inset-0 opacity-[0.15]"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-          }}
-        />
-      </div>
-
-      {/* Overlapping circle */}
-      <div
-        className="absolute left-0 bottom-0 w-[140px] h-[140px] md:w-[180px] md:h-[180px] rounded-full bg-[#1e1e20] border border-[rgba(242,240,236,0.06)]"
-        style={{
-          boxShadow: "0 16px 40px rgba(0,0,0,0.4)",
-        }}
-      >
-        <div
-          className="absolute inset-0 rounded-full"
-          style={{
-            background: "radial-gradient(circle at 35% 35%, rgba(242,240,236,0.03) 0%, transparent 50%)",
-          }}
-        />
-      </div>
-
-      {/* Small accent rectangle */}
-      <div
-        className="absolute right-16 md:right-24 bottom-8 w-[80px] h-[100px] md:w-[100px] md:h-[120px] bg-[#191919] rounded-sm"
-        style={{
-          boxShadow: "0 12px 32px rgba(0,0,0,0.3)",
-        }}
-      />
-    </div>
-  );
-}
+import Link from "next/link";
 
 // =============================================================================
 // SECTION 1: HERO
+// Editorial serif statement, short paragraph, subtle CTA, no photography
 // =============================================================================
 
 function HeroSection() {
   return (
-    <section className="relative pt-32 pb-24 md:pt-40 md:pb-32">
-      <div className="max-w-[1100px] mx-auto px-6 md:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-12 items-center">
-          {/* Left: Text content */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+    <section className="relative pt-32 pb-20 md:pt-44 md:pb-28">
+      <div className="max-w-[900px] mx-auto px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="text-center"
+        >
+          {/* Label */}
+          <p
+            className="text-[11px] uppercase tracking-[0.25em] text-[#F2F0EC]/45 mb-10"
+            style={{ fontFamily: "var(--font-sans-inter)" }}
           >
-            {/* Label */}
-            <p
-              className="text-[12px] uppercase tracking-[0.2em] text-[#F2F0EC]/50 mb-8"
-              style={{ fontFamily: "var(--font-sans-inter)" }}
-            >
-              Social & Content Studio
-            </p>
+            Social & Content Studio
+          </p>
 
-            {/* Hero serif lines - Sage style */}
-            <h1
-              className="text-[34px] md:text-[44px] lg:text-[52px] font-normal text-[#F2F0EC] leading-[1.15] tracking-[-0.01em] mb-8"
-              style={{ fontFamily: "var(--font-serif)" }}
-            >
-              We tell your <em className="italic">story</em>.
-              <br />
-              We create your <em className="italic">content</em>.
-              <br />
-              We build your <em className="italic">brand</em>.
-            </h1>
-
-            {/* Supporting paragraph - large serif body */}
-            <p
-              className="text-[18px] md:text-[20px] text-[#F2F0EC]/70 leading-[1.7] mb-10 max-w-lg"
-              style={{ fontFamily: "var(--font-serif)" }}
-            >
-              Strategic social media and content creation for businesses
-              that want to be remembered — not just seen.
-            </p>
-
-            {/* CTA Button */}
-            <a
-              href="mailto:hello@shortlistpass.com?subject=Social Inquiry"
-              className="inline-flex items-center justify-center px-8 py-4 text-[13px] uppercase tracking-[0.15em] font-medium text-[#F2F0EC] bg-[#2A2A2C] hover:bg-[#333336] rounded-sm transition-colors duration-300"
-              style={{ fontFamily: "var(--font-sans-inter)" }}
-            >
-              Start the Conversation
-            </a>
-          </motion.div>
-
-          {/* Right: Abstract graphic */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="hidden lg:block"
+          {/* Editorial serif statement */}
+          <h1
+            className="text-[32px] md:text-[42px] lg:text-[50px] font-normal text-[#F2F0EC] leading-[1.2] tracking-[-0.015em] mb-8"
+            style={{ fontFamily: "var(--font-serif)" }}
           >
-            <HeroGraphic />
-          </motion.div>
-        </div>
+            We tell your <em className="italic">story</em>.
+            <br />
+            We create your <em className="italic">content</em>.
+            <br />
+            We build your <em className="italic">brand</em>.
+          </h1>
+
+          {/* Supporting paragraph */}
+          <p
+            className="text-[18px] md:text-[20px] text-[#F2F0EC]/65 leading-[1.8] max-w-xl mx-auto mb-10"
+            style={{ fontFamily: "var(--font-serif)" }}
+          >
+            Strategic social media and content creation for businesses
+            that want to be remembered — not just seen.
+          </p>
+
+          {/* Subtle CTA */}
+          <a
+            href="mailto:hello@shortlistpass.com?subject=Social Inquiry"
+            className="inline-block text-[13px] uppercase tracking-[0.15em] text-[#F2F0EC]/50 hover:text-[#F2F0EC]/80 transition-colors duration-300 border-b border-[#F2F0EC]/20 hover:border-[#F2F0EC]/40 pb-1"
+            style={{ fontFamily: "var(--font-sans-inter)" }}
+          >
+            Start a conversation
+          </a>
+        </motion.div>
       </div>
     </section>
   );
 }
 
 // =============================================================================
-// SECTION 2: INTEREST MEDIA (NEW)
+// SECTION 2: INTEREST MEDIA (IMMEDIATELY AFTER HERO)
 // =============================================================================
 
 function InterestMediaSection() {
   return (
-    <section className="py-24 md:py-32 border-t border-[rgba(242,240,236,0.08)]">
-      <div className="max-w-[1100px] mx-auto px-6 md:px-8">
-        <div className="max-w-3xl">
-          {/* Label */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-[12px] uppercase tracking-[0.2em] text-[#F2F0EC]/50 mb-8"
-            style={{ fontFamily: "var(--font-sans-inter)" }}
-          >
-            The Shift
-          </motion.p>
+    <section className="py-20 md:py-28 border-t border-[rgba(242,240,236,0.08)]">
+      <div className="max-w-[900px] mx-auto px-6">
+        {/* Label */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-[11px] uppercase tracking-[0.25em] text-[#F2F0EC]/45 mb-8"
+          style={{ fontFamily: "var(--font-sans-inter)" }}
+        >
+          How Visibility Works Now
+        </motion.p>
 
-          {/* Headline */}
-          <motion.h2
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-[28px] md:text-[36px] lg:text-[42px] font-normal text-[#F2F0EC] leading-[1.2] tracking-[-0.01em] mb-10"
+        {/* Headline */}
+        <motion.h2
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="text-[28px] md:text-[36px] font-normal text-[#F2F0EC] leading-[1.25] tracking-[-0.01em] mb-10"
+          style={{ fontFamily: "var(--font-serif)" }}
+        >
+          Social isn't social anymore.
+        </motion.h2>
+
+        {/* Two paragraphs */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="space-y-6 mb-14"
+        >
+          <p
+            className="text-[18px] md:text-[20px] text-[#F2F0EC]/65 leading-[1.8]"
             style={{ fontFamily: "var(--font-serif)" }}
           >
-            Social isn't social anymore.
-          </motion.h2>
-
-          {/* Body paragraphs */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="space-y-6 mb-12"
+            Feeds are interest-driven now. People see what holds their attention,
+            not what their friends posted. Follower count doesn't guarantee reach —
+            a post with 50 followers can outperform one with 50,000.
+          </p>
+          <p
+            className="text-[18px] md:text-[20px] text-[#F2F0EC]/65 leading-[1.8]"
+            style={{ fontFamily: "var(--font-serif)" }}
           >
-            <p
-              className="text-[18px] md:text-[20px] text-[#F2F0EC]/70 leading-[1.75]"
-              style={{ fontFamily: "var(--font-serif)" }}
-            >
-              Feeds are interest-driven now. People see what holds their attention,
-              not what their friends posted. Follower count doesn't guarantee reach —
-              a post with 50 followers can outperform one with 50,000.
-            </p>
-            <p
-              className="text-[18px] md:text-[20px] text-[#F2F0EC]/70 leading-[1.75]"
-              style={{ fontFamily: "var(--font-serif)" }}
-            >
-              This changes everything. Content has to earn its place.
-              It has to be worth watching, worth sharing, worth remembering.
-            </p>
-          </motion.div>
+            This changes everything. Content has to earn its place.
+            It has to be worth watching, worth sharing, worth remembering.
+          </p>
+        </motion.div>
 
-          {/* Bullet points */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="grid grid-cols-1 sm:grid-cols-2 gap-4"
-          >
-            {[
-              "Hooks that capture in 0.5 seconds",
-              "Watch time that signals value",
-              "Saves and shares that extend reach",
-              "Consistent brand vibe across every post",
-            ].map((item, index) => (
-              <div
-                key={index}
-                className="flex items-start gap-3 py-3 px-4 border border-[rgba(242,240,236,0.08)] rounded-sm"
+        {/* 4 subtle bullets */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="space-y-4"
+        >
+          {[
+            "Hooks that capture in the first half-second",
+            "Watch time that signals value to the platform",
+            "Saves and shares that extend reach organically",
+            "Consistent brand presence across every post",
+          ].map((item, index) => (
+            <div key={index} className="flex items-start gap-4">
+              <span className="text-[#F2F0EC]/30 mt-1">—</span>
+              <span
+                className="text-[16px] md:text-[17px] text-[#F2F0EC]/55 leading-relaxed"
+                style={{ fontFamily: "var(--font-sans-inter)" }}
               >
-                <div className="w-1.5 h-1.5 rounded-full bg-[#F2F0EC]/40 mt-2 flex-shrink-0" />
-                <span
-                  className="text-[15px] text-[#F2F0EC]/60 leading-relaxed"
-                  style={{ fontFamily: "var(--font-sans-inter)" }}
-                >
-                  {item}
-                </span>
-              </div>
-            ))}
-          </motion.div>
-        </div>
+                {item}
+              </span>
+            </div>
+          ))}
+        </motion.div>
       </div>
     </section>
   );
 }
 
 // =============================================================================
-// SECTION 3: WHAT WE DO (Sage-style: big serif body)
+// SECTION 3: WHAT WE DO
+// Left: label + large serif paragraph
+// Right: asymmetrical image-shape placeholders
+// Below: Photography, Video, Graphics lines
 // =============================================================================
 
 function WhatWeDoSection() {
   return (
-    <section className="py-24 md:py-32 border-t border-[rgba(242,240,236,0.08)] bg-[#111113]">
-      <div className="max-w-[1100px] mx-auto px-6 md:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-center">
+    <section className="py-20 md:py-28 border-t border-[rgba(242,240,236,0.08)]">
+      <div className="max-w-[1100px] mx-auto px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-start">
           {/* Left: Text */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
           >
             {/* Label */}
             <p
-              className="text-[12px] uppercase tracking-[0.2em] text-[#F2F0EC]/50 mb-8"
+              className="text-[11px] uppercase tracking-[0.25em] text-[#F2F0EC]/45 mb-8"
               style={{ fontFamily: "var(--font-sans-inter)" }}
             >
               What We Do
             </p>
 
-            {/* Big serif body - this IS the main content, not a headline */}
+            {/* Large serif paragraph */}
             <p
-              className="text-[22px] md:text-[26px] lg:text-[30px] font-normal text-[#F2F0EC]/90 leading-[1.5] tracking-[-0.005em] mb-10"
+              className="text-[22px] md:text-[26px] font-normal text-[#F2F0EC]/85 leading-[1.55] tracking-[-0.005em] mb-12"
               style={{ fontFamily: "var(--font-serif)" }}
             >
-              We help you achieve a successful brand presence on social media
-              through thoughtful strategy and professional <em className="italic">content creation</em>.
+              We develop social strategy, create content that resonates,
+              and manage your presence with intention. Every post serves a purpose.
+              Every story reinforces who you are.
             </p>
 
-            {/* CTA Button */}
-            <a
-              href="#services"
-              className="inline-flex items-center justify-center px-8 py-4 text-[13px] uppercase tracking-[0.15em] font-medium text-[#F2F0EC] bg-[#2A2A2C] hover:bg-[#333336] rounded-sm transition-colors duration-300"
-              style={{ fontFamily: "var(--font-sans-inter)" }}
-            >
-              View Services
-            </a>
+            {/* Photography, Video, Graphics lines */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-4">
+                <span
+                  className="text-[14px] text-[#F2F0EC]/40 w-24"
+                  style={{ fontFamily: "var(--font-sans-inter)" }}
+                >
+                  Photography
+                </span>
+                <span className="flex-1 h-px bg-[rgba(242,240,236,0.1)]" />
+                <span
+                  className="text-[14px] text-[#F2F0EC]/55"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  Styled shoots that tell your story
+                </span>
+              </div>
+              <div className="flex items-center gap-4">
+                <span
+                  className="text-[14px] text-[#F2F0EC]/40 w-24"
+                  style={{ fontFamily: "var(--font-sans-inter)" }}
+                >
+                  Video
+                </span>
+                <span className="flex-1 h-px bg-[rgba(242,240,236,0.1)]" />
+                <span
+                  className="text-[14px] text-[#F2F0EC]/55"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  Motion that captures attention
+                </span>
+              </div>
+              <div className="flex items-center gap-4">
+                <span
+                  className="text-[14px] text-[#F2F0EC]/40 w-24"
+                  style={{ fontFamily: "var(--font-sans-inter)" }}
+                >
+                  Graphics
+                </span>
+                <span className="flex-1 h-px bg-[rgba(242,240,236,0.1)]" />
+                <span
+                  className="text-[14px] text-[#F2F0EC]/55"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  Designed for the feed
+                </span>
+              </div>
+            </div>
           </motion.div>
 
-          {/* Right: Image shape placeholder */}
+          {/* Right: Asymmetrical image-shape placeholders */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
+            initial={{ opacity: 0, x: 24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="flex justify-center lg:justify-end"
+            className="relative h-[400px] md:h-[480px] hidden lg:block"
           >
-            <ImageShapePlaceholder />
+            {/* Rounded rectangle */}
+            <div
+              className="absolute top-0 right-0 w-[260px] h-[340px] rounded-lg bg-[#141416]"
+              style={{ boxShadow: "0 20px 50px rgba(0,0,0,0.4)" }}
+            >
+              <div
+                className="absolute inset-0 rounded-lg opacity-50"
+                style={{
+                  background: "linear-gradient(145deg, rgba(242,240,236,0.03) 0%, transparent 50%)",
+                }}
+              />
+            </div>
+
+            {/* Overlapping circle */}
+            <div
+              className="absolute bottom-0 left-0 w-[180px] h-[180px] rounded-full bg-[#1a1a1c] border border-[rgba(242,240,236,0.06)]"
+              style={{ boxShadow: "0 16px 40px rgba(0,0,0,0.35)" }}
+            >
+              <div
+                className="absolute inset-0 rounded-full"
+                style={{
+                  background: "radial-gradient(circle at 30% 30%, rgba(242,240,236,0.04) 0%, transparent 60%)",
+                }}
+              />
+            </div>
           </motion.div>
         </div>
       </div>
@@ -344,21 +289,22 @@ function WhatWeDoSection() {
 }
 
 // =============================================================================
-// SECTION 4: SERVICES LIST
+// SECTION 4: SERVICES
+// Vertical text list - NO cards, NO borders, NO grids
 // =============================================================================
 
 const services = [
   {
     title: "Social Media Management",
-    description: "Content calendars, captions, and community management. Consistent presence across platforms, handled with care.",
+    description: "Content calendars, captions, community management. Consistent presence handled with intention.",
   },
   {
     title: "Content Creation",
-    description: "Photography, graphics, and copy designed for the feed. Intentional work that earns attention.",
+    description: "Photography, graphics, and copy designed for the feed. Work that earns attention.",
   },
   {
     title: "Short-Form Video",
-    description: "Reels, TikToks, and Stories. Motion that captures interest in the first second.",
+    description: "Reels, TikToks, Stories. Motion that captures interest in the first second.",
   },
   {
     title: "Paid Social",
@@ -366,46 +312,45 @@ const services = [
   },
   {
     title: "Brand Voice & Strategy",
-    description: "Before execution, clarity. A social identity that sounds like you.",
+    description: "A social identity that sounds like you and reaches who you want.",
   },
 ];
 
 function ServicesSection() {
   return (
-    <section id="services" className="py-24 md:py-32 border-t border-[rgba(242,240,236,0.08)]">
-      <div className="max-w-[1100px] mx-auto px-6 md:px-8">
-        {/* Section title */}
+    <section className="py-20 md:py-28 border-t border-[rgba(242,240,236,0.08)]">
+      <div className="max-w-[900px] mx-auto px-6">
+        {/* Label */}
         <motion.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-[12px] uppercase tracking-[0.2em] text-[#F2F0EC]/50 mb-16"
+          className="text-[11px] uppercase tracking-[0.25em] text-[#F2F0EC]/45 mb-16"
           style={{ fontFamily: "var(--font-sans-inter)" }}
         >
           Services
         </motion.p>
 
-        {/* Services grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Vertical text list - NO cards */}
+        <div className="space-y-14">
           {services.map((service, index) => (
             <motion.div
               key={service.title}
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.08 }}
-              className="p-8 border border-[rgba(242,240,236,0.08)] rounded-sm hover:border-[rgba(242,240,236,0.15)] transition-colors duration-300"
             >
               <h3
-                className="text-[20px] md:text-[22px] font-normal text-[#F2F0EC] mb-4"
+                className="text-[22px] md:text-[26px] font-normal text-[#F2F0EC] mb-3 tracking-[-0.01em]"
                 style={{ fontFamily: "var(--font-serif)" }}
               >
                 {service.title}
               </h3>
               <p
-                className="text-[15px] md:text-[16px] text-[#F2F0EC]/55 leading-[1.7]"
-                style={{ fontFamily: "var(--font-sans-inter)" }}
+                className="text-[17px] md:text-[18px] text-[#F2F0EC]/55 leading-[1.7]"
+                style={{ fontFamily: "var(--font-serif)" }}
               >
                 {service.description}
               </p>
@@ -418,100 +363,198 @@ function ServicesSection() {
 }
 
 // =============================================================================
-// SECTION 5: CLOSER / CTA
+// SECTION 5: SHOWING UP IS THE STRATEGY
 // =============================================================================
 
-function CloserSection() {
+function ShowingUpSection() {
   return (
-    <section className="py-24 md:py-32 border-t border-[rgba(242,240,236,0.08)] bg-[#111113]">
-      <div className="max-w-[1100px] mx-auto px-6 md:px-8">
-        <div className="max-w-2xl">
-          {/* Label */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-[12px] uppercase tracking-[0.2em] text-[#F2F0EC]/50 mb-8"
-            style={{ fontFamily: "var(--font-sans-inter)" }}
-          >
-            Consistency Wins
-          </motion.p>
+    <section className="py-20 md:py-28 border-t border-[rgba(242,240,236,0.08)]">
+      <div className="max-w-[900px] mx-auto px-6">
+        {/* Label */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-[11px] uppercase tracking-[0.25em] text-[#F2F0EC]/45 mb-8"
+          style={{ fontFamily: "var(--font-sans-inter)" }}
+        >
+          Consistency Wins
+        </motion.p>
 
-          {/* Headline */}
-          <motion.h2
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-[28px] md:text-[36px] lg:text-[42px] font-normal text-[#F2F0EC] leading-[1.2] tracking-[-0.01em] mb-8"
-            style={{ fontFamily: "var(--font-serif)" }}
-          >
-            Showing up is the <em className="italic">strategy</em>.
-          </motion.h2>
+        {/* Headline */}
+        <motion.h2
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="text-[28px] md:text-[36px] font-normal text-[#F2F0EC] leading-[1.25] tracking-[-0.01em] mb-8"
+          style={{ fontFamily: "var(--font-serif)" }}
+        >
+          Showing up is the <em className="italic">strategy</em>.
+        </motion.h2>
 
-          {/* Body */}
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-[18px] md:text-[20px] text-[#F2F0EC]/70 leading-[1.75] mb-12"
-            style={{ fontFamily: "var(--font-serif)" }}
-          >
-            Most businesses don't fail at social because they lack creativity.
-            They fail because they disappear. Consistency builds trust.
-            Trust builds business. The ones who show up — keep showing up.
-          </motion.p>
-
-          {/* CTA row */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="flex flex-col sm:flex-row items-start sm:items-center gap-6"
-          >
-            <a
-              href="mailto:hello@shortlistpass.com?subject=Social Inquiry"
-              className="inline-flex items-center justify-center px-8 py-4 text-[13px] uppercase tracking-[0.15em] font-medium text-[#F2F0EC] bg-[#2A2A2C] hover:bg-[#333336] rounded-sm transition-colors duration-300"
-              style={{ fontFamily: "var(--font-sans-inter)" }}
-            >
-              Let's Talk
-            </a>
-            <span
-              className="text-[14px] text-[#F2F0EC]/40"
-              style={{ fontFamily: "var(--font-sans-inter)" }}
-            >
-              hello@shortlistpass.com
-            </span>
-          </motion.div>
-        </div>
+        {/* Tightened copy */}
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="text-[18px] md:text-[20px] text-[#F2F0EC]/65 leading-[1.8] max-w-2xl"
+          style={{ fontFamily: "var(--font-serif)" }}
+        >
+          Most businesses don't fail at social because they lack creativity.
+          They fail because they disappear. Consistency builds trust.
+          The ones who show up — keep showing up.
+        </motion.p>
       </div>
     </section>
   );
 }
 
 // =============================================================================
-// FOOTER
+// SECTION 6: CTA BAND + FOOTER
 // =============================================================================
+
+function CTABand() {
+  return (
+    <section className="py-20 md:py-28 border-t border-[rgba(242,240,236,0.08)] bg-[#0e0e10]">
+      <div className="max-w-[900px] mx-auto px-6 text-center">
+        <motion.h2
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-[26px] md:text-[34px] font-normal text-[#F2F0EC] leading-[1.3] tracking-[-0.01em] mb-10"
+          style={{ fontFamily: "var(--font-serif)" }}
+        >
+          Let's build something that lasts.
+        </motion.h2>
+
+        <motion.a
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          href="mailto:hello@shortlistpass.com?subject=Social Inquiry"
+          className="inline-flex items-center justify-center px-8 py-4 text-[13px] uppercase tracking-[0.15em] font-medium text-[#F2F0EC] bg-[#1f1f21] hover:bg-[#2a2a2c] rounded-sm transition-colors duration-300"
+          style={{ fontFamily: "var(--font-sans-inter)" }}
+        >
+          Start the Conversation
+        </motion.a>
+      </div>
+    </section>
+  );
+}
 
 function Footer() {
   return (
-    <footer className="py-10 border-t border-[rgba(242,240,236,0.06)]">
-      <div className="max-w-[1100px] mx-auto px-6 md:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <span
-          className="text-[12px] text-[#F2F0EC]/30"
-          style={{ fontFamily: "var(--font-sans-inter)" }}
-        >
-          &copy; {new Date().getFullYear()} The Shortlist Co
-        </span>
-        <span
-          className="text-[12px] text-[#F2F0EC]/30"
-          style={{ fontFamily: "var(--font-sans-inter)" }}
-        >
-          Social & Content Studio
-        </span>
+    <footer className="py-16 border-t border-[rgba(242,240,236,0.06)]">
+      <div className="max-w-[1100px] mx-auto px-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
+          {/* Column 1: Links */}
+          <div>
+            <p
+              className="text-[11px] uppercase tracking-[0.2em] text-[#F2F0EC]/35 mb-6"
+              style={{ fontFamily: "var(--font-sans-inter)" }}
+            >
+              Navigate
+            </p>
+            <div className="space-y-3">
+              <Link
+                href="/"
+                className="block text-[14px] text-[#F2F0EC]/50 hover:text-[#F2F0EC]/80 transition-colors"
+                style={{ fontFamily: "var(--font-sans-inter)" }}
+              >
+                Home
+              </Link>
+              <Link
+                href="/social"
+                className="block text-[14px] text-[#F2F0EC]/50 hover:text-[#F2F0EC]/80 transition-colors"
+                style={{ fontFamily: "var(--font-sans-inter)" }}
+              >
+                Social
+              </Link>
+              <Link
+                href="/smartpages"
+                className="block text-[14px] text-[#F2F0EC]/50 hover:text-[#F2F0EC]/80 transition-colors"
+                style={{ fontFamily: "var(--font-sans-inter)" }}
+              >
+                SmartPages
+              </Link>
+              <Link
+                href="/digital"
+                className="block text-[14px] text-[#F2F0EC]/50 hover:text-[#F2F0EC]/80 transition-colors"
+                style={{ fontFamily: "var(--font-sans-inter)" }}
+              >
+                Digital
+              </Link>
+            </div>
+          </div>
+
+          {/* Column 2: Wordmark */}
+          <div className="flex flex-col items-center justify-center">
+            <p
+              className="text-[18px] text-[#F2F0EC]/70"
+              style={{ fontFamily: "var(--font-serif)" }}
+            >
+              The Shortlist Co
+            </p>
+            <p
+              className="text-[12px] text-[#F2F0EC]/35 mt-2"
+              style={{ fontFamily: "var(--font-sans-inter)" }}
+            >
+              Social & Content Studio
+            </p>
+          </div>
+
+          {/* Column 3: Contact + Socials */}
+          <div className="text-right">
+            <p
+              className="text-[11px] uppercase tracking-[0.2em] text-[#F2F0EC]/35 mb-6"
+              style={{ fontFamily: "var(--font-sans-inter)" }}
+            >
+              Contact
+            </p>
+            <a
+              href="mailto:hello@shortlistpass.com"
+              className="block text-[14px] text-[#F2F0EC]/50 hover:text-[#F2F0EC]/80 transition-colors mb-4"
+              style={{ fontFamily: "var(--font-sans-inter)" }}
+            >
+              hello@shortlistpass.com
+            </a>
+            <div className="flex justify-end gap-4">
+              <a
+                href="https://instagram.com/theshortlistco"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[13px] text-[#F2F0EC]/40 hover:text-[#F2F0EC]/70 transition-colors"
+                style={{ fontFamily: "var(--font-sans-inter)" }}
+              >
+                Instagram
+              </a>
+              <a
+                href="https://linkedin.com/company/theshortlistco"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[13px] text-[#F2F0EC]/40 hover:text-[#F2F0EC]/70 transition-colors"
+                style={{ fontFamily: "var(--font-sans-inter)" }}
+              >
+                LinkedIn
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Copyright */}
+        <div className="mt-16 pt-8 border-t border-[rgba(242,240,236,0.05)] text-center">
+          <p
+            className="text-[12px] text-[#F2F0EC]/25"
+            style={{ fontFamily: "var(--font-sans-inter)" }}
+          >
+            &copy; {new Date().getFullYear()} The Shortlist Co. All rights reserved.
+          </p>
+        </div>
       </div>
     </footer>
   );
@@ -526,13 +569,12 @@ export default function SocialPage() {
     <main
       className="pt-16 bg-[#0B0B0C] min-h-screen"
       style={{
-        // Subtle vignette effect
-        backgroundImage: "radial-gradient(ellipse at 50% 0%, transparent 0%, #0B0B0C 70%)",
+        backgroundImage: "radial-gradient(ellipse at 50% 0%, rgba(242,240,236,0.02) 0%, transparent 50%)",
       }}
     >
-      {/* Noise overlay for texture */}
+      {/* Subtle noise overlay */}
       <div
-        className="fixed inset-0 pointer-events-none z-0 opacity-[0.02]"
+        className="fixed inset-0 pointer-events-none z-0 opacity-[0.015]"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
         }}
@@ -543,7 +585,8 @@ export default function SocialPage() {
         <InterestMediaSection />
         <WhatWeDoSection />
         <ServicesSection />
-        <CloserSection />
+        <ShowingUpSection />
+        <CTABand />
         <Footer />
       </div>
     </main>
