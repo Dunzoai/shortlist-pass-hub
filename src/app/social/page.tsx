@@ -184,7 +184,7 @@ function InterestMediaSection() {
 
 function WhatWeDoSection() {
   return (
-    <section className="relative min-h-[600px] md:min-h-[700px] lg:min-h-[800px] border-t border-[rgba(242,240,236,0.08)]">
+    <section className="relative min-h-[500px] md:min-h-[550px] lg:min-h-[600px] border-t border-[rgba(242,240,236,0.08)]">
       {/* Full-width background image - Desktop */}
       <div className="absolute inset-0 hidden lg:block">
         <Image
@@ -207,7 +207,7 @@ function WhatWeDoSection() {
 
       {/* Text content overlaying on the left negative space */}
       <div className="relative z-10 h-full">
-        <div className="max-w-[1400px] mx-auto px-6 py-16 md:py-20 lg:py-24">
+        <div className="max-w-[1400px] mx-auto px-6 py-12 md:py-16 lg:py-20">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -217,7 +217,7 @@ function WhatWeDoSection() {
           >
             {/* Label */}
             <p
-              className="text-[11px] uppercase tracking-[0.25em] text-[#222222]/60 mb-8"
+              className="text-[11px] uppercase tracking-[0.25em] text-[#222222]/60 mb-6 lg:mb-8"
               style={{ fontFamily: "var(--font-sans-inter)" }}
             >
               What We Do
@@ -225,7 +225,7 @@ function WhatWeDoSection() {
 
             {/* Large serif paragraph */}
             <p
-              className="text-[22px] md:text-[26px] font-normal text-[#222222]/90 leading-[1.55] tracking-[-0.005em] mb-0 lg:mb-12"
+              className="text-[20px] md:text-[24px] lg:text-[26px] font-normal text-[#222222]/90 leading-[1.55] tracking-[-0.005em] mb-8 lg:mb-12"
               style={{ fontFamily: "var(--font-serif)" }}
             >
               We develop social strategy, create content that resonates,
@@ -233,7 +233,53 @@ function WhatWeDoSection() {
               Every story reinforces who you are.
             </p>
 
-            {/* Photography, Video, Graphics lines - hidden on mobile */}
+            {/* Photography, Video, Graphics - Mobile (stacked) */}
+            <div className="lg:hidden space-y-3">
+              <div className="flex items-baseline gap-3">
+                <span
+                  className="text-[13px] text-[#222222]/50 w-[90px] shrink-0"
+                  style={{ fontFamily: "var(--font-sans-inter)" }}
+                >
+                  Photography
+                </span>
+                <span
+                  className="text-[13px] text-[#222222]/70"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  Styled shoots that tell your story
+                </span>
+              </div>
+              <div className="flex items-baseline gap-3">
+                <span
+                  className="text-[13px] text-[#222222]/50 w-[90px] shrink-0"
+                  style={{ fontFamily: "var(--font-sans-inter)" }}
+                >
+                  Video
+                </span>
+                <span
+                  className="text-[13px] text-[#222222]/70"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  Motion that captures attention
+                </span>
+              </div>
+              <div className="flex items-baseline gap-3">
+                <span
+                  className="text-[13px] text-[#222222]/50 w-[90px] shrink-0"
+                  style={{ fontFamily: "var(--font-sans-inter)" }}
+                >
+                  Graphics
+                </span>
+                <span
+                  className="text-[13px] text-[#222222]/70"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  Designed for the feed
+                </span>
+              </div>
+            </div>
+
+            {/* Photography, Video, Graphics - Desktop (with lines) */}
             <div className="hidden lg:block space-y-4">
               <div className="flex items-center gap-4">
                 <span
