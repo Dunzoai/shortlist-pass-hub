@@ -25,21 +25,21 @@ import { useEffect, useRef } from "react";
 function HandDrawnUnderline() {
   return (
     <motion.svg
-      className="absolute -bottom-3 left-0 w-full h-6"
-      viewBox="0 0 200 24"
+      className="absolute -bottom-2 left-0 w-full h-4"
+      viewBox="0 0 200 14"
       fill="none"
       preserveAspectRatio="none"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
     >
-      {/* Continuous scribble: line1 full → loop from middle → line2 (75%) left → loop → line3 (50%) right */}
+      {/* Continuous scribble: tight spacing, almost touching */}
       <motion.path
-        d="M5 6 C 50 4, 100 7, 150 5 C 180 4, 193 6, 195 6
-           C 175 8, 140 10, 100 11
-           C 75 9, 55 13, 52 11
-           C 54 14, 58 16, 62 17
-           C 85 15, 110 18, 140 16"
+        d="M5 3 C 50 2, 100 4, 150 2.5 C 180 2, 193 3, 195 3
+           C 175 4, 140 5.5, 100 6
+           C 75 5, 55 7, 52 6
+           C 54 7.5, 58 9, 62 9.5
+           C 85 8.5, 110 10.5, 140 9"
         stroke="#9CAF88"
         strokeWidth="1.5"
         strokeLinecap="round"
