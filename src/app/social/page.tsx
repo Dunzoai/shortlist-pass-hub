@@ -33,15 +33,15 @@ function HandDrawnUnderline() {
       whileInView="visible"
       viewport={{ once: true }}
     >
-      {/* One continuous scribble path - back and forth like hand-drawn */}
+      {/* Continuous scribble: line1 full → loop from middle → line2 (75%) left → loop → line3 (50%) right */}
       <motion.path
-        d="M5 7 C 30 5, 60 8, 100 6 C 140 4, 170 7, 195 6
-           C 197 8, 196 10, 193 11
-           C 160 13, 130 9, 90 12 C 50 14, 25 10, 8 12
-           C 5 14, 6 16, 10 17
-           C 40 15, 70 18, 110 16 C 150 14, 175 17, 190 16"
+        d="M5 6 C 50 4, 100 7, 150 5 C 180 4, 193 6, 195 6
+           C 175 8, 140 10, 100 11
+           C 75 9, 55 13, 52 11
+           C 54 14, 58 16, 62 17
+           C 85 15, 110 18, 140 16"
         stroke="#9CAF88"
-        strokeWidth="1.8"
+        strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
         fill="none"
@@ -50,7 +50,7 @@ function HandDrawnUnderline() {
           visible: {
             pathLength: 1,
             opacity: 0.9,
-            transition: { duration: 1.2, delay: 0.3, ease: "easeOut" }
+            transition: { duration: 1, delay: 0.3, ease: "easeOut" }
           }
         }}
       />
