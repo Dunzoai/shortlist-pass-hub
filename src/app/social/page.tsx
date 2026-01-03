@@ -648,7 +648,7 @@ function Footer() {
           </div>
 
           {/* Column 2: Wordmark */}
-          <div className="flex flex-col items-center justify-center text-center">
+          <div className="flex flex-col items-center justify-center">
             <p
               className="text-[18px] tracking-[0.15em] uppercase text-[#F2F0EC]/80 font-light"
               style={{ fontFamily: "var(--font-sans-inter)" }}
@@ -656,7 +656,7 @@ function Footer() {
               The Shortlist Co.
             </p>
             <p
-              className="text-[22px] text-[#F2F0EC]/60 mt-1 self-end pr-4"
+              className="text-[22px] text-[#F2F0EC]/60 mt-1 ml-[140px]"
               style={{ fontFamily: "var(--font-serif)" }}
             >
               <em>Social</em>
