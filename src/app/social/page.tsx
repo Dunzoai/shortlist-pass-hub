@@ -418,18 +418,18 @@ function ShowingUpSection() {
 
 function CTABand() {
   return (
-    <section className="py-24 md:py-32 bg-[#F2F0EC]">
+    <section className="py-20 md:py-28 border-t border-[rgba(242,240,236,0.08)] bg-[#0e0e10]">
       <div className="max-w-[900px] mx-auto px-6 text-center">
         <motion.h2
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-[28px] md:text-[38px] font-normal text-[#222222] leading-[1.3] tracking-[-0.01em] mb-10"
+          className="text-[28px] md:text-[38px] font-normal text-[#F2F0EC] leading-[1.3] tracking-[-0.01em] mb-10"
           style={{ fontFamily: "var(--font-serif)" }}
         >
           Want to work together?{" "}
-          <em className="italic underline decoration-[#9CAF88] decoration-2 underline-offset-4">
+          <em className="italic underline decoration-[#F2F0EC]/40 decoration-1 underline-offset-4">
             Reach out to us.
           </em>
         </motion.h2>
@@ -440,7 +440,7 @@ function CTABand() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
           href="mailto:hello@shortlistpass.com?subject=Social Inquiry"
-          className="inline-flex items-center justify-center px-12 py-5 text-[13px] uppercase tracking-[0.2em] font-medium text-white bg-[#9CAF88] hover:bg-[#8a9d77] transition-colors duration-300"
+          className="inline-flex items-center justify-center px-8 py-4 text-[13px] uppercase tracking-[0.15em] font-medium text-[#F2F0EC] bg-[#1f1f21] hover:bg-[#2a2a2c] rounded-sm transition-colors duration-300"
           style={{ fontFamily: "var(--font-sans-inter)" }}
         >
           Contact
@@ -452,35 +452,35 @@ function CTABand() {
 
 function Footer() {
   return (
-    <footer className="py-16 md:py-20 bg-[#9CAF88]">
+    <footer className="py-16 md:py-20 border-t border-[rgba(242,240,236,0.06)]">
       <div className="max-w-[1200px] mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 items-start">
           {/* Column 1: Navigation Links */}
           <div className="space-y-3">
             <Link
               href="/"
-              className="block text-[16px] text-white/90 hover:text-white underline underline-offset-4 transition-colors"
+              className="block text-[16px] text-[#F2F0EC]/60 hover:text-[#F2F0EC]/90 underline underline-offset-4 transition-colors"
               style={{ fontFamily: "var(--font-sans-inter)" }}
             >
               Home
             </Link>
             <Link
               href="/social"
-              className="block text-[16px] text-white/90 hover:text-white underline underline-offset-4 transition-colors"
+              className="block text-[16px] text-[#F2F0EC]/60 hover:text-[#F2F0EC]/90 underline underline-offset-4 transition-colors"
               style={{ fontFamily: "var(--font-sans-inter)" }}
             >
               Social
             </Link>
             <Link
               href="/smartpages"
-              className="block text-[16px] text-white/90 hover:text-white underline underline-offset-4 transition-colors"
+              className="block text-[16px] text-[#F2F0EC]/60 hover:text-[#F2F0EC]/90 underline underline-offset-4 transition-colors"
               style={{ fontFamily: "var(--font-sans-inter)" }}
             >
               SmartPages
             </Link>
             <Link
               href="/digital"
-              className="block text-[16px] text-white/90 hover:text-white underline underline-offset-4 transition-colors"
+              className="block text-[16px] text-[#F2F0EC]/60 hover:text-[#F2F0EC]/90 underline underline-offset-4 transition-colors"
               style={{ fontFamily: "var(--font-sans-inter)" }}
             >
               Digital
@@ -490,13 +490,13 @@ function Footer() {
           {/* Column 2: Logo/Wordmark */}
           <div className="flex flex-col items-center justify-center text-center">
             <p
-              className="text-[24px] tracking-[0.3em] uppercase text-white/95 font-light"
+              className="text-[24px] tracking-[0.3em] uppercase text-[#F2F0EC]/80 font-light"
               style={{ fontFamily: "var(--font-sans-inter)" }}
             >
               Shortlist
             </p>
             <p
-              className="text-[28px] text-white/90 -mt-1"
+              className="text-[28px] text-[#F2F0EC]/70 -mt-1"
               style={{ fontFamily: "var(--font-serif)" }}
             >
               <em>Social</em>
@@ -507,19 +507,19 @@ function Footer() {
           <div className="text-left md:text-right space-y-3">
             <a
               href="mailto:hello@shortlistpass.com"
-              className="block text-[16px] text-white/90 hover:text-white underline underline-offset-4 transition-colors"
+              className="block text-[16px] text-[#F2F0EC]/60 hover:text-[#F2F0EC]/90 underline underline-offset-4 transition-colors"
               style={{ fontFamily: "var(--font-sans-inter)" }}
             >
               hello@shortlistpass.com
             </a>
             <p
-              className="text-[15px] text-white/75"
+              className="text-[15px] text-[#F2F0EC]/50"
               style={{ fontFamily: "var(--font-sans-inter)" }}
             >
               Monday-Thursday 9AM-5PM
             </p>
             <p
-              className="text-[15px] text-white/75"
+              className="text-[15px] text-[#F2F0EC]/50"
               style={{ fontFamily: "var(--font-sans-inter)" }}
             >
               Friday 9AM-4PM
@@ -530,7 +530,7 @@ function Footer() {
                 href="https://instagram.com/theshortlistco"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white/80 hover:text-white transition-colors"
+                className="text-[#F2F0EC]/50 hover:text-[#F2F0EC]/80 transition-colors"
                 aria-label="Instagram"
               >
                 <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -541,7 +541,7 @@ function Footer() {
                 href="https://facebook.com/theshortlistco"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white/80 hover:text-white transition-colors"
+                className="text-[#F2F0EC]/50 hover:text-[#F2F0EC]/80 transition-colors"
                 aria-label="Facebook"
               >
                 <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
