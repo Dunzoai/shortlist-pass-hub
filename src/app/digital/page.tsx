@@ -592,13 +592,13 @@ function AISchedulingDemo() {
           </p>
         </motion.div>
 
-        {/* Glass super-card - bone color */}
+        {/* Glass super-card - gray to separate from cream background */}
         <motion.div
           className="relative rounded-[28px] overflow-hidden"
           style={{
-            background: "linear-gradient(180deg, rgba(244, 241, 236, 0.95) 0%, rgba(232, 229, 224, 0.98) 100%)",
-            border: "1px solid rgba(43, 58, 68, 0.1)",
-            boxShadow: "0 40px 80px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.5)",
+            background: "linear-gradient(180deg, rgba(220, 220, 218, 0.95) 0%, rgba(205, 205, 202, 0.98) 100%)",
+            border: "1px solid rgba(43, 58, 68, 0.12)",
+            boxShadow: "0 40px 80px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.4)",
           }}
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
