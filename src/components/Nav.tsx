@@ -10,19 +10,22 @@ export function Nav() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-[#333333]">
       <div className="max-w-[1200px] mx-auto px-6 h-16 flex items-center justify-between">
-        {/* Logo */}
+        {/* Logo + Text */}
         <Link
           href="/"
-          className="flex items-center hover:opacity-80 transition-opacity duration-300"
+          className="flex items-center gap-3 hover:opacity-80 transition-opacity duration-300"
         >
           <Image
             src="/shortlist-logo-ivory-transparent.png"
             alt="The Shortlist Co"
-            width={140}
-            height={40}
-            className="h-10 w-auto"
+            width={44}
+            height={44}
+            className="h-9 w-9"
             priority
           />
+          <span className="text-lg font-semibold text-[#F4F1EC]">
+            The Shortlist Co
+          </span>
         </Link>
 
         {/* Desktop Nav Links */}
