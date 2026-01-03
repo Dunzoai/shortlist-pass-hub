@@ -50,7 +50,7 @@ function HandDrawnUnderline() {
            C 145 4, 120 4, 100 4
            C 80 5, 65 5.5, 52 6
            C 80 5.5, 115 6.5, 147 6"
-        stroke="#F2F0EC"
+        stroke="#F9D3BC"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -656,7 +656,7 @@ function Footer() {
               The Shortlist Co.
             </p>
             <p
-              className="text-[28px] text-[#F2F0EC]/80 -mt-1 ml-[60px]"
+              className="text-[28px] text-[#F2F0EC]/80 -mt-1 ml-[180px]"
               style={{ fontFamily: "var(--font-serif)" }}
             >
               <em>Social</em>

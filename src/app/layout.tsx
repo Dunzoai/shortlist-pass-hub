@@ -34,6 +34,15 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  icons: {
+    icon: [
+      { url: "/shortlist-logo-ivory-transparent.png", sizes: "32x32", type: "image/png" },
+      { url: "/shortlist-logo-ivory-transparent.png", sizes: "192x192", type: "image/png" },
+    ],
+    apple: [
+      { url: "/shortlist-logo-ivory-transparent.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
   title: "The Shortlist Co | We Help Small Businesses Show Up Like Big Ones",
   description: "Social media management, SmartPages, websites and custom apps built to make customers choose you. Get seen, look legit, and convert more customers.",
   keywords: ["small business", "social media management", "SmartPages", "websites", "custom apps", "digital marketing", "local business"],
