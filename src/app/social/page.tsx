@@ -50,7 +50,7 @@ function HandDrawnUnderline() {
            C 145 4, 120 4, 100 4
            C 80 5, 65 5.5, 52 6
            C 80 5.5, 115 6.5, 147 6"
-        stroke="#DC2626"
+        stroke="#F2F0EC"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -650,13 +650,13 @@ function Footer() {
           {/* Column 2: Wordmark */}
           <div className="flex flex-col items-center justify-center">
             <p
-              className="text-[18px] tracking-[0.15em] uppercase text-[#F2F0EC]/80 font-light"
+              className="text-[22px] tracking-[0.25em] uppercase text-[#F2F0EC]/90 font-light"
               style={{ fontFamily: "var(--font-sans-inter)" }}
             >
               The Shortlist Co.
             </p>
             <p
-              className="text-[22px] text-[#F2F0EC]/60 mt-1 ml-[140px]"
+              className="text-[28px] text-[#F2F0EC]/80 -mt-1 ml-[60px]"
               style={{ fontFamily: "var(--font-serif)" }}
             >
               <em>Social</em>
