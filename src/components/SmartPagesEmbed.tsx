@@ -27,9 +27,8 @@ export function SmartPagesEmbed() {
       // Verify the message came from this specific iframe
       if (e.source !== iframe.contentWindow) return;
 
-      // Apply height with bounds (min 88px, max 700px)
-      const clampedHeight = Math.max(88, Math.min(e.data.height, 700));
-      iframe.style.height = `${clampedHeight}px`;
+      // Apply height without clamping
+      iframe.style.height = `${e.data.height}px`;
       iframe.style.transition = "height 200ms ease";
 
       // Debug log
