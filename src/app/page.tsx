@@ -546,6 +546,23 @@ export default function Home() {
 
       {/* Footer */}
       <Footer />
+
+      {/* Testing iframe embed */}
+      <iframe
+        src="https://hello.shortlistpass.com/embed"
+        style={{
+          position: 'fixed',
+          bottom: '24px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '420px',
+          height: '80px',
+          border: 0,
+          background: 'transparent',
+          zIndex: 999999,
+          pointerEvents: 'auto',
+        }}
+      />
     </main>
   );
 }
