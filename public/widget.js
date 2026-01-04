@@ -20,20 +20,33 @@
 
   // Wait for DOM to be ready
   function init() {
+    // Check if mobile
+    function isMobile() {
+      return window.innerWidth < 480;
+    }
+
     // Create container div
     const container = document.createElement('div');
     container.id = 'slp-widget-container';
-    container.style.cssText = `
-      position: fixed;
-      bottom: 16px;
-      right: 16px;
-      z-index: 999999;
-      width: min(480px, 92vw);
-      height: 88px;
-      border-radius: 16px;
-      overflow: hidden;
-      transition: height 200ms ease;
-    `;
+
+    // Apply initial styles
+    function applyContainerStyles() {
+      const mobile = isMobile();
+      container.style.cssText = `
+        position: fixed;
+        bottom: 16px;
+        right: 16px;
+        z-index: 999999;
+        width: ${mobile ? '94vw' : 'min(480px, 92vw)'};
+        height: 88px;
+        ${mobile ? 'max-height: 70vh;' : ''}
+        border-radius: 16px;
+        overflow: hidden;
+        transition: height 200ms ease;
+      `;
+    }
+
+    applyContainerStyles();
 
     // Create iframe
     const iframe = document.createElement('iframe');
@@ -52,6 +65,9 @@
 
     // Append container to body
     document.body.appendChild(container);
+
+    // Update container width on resize
+    window.addEventListener('resize', applyContainerStyles);
 
     // Listen for resize messages
     window.addEventListener('message', function(e) {
@@ -75,9 +91,14 @@
       // Verify message came from our iframe
       if (e.source !== iframe.contentWindow) return;
 
-      // Apply height with bounds (min 88px, max 700px)
-      const clampedHeight = Math.max(88, Math.min(e.data.height, 700));
+      // Apply height with bounds (min 88px, max 500px)
+      const clampedHeight = Math.max(88, Math.min(e.data.height, 500));
       container.style.height = clampedHeight + 'px';
+
+      // On mobile, also ensure max-height constraint
+      if (isMobile()) {
+        container.style.maxHeight = '70vh';
+      }
     });
   }
 
