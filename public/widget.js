@@ -119,13 +119,29 @@
 
     // Detect page navigation and update iframe
     let currentPath = window.location.pathname;
+    let navigationDebounce = null;
 
     function checkNavigation() {
       const newPath = window.location.pathname;
       if (newPath !== currentPath) {
         currentPath = newPath;
-        // Update iframe src with new page context
-        iframe.src = buildIframeSrc();
+
+        // Debounce navigation updates (300ms)
+        clearTimeout(navigationDebounce);
+        navigationDebounce = setTimeout(function() {
+          // Fade out container before reload
+          container.style.opacity = '0';
+
+          // Listen for iframe reload, then fade back in
+          function onReload() {
+            container.style.opacity = '1';
+            iframe.removeEventListener('load', onReload);
+          }
+          iframe.addEventListener('load', onReload);
+
+          // Update iframe src with new page context
+          iframe.src = buildIframeSrc();
+        }, 300);
       }
     }
 
