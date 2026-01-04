@@ -60,12 +60,30 @@
       pageDescription = pageDescription.substring(0, 200);
     }
 
+    // Scrape and filter page headlines
+    const headlines = [];
+    const skipWords = ['home', 'menu', 'contact', 'footer', 'navigation', 'links', 'about', 'nav', 'header', 'copyright', 'subscribe', 'follow'];
+
+    document.querySelectorAll('h1, h2, h3').forEach(function(el) {
+      const text = el.textContent.trim();
+      const lower = text.toLowerCase();
+      if (
+        text.length >= 4 &&
+        headlines.length < 5 &&
+        !skipWords.includes(lower) &&
+        !/^\d+$/.test(text)
+      ) {
+        headlines.push(text.substring(0, 80));
+      }
+    });
+
     // Build iframe src with page context
     const params = new URLSearchParams({
       mode: 'widget',
       page_title: pageTitle,
       page_path: pagePath,
-      page_desc: pageDescription
+      page_desc: pageDescription,
+      page_headlines: JSON.stringify(headlines)
     });
 
     // Create iframe
