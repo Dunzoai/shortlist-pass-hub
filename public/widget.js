@@ -49,10 +49,29 @@
 
     applyContainerStyles();
 
+    // Gather page context
+    const pageTitle = document.title || '';
+    const pagePath = window.location.pathname || '/';
+    const descriptionMeta = document.querySelector('meta[name="description"]');
+    let pageDescription = descriptionMeta ? descriptionMeta.getAttribute('content') || '' : '';
+
+    // Truncate description to 200 chars
+    if (pageDescription.length > 200) {
+      pageDescription = pageDescription.substring(0, 200);
+    }
+
+    // Build iframe src with page context
+    const params = new URLSearchParams({
+      mode: 'widget',
+      page_title: pageTitle,
+      page_path: pagePath,
+      page_desc: pageDescription
+    });
+
     // Create iframe
     const iframe = document.createElement('iframe');
     iframe.id = 'slp-widget-iframe';
-    iframe.src = `https://${subdomain}.shortlistpass.com/embed?mode=widget`;
+    iframe.src = `https://${subdomain}.shortlistpass.com/embed?${params.toString()}`;
     iframe.style.cssText = `
       width: 100%;
       height: 100%;
