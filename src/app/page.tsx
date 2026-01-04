@@ -450,12 +450,19 @@ export default function Home() {
   // Listen for iframe resize messages from SmartPages
   useEffect(() => {
     function onMessage(e: MessageEvent) {
+      // Security: only accept messages from shortlistpass.com origins
+      if (!e.origin.endsWith('shortlistpass.com')) return;
+
       if (!e.data || e.data.type !== "slp_embed_resize") return;
+
+      // Validate height is a number
+      if (typeof e.data.height !== 'number') return;
 
       const iframe = document.getElementById("slp-embed") as HTMLIFrameElement;
       if (!iframe) return;
 
       iframe.style.height = `${e.data.height}px`;
+      iframe.style.transition = 'height 200ms ease';
     }
 
     window.addEventListener("message", onMessage);
@@ -599,7 +606,7 @@ export default function Home() {
           background: 'transparent',
           zIndex: 999999,
           pointerEvents: 'auto',
-          transition: 'height 300ms ease',
+          transition: 'height 200ms ease',
         }}
       />
     </main>
