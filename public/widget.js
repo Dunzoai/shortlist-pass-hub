@@ -50,7 +50,7 @@
     applyContainerStyles();
 
     // Function to gather page context and build iframe src
-    function buildIframeSrc() {
+    function buildIframeSrc(isNavigation) {
       // Gather page context
       const pageTitle = document.title || '';
       const pagePath = window.location.pathname || '/';
@@ -87,6 +87,11 @@
         page_desc: pageDescription,
         page_headlines: JSON.stringify(headlines)
       });
+
+      // Add nav param for navigation reloads
+      if (isNavigation) {
+        params.set('nav', '1');
+      }
 
       return `https://${subdomain}.shortlistpass.com/embed?${params.toString()}`;
     }
@@ -139,8 +144,8 @@
           }
           iframe.addEventListener('load', onReload);
 
-          // Update iframe src with new page context
-          iframe.src = buildIframeSrc();
+          // Update iframe src with new page context (nav=1 param)
+          iframe.src = buildIframeSrc(true);
         }, 300);
       }
     }
