@@ -447,6 +447,43 @@ export default function Home() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [hasScrolled, prefersReducedMotion]);
 
+  // Listen for iframe resize messages from SmartPages
+  useEffect(() => {
+    function onMessage(e: MessageEvent) {
+      if (!e.data || e.data.type !== "slp_embed_resize") return;
+
+      const iframe = document.getElementById("slp-embed") as HTMLIFrameElement;
+      if (!iframe) return;
+
+      iframe.style.height = `${e.data.height}px`;
+    }
+
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, []);
+
+  // Send page context to SmartPages embed
+  useEffect(() => {
+    function sendContext() {
+      const iframe = document.getElementById("slp-embed") as HTMLIFrameElement;
+      if (!iframe) return;
+
+      iframe.contentWindow?.postMessage(
+        {
+          type: "slp_context",
+          payload: {
+            url: window.location.href,
+            path: window.location.pathname,
+            title: document.title,
+          },
+        },
+        "https://hello.shortlistpass.com"
+      );
+    }
+
+    sendContext();
+  }, []);
+
   return (
     <main className="pt-16">
       {/* Hero Section */}
@@ -547,20 +584,22 @@ export default function Home() {
       {/* Footer */}
       <Footer />
 
-      {/* Testing iframe embed */}
+      {/* SmartPages embed */}
       <iframe
+        id="slp-embed"
         src="https://hello.shortlistpass.com/embed"
         style={{
           position: 'fixed',
           bottom: '24px',
           left: '50%',
           transform: 'translateX(-50%)',
-          width: '420px',
-          height: '80px',
+          width: 'min(480px, 92vw)',
+          height: '88px',
           border: 0,
           background: 'transparent',
           zIndex: 999999,
           pointerEvents: 'auto',
+          transition: 'height 300ms ease',
         }}
       />
     </main>
