@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Sora, Libre_Baskerville, Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
 import { Nav } from "@/components/Nav";
+import { SmartPagesEmbed } from "@/components/SmartPagesEmbed";
 
 const sora = Sora({
   variable: "--font-sora",
@@ -97,6 +98,7 @@ export default function RootLayout({
       <body className={`${sora.variable} ${libreBaskerville.variable} ${cormorantGaramond.variable} ${inter.variable} font-sans antialiased bg-[#F4F1EC] text-[#222222]`}>
         <Nav />
         {children}
+        <SmartPagesEmbed />
       </body>
     </html>
   );
