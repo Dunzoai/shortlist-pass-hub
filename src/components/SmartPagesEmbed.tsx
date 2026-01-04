@@ -20,6 +20,9 @@ export function SmartPagesEmbed() {
       // Validate height is a number
       if (typeof e.data.height !== "number") return;
 
+      // Ignore non-finite heights (NaN, Infinity, etc.)
+      if (!Number.isFinite(e.data.height)) return;
+
       // Find the iframe
       const iframe = document.getElementById("slp-embed") as HTMLIFrameElement;
       if (!iframe) return;
@@ -27,8 +30,9 @@ export function SmartPagesEmbed() {
       // Verify the message came from this specific iframe
       if (e.source !== iframe.contentWindow) return;
 
-      // Apply height without clamping
-      iframe.style.height = `${e.data.height}px`;
+      // Apply height with bounds (min 88px, max 700px)
+      const clampedHeight = Math.max(88, Math.min(e.data.height, 700));
+      iframe.style.height = `${clampedHeight}px`;
       iframe.style.transition = "height 200ms ease";
 
       // Debug log
