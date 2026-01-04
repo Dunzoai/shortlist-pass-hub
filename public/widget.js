@@ -42,7 +42,8 @@
         ${mobile ? 'max-height: 70vh;' : ''}
         border-radius: 16px;
         overflow: hidden;
-        transition: height 200ms ease;
+        opacity: 0;
+        transition: opacity 300ms ease, height 200ms ease;
       `;
     }
 
@@ -59,6 +60,11 @@
       display: block;
     `;
     iframe.setAttribute('allowtransparency', 'true');
+
+    // Fade in container after iframe loads
+    iframe.addEventListener('load', function() {
+      container.style.opacity = '1';
+    });
 
     // Append iframe to container
     container.appendChild(iframe);
