@@ -49,47 +49,52 @@
 
     applyContainerStyles();
 
-    // Gather page context
-    const pageTitle = document.title || '';
-    const pagePath = window.location.pathname || '/';
-    const descriptionMeta = document.querySelector('meta[name="description"]');
-    let pageDescription = descriptionMeta ? descriptionMeta.getAttribute('content') || '' : '';
+    // Function to gather page context and build iframe src
+    function buildIframeSrc() {
+      // Gather page context
+      const pageTitle = document.title || '';
+      const pagePath = window.location.pathname || '/';
+      const descriptionMeta = document.querySelector('meta[name="description"]');
+      let pageDescription = descriptionMeta ? descriptionMeta.getAttribute('content') || '' : '';
 
-    // Truncate description to 200 chars
-    if (pageDescription.length > 200) {
-      pageDescription = pageDescription.substring(0, 200);
-    }
-
-    // Scrape and filter page headlines
-    const headlines = [];
-    const skipWords = ['home', 'menu', 'contact', 'footer', 'navigation', 'links', 'about', 'nav', 'header', 'copyright', 'subscribe', 'follow'];
-
-    document.querySelectorAll('h1, h2, h3').forEach(function(el) {
-      const text = el.textContent.trim();
-      const lower = text.toLowerCase();
-      if (
-        text.length >= 4 &&
-        headlines.length < 5 &&
-        !skipWords.includes(lower) &&
-        !/^\d+$/.test(text)
-      ) {
-        headlines.push(text.substring(0, 80));
+      // Truncate description to 200 chars
+      if (pageDescription.length > 200) {
+        pageDescription = pageDescription.substring(0, 200);
       }
-    });
 
-    // Build iframe src with page context
-    const params = new URLSearchParams({
-      mode: 'widget',
-      page_title: pageTitle,
-      page_path: pagePath,
-      page_desc: pageDescription,
-      page_headlines: JSON.stringify(headlines)
-    });
+      // Scrape and filter page headlines
+      const headlines = [];
+      const skipWords = ['home', 'menu', 'contact', 'footer', 'navigation', 'links', 'about', 'nav', 'header', 'copyright', 'subscribe', 'follow'];
+
+      document.querySelectorAll('h1, h2, h3').forEach(function(el) {
+        const text = el.textContent.trim();
+        const lower = text.toLowerCase();
+        if (
+          text.length >= 4 &&
+          headlines.length < 5 &&
+          !skipWords.includes(lower) &&
+          !/^\d+$/.test(text)
+        ) {
+          headlines.push(text.substring(0, 80));
+        }
+      });
+
+      // Build iframe src with page context
+      const params = new URLSearchParams({
+        mode: 'widget',
+        page_title: pageTitle,
+        page_path: pagePath,
+        page_desc: pageDescription,
+        page_headlines: JSON.stringify(headlines)
+      });
+
+      return `https://${subdomain}.shortlistpass.com/embed?${params.toString()}`;
+    }
 
     // Create iframe
     const iframe = document.createElement('iframe');
     iframe.id = 'slp-widget-iframe';
-    iframe.src = `https://${subdomain}.shortlistpass.com/embed?${params.toString()}`;
+    iframe.src = buildIframeSrc();
     iframe.style.cssText = `
       width: 100%;
       height: 100%;
@@ -111,6 +116,24 @@
 
     // Update container width on resize
     window.addEventListener('resize', applyContainerStyles);
+
+    // Detect page navigation and update iframe
+    let currentPath = window.location.pathname;
+
+    function checkNavigation() {
+      const newPath = window.location.pathname;
+      if (newPath !== currentPath) {
+        currentPath = newPath;
+        // Update iframe src with new page context
+        iframe.src = buildIframeSrc();
+      }
+    }
+
+    // Listen for back/forward navigation
+    window.addEventListener('popstate', checkNavigation);
+
+    // Poll for SPA navigation (catches client-side routing)
+    setInterval(checkNavigation, 500);
 
     // Listen for resize messages
     window.addEventListener('message', function(e) {
