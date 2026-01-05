@@ -34,7 +34,7 @@
       const mobile = isMobile();
       container.style.cssText = `
         position: fixed;
-        bottom: 16px;
+        bottom: ${mobile ? 'calc(16px + env(safe-area-inset-bottom, 0px))' : '16px'};
         right: 16px;
         z-index: 999999;
         width: ${mobile ? '94vw' : 'min(480px, 92vw)'};
@@ -44,6 +44,9 @@
         overflow: hidden;
         opacity: 0;
         transition: opacity 300ms ease, height 200ms ease;
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        will-change: opacity, height;
       `;
     }
 
