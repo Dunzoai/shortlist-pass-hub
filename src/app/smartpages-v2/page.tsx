@@ -1201,8 +1201,7 @@ function SolutionSection() {
           transition={{ delay: 0.1 }}
         >
           Working for you 24/7.<br />
-          Questions answered. Deals closed. More revenue.<br />
-          <span className="text-sm md:text-base text-[#1A1A1A]/40">And we&apos;re always building more.</span>
+          Questions answered. Deals closed. More revenue.
         </motion.p>
       </div>
 
@@ -1543,7 +1542,7 @@ const tools: Tool[] = [
   {
     icon: SmartphoneIcon,
     name: 'Online Ordering',
-    price: '+$29/mo',
+    price: '+$19/mo',
     tagline: 'Take orders & payments 24/7',
     perfectFor: 'Food trucks, bakeries, retail shops',
     features: ['Pre-order & walk-up ordering', 'Stripe payment processing', 'Order management dashboard', 'Customer order confirmations (SMS)', 'Real-time order notifications', 'Menu management (update anytime)', 'Promo codes & discounts'],
@@ -1656,7 +1655,7 @@ function ToolShedSection() {
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
         >
-          We build the tools you need to grow. Start with the basics, add as you scale.
+          And we&apos;re actively building more.
         </motion.p>
 
         <div className="mt-10 md:mt-14 grid md:grid-cols-3 gap-4 md:gap-6">
