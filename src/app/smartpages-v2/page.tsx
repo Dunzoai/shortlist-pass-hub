@@ -1230,10 +1230,10 @@ function SolutionSection() {
           100% { transform: translateX(0); }
         }
         .animate-scroll-left {
-          animation: scrollLeft 25s linear infinite;
+          animation: scrollLeft 27s linear infinite;
         }
         .animate-scroll-right {
-          animation: scrollRight 25s linear infinite;
+          animation: scrollRight 27s linear infinite;
         }
       `}</style>
     </section>
