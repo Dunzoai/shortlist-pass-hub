@@ -1676,7 +1676,7 @@ const stripeFeatures = [
   { icon: CreditCardIcon, title: 'Accept payments in your assistant', desc: 'Orders, bookings, deposits — all processed securely through your Stripe account' },
   { icon: BarChartIcon, title: 'Automatic financial reports', desc: 'Every transaction flows into your dashboard. Revenue, trends, insights — all automated' },
   { icon: ShieldIcon, title: 'Bank-level security', desc: 'We never store payment info. Stripe handles everything — same security as Apple/Amazon' },
-  { icon: DollarIcon, title: 'Keep more of your money', desc: "Mobile orders: 2.9% + 30¢. Walk-up orders: 2.7% + 15¢. No markup, no hidden fees from us" },
+  { icon: DollarIcon, title: 'Keep more of your money', desc: "Mobile orders: 2.9% + 30¢\nWalk-up orders: 2.7% + 15¢\nNo markup, no hidden fees from us" },
 ];
 
 function StripeSpotlight() {
@@ -1736,7 +1736,7 @@ function StripeSpotlight() {
                 <feat.icon className="w-6 h-6 text-[#1A1A1A]" />
               </div>
               <h3 className="text-[#1A1A1A] font-semibold text-base md:text-lg" style={{ fontFamily: 'var(--font-sans-inter)' }}>{feat.title}</h3>
-              <p className="text-[#1A1A1A]/60 text-sm mt-2 leading-relaxed" style={{ fontFamily: 'var(--font-sans-inter)' }}>{feat.desc}</p>
+              <p className="text-[#1A1A1A]/60 text-sm mt-2 leading-relaxed whitespace-pre-line" style={{ fontFamily: 'var(--font-sans-inter)' }}>{feat.desc}</p>
             </motion.div>
           ))}
         </div>
@@ -1751,7 +1751,7 @@ function StripeSpotlight() {
         >
           <p className="text-[#1A1A1A]/40 text-sm mb-3" style={{ fontFamily: 'var(--font-sans-inter)' }}>More integrations coming soon</p>
           <div className="flex flex-wrap justify-center gap-2">
-            {['Square', 'QuickBooks', 'Google Calendar'].map(name => (
+            {['Square', 'Clover', 'Venmo Business', 'Google Calendar'].map(name => (
               <span key={name} className="bg-[#1A1A1A]/5 text-[#1A1A1A]/50 text-xs font-medium px-3 py-1.5 rounded-full" style={{ fontFamily: 'var(--font-sans-inter)' }}>
                 {name}
               </span>
@@ -1780,7 +1780,7 @@ const basePlanFeatures = [
 
 const bundles = [
   { name: 'Service Pro', price: '$55', desc: 'Base + Booking + Reports', save: 'Save $4/mo' },
-  { name: 'Food & Retail', price: '$55', desc: 'Base + Ordering + Reports', save: 'Save $4/mo' },
+  { name: 'Food & Retail', price: '$59', desc: 'Base + Ordering + Booking', save: 'Save $4/mo' },
   { name: 'All-in-One', price: '$69', desc: 'Base + All 3 tools', save: 'Save $9/mo', featured: true },
 ];
 
@@ -1944,17 +1944,17 @@ function PricingSection() {
 
 function FinalCTA() {
   return (
-    <section className="relative py-24 md:py-32 px-4 overflow-hidden" style={{ background: 'linear-gradient(135deg, #1A1A1A 0%, #2d1a11 50%, #1A1A1A 100%)' }}>
-      {/* Animated gradient overlay */}
+    <section className="relative py-24 md:py-32 px-4 overflow-hidden" style={{ background: '#fafaf8' }}>
+      {/* Subtle radial glow */}
       <div
-        className="absolute inset-0 opacity-30"
+        className="absolute inset-0"
         style={{
-          background: 'radial-gradient(ellipse at 50% 50%, rgba(255,107,53,0.15), transparent 70%)',
+          background: 'radial-gradient(ellipse at 50% 50%, rgba(244,241,236,0.8), transparent 70%)',
         }}
       />
       <div className="relative z-10 max-w-[680px] mx-auto text-center">
         <motion.h2
-          className="text-[28px] sm:text-[36px] md:text-[48px] font-bold text-[#F5F5F5] leading-tight"
+          className="text-[28px] sm:text-[36px] md:text-[48px] font-bold text-[#2d2d2d] leading-tight"
           style={{ fontFamily: 'var(--font-sans-inter)' }}
           initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -1964,7 +1964,7 @@ function FinalCTA() {
           Stop Losing Customers to Voicemail
         </motion.h2>
         <motion.p
-          className="mt-6 text-lg md:text-xl text-[#F5F5F5]/60 leading-relaxed"
+          className="mt-6 text-lg md:text-xl text-[#6b6b6b] leading-relaxed"
           style={{ fontFamily: 'var(--font-sans-inter)' }}
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -1974,7 +1974,7 @@ function FinalCTA() {
           Your competitors are answering questions while you sleep. Your customers are booking with businesses that respond instantly.
         </motion.p>
         <motion.p
-          className="mt-4 text-xl md:text-2xl font-semibold text-[#F5F5F5]"
+          className="mt-4 text-xl md:text-2xl font-bold text-[#2d2d2d]"
           style={{ fontFamily: 'var(--font-sans-inter)' }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -1986,7 +1986,7 @@ function FinalCTA() {
 
         <motion.a
           href="https://buy.stripe.com/3cI4gyfB1eg65uZ02Q4sE05"
-          className="mt-10 inline-flex items-center justify-center gap-2 bg-white text-[#1A1A1A] font-bold text-lg md:text-xl px-12 py-5 md:py-6 rounded-full shadow-[0_0_40px_rgba(255,255,255,0.1)] hover:bg-[#F5F5F5] transition-colors"
+          className="mt-10 inline-flex items-center justify-center gap-2 bg-[#2d2d2d] text-white font-bold text-lg md:text-xl px-12 py-5 md:py-6 rounded-full hover:bg-[#1A1A1A] transition-colors"
           style={{ fontFamily: 'var(--font-sans-inter)' }}
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -2000,7 +2000,7 @@ function FinalCTA() {
         </motion.a>
 
         <motion.div
-          className="mt-6 flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center text-[#F5F5F5]/40 text-sm"
+          className="mt-6 flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center text-[#6b6b6b] text-sm"
           style={{ fontFamily: 'var(--font-sans-inter)' }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -2015,7 +2015,7 @@ function FinalCTA() {
         </motion.div>
 
         <motion.p
-          className="mt-10 text-[#F5F5F5]/30 text-sm"
+          className="mt-10 text-[#6b6b6b]/60 text-sm"
           style={{ fontFamily: 'var(--font-sans-inter)' }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
