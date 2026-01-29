@@ -1778,9 +1778,9 @@ const basePlanFeatures = [
 ];
 
 const bundles = [
-  { name: 'Service Pro', price: '$55', desc: 'Base + Booking + Reports', save: 'Save $4/mo' },
-  { name: 'Food & Retail', price: '$59', desc: 'Base + Ordering + Reports', save: 'Save $10/mo' },
-  { name: 'All-in-One', price: '$69', desc: 'Base + All 3 tools', save: 'Save $19/mo', featured: true },
+  { name: 'Service Pro', price: '$49', desc: 'Base + Booking + Reports', save: 'Save $10/mo' },
+  { name: 'Food & Retail', price: '$49', desc: 'Base + Ordering + Reports', save: 'Save $10/mo' },
+  { name: 'All-in-One', price: '$59', desc: 'Base + All 3 tools', save: 'Save $19/mo', featured: true },
 ];
 
 const faqs = [
@@ -1870,13 +1870,18 @@ function PricingSection() {
               <motion.div
                 key={b.name}
                 className={`bg-[#2A2A2A] rounded-2xl p-6 text-center border transition-all duration-300 hover:-translate-y-1 ${
-                  b.featured ? 'border-[#F4F1EC]/40 shadow-[0_0_30px_rgba(255,107,53,0.1)]' : 'border-white/[0.06]'
+                  b.featured ? 'border-[#F4F1EC]/40' : 'border-white/[0.06]'
                 }`}
                 initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08 }}
               >
+                {b.featured && (
+                  <span className="inline-block mb-2 bg-[#F4F1EC] text-[#1A1A1A] font-semibold text-[10px] uppercase tracking-wider px-3 py-1 rounded-full" style={{ fontFamily: 'var(--font-sans-inter)' }}>
+                    Most Popular
+                  </span>
+                )}
                 <p className="text-[#F5F5F5] font-semibold text-base" style={{ fontFamily: 'var(--font-sans-inter)' }}>{b.name}</p>
                 <p className="text-3xl font-extrabold text-[#F5F5F5] mt-2" style={{ fontFamily: 'var(--font-sans-inter)' }}>
                   {b.price}<span className="text-sm font-medium text-[#F5F5F5]/40">/mo</span>
