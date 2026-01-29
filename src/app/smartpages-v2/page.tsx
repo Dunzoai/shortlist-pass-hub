@@ -1014,7 +1014,7 @@ const testimonials = [
   { quote: 'Finally stopped missing calls', name: 'James', biz: 'Fresh Cuts Barber' },
   { quote: "It's like having a 24/7 receptionist", name: 'Luis', biz: 'Glow Day Spa' },
   { quote: 'Bookings doubled in the first month', name: 'Karen', biz: 'Paws & Claws Grooming' },
-  { quote: 'My regulars use it every week now', name: 'Tony', biz: "Nito's Empanadas" },
+  { quote: 'My regulars use it every week now', name: 'Damian', biz: "Nito's Empanadas" },
   { quote: 'Set it up in a day, been running ever since', name: 'Rachel', biz: 'Conway Cleaning Co.' },
   { quote: 'I actually take weekends off now', name: 'Marcus', biz: 'M&M Plumbing' },
   { quote: 'Best investment I made this year', name: 'Jen', biz: 'The Craft Corner' },
@@ -1400,8 +1400,8 @@ function IndustryModal({ industry, onClose }: { industry: IndustryData; onClose:
 
           {/* Header */}
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-12 h-12 rounded-xl bg-[#F4F1EC]/10 flex items-center justify-center">
-              <industry.icon className="w-7 h-7 text-[#F4F1EC]" />
+            <div className="w-12 h-12 rounded-xl bg-[#1A1A1A]/5 flex items-center justify-center">
+              <industry.icon className="w-7 h-7 text-[#1A1A1A]/40" />
             </div>
             <h3 className="text-2xl md:text-3xl font-bold text-[#1A1A1A]" style={{ fontFamily: 'var(--font-sans-inter)' }}>
               {industry.name}
@@ -1416,7 +1416,7 @@ function IndustryModal({ industry, onClose }: { industry: IndustryData; onClose:
           <div className="space-y-5 mb-8">
             {industry.questions.map((item, i) => (
               <div key={i}>
-                <p className="font-semibold text-[#F4F1EC] text-base" style={{ fontFamily: 'var(--font-sans-inter)' }}>
+                <p className="font-semibold text-[#1A1A1A] text-base" style={{ fontFamily: 'var(--font-sans-inter)' }}>
                   &ldquo;{item.q}&rdquo;
                 </p>
                 <p className="text-[#1A1A1A]/70 text-[15px] mt-1" style={{ fontFamily: 'var(--font-sans-inter)' }}>
@@ -1489,14 +1489,14 @@ function IndustryCarousel() {
       {/* Carousel */}
       <div
         ref={scrollRef}
-        className="mt-10 md:mt-14 flex gap-4 md:gap-6 overflow-x-auto px-4 md:px-8 pb-6 snap-x snap-mandatory"
+        className="mt-10 md:mt-14 flex gap-4 md:gap-6 overflow-x-auto px-4 md:px-8 pt-2 pb-6 snap-x snap-mandatory"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
       >
         {industries.map((ind, i) => (
           <motion.button
             key={ind.name}
             onClick={() => setSelected(ind)}
-            className="flex-shrink-0 w-[260px] md:w-[280px] bg-[#2A2A2A] rounded-2xl border border-white/[0.06] p-6 md:p-8 text-left snap-center hover:border-[#F4F1EC]/30 hover:-translate-y-2 hover:shadow-[0_8px_30px_rgba(255,107,53,0.1)] transition-all duration-300 group"
+            className="flex-shrink-0 w-[260px] md:w-[280px] bg-[#2A2A2A] rounded-2xl border border-white/[0.06] p-6 md:p-8 text-left snap-center hover:border-[#F4F1EC]/30 hover:shadow-[0_4px_20px_rgba(255,255,255,0.06)] transition-all duration-300 group"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -1506,7 +1506,7 @@ function IndustryCarousel() {
               <ind.icon className="w-8 h-8 text-[#F4F1EC]" />
             </div>
             <h3 className="text-xl font-semibold text-[#F5F5F5] mb-2" style={{ fontFamily: 'var(--font-sans-inter)' }}>{ind.name}</h3>
-            <p className="text-sm text-[#F5F5F5]/40" style={{ fontFamily: 'var(--font-sans-inter)' }}>Tap to see how it works</p>
+            <p className="text-sm text-[#F5F5F5]/40" style={{ fontFamily: 'var(--font-sans-inter)' }}>Tap to see how it helps</p>
           </motion.button>
         ))}
       </div>
