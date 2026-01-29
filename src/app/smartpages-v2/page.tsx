@@ -1512,8 +1512,8 @@ function IndustryCarousel() {
         ))}
       </div>
 
-      <p className="text-center text-[#F5F5F5]/30 text-xs mt-2 md:hidden" style={{ fontFamily: 'var(--font-sans-inter)' }}>
-        Swipe to explore
+      <p className="text-center text-[#F5F5F5]/30 text-xs mt-4" style={{ fontFamily: 'var(--font-sans-inter)' }}>
+        Swipe to see how our Smart Assistant helps your industry
       </p>
 
       <AnimatePresence>
@@ -1676,7 +1676,7 @@ const stripeFeatures = [
   { icon: CreditCardIcon, title: 'Accept payments in your assistant', desc: 'Orders, bookings, deposits — all processed securely through your Stripe account' },
   { icon: BarChartIcon, title: 'Automatic financial reports', desc: 'Every transaction flows into your dashboard. Revenue, trends, insights — all automated' },
   { icon: ShieldIcon, title: 'Bank-level security', desc: 'We never store payment info. Stripe handles everything — same security as Apple/Amazon' },
-  { icon: DollarIcon, title: 'Keep more of your money', desc: "Stripe's standard rates (2.9% + 30¢). No markup, no hidden fees from us" },
+  { icon: DollarIcon, title: 'Keep more of your money', desc: "Mobile orders: 2.9% + 30¢. Walk-up orders: 2.7% + 15¢. No markup, no hidden fees from us" },
 ];
 
 function StripeSpotlight() {
@@ -1690,7 +1690,7 @@ function StripeSpotlight() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          Powered by Stripe. Powered by You.
+          Powered by Stripe. Fueled by You.
         </motion.h2>
         <motion.p
           className="mt-4 text-lg text-[#1A1A1A]/60 text-center max-w-2xl mx-auto"
@@ -1716,8 +1716,8 @@ function StripeSpotlight() {
             stripe
           </div>
           <span className="text-[#1A1A1A]/30 text-2xl font-light">+</span>
-          <div className="relative w-10 h-10">
-            <Image src="/Shortlist_logo.png" alt="Shortlist" fill className="object-contain" />
+          <div className="relative w-12 h-12 bg-[#1A1A1A] rounded-lg flex items-center justify-center p-1.5">
+            <Image src="/shortlist-logo-ivory-transparent.png" alt="Shortlist" fill className="object-contain p-1.5" />
           </div>
         </motion.div>
 
@@ -1732,8 +1732,8 @@ function StripeSpotlight() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.08 }}
             >
-              <div className="w-12 h-12 rounded-xl bg-[#F4F1EC]/10 flex items-center justify-center mb-4">
-                <feat.icon className="w-6 h-6 text-[#F4F1EC]" />
+              <div className="w-12 h-12 rounded-xl bg-[#1A1A1A]/5 flex items-center justify-center mb-4">
+                <feat.icon className="w-6 h-6 text-[#1A1A1A]" />
               </div>
               <h3 className="text-[#1A1A1A] font-semibold text-base md:text-lg" style={{ fontFamily: 'var(--font-sans-inter)' }}>{feat.title}</h3>
               <p className="text-[#1A1A1A]/60 text-sm mt-2 leading-relaxed" style={{ fontFamily: 'var(--font-sans-inter)' }}>{feat.desc}</p>
@@ -1770,17 +1770,18 @@ function StripeSpotlight() {
 const basePlanFeatures = [
   'Your smart assistant (24/7)',
   'Answers customer questions',
-  'Custom domain (yourbusiness.com)',
-  'Social media integration',
+  'Custom domain (yourbusiness.shortlistpass.com)',
+  'Social media & important links',
+  'Knowledge & FAQ training inputs',
   'Hours & location info',
   'Lead capture & notifications',
   'Mobile-optimized',
 ];
 
 const bundles = [
-  { name: 'Service Pro', price: '$49', desc: 'Base + Booking + Reports', save: 'Save $10/mo' },
-  { name: 'Food & Retail', price: '$49', desc: 'Base + Ordering + Reports', save: 'Save $10/mo' },
-  { name: 'All-in-One', price: '$59', desc: 'Base + All 3 tools', save: 'Save $19/mo', featured: true },
+  { name: 'Service Pro', price: '$55', desc: 'Base + Booking + Reports', save: 'Save $4/mo' },
+  { name: 'Food & Retail', price: '$55', desc: 'Base + Ordering + Reports', save: 'Save $4/mo' },
+  { name: 'All-in-One', price: '$69', desc: 'Base + All 3 tools', save: 'Save $9/mo', featured: true },
 ];
 
 const faqs = [
