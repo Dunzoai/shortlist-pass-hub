@@ -882,13 +882,13 @@ function HeroSection() {
               </span>
             </motion.h1>
             <motion.p
-              className="mt-6 text-[16px] md:text-[20px] text-[#F5F5F5]/70 leading-relaxed max-w-[560px] mx-auto md:mx-0"
+              className="mt-6 text-[15px] md:text-[20px] text-[#F5F5F5]/70 leading-relaxed max-w-[560px] mx-auto md:mx-0 px-2 md:px-0"
               style={{ fontFamily: 'var(--font-sans-inter)' }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.1 }}
             >
-              Your smart assistant that never sleeps — answering questions, booking appointments, and taking orders while you focus on what you do best.
+              Your smart assistant that never sleeps — answering questions, booking appointments, taking orders, and more while you focus on what you do best.
             </motion.p>
             <motion.div
               className="mt-6 md:mt-8 flex justify-center md:justify-start"
