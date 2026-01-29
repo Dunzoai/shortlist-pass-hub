@@ -866,7 +866,7 @@ function HeroSection() {
       </div>
 
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 md:px-8 w-full">
-        <div className="grid md:grid-cols-2 gap-8 md:gap-8 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-8 items-center">
           {/* Copy */}
           <div className="text-center md:text-left">
             <motion.h1
