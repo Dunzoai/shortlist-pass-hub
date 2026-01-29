@@ -1125,16 +1125,34 @@ const solutionChat = [
   { from: 'assistant' as const, text: "Perfect! You're booked for Friday 10am. I'll send you a confirmation text." },
 ];
 
-const solutionFeatures = [
-  { icon: ChatIcon, title: 'Answers Questions', desc: 'Insurance, pricing, services — instantly' },
-  { icon: CalendarIcon, title: 'Books Appointments', desc: 'Fills your calendar while you sleep' },
-  { icon: DollarIcon, title: 'Takes Orders', desc: 'Pre-orders, walk-ups, catering — all handled' },
+const statsRow = [
+  { stat: '+47', label: 'Orders this week', biz: '🌮 Nito\'s Empanadas' },
+  { stat: '$1,200', label: 'Booked overnight', biz: '💈 Fresh Cuts Barber' },
+  { stat: '156', label: 'Questions answered', biz: '🦷 Bright Smile Dental' },
+  { stat: '24/7', label: 'Always online', biz: '⚡ Never miss a customer' },
+  { stat: '+32', label: 'New bookings', biz: '🧖 Glow Day Spa' },
+  { stat: '$890', label: 'Weekend orders', biz: '🍕 Sal\'s Pizza Truck' },
+  { stat: '98%', label: 'Auto-resolved', biz: '🔧 Mike\'s Plumbing' },
+  { stat: '4.9★', label: 'Customer satisfaction', biz: '🏠 CleanPro Services' },
+];
+
+const questionsRow = [
+  'What are your hours?',
+  'Can I book for Saturday?',
+  'Do you take Aetna?',
+  'What\'s your most popular item?',
+  'How much for a fade?',
+  'Are you open tomorrow?',
+  'Can I order ahead for pickup?',
+  'Do you have vegan options?',
+  'What\'s the wait time?',
+  'Can I get a quote?',
 ];
 
 function SolutionSection() {
   return (
-    <section id="solution" className="bg-[#F5F5F5] py-16 md:py-24 px-4">
-      <div className="max-w-[1100px] mx-auto">
+    <section id="solution" className="bg-[#F5F5F5] py-16 md:py-24 overflow-hidden">
+      <div className="max-w-[1100px] mx-auto px-4">
         <motion.h2
           className="text-[28px] sm:text-[36px] md:text-[48px] font-bold text-[#1A1A1A] text-center leading-tight"
           style={{ fontFamily: 'var(--font-sans-inter)' }}
@@ -1154,29 +1172,68 @@ function SolutionSection() {
         >
           24/7. Always improving.<br />Always adding more tools.
         </motion.p>
+      </div>
 
-        {/* Feature cards */}
-        <div className="mt-12 grid md:grid-cols-3 gap-6">
-            {solutionFeatures.map((feat, i) => (
-              <motion.div
+      {/* Scrolling cards — full width */}
+      <div className="mt-12 space-y-4">
+        {/* Row 1: Stats — scrolls left */}
+        <div className="relative group">
+          <div className="flex gap-4 animate-scroll-left hover:[animation-play-state:paused]">
+            {[...statsRow, ...statsRow, ...statsRow].map((card, i) => (
+              <div
                 key={i}
-                className="bg-white rounded-2xl p-5 md:p-6 shadow-sm border border-black/5 flex items-start gap-4"
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
+                className="flex-shrink-0 w-[220px] md:w-[260px] rounded-2xl p-5 border border-black/5"
+                style={{
+                  background: 'linear-gradient(135deg, #ffffff 0%, #f0eeeb 100%)',
+                  fontFamily: 'var(--font-sans-inter)',
+                }}
               >
-                <div className="w-12 h-12 rounded-xl bg-[#F4F1EC]/10 flex items-center justify-center flex-shrink-0">
-                  <feat.icon className="w-6 h-6 text-[#F4F1EC]" />
-                </div>
-                <div>
-                  <h3 className="text-[#1A1A1A] font-semibold text-base md:text-lg" style={{ fontFamily: 'var(--font-sans-inter)' }}>{feat.title}</h3>
-                  <p className="text-[#1A1A1A]/60 text-sm mt-1" style={{ fontFamily: 'var(--font-sans-inter)' }}>{feat.desc}</p>
-                </div>
-              </motion.div>
+                <p className="text-[28px] md:text-[32px] font-bold text-[#1A1A1A] leading-none">{card.stat}</p>
+                <p className="text-[#1A1A1A]/60 text-sm mt-1.5">{card.label}</p>
+                <p className="text-[#1A1A1A]/40 text-xs mt-3 pt-3 border-t border-black/5">{card.biz}</p>
+              </div>
             ))}
+          </div>
+        </div>
+
+        {/* Row 2: Questions — scrolls right */}
+        <div className="relative group">
+          <div className="flex gap-4 animate-scroll-right hover:[animation-play-state:paused]">
+            {[...questionsRow, ...questionsRow, ...questionsRow].map((q, i) => (
+              <div
+                key={i}
+                className="flex-shrink-0 w-[240px] md:w-[280px] rounded-2xl p-5 border border-black/5 flex items-center gap-3"
+                style={{
+                  background: 'linear-gradient(135deg, #1A1A1A 0%, #2C2C30 100%)',
+                  fontFamily: 'var(--font-sans-inter)',
+                }}
+              >
+                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                  <ChatIcon className="w-4 h-4 text-white/60" />
+                </div>
+                <p className="text-white/90 text-sm leading-snug">&ldquo;{q}&rdquo;</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
+
+      <style>{`
+        @keyframes scrollLeft {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-33.333%); }
+        }
+        @keyframes scrollRight {
+          0% { transform: translateX(-33.333%); }
+          100% { transform: translateX(0); }
+        }
+        .animate-scroll-left {
+          animation: scrollLeft 40s linear infinite;
+        }
+        .animate-scroll-right {
+          animation: scrollRight 40s linear infinite;
+        }
+      `}</style>
     </section>
   );
 }
