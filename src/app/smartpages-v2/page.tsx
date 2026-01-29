@@ -2103,9 +2103,9 @@ export default function SmartPagesV2() {
     <main className="min-h-screen bg-[#1A1A1A] w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
       <StickyNav />
       <HeroSection />
-      <SocialProofStrip />
-      <ProblemSection />
       <SolutionSection />
+      <ProblemSection />
+      <SocialProofStrip />
       <IndustryCarousel />
       <ToolShedSection />
       <StripeSpotlight />
