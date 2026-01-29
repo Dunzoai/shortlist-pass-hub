@@ -645,9 +645,9 @@ function HeroPhoneAnimation() {
   const typingIdx = step.startsWith('msg-typing-') ? parseInt(step.split('-')[2]) : -1;
 
   return (
-    <div className="w-[280px] sm:w-[320px] mx-auto">
-      <div style={{ background: HC.phoneBg, borderRadius: 44, padding: 8, boxShadow: '0 20px 60px rgba(0,0,0,0.3), 0 8px 20px rgba(0,0,0,0.15)' }}>
-        <div style={{ width: '100%', background: HC.screen, borderRadius: 37, overflow: 'hidden', display: 'flex', flexDirection: 'column', position: 'relative', height: 580 }}>
+    <div className="mx-auto" style={{ transform: 'scale(0.52)', transformOrigin: 'top center', width: 390, height: 440 }}>
+      <div style={{ width: 390, background: HC.phoneBg, borderRadius: 50, padding: 10, boxShadow: '0 20px 60px rgba(0,0,0,0.3), 0 8px 20px rgba(0,0,0,0.15)' }}>
+        <div style={{ width: '100%', background: HC.screen, borderRadius: 42, overflow: 'hidden', display: 'flex', flexDirection: 'column', position: 'relative', height: 830 }}>
           {/* Notch + status bar */}
           <div style={{ position: 'relative', height: 30, flexShrink: 0 }}>
             <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: 100, height: 26, background: HC.screen, borderBottomLeftRadius: 16, borderBottomRightRadius: 16, zIndex: 10 }} />
