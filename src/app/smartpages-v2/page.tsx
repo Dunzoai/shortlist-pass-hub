@@ -1152,7 +1152,7 @@ function SolutionSection() {
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
         >
-          Handles customer conversations 24/7 like a real person — no chatbot frustration, no missed opportunities.
+          Handles customer conversations 24/7 like a real person. Every question answered. Every booking filled. Every order taken. Always improving, always adding more.
         </motion.p>
 
         {/* Feature cards */}
