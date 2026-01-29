@@ -930,7 +930,7 @@ function HeroSection() {
             <img
               src="/text%20bubble.png"
               alt=""
-              className="absolute z-10 w-[160px] md:w-[240px] bottom-8 -left-6 md:bottom-auto md:top-1/2 md:-left-28 md:-translate-y-1/2 opacity-40 pointer-events-none"
+              className="absolute z-10 w-[160px] md:w-[240px] bottom-2 -left-6 md:bottom-auto md:top-[60%] md:-left-28 md:-translate-y-1/2 opacity-40 pointer-events-none"
             />
             <HeroPhoneAnimation />
           </motion.div>
