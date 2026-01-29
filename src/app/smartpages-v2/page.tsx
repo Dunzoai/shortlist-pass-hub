@@ -868,7 +868,13 @@ function HeroSection() {
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 md:px-8 w-full">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-8 items-center">
           {/* Copy */}
-          <div className="text-center md:text-left">
+          <div className="relative text-center md:text-left">
+            {/* Checkmark — above header */}
+            <img
+              src="/checkmark%20drawn.png"
+              alt=""
+              className="absolute z-10 w-[160px] md:w-[240px] -top-20 md:-top-24 left-1/2 md:left-10 -translate-x-1/2 md:translate-x-0 opacity-40 pointer-events-none"
+            />
             <motion.h1
               className="text-[32px] sm:text-[44px] md:text-[56px] font-extrabold text-[#F5F5F5] leading-[1.1] tracking-tight"
               style={{ fontFamily: 'var(--font-sans-inter)' }}
@@ -936,7 +942,7 @@ function HeroSection() {
             <img
               src="/calendar%20drawn.png"
               alt=""
-              className="absolute z-10 w-[160px] md:w-[240px] -top-4 -right-[10%] md:-top-8 md:-right-[10%] rotate-[12deg] opacity-40 pointer-events-none"
+              className="absolute z-10 w-[320px] md:w-[480px] -top-8 -right-[30%] md:-top-16 md:-right-[25%] rotate-[12deg] opacity-40 pointer-events-none"
             />
             <HeroPhoneAnimation />
           </motion.div>
