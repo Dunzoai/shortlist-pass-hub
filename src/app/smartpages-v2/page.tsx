@@ -869,7 +869,7 @@ function HeroSection() {
       <img
         src="/calendar%20drawn.png"
         alt=""
-        className="absolute z-[5] w-[280px] md:w-[480px] top-[15%] md:top-[4%] -right-[136px] md:-right-[180px] rotate-[12deg] opacity-40 pointer-events-none"
+        className="absolute z-[5] w-[280px] md:w-[480px] top-[35%] md:top-[4%] -right-[136px] md:-right-[180px] rotate-[12deg] opacity-40 pointer-events-none"
       />
 
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 md:px-8 w-full">
