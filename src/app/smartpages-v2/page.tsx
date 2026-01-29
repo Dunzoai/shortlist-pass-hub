@@ -1145,15 +1145,14 @@ function SolutionSection() {
           Meet Your New Smart Assistant
         </motion.h2>
         <motion.p
-          className="mt-4 text-[13px] md:text-xl text-[#1A1A1A]/60 text-center max-w-2xl mx-auto whitespace-nowrap md:whitespace-normal"
+          className="mt-4 text-base md:text-xl text-[#1A1A1A]/60 text-center max-w-2xl mx-auto"
           style={{ fontFamily: 'var(--font-sans-inter)' }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
         >
-          Every question answered. Every booking filled. Every order taken.<br />
-          Always improving, always adding more tools.
+          24/7. Always improving. Always adding more tools.
         </motion.p>
 
         {/* Feature cards */}
