@@ -954,7 +954,7 @@ function HeroSection() {
             <img
               src="/text%20bubble.png"
               alt=""
-              className="absolute z-10 w-[160px] md:w-[240px] -top-8 left-6 md:-top-12 md:-left-12 opacity-40 pointer-events-none"
+              className="absolute z-10 w-[160px] md:w-[240px] -top-8 -left-10 md:-top-12 md:-left-12 opacity-40 pointer-events-none"
             />
             {/* Checkmark — bottom-left of phone */}
             <img
@@ -1193,14 +1193,16 @@ function SolutionSection() {
           Meet Your New<br className="md:hidden" /> Smart Assistant
         </motion.h2>
         <motion.p
-          className="mt-4 text-[13px] md:text-xl text-[#1A1A1A]/60 text-center max-w-2xl mx-auto whitespace-nowrap md:whitespace-normal"
+          className="mt-4 text-base md:text-xl text-[#1A1A1A]/60 text-center max-w-2xl mx-auto"
           style={{ fontFamily: 'var(--font-sans-inter)' }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
         >
-          Working for you 24/7.<br />Questions answered. Deals closed. More revenue.
+          Working for you 24/7.<br />
+          Questions answered. Deals closed. More revenue.<br />
+          <span className="text-sm md:text-base text-[#1A1A1A]/40">And we&apos;re always building more.</span>
         </motion.p>
       </div>
 
@@ -1496,17 +1498,17 @@ function IndustryCarousel() {
           <motion.button
             key={ind.name}
             onClick={() => setSelected(ind)}
-            className="flex-shrink-0 w-[260px] md:w-[280px] bg-[#2A2A2A] rounded-2xl border border-white/[0.06] p-6 md:p-8 text-left snap-center hover:border-[#F4F1EC]/30 hover:shadow-[0_4px_20px_rgba(255,255,255,0.06)] transition-all duration-300 group"
+            className="flex-shrink-0 w-[260px] md:w-[280px] bg-[#2A2A2A] hover:bg-[#F5F5F5] rounded-2xl border border-white/[0.06] hover:border-[#1A1A1A]/10 p-6 md:p-8 text-left snap-center transition-all duration-300 group"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: i * 0.05 }}
           >
-            <div className="w-16 h-16 rounded-2xl bg-[#F4F1EC]/10 flex items-center justify-center mb-5 group-hover:bg-[#F4F1EC]/20 transition-colors">
-              <ind.icon className="w-8 h-8 text-[#F4F1EC]" />
+            <div className="w-16 h-16 rounded-2xl bg-[#F4F1EC]/10 group-hover:bg-[#1A1A1A]/10 flex items-center justify-center mb-5 transition-colors">
+              <ind.icon className="w-8 h-8 text-[#F4F1EC] group-hover:text-[#1A1A1A] transition-colors" />
             </div>
-            <h3 className="text-xl font-semibold text-[#F5F5F5] mb-2" style={{ fontFamily: 'var(--font-sans-inter)' }}>{ind.name}</h3>
-            <p className="text-sm text-[#F5F5F5]/40" style={{ fontFamily: 'var(--font-sans-inter)' }}>Tap to see how it helps</p>
+            <h3 className="text-xl font-semibold text-[#F5F5F5] group-hover:text-[#1A1A1A] mb-2 transition-colors" style={{ fontFamily: 'var(--font-sans-inter)' }}>{ind.name}</h3>
+            <p className="text-sm text-[#F5F5F5]/40 group-hover:text-[#1A1A1A]/50 transition-colors" style={{ fontFamily: 'var(--font-sans-inter)' }}>Tap to see how it helps</p>
           </motion.button>
         ))}
       </div>
