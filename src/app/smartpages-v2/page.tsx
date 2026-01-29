@@ -1152,7 +1152,7 @@ function SolutionSection() {
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
         >
-          24/7. Always improving. Always adding more tools.
+          24/7. Always improving.<br />Always adding more tools.
         </motion.p>
 
         {/* Feature cards */}
