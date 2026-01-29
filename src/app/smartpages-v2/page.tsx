@@ -886,7 +886,7 @@ function HeroSection() {
       <img
         src="/calendar%20drawn.png"
         alt=""
-        className="absolute z-[5] w-[280px] md:w-[480px] top-[35%] md:top-[4%] -right-[136px] md:-right-[180px] rotate-[12deg] opacity-40 pointer-events-none"
+        className="absolute z-[5] w-[280px] md:w-[480px] top-[40%] md:top-[8%] -right-[136px] md:-right-[180px] rotate-[12deg] opacity-40 pointer-events-none"
       />
 
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 md:px-8 w-full">
@@ -1177,17 +1177,17 @@ function SolutionSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          Meet Your New Smart Assistant
+          Meet Your New<br className="md:hidden" /> Smart Assistant
         </motion.h2>
         <motion.p
-          className="mt-4 text-base md:text-xl text-[#1A1A1A]/60 text-center max-w-2xl mx-auto"
+          className="mt-4 text-[13px] md:text-xl text-[#1A1A1A]/60 text-center max-w-2xl mx-auto whitespace-nowrap md:whitespace-normal"
           style={{ fontFamily: 'var(--font-sans-inter)' }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
         >
-          24/7. Always improving.<br />Always adding more tools.
+          Working for you 24/7.<br />Questions answered. Deals closed. More revenue.
         </motion.p>
       </div>
 
