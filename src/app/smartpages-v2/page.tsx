@@ -321,7 +321,7 @@ function StickyNav() {
             ))}
             <a
               href="#pricing"
-              className="bg-[#FF6B35] text-white text-[15px] font-semibold px-6 py-2.5 rounded-full hover:bg-[#e8602f] transition-colors"
+              className="bg-[#F4F1EC] text-[#1A1A1A] text-[15px] font-semibold px-6 py-2.5 rounded-full hover:bg-[#D9D5CF] transition-colors"
               style={{ fontFamily: 'var(--font-sans-inter)' }}
             >
               Start Free Trial
@@ -332,7 +332,7 @@ function StickyNav() {
           <div className="flex md:hidden items-center gap-3">
             <a
               href="#pricing"
-              className="bg-[#FF6B35] text-white text-sm font-semibold px-4 py-2 rounded-full"
+              className="bg-[#F4F1EC] text-[#1A1A1A] text-sm font-semibold px-4 py-2 rounded-full"
               style={{ fontFamily: 'var(--font-sans-inter)' }}
             >
               Start
@@ -382,7 +382,7 @@ function StickyNav() {
               <a
                 href="#pricing"
                 onClick={() => setMobileOpen(false)}
-                className="mt-4 bg-[#FF6B35] text-white text-center font-semibold px-6 py-3 rounded-full"
+                className="mt-4 bg-[#F4F1EC] text-[#1A1A1A] text-center font-semibold px-6 py-3 rounded-full"
                 style={{ fontFamily: 'var(--font-sans-inter)' }}
               >
                 Start Free Trial
@@ -645,7 +645,7 @@ function HeroPhoneAnimation() {
   const typingIdx = step.startsWith('msg-typing-') ? parseInt(step.split('-')[2]) : -1;
 
   return (
-    <div className="mx-auto" style={{ transform: 'scale(0.48)', transformOrigin: 'top center', width: 390, height: 410 }}>
+    <div className="mx-auto hero-phone-scale">
       <div style={{ width: 390, background: HC.phoneBg, borderRadius: 50, padding: 10, boxShadow: '0 20px 60px rgba(0,0,0,0.3), 0 8px 20px rgba(0,0,0,0.15)' }}>
         <div style={{ width: '100%', background: HC.screen, borderRadius: 42, overflow: 'hidden', display: 'flex', flexDirection: 'column', position: 'relative', height: 830 }}>
           {/* Notch + status bar */}
@@ -817,11 +817,23 @@ function HeroPhoneAnimation() {
         </div>
       </div>
 
-      {/* CSS for border trace animation */}
+      {/* CSS for border trace + phone scaling */}
       <style jsx>{`
         @keyframes heroTraceAnim {
           from { stroke-dashoffset: ${BTN_PERIM_VAL}; }
           to { stroke-dashoffset: 0; }
+        }
+        .hero-phone-scale {
+          width: 390px;
+          height: 340px;
+          transform: scale(0.38);
+          transform-origin: top center;
+        }
+        @media (min-width: 768px) {
+          .hero-phone-scale {
+            height: 500px;
+            transform: scale(0.58);
+          }
         }
       `}</style>
     </div>
@@ -836,7 +848,7 @@ function HeroSection() {
         <div
           className="absolute w-[600px] h-[600px] rounded-full opacity-[0.07]"
           style={{
-            background: 'radial-gradient(circle, #FF6B35, transparent 70%)',
+            background: 'radial-gradient(circle, #F4F1EC, transparent 70%)',
             top: '10%',
             left: '60%',
             animation: 'meshDrift1 20s ease-in-out infinite',
@@ -845,7 +857,7 @@ function HeroSection() {
         <div
           className="absolute w-[500px] h-[500px] rounded-full opacity-[0.05]"
           style={{
-            background: 'radial-gradient(circle, #FF6B35, transparent 70%)',
+            background: 'radial-gradient(circle, #F4F1EC, transparent 70%)',
             bottom: '10%',
             right: '60%',
             animation: 'meshDrift2 25s ease-in-out infinite',
@@ -865,7 +877,7 @@ function HeroSection() {
               transition={{ duration: 0.7 }}
             >
               Your Business,<br />
-              <span className="bg-gradient-to-r from-[#FF6B35] to-[#ff8f66] bg-clip-text text-transparent">
+              <span className="text-[#F4F1EC]/70">
                 Always Available
               </span>
             </motion.h1>
@@ -886,7 +898,7 @@ function HeroSection() {
             >
               <a
                 href="#pricing"
-                className="bg-[#FF6B35] text-white font-semibold text-sm md:text-lg px-6 py-3 md:px-8 md:py-4 rounded-full hover:bg-[#e8602f] transition-colors inline-flex items-center justify-center gap-2"
+                className="bg-[#F4F1EC] text-[#1A1A1A] font-semibold text-sm md:text-lg px-6 py-3 md:px-8 md:py-4 rounded-full hover:bg-[#D9D5CF] transition-colors inline-flex items-center justify-center gap-2"
                 style={{ fontFamily: 'var(--font-sans-inter)' }}
               >
                 Start 7-Day Free Trial
@@ -1129,8 +1141,8 @@ function SolutionSection() {
                 <div className="w-20 h-1 bg-black/10 rounded-full" />
               </div>
               <div className="px-4 py-3 border-b border-black/5 flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-[#FF6B35]/10 flex items-center justify-center">
-                  <ChatIcon className="w-4 h-4 text-[#FF6B35]" />
+                <div className="w-8 h-8 rounded-full bg-[#F4F1EC]/10 flex items-center justify-center">
+                  <ChatIcon className="w-4 h-4 text-[#F4F1EC]" />
                 </div>
                 <div>
                   <p className="text-[#1A1A1A] text-sm font-semibold" style={{ fontFamily: 'var(--font-sans-inter)' }}>Smart Assistant</p>
@@ -1145,7 +1157,7 @@ function SolutionSection() {
                     className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-[13px] leading-relaxed ${
                       msg.from === 'customer'
                         ? 'self-start bg-[#f0f0f0] text-[#1A1A1A]'
-                        : 'self-end bg-gradient-to-br from-[#FF6B35] to-[#ff8f66] text-white'
+                        : 'self-end bg-gradient-to-br from-[#F4F1EC] to-[#E8E4DE] text-white'
                     }`}
                     style={{ fontFamily: 'var(--font-sans-inter)' }}
                   >
@@ -1180,8 +1192,8 @@ function SolutionSection() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
               >
-                <div className="w-12 h-12 rounded-xl bg-[#FF6B35]/10 flex items-center justify-center flex-shrink-0">
-                  <feat.icon className="w-6 h-6 text-[#FF6B35]" />
+                <div className="w-12 h-12 rounded-xl bg-[#F4F1EC]/10 flex items-center justify-center flex-shrink-0">
+                  <feat.icon className="w-6 h-6 text-[#F4F1EC]" />
                 </div>
                 <div>
                   <h3 className="text-[#1A1A1A] font-semibold text-base md:text-lg" style={{ fontFamily: 'var(--font-sans-inter)' }}>{feat.title}</h3>
@@ -1323,8 +1335,8 @@ function IndustryModal({ industry, onClose }: { industry: IndustryData; onClose:
 
           {/* Header */}
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-12 h-12 rounded-xl bg-[#FF6B35]/10 flex items-center justify-center">
-              <industry.icon className="w-7 h-7 text-[#FF6B35]" />
+            <div className="w-12 h-12 rounded-xl bg-[#F4F1EC]/10 flex items-center justify-center">
+              <industry.icon className="w-7 h-7 text-[#F4F1EC]" />
             </div>
             <h3 className="text-2xl md:text-3xl font-bold text-[#1A1A1A]" style={{ fontFamily: 'var(--font-sans-inter)' }}>
               {industry.name}
@@ -1339,7 +1351,7 @@ function IndustryModal({ industry, onClose }: { industry: IndustryData; onClose:
           <div className="space-y-5 mb-8">
             {industry.questions.map((item, i) => (
               <div key={i}>
-                <p className="font-semibold text-[#FF6B35] text-base" style={{ fontFamily: 'var(--font-sans-inter)' }}>
+                <p className="font-semibold text-[#F4F1EC] text-base" style={{ fontFamily: 'var(--font-sans-inter)' }}>
                   &ldquo;{item.q}&rdquo;
                 </p>
                 <p className="text-[#1A1A1A]/70 text-[15px] mt-1" style={{ fontFamily: 'var(--font-sans-inter)' }}>
@@ -1369,7 +1381,7 @@ function IndustryModal({ industry, onClose }: { industry: IndustryData; onClose:
             <a
               href="#pricing"
               onClick={onClose}
-              className="inline-flex items-center gap-2 bg-[#FF6B35] text-white font-semibold px-8 py-3.5 rounded-full hover:bg-[#e8602f] transition-colors"
+              className="inline-flex items-center gap-2 bg-[#F4F1EC] text-[#1A1A1A] font-semibold px-8 py-3.5 rounded-full hover:bg-[#D9D5CF] transition-colors"
               style={{ fontFamily: 'var(--font-sans-inter)' }}
             >
               Start 7-Day Free Trial <ArrowRightIcon className="w-4 h-4" />
@@ -1419,14 +1431,14 @@ function IndustryCarousel() {
           <motion.button
             key={ind.name}
             onClick={() => setSelected(ind)}
-            className="flex-shrink-0 w-[260px] md:w-[280px] bg-[#2A2A2A] rounded-2xl border border-white/[0.06] p-6 md:p-8 text-left snap-center hover:border-[#FF6B35]/30 hover:-translate-y-2 hover:shadow-[0_8px_30px_rgba(255,107,53,0.1)] transition-all duration-300 group"
+            className="flex-shrink-0 w-[260px] md:w-[280px] bg-[#2A2A2A] rounded-2xl border border-white/[0.06] p-6 md:p-8 text-left snap-center hover:border-[#F4F1EC]/30 hover:-translate-y-2 hover:shadow-[0_8px_30px_rgba(255,107,53,0.1)] transition-all duration-300 group"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: i * 0.05 }}
           >
-            <div className="w-16 h-16 rounded-2xl bg-[#FF6B35]/10 flex items-center justify-center mb-5 group-hover:bg-[#FF6B35]/20 transition-colors">
-              <ind.icon className="w-8 h-8 text-[#FF6B35]" />
+            <div className="w-16 h-16 rounded-2xl bg-[#F4F1EC]/10 flex items-center justify-center mb-5 group-hover:bg-[#F4F1EC]/20 transition-colors">
+              <ind.icon className="w-8 h-8 text-[#F4F1EC]" />
             </div>
             <h3 className="text-xl font-semibold text-[#F5F5F5] mb-2" style={{ fontFamily: 'var(--font-sans-inter)' }}>{ind.name}</h3>
             <p className="text-sm text-[#F5F5F5]/40" style={{ fontFamily: 'var(--font-sans-inter)' }}>Tap to see how it works</p>
@@ -1498,7 +1510,7 @@ function ToolCard({ tool }: { tool: Tool }) {
 
   return (
     <motion.div
-      className="bg-[#2A2A2A] rounded-2xl border border-white/[0.06] overflow-hidden hover:border-[#FF6B35]/20 transition-colors"
+      className="bg-[#2A2A2A] rounded-2xl border border-white/[0.06] overflow-hidden hover:border-[#F4F1EC]/20 transition-colors"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -1507,11 +1519,11 @@ function ToolCard({ tool }: { tool: Tool }) {
         onClick={() => setOpen(!open)}
         className="w-full text-left p-6 md:p-8"
       >
-        <div className="w-12 h-12 rounded-xl bg-[#FF6B35]/10 flex items-center justify-center mb-4">
-          <tool.icon className="w-6 h-6 text-[#FF6B35]" />
+        <div className="w-12 h-12 rounded-xl bg-[#F4F1EC]/10 flex items-center justify-center mb-4">
+          <tool.icon className="w-6 h-6 text-[#F4F1EC]" />
         </div>
         <h3 className="text-xl font-semibold text-[#F5F5F5]" style={{ fontFamily: 'var(--font-sans-inter)' }}>{tool.name}</h3>
-        <p className="text-[#FF6B35] font-bold text-xl mt-2" style={{ fontFamily: 'var(--font-sans-inter)' }}>{tool.price}</p>
+        <p className="text-[#F4F1EC] font-bold text-xl mt-2" style={{ fontFamily: 'var(--font-sans-inter)' }}>{tool.price}</p>
         <p className="text-[#F5F5F5]/50 text-sm mt-2" style={{ fontFamily: 'var(--font-sans-inter)' }}>{tool.tagline}</p>
         <div className={`mt-4 flex items-center justify-center w-8 h-8 rounded-full bg-white/5 transition-transform ${open ? 'rotate-180' : ''}`}>
           <ChevronDownIcon className="w-4 h-4 text-[#F5F5F5]/50" />
@@ -1654,8 +1666,8 @@ function StripeSpotlight() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.08 }}
             >
-              <div className="w-12 h-12 rounded-xl bg-[#FF6B35]/10 flex items-center justify-center mb-4">
-                <feat.icon className="w-6 h-6 text-[#FF6B35]" />
+              <div className="w-12 h-12 rounded-xl bg-[#F4F1EC]/10 flex items-center justify-center mb-4">
+                <feat.icon className="w-6 h-6 text-[#F4F1EC]" />
               </div>
               <h3 className="text-[#1A1A1A] font-semibold text-base md:text-lg" style={{ fontFamily: 'var(--font-sans-inter)' }}>{feat.title}</h3>
               <p className="text-[#1A1A1A]/60 text-sm mt-2 leading-relaxed" style={{ fontFamily: 'var(--font-sans-inter)' }}>{feat.desc}</p>
@@ -1740,12 +1752,12 @@ function PricingSection() {
 
         {/* Base plan */}
         <motion.div
-          className="mt-10 md:mt-14 max-w-md mx-auto bg-[#2A2A2A] rounded-3xl border-2 border-[#FF6B35]/40 p-8 md:p-10 text-center"
+          className="mt-10 md:mt-14 max-w-md mx-auto bg-[#2A2A2A] rounded-3xl border-2 border-[#F4F1EC]/40 p-8 md:p-10 text-center"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <p className="text-[#FF6B35] font-semibold text-sm uppercase tracking-wider" style={{ fontFamily: 'var(--font-sans-inter)' }}>Smart Assistant Base</p>
+          <p className="text-[#F4F1EC] font-semibold text-sm uppercase tracking-wider" style={{ fontFamily: 'var(--font-sans-inter)' }}>Smart Assistant Base</p>
           <p className="mt-4 text-5xl md:text-6xl font-extrabold text-[#F5F5F5]" style={{ fontFamily: 'var(--font-sans-inter)' }}>
             $25<span className="text-lg font-medium text-[#F5F5F5]/40">/month</span>
           </p>
@@ -1759,7 +1771,7 @@ function PricingSection() {
           </div>
           <a
             href="https://buy.stripe.com/3cI4gyfB1eg65uZ02Q4sE05"
-            className="mt-8 w-full inline-flex items-center justify-center gap-2 bg-[#FF6B35] text-white font-semibold text-lg px-8 py-4 rounded-full hover:bg-[#e8602f] transition-colors"
+            className="mt-8 w-full inline-flex items-center justify-center gap-2 bg-[#F4F1EC] text-[#1A1A1A] font-semibold text-lg px-8 py-4 rounded-full hover:bg-[#D9D5CF] transition-colors"
             style={{ fontFamily: 'var(--font-sans-inter)' }}
           >
             Start 7-Day Free Trial
@@ -1776,7 +1788,7 @@ function PricingSection() {
             {tools.map(t => (
               <div key={t.name} className="bg-[#2A2A2A] border border-white/[0.06] rounded-xl px-5 py-3 text-center">
                 <p className="text-[#F5F5F5] text-sm font-medium" style={{ fontFamily: 'var(--font-sans-inter)' }}>{t.name}</p>
-                <p className="text-[#FF6B35] font-bold text-sm mt-1" style={{ fontFamily: 'var(--font-sans-inter)' }}>{t.price}</p>
+                <p className="text-[#F4F1EC] font-bold text-sm mt-1" style={{ fontFamily: 'var(--font-sans-inter)' }}>{t.price}</p>
               </div>
             ))}
           </div>
@@ -1792,7 +1804,7 @@ function PricingSection() {
               <motion.div
                 key={b.name}
                 className={`bg-[#2A2A2A] rounded-2xl p-6 text-center border transition-all duration-300 hover:-translate-y-1 ${
-                  b.featured ? 'border-[#FF6B35]/40 shadow-[0_0_30px_rgba(255,107,53,0.1)]' : 'border-white/[0.06]'
+                  b.featured ? 'border-[#F4F1EC]/40 shadow-[0_0_30px_rgba(255,107,53,0.1)]' : 'border-white/[0.06]'
                 }`}
                 initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -1805,7 +1817,7 @@ function PricingSection() {
                 </p>
                 <p className="text-[#F5F5F5]/50 text-sm mt-2" style={{ fontFamily: 'var(--font-sans-inter)' }}>{b.desc}</p>
                 <motion.span
-                  className="inline-block mt-3 bg-[#FF6B35]/15 text-[#FF6B35] font-semibold text-xs px-3 py-1 rounded-full"
+                  className="inline-block mt-3 bg-[#F4F1EC]/15 text-[#F4F1EC] font-semibold text-xs px-3 py-1 rounded-full"
                   style={{ fontFamily: 'var(--font-sans-inter)' }}
                   animate={{ scale: [1, 1.05, 1] }}
                   transition={{ duration: 2, repeat: Infinity }}
@@ -1995,7 +2007,7 @@ function Footer() {
                   key={s.label}
                   href={s.href}
                   aria-label={s.label}
-                  className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center text-[#F5F5F5]/50 hover:text-[#FF6B35] hover:bg-white/10 transition-colors"
+                  className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center text-[#F5F5F5]/50 hover:text-[#F4F1EC] hover:bg-white/10 transition-colors"
                 >
                   <s.icon className="w-4 h-4" />
                 </a>
@@ -2043,7 +2055,7 @@ export default function SmartPagesV2() {
   // Hide the SmartPage chat widget on this page
   useEffect(() => {
     const style = document.createElement('style');
-    style.textContent = '[data-slp-widget], .slp-widget, #slp-widget { display: none !important; }';
+    style.textContent = '#slp-widget-container { display: none !important; }';
     document.head.appendChild(style);
     return () => { document.head.removeChild(style); };
   }, []);
