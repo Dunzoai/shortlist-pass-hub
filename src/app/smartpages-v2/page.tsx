@@ -882,7 +882,7 @@ function HeroSection() {
               </span>
             </motion.h1>
             <motion.p
-              className="mt-4 md:mt-6 text-[14px] md:text-[20px] text-[#F5F5F5]/70 leading-relaxed max-w-[560px] mx-auto md:mx-0"
+              className="mt-4 md:mt-6 text-[14px] md:text-[20px] text-[#F5F5F5]/70 leading-relaxed md:max-w-[560px] mx-auto md:mx-0"
               style={{ fontFamily: 'var(--font-sans-inter)' }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
