@@ -865,15 +865,22 @@ function HeroSection() {
         />
       </div>
 
+      {/* Calendar — top-right, cut off right edge of screen, behind phone */}
+      <img
+        src="/calendar%20drawn.png"
+        alt=""
+        className="absolute z-[5] w-[280px] md:w-[480px] top-[15%] md:top-[8%] -right-[80px] md:-right-[120px] rotate-[12deg] opacity-40 pointer-events-none"
+      />
+
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 md:px-8 w-full">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-8 items-center">
           {/* Copy */}
           <div className="relative text-center md:text-left">
-            {/* Checkmark — above header */}
+            {/* Checkmark — above header with breathing room */}
             <img
               src="/checkmark%20drawn.png"
               alt=""
-              className="absolute z-10 w-[160px] md:w-[240px] -top-20 md:-top-24 left-1/2 md:left-10 -translate-x-1/2 md:translate-x-0 opacity-40 pointer-events-none"
+              className="absolute z-10 w-[120px] md:w-[180px] -top-28 md:-top-36 left-1/2 md:left-10 -translate-x-1/2 md:translate-x-0 opacity-40 pointer-events-none"
             />
             <motion.h1
               className="text-[32px] sm:text-[44px] md:text-[56px] font-extrabold text-[#F5F5F5] leading-[1.1] tracking-tight"
@@ -932,17 +939,11 @@ function HeroSection() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="relative flex justify-center"
           >
-            {/* Text bubble — desktop: left of phone, mobile: lower-left of phone */}
+            {/* Text bubble — aligned with bottom of phone */}
             <img
               src="/text%20bubble.png"
               alt=""
-              className="absolute z-10 w-[160px] md:w-[240px] bottom-2 -left-6 md:bottom-auto md:top-[60%] md:-left-28 md:-translate-y-1/2 opacity-40 pointer-events-none"
-            />
-            {/* Calendar — top-right of phone, angled, partially off-screen */}
-            <img
-              src="/calendar%20drawn.png"
-              alt=""
-              className="absolute z-10 w-[320px] md:w-[480px] -top-8 -right-[30%] md:-top-16 md:-right-[25%] rotate-[12deg] opacity-40 pointer-events-none"
+              className="absolute z-10 w-[160px] md:w-[240px] -bottom-4 -left-6 md:-bottom-8 md:-left-28 opacity-40 pointer-events-none"
             />
             <HeroPhoneAnimation />
           </motion.div>
