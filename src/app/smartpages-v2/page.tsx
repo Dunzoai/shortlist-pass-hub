@@ -932,6 +932,12 @@ function HeroSection() {
               alt=""
               className="absolute z-10 w-[160px] md:w-[240px] bottom-2 -left-6 md:bottom-auto md:top-[60%] md:-left-28 md:-translate-y-1/2 opacity-40 pointer-events-none"
             />
+            {/* Calendar — top-right of phone, angled, partially off-screen */}
+            <img
+              src="/calendar%20drawn.png"
+              alt=""
+              className="absolute z-10 w-[160px] md:w-[240px] -top-4 -right-[10%] md:-top-8 md:-right-[10%] rotate-[12deg] opacity-40 pointer-events-none"
+            />
             <HeroPhoneAnimation />
           </motion.div>
         </div>
