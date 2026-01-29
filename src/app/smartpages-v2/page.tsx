@@ -954,7 +954,7 @@ function HeroSection() {
             <img
               src="/checkmark%20drawn.png"
               alt=""
-              className="absolute z-10 w-[120px] md:w-[180px] -top-6 -left-8 md:-top-10 md:-left-24 opacity-40 pointer-events-none"
+              className="absolute z-10 w-[120px] md:w-[180px] -top-6 left-4 md:-top-10 md:left-auto md:-right-20 opacity-40 pointer-events-none"
             />
             {/* Text bubble — aligned with bottom of phone */}
             <img
@@ -1063,8 +1063,9 @@ const painPoints = [
   'Answering the same questions over and over',
   'Playing phone tag to schedule appointments',
   'Losing customers because you couldn\'t respond fast enough',
+  'Figuring out how to promote your menu or services',
   'Manually tracking sales in spreadsheets',
-  'Staying up late doing bookkeeping',
+  'Paying for a website that just sits there',
 ];
 
 function ProblemSection() {
