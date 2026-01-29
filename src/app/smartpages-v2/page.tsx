@@ -924,8 +924,14 @@ function HeroSection() {
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="flex justify-center"
+            className="relative flex justify-center"
           >
+            {/* Text bubble — desktop: left of phone, mobile: lower-left of phone */}
+            <img
+              src="/text%20bubble.png"
+              alt=""
+              className="absolute z-10 w-[80px] md:w-[120px] bottom-8 -left-2 md:bottom-auto md:top-1/2 md:-left-16 md:-translate-y-1/2 opacity-40 pointer-events-none"
+            />
             <HeroPhoneAnimation />
           </motion.div>
         </div>
