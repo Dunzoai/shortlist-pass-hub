@@ -396,86 +396,434 @@ function StickyNav() {
 }
 
 // =============================================================================
-// SECTION 2: HERO
+// SECTION 2: HERO — Phone Animation (native React, no video)
 // =============================================================================
 
-const heroChat = [
-  { from: 'customer' as const, text: 'Do you take my insurance?' },
-  { from: 'assistant' as const, text: 'Yes! We accept Delta, Cigna, and most major providers. Want me to check yours?' },
-  { from: 'customer' as const, text: 'How about Aetna?' },
-  { from: 'assistant' as const, text: 'Aetna is covered. I can book you in — we have openings Thursday at 2pm and Friday at 10am.' },
+const HC = {
+  phoneBg: '#1A1A1A',
+  screen: '#1C1C1E',
+  cardText: '#FFFFFF',
+  cardSub: '#B0B0B0',
+  customer: '#FFFFFF',
+  customerText: '#1A1A1A',
+  reply: '#2C2C30',
+  replyText: '#E8E8EA',
+  tabBg: '#3A3A3E',
+  tabActive: '#FFFFFF',
+  tabInactive: '#888',
+  green: '#22C55E',
+  greenTapped: 'rgba(34,197,94,0.35)',
+  amber: '#F59E0B',
+  blue: '#3B82F6',
+};
+
+const SOCIAL_ICON_PATHS = [
+  'M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zM16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37zM17.5 6.5h.01',
+  'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10A15.3 15.3 0 0 1 12 2z',
+  'M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zM22 6l-10 7L2 6',
 ];
 
-function HeroChatDemo() {
-  const [step, setStep] = useState(0);
+const BTN_W = 240;
+const BTN_HT = 44;
+const BTN_RAD = 22;
+const BTN_PERIM_VAL = 2 * (BTN_W - 2 * BTN_RAD) + 2 * (BTN_HT - 2 * BTN_RAD) + 2 * Math.PI * BTN_RAD;
+const TRACE_LEN_VAL = BTN_PERIM_VAL * 0.25;
 
+interface SceneConfig {
+  name: string;
+  tagline: string;
+  logo: React.ReactNode;
+  messages: { text: string; isCustomer: boolean; hasTyping: boolean }[];
+  button: { label: string; color: string; tappedColor: string; icon: 'card' | 'calendar' | 'shield'; glowRgb: string };
+  card: {
+    title: string;
+    iconType: 'check' | 'calendar' | 'shield';
+    iconColor: string;
+    rows: { label: string; value: string }[];
+    linkText: string;
+    linkIcon: 'pin' | 'calendar' | 'shield';
+  };
+}
+
+const NitosLogo = () => (
+  <img src="/nitos_logo.avif" alt="Nito's Empanadas" style={{ width: 80, height: 80, objectFit: 'contain' as const, marginTop: 6 }} />
+);
+
+const BarberLogoSvg = () => (
+  <div style={{ width: 80, height: 80, borderRadius: 20, background: 'linear-gradient(135deg, #1A1A1A, #2C2C30)', display: 'flex', justifyContent: 'center', alignItems: 'center', boxShadow: '0 4px 16px rgba(0,0,0,0.3)', marginTop: 6 }}>
+    <svg width="44" height="44" viewBox="0 0 24 24" fill="none" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="6" cy="6" r="3" stroke={HC.amber} strokeWidth="1.8" />
+      <circle cx="6" cy="18" r="3" stroke={HC.amber} strokeWidth="1.8" />
+      <path d="M20 4L8.12 15.88" stroke={HC.amber} strokeWidth="1.8" />
+      <path d="M14.47 14.48L20 20" stroke={HC.amber} strokeWidth="1.8" />
+      <path d="M8.12 8.12L12 12" stroke={HC.amber} strokeWidth="1.8" />
+    </svg>
+  </div>
+);
+
+const DentalLogoSvg = () => (
+  <div style={{ width: 80, height: 80, borderRadius: 20, background: 'linear-gradient(135deg, #1A1A1A, #2C2C30)', display: 'flex', justifyContent: 'center', alignItems: 'center', boxShadow: '0 4px 16px rgba(0,0,0,0.3)', marginTop: 6 }}>
+    <svg width="42" height="42" viewBox="0 0 24 24" fill="none">
+      <path d="M12 2C9.5 2 7.5 3.5 6.5 5C5.5 6.5 5 8 5 10C5 12 5.5 13.5 6 15C6.5 16.5 7 18 7.5 20C7.8 21.2 8.5 22 9.5 22C10.5 22 11 21 11 20C11 19 11.5 18 12 18C12.5 18 13 19 13 20C13 21 13.5 22 14.5 22C15.5 22 16.2 21.2 16.5 20C17 18 17.5 16.5 18 15C18.5 13.5 19 12 19 10C19 8 18.5 6.5 17.5 5C16.5 3.5 14.5 2 12 2Z" stroke={HC.blue} strokeWidth="1.6" fill="none" />
+      <path d="M9 8C9.5 9.5 10.5 10 12 10C13.5 10 14.5 9.5 15 8" stroke={HC.blue} strokeWidth="1.4" strokeLinecap="round" />
+    </svg>
+  </div>
+);
+
+const SCENES: SceneConfig[] = [
+  {
+    name: "Nito's Empanadas",
+    tagline: 'Best Empanadas in Town',
+    logo: <NitosLogo />,
+    messages: [
+      { text: 'Can I order 3 steak and cheese empanadas?', isCustomer: true, hasTyping: false },
+      { text: 'That qualifies for our 3 for $15 deal! Ready to order?', isCustomer: false, hasTyping: true },
+    ],
+    button: { label: 'Complete Payment – $15', color: HC.green, tappedColor: HC.greenTapped, icon: 'card', glowRgb: '34,197,94' },
+    card: { title: 'Order Complete!', iconType: 'check', iconColor: HC.green, rows: [{ label: 'Item', value: '3 Steak & Cheese Empanadas' }, { label: 'Deal', value: '3 for $15' }, { label: 'Pickup', value: 'Ready in 15 min' }], linkText: 'Track Order Here', linkIcon: 'pin' },
+  },
+  {
+    name: "Matteo's Barber Shop",
+    tagline: 'Fresh Cuts. Clean Lines. Walk-In Vibes.',
+    logo: <BarberLogoSvg />,
+    messages: [
+      { text: 'Can I book a haircut for Friday?', isCustomer: true, hasTyping: false },
+      { text: 'We have an opening with Mario at 3pm. Does that work?', isCustomer: false, hasTyping: true },
+      { text: "Yes I'll take it!", isCustomer: true, hasTyping: false },
+    ],
+    button: { label: 'Confirm Booking', color: HC.amber, tappedColor: 'rgba(245,158,11,0.35)', icon: 'calendar', glowRgb: '245,158,11' },
+    card: { title: 'Booking Confirmed!', iconType: 'calendar', iconColor: HC.amber, rows: [{ label: 'Service', value: 'Haircut' }, { label: 'Barber', value: 'Mario' }, { label: 'Date', value: 'Friday at 3:00 PM' }], linkText: 'Add to Calendar', linkIcon: 'calendar' },
+  },
+  {
+    name: 'Bright Smile Dental',
+    tagline: 'Your Smile. Our Priority.',
+    logo: <DentalLogoSvg />,
+    messages: [
+      { text: 'Do you take Aetna?', isCustomer: true, hasTyping: false },
+      { text: 'Yes! We accept Aetna, Delta, Cigna, MetLife, and most PPO plans. Want me to verify your coverage?', isCustomer: false, hasTyping: true },
+      { text: 'Yes please!', isCustomer: true, hasTyping: false },
+    ],
+    button: { label: 'Verify Coverage', color: HC.blue, tappedColor: 'rgba(59,130,246,0.35)', icon: 'shield', glowRgb: '59,130,246' },
+    card: { title: 'Coverage Verified!', iconType: 'shield', iconColor: HC.blue, rows: [{ label: 'Provider', value: 'Aetna PPO' }, { label: 'Copay', value: '$25' }, { label: 'Next Opening', value: 'Tuesday at 10:00 AM' }], linkText: 'View Full Benefits', linkIcon: 'shield' },
+  },
+];
+
+// Steps within each scene: show messages one by one, then button, trace, tap, fade chat, show card, pause, then next scene
+type SceneStep = 'idle' | `msg-typing-${number}` | `msg-${number}` | 'btn' | 'trace' | 'tap' | 'fade-chat' | 'card' | 'done';
+
+function getIconPath(icon: 'card' | 'calendar' | 'shield') {
+  if (icon === 'card') return <><rect x="1" y="4" width="22" height="16" rx="3" /><path d="M1 10h22" /></>;
+  if (icon === 'calendar') return <><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></>;
+  return <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />;
+}
+
+function getConfirmIconPath(icon: 'check' | 'calendar' | 'shield') {
+  if (icon === 'check') return <path d="M5 13l4 4L19 7" />;
+  if (icon === 'calendar') return <><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></>;
+  return <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />;
+}
+
+function getLinkIconPath(icon: 'pin' | 'calendar' | 'shield') {
+  if (icon === 'pin') return <><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></>;
+  if (icon === 'calendar') return <><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></>;
+  return <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />;
+}
+
+function HeroPhoneAnimation() {
+  const [sceneIdx, setSceneIdx] = useState(0);
+  const [step, setStep] = useState<SceneStep>('idle');
+  const [visibleMsgs, setVisibleMsgs] = useState<number[]>([]);
+  const [showBtn, setShowBtn] = useState(false);
+  const [isTracing, setIsTracing] = useState(false);
+  const [isTapped, setIsTapped] = useState(false);
+  const [chatFaded, setChatFaded] = useState(false);
+  const [showCard, setShowCard] = useState(false);
+  const [transitioning, setTransitioning] = useState(false);
+
+  const scene = SCENES[sceneIdx];
+
+  // Reset state when scene changes
   useEffect(() => {
-    if (step >= heroChat.length) {
-      const reset = setTimeout(() => setStep(0), 4000);
-      return () => clearTimeout(reset);
+    setStep('idle');
+    setVisibleMsgs([]);
+    setShowBtn(false);
+    setIsTracing(false);
+    setIsTapped(false);
+    setChatFaded(false);
+    setShowCard(false);
+    setTransitioning(false);
+  }, [sceneIdx]);
+
+  // Scene step machine
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
+
+    if (step === 'idle') {
+      // Start first message after 700ms
+      timer = setTimeout(() => setStep('msg-0'), 700);
+    } else if (step.startsWith('msg-typing-')) {
+      const idx = parseInt(step.split('-')[2]);
+      // Show typing for 700ms then show message
+      timer = setTimeout(() => {
+        setVisibleMsgs(prev => [...prev, idx]);
+        setStep(`msg-${idx}` as SceneStep);
+      }, 700);
+    } else if (step.startsWith('msg-')) {
+      const idx = parseInt(step.split('-')[1]);
+      const nextIdx = idx + 1;
+      if (nextIdx < scene.messages.length) {
+        // Next message after delay
+        const delay = scene.messages[nextIdx].hasTyping ? 1500 : 1200;
+        timer = setTimeout(() => {
+          if (scene.messages[nextIdx].hasTyping) {
+            setStep(`msg-typing-${nextIdx}` as SceneStep);
+          } else {
+            setVisibleMsgs(prev => [...prev, nextIdx]);
+            setStep(`msg-${nextIdx}` as SceneStep);
+          }
+        }, delay);
+      } else {
+        // All messages shown, show button
+        timer = setTimeout(() => {
+          setShowBtn(true);
+          setStep('btn');
+        }, 800);
+      }
+    } else if (step === 'btn') {
+      // Start trace after 400ms
+      timer = setTimeout(() => {
+        setIsTracing(true);
+        setStep('trace');
+      }, 400);
+    } else if (step === 'trace') {
+      // Trace takes 1s, then tap
+      timer = setTimeout(() => {
+        setIsTracing(false);
+        setIsTapped(true);
+        setStep('tap');
+      }, 1000);
+    } else if (step === 'tap') {
+      // Fade chat after 500ms
+      timer = setTimeout(() => {
+        setChatFaded(true);
+        setStep('fade-chat');
+      }, 500);
+    } else if (step === 'fade-chat') {
+      // Show card after 800ms (chat fade duration)
+      timer = setTimeout(() => {
+        setShowCard(true);
+        setStep('card');
+      }, 800);
+    } else if (step === 'card') {
+      // Hold card for 2s then transition to next scene
+      timer = setTimeout(() => {
+        setTransitioning(true);
+        setStep('done');
+      }, 2000);
+    } else if (step === 'done') {
+      // After fade-out, switch scene
+      timer = setTimeout(() => {
+        setSceneIdx(prev => (prev + 1) % SCENES.length);
+      }, 500);
     }
-    const next = setTimeout(() => setStep(s => s + 1), step === 0 ? 800 : 2200);
-    return () => clearTimeout(next);
-  }, [step]);
+
+    return () => clearTimeout(timer);
+  }, [step, scene.messages]);
+
+  // Start first message (handle typing)
+  useEffect(() => {
+    if (step === 'msg-0' && !visibleMsgs.includes(0)) {
+      if (scene.messages[0].hasTyping) {
+        setStep('msg-typing-0');
+      } else {
+        setVisibleMsgs([0]);
+      }
+    }
+  }, [step, visibleMsgs, scene.messages]);
+
+  // Which message is currently typing
+  const typingIdx = step.startsWith('msg-typing-') ? parseInt(step.split('-')[2]) : -1;
 
   return (
     <div className="w-[280px] sm:w-[320px] mx-auto">
-      {/* Phone frame */}
-      <div className="bg-[#2A2A2A] rounded-[2rem] border border-white/10 shadow-2xl overflow-hidden">
-        {/* Status bar */}
-        <div className="h-6 bg-[#222] flex items-center justify-center">
-          <div className="w-20 h-1 bg-white/20 rounded-full" />
-        </div>
-        {/* Header */}
-        <div className="px-4 py-3 border-b border-white/10 flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center overflow-hidden relative">
-            <Image src="/Shortlist_logo.png" alt="Assistant" fill className="object-contain" />
-          </div>
-          <div>
-            <p className="text-white text-sm font-semibold" style={{ fontFamily: 'var(--font-sans-inter)' }}>Smart Assistant</p>
-            <p className="text-white/50 text-[10px]">Always online</p>
-          </div>
-        </div>
-        {/* Messages */}
-        <div className="px-4 py-4 min-h-[240px] flex flex-col gap-2.5">
-          {heroChat.slice(0, step).map((msg, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.25 }}
-              className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-[13px] leading-relaxed ${
-                msg.from === 'customer'
-                  ? 'self-start bg-white/10 text-white'
-                  : 'self-end bg-gradient-to-br from-[#FF6B35] to-[#ff8f66] text-white'
-              }`}
-              style={{ fontFamily: 'var(--font-sans-inter)' }}
-            >
-              {msg.text}
-            </motion.div>
-          ))}
-          {step < heroChat.length && (
-            <motion.div
-              className={`flex gap-1 ${heroChat[step]?.from === 'customer' ? 'self-start' : 'self-end'}`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            >
-              <span className="w-1.5 h-1.5 bg-white/40 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-              <span className="w-1.5 h-1.5 bg-white/40 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-              <span className="w-1.5 h-1.5 bg-white/40 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-            </motion.div>
-          )}
-        </div>
-        {/* Input bar */}
-        <div className="px-4 pb-4">
-          <div className="bg-white/5 border border-white/10 rounded-full px-4 py-2.5 flex items-center">
-            <span className="text-white/30 text-xs flex-1" style={{ fontFamily: 'var(--font-sans-inter)' }}>Type a message...</span>
-            <div className="w-7 h-7 rounded-full bg-[#FF6B35] flex items-center justify-center">
-              <ArrowRightIcon className="w-3.5 h-3.5 text-white" />
+      <div style={{ background: HC.phoneBg, borderRadius: 44, padding: 8, boxShadow: '0 20px 60px rgba(0,0,0,0.3), 0 8px 20px rgba(0,0,0,0.15)' }}>
+        <div style={{ width: '100%', background: HC.screen, borderRadius: 37, overflow: 'hidden', display: 'flex', flexDirection: 'column', position: 'relative', height: 580 }}>
+          {/* Notch + status bar */}
+          <div style={{ position: 'relative', height: 30, flexShrink: 0 }}>
+            <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: 100, height: 26, background: HC.screen, borderBottomLeftRadius: 16, borderBottomRightRadius: 16, zIndex: 10 }} />
+            <div style={{ position: 'absolute', top: 6, left: 18, fontFamily: 'var(--font-sans-inter), Inter, system-ui, sans-serif', fontSize: 11, fontWeight: 600, color: HC.cardText, zIndex: 5 }}>9:41</div>
+            <div style={{ position: 'absolute', top: 6, right: 18, display: 'flex', gap: 4, alignItems: 'center', zIndex: 5 }}>
+              <svg width="13" height="9" viewBox="0 0 18 12" fill={HC.cardText}>
+                <rect x="0" y="8" width="3" height="4" rx="0.5" />
+                <rect x="5" y="5" width="3" height="7" rx="0.5" />
+                <rect x="10" y="2" width="3" height="10" rx="0.5" />
+                <rect x="15" y="0" width="3" height="12" rx="0.5" />
+              </svg>
+              <svg width="20" height="10" viewBox="0 0 27 13" fill={HC.cardText}>
+                <rect x="0.5" y="0.5" width="23" height="12" rx="3" stroke={HC.cardText} strokeWidth="1" fill="none" />
+                <rect x="2" y="2" width="19" height="9" rx="1.5" />
+                <path d="M25 4v5a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z" opacity="0.4" />
+              </svg>
             </div>
           </div>
+
+          {/* Scene content with crossfade */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={sceneIdx}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: transitioning ? 0 : 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              style={{ display: 'flex', flexDirection: 'column', flex: 1 }}
+            >
+              {/* SmartPage Header */}
+              <div style={{ background: HC.screen, padding: '28px 20px 16px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+                {scene.logo}
+                <div style={{ fontFamily: 'var(--font-sans-inter), Inter, system-ui, sans-serif', fontSize: 19, fontWeight: 800, color: HC.cardText, marginTop: 6 }}>{scene.name}</div>
+                <div style={{ fontFamily: 'var(--font-sans-inter), Inter, system-ui, sans-serif', fontSize: 11, fontWeight: 400, color: HC.cardSub, textAlign: 'center' }}>{scene.tagline}</div>
+                <div style={{ display: 'flex', gap: 12, marginTop: 10 }}>
+                  {SOCIAL_ICON_PATHS.map((d, i) => (
+                    <div key={i} style={{ width: 40, height: 40, borderRadius: '50%', border: `1.5px solid ${HC.cardSub}`, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                      <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke={HC.cardText} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d={d} /></svg>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ display: 'flex', marginTop: 14, background: HC.tabBg, borderRadius: 20, padding: 3 }}>
+                  <div style={{ padding: '6px 20px', borderRadius: 18, background: HC.tabActive, fontFamily: 'var(--font-sans-inter), Inter, system-ui, sans-serif', fontSize: 12, fontWeight: 600, color: HC.screen }}>Chat</div>
+                  <div style={{ padding: '6px 20px', borderRadius: 18, fontFamily: 'var(--font-sans-inter), Inter, system-ui, sans-serif', fontSize: 12, fontWeight: 500, color: HC.tabInactive }}>Links</div>
+                </div>
+              </div>
+
+              {/* Chat area */}
+              <motion.div
+                animate={{ opacity: chatFaded ? 0 : 1 }}
+                transition={{ duration: 0.7 }}
+                style={{ flex: 1, background: HC.screen, padding: '12px 10px', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}
+              >
+                {/* Messages */}
+                {scene.messages.map((msg, i) => {
+                  if (typingIdx === i) {
+                    return (
+                      <div key={`typing-${i}`} style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: 8 }}>
+                        <div style={{ display: 'flex', gap: 5, padding: '10px 16px', background: HC.reply, borderRadius: '20px 20px 20px 4px', width: 'fit-content' }}>
+                          <span className="w-2 h-2 bg-white/50 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                          <span className="w-2 h-2 bg-white/50 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                          <span className="w-2 h-2 bg-white/50 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                        </div>
+                      </div>
+                    );
+                  }
+                  if (!visibleMsgs.includes(i)) return null;
+                  return (
+                    <motion.div
+                      key={`msg-${i}`}
+                      initial={{ opacity: 0, y: 24, scale: 0.92 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      transition={{ type: 'spring', damping: 14, stiffness: 180 }}
+                      style={{ display: 'flex', justifyContent: msg.isCustomer ? 'flex-end' : 'flex-start', marginBottom: 8 }}
+                    >
+                      <div style={{
+                        maxWidth: msg.isCustomer ? '75%' : '88%',
+                        padding: msg.isCustomer ? '10px 16px' : '14px 18px',
+                        borderRadius: msg.isCustomer ? '20px 20px 4px 20px' : '20px 20px 20px 4px',
+                        background: msg.isCustomer ? HC.customer : HC.reply,
+                        boxShadow: msg.isCustomer ? '0 1px 6px rgba(0,0,0,0.15)' : '0 2px 8px rgba(0,0,0,0.3)',
+                      }}>
+                        <p style={{ fontFamily: 'var(--font-sans-inter), Inter, system-ui, sans-serif', fontSize: 14, fontWeight: 500, color: msg.isCustomer ? HC.customerText : HC.replyText, margin: 0, lineHeight: 1.4 }}>{msg.text}</p>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+
+                {/* Action button */}
+                {showBtn && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: isTapped ? 0.95 : 1 }}
+                    transition={{ type: 'spring', damping: 12, stiffness: 160 }}
+                    style={{ display: 'flex', justifyContent: 'center', marginTop: 4 }}
+                  >
+                    <div style={{ position: 'relative', width: BTN_W, height: BTN_HT }}>
+                      <div style={{
+                        position: 'absolute', inset: 0, borderRadius: BTN_RAD,
+                        background: isTapped ? scene.button.tappedColor : scene.button.color,
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                      }}>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={isTapped ? 'rgba(255,255,255,0.5)' : '#FFFFFF'} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          {getIconPath(scene.button.icon)}
+                        </svg>
+                        <span style={{ fontFamily: 'var(--font-sans-inter), Inter, system-ui, sans-serif', fontSize: 14, fontWeight: 700, color: isTapped ? 'rgba(255,255,255,0.5)' : '#FFFFFF' }}>
+                          {scene.button.label}
+                        </span>
+                      </div>
+                      {/* Border trace */}
+                      {isTracing && (
+                        <svg width={BTN_W + 4} height={BTN_HT + 4} viewBox={`-2 -2 ${BTN_W + 4} ${BTN_HT + 4}`} style={{ position: 'absolute', top: -2, left: -2, pointerEvents: 'none' }}>
+                          <rect x="0" y="0" width={BTN_W} height={BTN_HT} rx={BTN_RAD} ry={BTN_RAD}
+                            fill="none" stroke="rgba(255,255,255,0.9)" strokeWidth="2.5"
+                            strokeDasharray={`${TRACE_LEN_VAL} ${BTN_PERIM_VAL - TRACE_LEN_VAL}`}
+                            strokeLinecap="round"
+                            style={{
+                              strokeDashoffset: BTN_PERIM_VAL,
+                              animation: 'heroTraceAnim 1s linear forwards',
+                              filter: `drop-shadow(0 0 6px rgba(${scene.button.glowRgb},0.8)) drop-shadow(0 0 12px rgba(${scene.button.glowRgb},0.5))`,
+                            }}
+                          />
+                        </svg>
+                      )}
+                    </div>
+                  </motion.div>
+                )}
+              </motion.div>
+
+              {/* Confirmation card */}
+              {showCard && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.85, y: 30 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  transition={{ type: 'spring', damping: 14, stiffness: 140 }}
+                  style={{ position: 'absolute', left: 0, right: 0, top: '50%', bottom: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '8px 12px' }}
+                >
+                  <div style={{ background: HC.reply, borderRadius: 24, padding: '24px 20px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14, boxShadow: '0 8px 32px rgba(0,0,0,0.4)' }}>
+                    <div style={{ width: 52, height: 52, borderRadius: '50%', background: scene.card.iconColor, display: 'flex', justifyContent: 'center', alignItems: 'center', boxShadow: `0 4px 16px ${scene.card.iconColor}66` }}>
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                        {getConfirmIconPath(scene.card.iconType)}
+                      </svg>
+                    </div>
+                    <div style={{ fontFamily: 'var(--font-sans-inter), Inter, system-ui, sans-serif', fontSize: 18, fontWeight: 800, color: '#FFFFFF' }}>{scene.card.title}</div>
+                    <div style={{ width: '80%', height: 1, background: 'rgba(255,255,255,0.1)' }} />
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 8, width: '100%', padding: '0 8px' }}>
+                      {scene.card.rows.map((r, i) => (
+                        <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <span style={{ fontFamily: 'var(--font-sans-inter), Inter, system-ui, sans-serif', fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,0.5)' }}>{r.label}</span>
+                          <span style={{ fontFamily: 'var(--font-sans-inter), Inter, system-ui, sans-serif', fontSize: 12, fontWeight: 600, color: '#FFFFFF', textAlign: 'right' }}>{r.value}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <div style={{ width: '80%', height: 1, background: 'rgba(255,255,255,0.1)' }} />
+                    <div style={{ fontFamily: 'var(--font-sans-inter), Inter, system-ui, sans-serif', fontSize: 13, fontWeight: 600, color: scene.card.iconColor, display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={scene.card.iconColor} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        {getLinkIconPath(scene.card.linkIcon)}
+                      </svg>
+                      {scene.card.linkText}
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </motion.div>
+          </AnimatePresence>
         </div>
       </div>
+
+      {/* CSS for border trace animation */}
+      <style jsx>{`
+        @keyframes heroTraceAnim {
+          from { stroke-dashoffset: ${BTN_PERIM_VAL}; }
+          to { stroke-dashoffset: 0; }
+        }
+      `}</style>
     </div>
   );
 }
@@ -572,11 +920,7 @@ function HeroSection() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="flex justify-center"
           >
-            <img
-              src="/HeroPhoneChat.gif"
-              alt="SmartPage phone demo"
-              className="w-[280px] sm:w-[320px]"
-            />
+            <HeroPhoneAnimation />
           </motion.div>
         </div>
       </div>
