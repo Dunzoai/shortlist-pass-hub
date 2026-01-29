@@ -842,7 +842,7 @@ function HeroPhoneAnimation() {
 
 function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-[72px] pb-8 overflow-x-clip" style={{ background: 'linear-gradient(180deg, #1A1A1A 0%, #2A2A2A 100%)' }}>
+    <section className="relative min-h-screen flex items-center justify-center pt-[140px] md:pt-[120px] pb-8 overflow-x-clip" style={{ background: 'linear-gradient(180deg, #1A1A1A 0%, #2A2A2A 100%)' }}>
       {/* Animated gradient mesh */}
       <div className="absolute inset-0 overflow-hidden">
         <div
@@ -869,7 +869,7 @@ function HeroSection() {
       <img
         src="/calendar%20drawn.png"
         alt=""
-        className="absolute z-[5] w-[280px] md:w-[480px] top-[15%] md:top-[8%] -right-[80px] md:-right-[120px] rotate-[12deg] opacity-40 pointer-events-none"
+        className="absolute z-[5] w-[280px] md:w-[480px] top-[15%] md:top-[8%] -right-[136px] md:-right-[216px] rotate-[12deg] opacity-40 pointer-events-none"
       />
 
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 md:px-8 w-full">
