@@ -177,6 +177,23 @@ function HomeIcon({ className }: { className?: string }) {
   );
 }
 
+function BoltIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className || "w-6 h-6"} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+    </svg>
+  );
+}
+
+function SparklesIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className || "w-6 h-6"} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 3l1.5 5.5L19 10l-5.5 1.5L12 17l-1.5-5.5L5 10l5.5-1.5L12 3z" />
+      <path d="M18 14l.7 2.3L21 17l-2.3.7L18 20l-.7-2.3L15 17l2.3-.7L18 14z" />
+    </svg>
+  );
+}
+
 function ShoppingBagIcon({ className }: { className?: string }) {
   return (
     <svg className={className || "w-8 h-8"} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -1125,15 +1142,15 @@ const solutionChat = [
   { from: 'assistant' as const, text: "Perfect! You're booked for Friday 10am. I'll send you a confirmation text." },
 ];
 
-const statsRow = [
-  { stat: '+47', label: 'Orders this week', biz: '🌮 Nito\'s Empanadas' },
-  { stat: '$1,200', label: 'Booked overnight', biz: '💈 Fresh Cuts Barber' },
-  { stat: '156', label: 'Questions answered', biz: '🦷 Bright Smile Dental' },
-  { stat: '24/7', label: 'Always online', biz: '⚡ Never miss a customer' },
-  { stat: '+32', label: 'New bookings', biz: '🧖 Glow Day Spa' },
-  { stat: '$890', label: 'Weekend orders', biz: '🍕 Sal\'s Pizza Truck' },
-  { stat: '98%', label: 'Auto-resolved', biz: '🔧 Mike\'s Plumbing' },
-  { stat: '4.9★', label: 'Customer satisfaction', biz: '🏠 CleanPro Services' },
+const statsRow: { stat: string; label: string; biz: string; icon: React.FC<{ className?: string }> }[] = [
+  { stat: '+47', label: 'Orders this week', biz: 'Nito\'s Empanadas', icon: UtensilsIcon },
+  { stat: '$1,200', label: 'Booked overnight', biz: 'Fresh Cuts Barber', icon: ScissorsIcon },
+  { stat: '156', label: 'Questions answered', biz: 'Bright Smile Dental', icon: ToothIcon },
+  { stat: '24/7', label: 'Always online', biz: 'Never miss a customer', icon: BoltIcon },
+  { stat: '+32', label: 'New bookings', biz: 'Glow Day Spa', icon: SparklesIcon },
+  { stat: '$890', label: 'Weekend orders', biz: 'Sal\'s Pizza Truck', icon: UtensilsIcon },
+  { stat: '98%', label: 'Auto-resolved', biz: 'Mike\'s Plumbing', icon: WrenchIcon },
+  { stat: '4.9★', label: 'Customer satisfaction', biz: 'CleanPro Services', icon: HomeIcon },
 ];
 
 const questionsRow = [
@@ -1192,7 +1209,10 @@ function SolutionSection() {
                   <p className="text-[28px] md:text-[32px] font-bold text-white leading-none">{card.stat}</p>
                   <p className="text-white/50 text-sm mt-1.5">{card.label}</p>
                 </div>
-                <p className="text-white/30 text-xs pt-2 border-t border-white/[0.06]">{card.biz}</p>
+                <div className="flex items-center gap-2 pt-2 border-t border-white/[0.06]">
+                  <card.icon className="w-3.5 h-3.5 text-white/30" />
+                  <p className="text-white/30 text-xs">{card.biz}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -1230,10 +1250,10 @@ function SolutionSection() {
           100% { transform: translateX(0); }
         }
         .animate-scroll-left {
-          animation: scrollLeft 27s linear infinite;
+          animation: scrollLeft 28s linear infinite;
         }
         .animate-scroll-right {
-          animation: scrollRight 27s linear infinite;
+          animation: scrollRight 28s linear infinite;
         }
       `}</style>
     </section>
