@@ -1178,8 +1178,8 @@ function SolutionSection() {
       <div className="mt-12 space-y-4">
         {/* Row 1: Stats — scrolls left */}
         <div className="relative group">
-          <div className="flex gap-4 animate-scroll-left hover:[animation-play-state:paused]">
-            {[...statsRow, ...statsRow, ...statsRow].map((card, i) => (
+          <div className="flex gap-4 animate-scroll-left hover:[animation-play-state:paused]" style={{ width: 'max-content' }}>
+            {[...statsRow, ...statsRow].map((card, i) => (
               <div
                 key={i}
                 className="flex-shrink-0 w-[240px] md:w-[270px] h-[140px] md:h-[150px] rounded-2xl p-5 flex flex-col justify-between border border-white/[0.06]"
@@ -1200,8 +1200,8 @@ function SolutionSection() {
 
         {/* Row 2: Questions — scrolls right */}
         <div className="relative group">
-          <div className="flex gap-4 animate-scroll-right hover:[animation-play-state:paused]">
-            {[...questionsRow, ...questionsRow, ...questionsRow].map((q, i) => (
+          <div className="flex gap-4 animate-scroll-right hover:[animation-play-state:paused]" style={{ width: 'max-content' }}>
+            {[...questionsRow, ...questionsRow].map((q, i) => (
               <div
                 key={i}
                 className="flex-shrink-0 w-[240px] md:w-[270px] h-[140px] md:h-[150px] rounded-2xl p-5 flex items-center gap-3 border border-white/[0.06]"
@@ -1223,17 +1223,17 @@ function SolutionSection() {
       <style>{`
         @keyframes scrollLeft {
           0% { transform: translateX(0); }
-          100% { transform: translateX(-33.333%); }
+          100% { transform: translateX(-50%); }
         }
         @keyframes scrollRight {
-          0% { transform: translateX(-33.333%); }
+          0% { transform: translateX(-50%); }
           100% { transform: translateX(0); }
         }
         .animate-scroll-left {
-          animation: scrollLeft 40s linear infinite;
+          animation: scrollLeft 25s linear infinite;
         }
         .animate-scroll-right {
-          animation: scrollRight 40s linear infinite;
+          animation: scrollRight 25s linear infinite;
         }
       `}</style>
     </section>
