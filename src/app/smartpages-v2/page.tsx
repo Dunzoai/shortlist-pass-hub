@@ -572,16 +572,11 @@ function HeroSection() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="flex justify-center"
           >
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
+            <img
+              src="/HeroPhoneChat.gif"
+              alt="SmartPage phone demo"
               className="w-[280px] sm:w-[320px]"
-            >
-              <source src="/hero-phone-chat.webm" type="video/webm" />
-              <source src="/hero-phone-chat.mp4" type="video/mp4" />
-            </video>
+            />
           </motion.div>
         </div>
       </div>
