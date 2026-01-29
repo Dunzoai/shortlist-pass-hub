@@ -876,12 +876,6 @@ function HeroSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-8 items-center">
           {/* Copy */}
           <div className="relative text-center md:text-left">
-            {/* Checkmark — above header with breathing room */}
-            <img
-              src="/checkmark%20drawn.png"
-              alt=""
-              className="absolute z-10 w-[120px] md:w-[180px] -top-28 md:-top-36 left-1/2 md:left-10 -translate-x-1/2 md:translate-x-0 opacity-40 pointer-events-none"
-            />
             <motion.h1
               className="text-[32px] sm:text-[44px] md:text-[56px] font-extrabold text-[#F5F5F5] leading-[1.1] tracking-tight"
               style={{ fontFamily: 'var(--font-sans-inter)' }}
@@ -939,6 +933,12 @@ function HeroSection() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="relative flex justify-center"
           >
+            {/* Checkmark — top-left of phone */}
+            <img
+              src="/checkmark%20drawn.png"
+              alt=""
+              className="absolute z-10 w-[120px] md:w-[180px] -top-6 -left-8 md:-top-10 md:-left-24 opacity-40 pointer-events-none"
+            />
             {/* Text bubble — aligned with bottom of phone */}
             <img
               src="/text%20bubble.png"
