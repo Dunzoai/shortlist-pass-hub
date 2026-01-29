@@ -1132,17 +1132,6 @@ const solutionFeatures = [
 ];
 
 function SolutionSection() {
-  const [step, setStep] = useState(0);
-
-  useEffect(() => {
-    if (step >= solutionChat.length) {
-      const reset = setTimeout(() => setStep(0), 4000);
-      return () => clearTimeout(reset);
-    }
-    const next = setTimeout(() => setStep(s => s + 1), step === 0 ? 600 : 2000);
-    return () => clearTimeout(next);
-  }, [step]);
-
   return (
     <section id="solution" className="bg-[#F5F5F5] py-16 md:py-24 px-4">
       <div className="max-w-[1100px] mx-auto">
@@ -1166,63 +1155,8 @@ function SolutionSection() {
           Handles customer conversations 24/7 like a real person — no chatbot frustration, no missed opportunities.
         </motion.p>
 
-        {/* Phone + features */}
-        <div className="mt-12 grid md:grid-cols-2 gap-10 items-center">
-          {/* Phone */}
-          <motion.div
-            className="flex justify-center"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-          >
-            <div className="w-[300px] sm:w-[340px] bg-white rounded-[2rem] shadow-xl border border-black/5 overflow-hidden">
-              <div className="h-6 bg-[#fafafa] flex items-center justify-center">
-                <div className="w-20 h-1 bg-black/10 rounded-full" />
-              </div>
-              <div className="px-4 py-3 border-b border-black/5 flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-[#F4F1EC]/10 flex items-center justify-center">
-                  <ChatIcon className="w-4 h-4 text-[#F4F1EC]" />
-                </div>
-                <div>
-                  <p className="text-[#1A1A1A] text-sm font-semibold" style={{ fontFamily: 'var(--font-sans-inter)' }}>Smart Assistant</p>
-                </div>
-              </div>
-              <div className="px-4 py-4 min-h-[220px] flex flex-col gap-2.5">
-                {solutionChat.slice(0, step).map((msg, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-[13px] leading-relaxed ${
-                      msg.from === 'customer'
-                        ? 'self-start bg-[#f0f0f0] text-[#1A1A1A]'
-                        : 'self-end bg-gradient-to-br from-[#F4F1EC] to-[#E8E4DE] text-white'
-                    }`}
-                    style={{ fontFamily: 'var(--font-sans-inter)' }}
-                  >
-                    {msg.text}
-                  </motion.div>
-                ))}
-                {step >= solutionChat.length && (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="self-center mt-2 bg-[#4CAF50]/10 text-[#4CAF50] font-semibold text-xs px-4 py-2 rounded-full flex items-center gap-1.5"
-                    style={{ fontFamily: 'var(--font-sans-inter)' }}
-                  >
-                    <CheckCircleIcon className="w-4 h-4" /> Appointment Booked
-                  </motion.div>
-                )}
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Feature cards */}
-          <div className="space-y-4">
-            <p className="text-[#1A1A1A]/50 text-sm font-medium uppercase tracking-wider mb-6" style={{ fontFamily: 'var(--font-sans-inter)' }}>
-              Three ways your assistant works for you
-            </p>
+        {/* Feature cards */}
+        <div className="mt-12 grid md:grid-cols-3 gap-6">
             {solutionFeatures.map((feat, i) => (
               <motion.div
                 key={i}
