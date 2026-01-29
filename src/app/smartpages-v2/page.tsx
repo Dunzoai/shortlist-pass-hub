@@ -950,17 +950,17 @@ function HeroSection() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="relative flex justify-center"
           >
-            {/* Checkmark — top-left of phone */}
-            <img
-              src="/checkmark%20drawn.png"
-              alt=""
-              className="absolute z-10 w-[120px] md:w-[180px] -top-6 left-4 md:-top-10 md:left-auto md:-right-20 opacity-40 pointer-events-none"
-            />
-            {/* Text bubble — aligned with bottom of phone */}
+            {/* Text bubble — top-left of phone, offset right */}
             <img
               src="/text%20bubble.png"
               alt=""
-              className="absolute z-10 w-[160px] md:w-[240px] -bottom-4 -left-6 md:-bottom-8 md:-left-28 opacity-40 pointer-events-none"
+              className="absolute z-10 w-[160px] md:w-[240px] -top-8 left-6 md:-top-12 md:-left-12 opacity-40 pointer-events-none"
+            />
+            {/* Checkmark — bottom-left of phone */}
+            <img
+              src="/checkmark%20drawn.png"
+              alt=""
+              className="absolute z-10 w-[120px] md:w-[180px] -bottom-4 -left-6 md:-bottom-8 md:-left-28 opacity-40 pointer-events-none"
             />
             <HeroPhoneAnimation />
           </motion.div>
