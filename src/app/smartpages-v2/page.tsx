@@ -865,12 +865,12 @@ function HeroSection() {
         />
       </div>
 
-      <div className="relative z-10 max-w-[1280px] mx-auto px-4 md:px-8 w-full">
-        <div className="grid md:grid-cols-2 gap-12 md:gap-8 items-center">
+      <div className="relative z-10 max-w-[1280px] mx-auto px-6 md:px-8 w-full overflow-hidden">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-8 items-center">
           {/* Copy */}
           <div className="text-center md:text-left">
             <motion.h1
-              className="text-[36px] sm:text-[44px] md:text-[56px] font-extrabold text-[#F5F5F5] leading-[1.1] tracking-tight"
+              className="text-[32px] sm:text-[44px] md:text-[56px] font-extrabold text-[#F5F5F5] leading-[1.1] tracking-tight"
               style={{ fontFamily: 'var(--font-sans-inter)' }}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -882,7 +882,7 @@ function HeroSection() {
               </span>
             </motion.h1>
             <motion.p
-              className="mt-6 text-[15px] md:text-[20px] text-[#F5F5F5]/70 leading-relaxed max-w-[560px] mx-auto md:mx-0 px-2 md:px-0"
+              className="mt-4 md:mt-6 text-[14px] md:text-[20px] text-[#F5F5F5]/70 leading-relaxed max-w-[560px] mx-auto md:mx-0"
               style={{ fontFamily: 'var(--font-sans-inter)' }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -890,35 +890,36 @@ function HeroSection() {
             >
               Your smart assistant that never sleeps — answering questions, booking appointments, taking orders, and more while you focus on what you do best.
             </motion.p>
+            {/* CTA + trust badges: visible on desktop, hidden on mobile (shown below phone instead) */}
             <motion.div
-              className="mt-6 md:mt-8 flex justify-center md:justify-start"
+              className="hidden md:flex mt-8 justify-start"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.2 }}
             >
               <a
                 href="#pricing"
-                className="bg-[#F4F1EC] text-[#1A1A1A] font-semibold text-sm md:text-lg px-6 py-3 md:px-8 md:py-4 rounded-full hover:bg-[#D9D5CF] transition-colors inline-flex items-center justify-center gap-2"
+                className="bg-[#F4F1EC] text-[#1A1A1A] font-semibold text-lg px-8 py-4 rounded-full hover:bg-[#D9D5CF] transition-colors inline-flex items-center justify-center gap-2"
                 style={{ fontFamily: 'var(--font-sans-inter)' }}
               >
                 Start 7-Day Free Trial
-                <ArrowRightIcon className="w-4 h-4 md:w-5 md:h-5" />
+                <ArrowRightIcon className="w-5 h-5" />
               </a>
             </motion.div>
             <motion.div
-              className="mt-6 flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center md:justify-start text-[#F5F5F5]/50 text-sm"
+              className="hidden md:flex mt-6 flex-row gap-6 justify-start text-[#F5F5F5]/50 text-sm"
               style={{ fontFamily: 'var(--font-sans-inter)' }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.7, delay: 0.35 }}
             >
-              <span className="flex items-center gap-1.5 justify-center md:justify-start"><CheckCircleIcon className="w-4 h-4 text-[#4CAF50]" /> No credit card required</span>
-              <span className="flex items-center gap-1.5 justify-center md:justify-start"><CheckCircleIcon className="w-4 h-4 text-[#4CAF50]" /> Setup in 5 minutes</span>
-              <span className="flex items-center gap-1.5 justify-center md:justify-start"><CheckCircleIcon className="w-4 h-4 text-[#4CAF50]" /> Cancel anytime</span>
+              <span className="flex items-center gap-1.5"><CheckCircleIcon className="w-4 h-4 text-[#4CAF50]" /> No credit card required</span>
+              <span className="flex items-center gap-1.5"><CheckCircleIcon className="w-4 h-4 text-[#4CAF50]" /> Setup in 5 minutes</span>
+              <span className="flex items-center gap-1.5"><CheckCircleIcon className="w-4 h-4 text-[#4CAF50]" /> Cancel anytime</span>
             </motion.div>
           </div>
 
-          {/* Phone mockup video */}
+          {/* Phone */}
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
@@ -927,6 +928,26 @@ function HeroSection() {
           >
             <HeroPhoneAnimation />
           </motion.div>
+        </div>
+
+        {/* Mobile-only CTA + trust badges below phone */}
+        <div className="md:hidden flex flex-col items-center gap-4 mt-4">
+          <a
+            href="#pricing"
+            className="bg-[#F4F1EC] text-[#1A1A1A] font-semibold text-sm px-6 py-3 rounded-full hover:bg-[#D9D5CF] transition-colors inline-flex items-center justify-center gap-2"
+            style={{ fontFamily: 'var(--font-sans-inter)' }}
+          >
+            Start 7-Day Free Trial
+            <ArrowRightIcon className="w-4 h-4" />
+          </a>
+          <div
+            className="flex flex-row gap-4 text-[#F5F5F5]/50 text-[11px]"
+            style={{ fontFamily: 'var(--font-sans-inter)' }}
+          >
+            <span className="flex items-center gap-1"><CheckCircleIcon className="w-3.5 h-3.5 text-[#4CAF50]" /> No credit card</span>
+            <span className="flex items-center gap-1"><CheckCircleIcon className="w-3.5 h-3.5 text-[#4CAF50]" /> 5 min setup</span>
+            <span className="flex items-center gap-1"><CheckCircleIcon className="w-3.5 h-3.5 text-[#4CAF50]" /> Cancel anytime</span>
+          </div>
         </div>
       </div>
 
