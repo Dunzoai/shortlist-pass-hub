@@ -645,7 +645,7 @@ function HeroPhoneAnimation() {
   const typingIdx = step.startsWith('msg-typing-') ? parseInt(step.split('-')[2]) : -1;
 
   return (
-    <div className="mx-auto" style={{ transform: 'scale(0.52)', transformOrigin: 'top center', width: 390, height: 440 }}>
+    <div className="mx-auto" style={{ transform: 'scale(0.48)', transformOrigin: 'top center', width: 390, height: 410 }}>
       <div style={{ width: 390, background: HC.phoneBg, borderRadius: 50, padding: 10, boxShadow: '0 20px 60px rgba(0,0,0,0.3), 0 8px 20px rgba(0,0,0,0.15)' }}>
         <div style={{ width: '100%', background: HC.screen, borderRadius: 42, overflow: 'hidden', display: 'flex', flexDirection: 'column', position: 'relative', height: 830 }}>
           {/* Notch + status bar */}
@@ -830,7 +830,7 @@ function HeroPhoneAnimation() {
 
 function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-[72px] overflow-hidden" style={{ background: 'linear-gradient(180deg, #1A1A1A 0%, #2A2A2A 100%)' }}>
+    <section className="relative min-h-screen flex items-center justify-center pt-[72px] pb-8 overflow-hidden" style={{ background: 'linear-gradient(180deg, #1A1A1A 0%, #2A2A2A 100%)' }}>
       {/* Animated gradient mesh */}
       <div className="absolute inset-0 overflow-hidden">
         <div
@@ -864,7 +864,7 @@ function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7 }}
             >
-              Your Business,{' '}
+              Your Business,<br />
               <span className="bg-gradient-to-r from-[#FF6B35] to-[#ff8f66] bg-clip-text text-transparent">
                 Always Available
               </span>
@@ -879,25 +879,18 @@ function HeroSection() {
               Your smart assistant that never sleeps — answering questions, booking appointments, and taking orders while you focus on what you do best.
             </motion.p>
             <motion.div
-              className="mt-8 flex flex-col sm:flex-row gap-3 justify-center md:justify-start"
+              className="mt-6 md:mt-8 flex justify-center md:justify-start"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.2 }}
             >
               <a
                 href="#pricing"
-                className="bg-[#FF6B35] text-white font-semibold text-base md:text-lg px-8 py-4 rounded-full hover:bg-[#e8602f] transition-colors inline-flex items-center justify-center gap-2"
+                className="bg-[#FF6B35] text-white font-semibold text-sm md:text-lg px-6 py-3 md:px-8 md:py-4 rounded-full hover:bg-[#e8602f] transition-colors inline-flex items-center justify-center gap-2"
                 style={{ fontFamily: 'var(--font-sans-inter)' }}
               >
                 Start 7-Day Free Trial
-                <ArrowRightIcon className="w-5 h-5" />
-              </a>
-              <a
-                href="#solution"
-                className="border border-[#F5F5F5]/30 text-[#F5F5F5] font-semibold text-base md:text-lg px-8 py-4 rounded-full hover:bg-white/5 transition-colors inline-flex items-center justify-center"
-                style={{ fontFamily: 'var(--font-sans-inter)' }}
-              >
-                See How It Works
+                <ArrowRightIcon className="w-4 h-4 md:w-5 md:h-5" />
               </a>
             </motion.div>
             <motion.div
@@ -2047,6 +2040,14 @@ function Footer() {
 // =============================================================================
 
 export default function SmartPagesV2() {
+  // Hide the SmartPage chat widget on this page
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = '[data-slp-widget], .slp-widget, #slp-widget { display: none !important; }';
+    document.head.appendChild(style);
+    return () => { document.head.removeChild(style); };
+  }, []);
+
   return (
     <main className="min-h-screen bg-[#1A1A1A] w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
       <StickyNav />
