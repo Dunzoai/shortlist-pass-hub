@@ -1151,7 +1151,7 @@ const questionsRow = [
 
 function SolutionSection() {
   return (
-    <section id="solution" className="bg-[#F5F5F5] py-16 md:py-24 overflow-hidden">
+    <section id="solution" className="py-16 md:py-24 overflow-hidden" style={{ background: '#f5f5f0' }}>
       <div className="max-w-[1100px] mx-auto px-4">
         <motion.h2
           className="text-[28px] sm:text-[36px] md:text-[48px] font-bold text-[#1A1A1A] text-center leading-tight"
@@ -1182,15 +1182,17 @@ function SolutionSection() {
             {[...statsRow, ...statsRow, ...statsRow].map((card, i) => (
               <div
                 key={i}
-                className="flex-shrink-0 w-[220px] md:w-[260px] rounded-2xl p-5 border border-black/5"
+                className="flex-shrink-0 w-[240px] md:w-[270px] h-[140px] md:h-[150px] rounded-2xl p-5 flex flex-col justify-between border border-white/[0.06]"
                 style={{
-                  background: 'linear-gradient(135deg, #ffffff 0%, #f0eeeb 100%)',
+                  background: 'linear-gradient(135deg, #1f1f1f 0%, #2d2d2d 100%)',
                   fontFamily: 'var(--font-sans-inter)',
                 }}
               >
-                <p className="text-[28px] md:text-[32px] font-bold text-[#1A1A1A] leading-none">{card.stat}</p>
-                <p className="text-[#1A1A1A]/60 text-sm mt-1.5">{card.label}</p>
-                <p className="text-[#1A1A1A]/40 text-xs mt-3 pt-3 border-t border-black/5">{card.biz}</p>
+                <div>
+                  <p className="text-[28px] md:text-[32px] font-bold text-white leading-none">{card.stat}</p>
+                  <p className="text-white/50 text-sm mt-1.5">{card.label}</p>
+                </div>
+                <p className="text-white/30 text-xs pt-2 border-t border-white/[0.06]">{card.biz}</p>
               </div>
             ))}
           </div>
@@ -1202,16 +1204,16 @@ function SolutionSection() {
             {[...questionsRow, ...questionsRow, ...questionsRow].map((q, i) => (
               <div
                 key={i}
-                className="flex-shrink-0 w-[240px] md:w-[280px] rounded-2xl p-5 border border-black/5 flex items-center gap-3"
+                className="flex-shrink-0 w-[240px] md:w-[270px] h-[140px] md:h-[150px] rounded-2xl p-5 flex items-center gap-3 border border-white/[0.06]"
                 style={{
-                  background: 'linear-gradient(135deg, #1A1A1A 0%, #2C2C30 100%)',
+                  background: 'linear-gradient(135deg, #1f1f1f 0%, #2d2d2d 100%)',
                   fontFamily: 'var(--font-sans-inter)',
                 }}
               >
-                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
-                  <ChatIcon className="w-4 h-4 text-white/60" />
+                <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                  <ChatIcon className="w-4 h-4 text-white/50" />
                 </div>
-                <p className="text-white/90 text-sm leading-snug">&ldquo;{q}&rdquo;</p>
+                <p className="text-white/90 text-[15px] leading-snug">&ldquo;{q}&rdquo;</p>
               </div>
             ))}
           </div>
