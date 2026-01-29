@@ -1007,50 +1007,62 @@ function HeroSection() {
 // SECTION 3: SOCIAL PROOF
 // =============================================================================
 
-const proofLogos = [
-  { src: '/nitos_app.png', alt: "Nito's Empanadas" },
-  { src: '/palmetto_taps_app.png', alt: 'Palmetto Taps' },
-  { src: '/honey_app.png', alt: 'Honey Hair Studio' },
-  { src: '/shorty_app.png', alt: 'Shortlist' },
+const testimonials = [
+  { quote: 'This saved my business 10+ hours a week', name: 'Sarah', biz: 'Bloom Salon' },
+  { quote: 'I wake up to orders already placed', name: 'Mike', biz: "Sal's Pizza Truck" },
+  { quote: 'Customers love how fast they get answers', name: 'Diana', biz: 'Bright Smile Dental' },
+  { quote: 'Finally stopped missing calls', name: 'James', biz: 'Fresh Cuts Barber' },
+  { quote: "It's like having a 24/7 receptionist", name: 'Luis', biz: 'Glow Day Spa' },
+  { quote: 'Bookings doubled in the first month', name: 'Karen', biz: 'Paws & Claws Grooming' },
+  { quote: 'My regulars use it every week now', name: 'Tony', biz: "Nito's Empanadas" },
+  { quote: 'Set it up in a day, been running ever since', name: 'Rachel', biz: 'Conway Cleaning Co.' },
+  { quote: 'I actually take weekends off now', name: 'Marcus', biz: 'M&M Plumbing' },
+  { quote: 'Best investment I made this year', name: 'Jen', biz: 'The Craft Corner' },
 ];
 
 function SocialProofStrip() {
   return (
-    <section className="bg-[#F5F5F5] py-12 md:py-16 overflow-hidden">
-      <div className="max-w-[1280px] mx-auto px-4">
-        <p className="text-center text-[#1A1A1A]/50 text-sm font-medium tracking-wide uppercase mb-8" style={{ fontFamily: 'var(--font-sans-inter)' }}>
-          Trusted by businesses across the country
-        </p>
-        {/* Marquee */}
-        <div className="relative overflow-hidden">
-          <motion.div
-            className="flex gap-16 items-center"
-            animate={{ x: [0, -400] }}
-            transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-          >
-            {[...proofLogos, ...proofLogos, ...proofLogos].map((logo, i) => (
-              <div key={i} className="flex-shrink-0 w-[80px] md:w-[120px] h-[80px] md:h-[120px] relative grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
-                <Image src={logo.src} alt={logo.alt} fill className="object-contain" />
-              </div>
-            ))}
-          </motion.div>
-        </div>
-        {/* Testimonial */}
-        <motion.blockquote
-          className="mt-10 text-center max-w-xl mx-auto"
-          initial={{ opacity: 0, y: 15 }}
+    <section className="bg-[#F5F5F5] py-16 md:py-24 overflow-hidden">
+      <div className="max-w-[1100px] mx-auto px-4 mb-12">
+        <motion.h2
+          className="text-[28px] sm:text-[36px] md:text-[48px] font-bold text-[#1A1A1A] text-center leading-tight"
+          style={{ fontFamily: 'var(--font-sans-inter)' }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
         >
-          <p className="text-lg md:text-xl italic text-[#1A1A1A]/80 leading-relaxed" style={{ fontFamily: 'var(--font-sans-inter)' }}>
-            &ldquo;This saved my business 10+ hours a week&rdquo;
-          </p>
-          <cite className="mt-3 block text-sm text-[#1A1A1A]/50 not-italic" style={{ fontFamily: 'var(--font-sans-inter)' }}>
-            — Sarah, Bloom Salon
-          </cite>
-        </motion.blockquote>
+          Positively Impacting Businesses Across the Country
+        </motion.h2>
       </div>
+
+      <div className="relative">
+        <div className="flex gap-5 animate-scroll-testimonials hover:[animation-play-state:paused]" style={{ width: 'max-content' }}>
+          {[...testimonials, ...testimonials].map((t, i) => (
+            <div
+              key={i}
+              className="flex-shrink-0 w-[320px] md:w-[360px] rounded-2xl px-6 py-5 border border-[#1A1A1A]/10 bg-transparent"
+              style={{ fontFamily: 'var(--font-sans-inter)' }}
+            >
+              <p className="text-[#1A1A1A] text-[15px] md:text-base leading-relaxed">
+                &ldquo;{t.quote}&rdquo;
+              </p>
+              <p className="mt-3 text-[#1A1A1A]/40 text-sm">
+                — {t.name}, {t.biz}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <style>{`
+        @keyframes scrollTestimonials {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .animate-scroll-testimonials {
+          animation: scrollTestimonials 45s linear infinite;
+        }
+      `}</style>
     </section>
   );
 }
