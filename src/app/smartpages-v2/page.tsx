@@ -578,7 +578,7 @@ function HeroSection() {
               loop
               playsInline
               className="w-[280px] sm:w-[320px]"
-              src="/hero-phone-chat.mp4"
+              src="/hero-phone-chat.webm"
             />
           </motion.div>
         </div>
