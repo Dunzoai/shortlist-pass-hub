@@ -857,9 +857,27 @@ function HeroPhoneAnimation() {
   );
 }
 
+function GrainOverlay() {
+  return (
+    <>
+      <svg className="absolute w-0 h-0">
+        <filter id="grain">
+          <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
+          <feColorMatrix type="saturate" values="0" />
+        </filter>
+      </svg>
+      <div
+        className="absolute inset-0 pointer-events-none z-[1]"
+        style={{ filter: 'url(#grain)', opacity: 0.06, mixBlendMode: 'overlay' }}
+      />
+    </>
+  );
+}
+
 function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-[180px] md:pt-[120px] pb-8 overflow-x-clip" style={{ background: 'linear-gradient(180deg, #1A1A1A 0%, #2A2A2A 100%)' }}>
+    <section className="relative min-h-screen flex items-center justify-center pt-[120px] md:pt-[120px] pb-8 overflow-x-clip" style={{ background: 'linear-gradient(180deg, #1A1A1A 0%, #2A2A2A 100%)' }}>
+      <GrainOverlay />
       {/* Animated gradient mesh */}
       <div className="absolute inset-0 overflow-hidden">
         <div
@@ -1031,7 +1049,7 @@ function SocialProofStrip() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          Positively Impacting Businesses Across the Country
+          Positively Impacting<br />Businesses Across the Country
         </motion.h2>
       </div>
 
@@ -1082,7 +1100,8 @@ const painPoints = [
 
 function ProblemSection() {
   return (
-    <section className="bg-[#1A1A1A] py-16 md:py-24 px-4">
+    <section className="relative bg-[#1A1A1A] py-16 md:py-24 px-4">
+      <GrainOverlay />
       <div className="max-w-[800px] mx-auto">
         <motion.h2
           className="text-[28px] sm:text-[36px] md:text-[48px] font-bold text-[#F5F5F5] text-center leading-tight"
@@ -1464,7 +1483,8 @@ function IndustryCarousel() {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   return (
-    <section className="bg-[#1A1A1A] py-16 md:py-24 overflow-hidden">
+    <section className="relative bg-[#1A1A1A] py-16 md:py-24 overflow-hidden">
+      <GrainOverlay />
       <div className="max-w-[1280px] mx-auto px-4">
         <motion.h2
           className="text-[28px] sm:text-[36px] md:text-[48px] font-bold text-[#F5F5F5] text-center leading-tight"
@@ -1636,7 +1656,8 @@ function ToolCard({ tool }: { tool: Tool }) {
 
 function ToolShedSection() {
   return (
-    <section id="toolshed" className="bg-[#1A1A1A] py-16 md:py-24 px-4">
+    <section id="toolshed" className="relative bg-[#1A1A1A] py-16 md:py-24 px-4">
+      <GrainOverlay />
       <div className="max-w-[1100px] mx-auto">
         <motion.h2
           className="text-[28px] sm:text-[36px] md:text-[48px] font-bold text-[#F5F5F5] text-center"
@@ -1795,7 +1816,8 @@ function PricingSection() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
-    <section id="pricing" className="bg-[#1A1A1A] py-16 md:py-24 px-4">
+    <section id="pricing" className="relative bg-[#1A1A1A] py-16 md:py-24 px-4">
+      <GrainOverlay />
       <div className="max-w-[1100px] mx-auto">
         <motion.h2
           className="text-[28px] sm:text-[36px] md:text-[48px] font-bold text-[#F5F5F5] text-center"
@@ -2060,7 +2082,8 @@ const socialLinks = [
 
 function Footer() {
   return (
-    <footer className="bg-[#1A1A1A] py-16 px-4 border-t border-white/[0.06]">
+    <footer className="relative bg-[#1A1A1A] py-16 px-4 border-t border-white/[0.06]">
+      <GrainOverlay />
       <div className="max-w-[1100px] mx-auto">
         <div className="grid md:grid-cols-5 gap-10 md:gap-8">
           {/* Brand */}
