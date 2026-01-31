@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import { loadStripe } from '@stripe/stripe-js'
 import type { Invoice } from '@/lib/types'
 
 export default function InvoicesPage() {
@@ -56,18 +55,12 @@ export default function InvoicesPage() {
         body: JSON.stringify({ invoiceId })
       })
 
-      const { clientSecret, publishableKey } = await res.json()
+      const data = await res.json()
       
-      const stripe = await loadStripe(publishableKey)
-      if (!stripe) throw new Error('Stripe failed to load')
-
-      const { error } = await stripe.confirmCardPayment(clientSecret)
-
-      if (error) {
-        alert(error.message)
+      if (data.error) {
+        alert(data.error)
       } else {
-        alert('Payment successful!')
-        window.location.reload()
+        alert('Payment processing - Stripe integration pending')
       }
     } catch (err) {
       alert('Payment failed')
