@@ -2,11 +2,11 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
+  // Only protect /admin routes (except login)
   const isAdminRoute = request.nextUrl.pathname.startsWith('/admin')
-  const isPortalRoute = request.nextUrl.pathname.startsWith('/portal')
-  const isLoginPage = request.nextUrl.pathname === '/admin/login' || request.nextUrl.pathname === '/portal/login'
+  const isLoginPage = request.nextUrl.pathname === '/admin/login'
 
-  if ((!isAdminRoute && !isPortalRoute) || isLoginPage) {
+  if (!isAdminRoute || isLoginPage) {
     return NextResponse.next()
   }
 
@@ -39,40 +39,26 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
+  // Check if user is authenticated
   if (!user) {
     const url = request.nextUrl.clone()
-    url.pathname = isAdminRoute ? '/admin/login' : '/portal/login'
+    url.pathname = '/admin/login'
     return NextResponse.redirect(url)
   }
 
-  if (isAdminRoute) {
-    const adminEmails = process.env.ADMIN_EMAILS?.split(',').map((e) => e.trim().toLowerCase()) ?? []
-    if (!adminEmails.includes(user.email?.toLowerCase() ?? '')) {
-      const url = request.nextUrl.clone()
-      url.pathname = '/admin/login'
-      url.searchParams.set('error', 'not_authorized')
-      return NextResponse.redirect(url)
-    }
-  }
+  // Check if user is in admin list
+  const adminEmails = process.env.ADMIN_EMAILS?.split(',').map((e) => e.trim().toLowerCase()) ?? []
 
-  if (isPortalRoute) {
-    const { data: portalUser } = await supabase
-      .from('client_portal_users')
-      .select('client_id')
-      .eq('user_id', user.id)
-      .single()
-
-    if (!portalUser) {
-      const url = request.nextUrl.clone()
-      url.pathname = '/portal/login'
-      url.searchParams.set('error', 'not_authorized')
-      return NextResponse.redirect(url)
-    }
+  if (!adminEmails.includes(user.email?.toLowerCase() ?? '')) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/admin/login'
+    url.searchParams.set('error', 'not_authorized')
+    return NextResponse.redirect(url)
   }
 
   return supabaseResponse
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/portal/:path*'],
+  matcher: ['/admin/:path*'],
 }

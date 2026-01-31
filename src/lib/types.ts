@@ -1,8 +1,33 @@
+export interface Client {
+  id: string
+  name: string
+  email: string | null
+  phone: string | null
+  notes: string | null
+  affiliate_id: string | null
+  created_at: string
+  updated_at: string
+}
+
 export interface Service {
   id: string
   name: string
   description: string | null
   created_at: string
+}
+
+export interface ClientService {
+  id: string
+  client_id: string
+  service_id: string
+  monthly_cost: number
+  one_time_cost: number
+  status: 'active' | 'paused' | 'cancelled'
+  start_date: string
+  notes: string | null
+  is_active: boolean
+  created_at: string
+  updated_at: string
 }
 
 export interface Affiliate {
@@ -18,64 +43,39 @@ export interface Affiliate {
   updated_at: string
 }
 
-export interface Client {
-  id: string
-  name: string
-  email: string | null
-  phone: string | null
-  notes: string | null
-  affiliate_id: string | null
-  created_at: string
-  updated_at: string
-}
-
-export interface ClientService {
+export interface Invoice {
   id: string
   client_id: string
-  service_id: string
-  monthly_cost: number
-  one_time_cost: number
-  status: 'active' | 'paused' | 'cancelled'
-  start_date: string
+  invoice_number: string
+  amount: number
+  status: 'pending' | 'paid' | 'overdue' | 'cancelled'
+  due_date: string | null
+  paid_at: string | null
+  stripe_payment_intent_id: string | null
+  stripe_invoice_id: string | null
   notes: string | null
   created_at: string
   updated_at: string
 }
 
-// Extended types with relations
-export interface ClientWithRelations extends Client {
-  affiliate?: Affiliate | null
-  client_services?: (ClientService & { service: Service })[]
+export interface Payment {
+  id: string
+  invoice_id: string
+  client_id: string
+  amount: number
+  stripe_payment_intent_id: string | null
+  payment_method_last4: string | null
+  status: 'pending' | 'succeeded' | 'failed'
+  paid_at: string | null
+  created_at: string
 }
 
-export interface AffiliateWithClients extends Affiliate {
-  clients?: Client[]
-}
-
-// Database type for Supabase client
-export interface Database {
-  public: {
-    Tables: {
-      services: {
-        Row: Service
-        Insert: Omit<Service, 'id' | 'created_at'>
-        Update: Partial<Omit<Service, 'id' | 'created_at'>>
-      }
-      affiliates: {
-        Row: Affiliate
-        Insert: Omit<Affiliate, 'id' | 'created_at' | 'updated_at'>
-        Update: Partial<Omit<Affiliate, 'id' | 'created_at' | 'updated_at'>>
-      }
-      clients: {
-        Row: Client
-        Insert: Omit<Client, 'id' | 'created_at' | 'updated_at'>
-        Update: Partial<Omit<Client, 'id' | 'created_at' | 'updated_at'>>
-      }
-      client_services: {
-        Row: ClientService
-        Insert: Omit<ClientService, 'id' | 'created_at' | 'updated_at'>
-        Update: Partial<Omit<ClientService, 'id' | 'created_at' | 'updated_at'>>
-      }
-    }
-  }
+export interface RecurringBilling {
+  id: string
+  client_id: string
+  stripe_subscription_id: string | null
+  stripe_customer_id: string | null
+  status: 'active' | 'cancelled' | 'paused'
+  next_billing_date: string | null
+  created_at: string
 }
