@@ -45,8 +45,8 @@ export const metadata: Metadata = {
     ],
   },
   title: "The Shortlist Co | We Help Small Businesses Show Up Like Big Ones",
-  description: "Social media management, SmartPages, websites and custom apps built to make customers choose you. Get seen, look legit, and convert more customers.",
-  keywords: ["small business", "social media management", "SmartPages", "websites", "custom apps", "digital marketing", "local business"],
+  description: "Social media management, Smart Assistant, websites and custom apps built to make customers choose you. Get seen, look legit, and convert more customers.",
+  keywords: ["small business", "social media management", "Smart Assistant", "websites", "custom apps", "digital marketing", "local business"],
   authors: [{ name: "The Shortlist Co" }],
   creator: "The Shortlist Co",
   metadataBase: new URL("https://www.shortlistpass.com"),
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     url: "https://www.shortlistpass.com",
     siteName: "The Shortlist Co",
     title: "The Shortlist Co | We Help Small Businesses Show Up Like Big Ones",
-    description: "Social media management, SmartPages, websites and custom apps built to make customers choose you.",
+    description: "Social media management, Smart Assistant, websites and custom apps built to make customers choose you.",
     images: [
       {
         url: "https://www.shortlistpass.com/social-share.png",
@@ -72,7 +72,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "The Shortlist Co | We Help Small Businesses Show Up Like Big Ones",
-    description: "Social media management, SmartPages, websites and custom apps built to make customers choose you.",
+    description: "Social media management, Smart Assistant, websites and custom apps built to make customers choose you.",
     images: ["https://www.shortlistpass.com/social-share.png"],
   },
   robots: {

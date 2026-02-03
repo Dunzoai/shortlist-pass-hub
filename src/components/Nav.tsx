@@ -43,10 +43,10 @@ export function Nav() {
             Social
           </Link>
           <Link
-            href="/smartpages"
+            href="/SmartAssistant"
             className="text-sm text-[#F4F1EC] px-4 py-2 rounded-full transition-all duration-300 hover:bg-[#5A6570] hover:text-[#F4F1EC]"
           >
-            SmartPages
+            Smart Assistant
           </Link>
           <Link
             href="/digital"
@@ -98,11 +98,11 @@ export function Nav() {
               Social
             </Link>
             <Link
-              href="/smartpages"
+              href="/SmartAssistant"
               className="text-sm text-[#F4F1EC] hover:text-[#F4F1EC]/70 transition-colors"
               onClick={() => setMobileOpen(false)}
             >
-              SmartPages
+              Smart Assistant
             </Link>
             <Link
               href="/digital"

@@ -249,7 +249,7 @@ function HowWeHelp() {
         <Image src="/page.png" alt="" width={144} height={144} className="object-contain" />
       ),
       title: "One page that explains everything",
-      description: "We build SmartPages that know your business inside and out — answers, links, hours, menus, booking — all in one place so customers get what they need instantly and feel confident choosing you."
+      description: "We build Smart Assistants that know your business inside and out — answers, links, hours, menus, booking — all in one place so customers get what they need instantly and feel confident choosing you."
     },
     {
       icon: (
@@ -400,10 +400,10 @@ export default function Home() {
       cta: "Get seen first",
     },
     {
-      title: "SmartPages",
+      title: "Smart Assistant",
       subhead: "One clear place customers trust.",
-      description: "Once people want to learn more, they need a clear, reliable place to land. SmartPages bring everything about your business together — answers, hours, menus, links, updates, and booking — so customers don't have to hunt or second-guess. It's the framework that holds your business online, and makes it feel organized and real.",
-      href: "/smartpages",
+      description: "Once people want to learn more, they need a clear, reliable place to land. Smart Assistant brings everything about your business together — answers, hours, menus, links, updates, and booking — so customers don't have to hunt or second-guess. It's the framework that holds your business online, and makes it feel organized and real.",
+      href: "/SmartAssistant",
       image: "/house-frame.png",
       cta: "Build your foundation",
     },
@@ -515,7 +515,7 @@ export default function Home() {
                 }}
                 className="text-lg lg:text-xl text-[#5A6570] max-w-[720px] mx-auto"
               >
-                Social media management, SmartPages, websites and custom apps built to make customers choose you.
+                Social media management, Smart Assistant, websites and custom apps built to make customers choose you.
               </motion.p>
             </motion.div>
           </div>
