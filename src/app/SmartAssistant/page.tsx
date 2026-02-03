@@ -1673,7 +1673,7 @@ function ToolShedSection() {
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
         >
-          And we&apos;re actively building more.
+          Add-ons that work like new employees — each one handles a job so you don&apos;t have to. A whole team, running from your phone.
         </motion.p>
 
         <div className="mt-10 md:mt-14 grid md:grid-cols-3 gap-4 md:gap-6">
