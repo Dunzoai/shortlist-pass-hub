@@ -1922,18 +1922,18 @@ function PricingSection() {
 
         {/* FAQ */}
         <div className="mt-16 max-w-2xl mx-auto">
-          <p className="text-[#F5F5F5]/40 text-sm font-medium uppercase tracking-wider mb-6 text-center" style={{ fontFamily: 'var(--font-sans-inter)' }}>
+          <p className="text-[#1A1A1A]/40 text-sm font-medium uppercase tracking-wider mb-6 text-center" style={{ fontFamily: 'var(--font-sans-inter)' }}>
             FAQ
           </p>
-          <div className="space-y-2">
+          <div className="space-y-3">
             {faqs.map((faq, i) => (
-              <div key={i} className="bg-[#2A2A2A] rounded-xl border border-white/[0.06] overflow-hidden">
+              <div key={i} className="bg-white rounded-2xl shadow-sm overflow-hidden">
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  className="w-full text-left px-5 py-4 flex items-center justify-between"
+                  className="w-full text-left px-6 py-5 flex items-center justify-between"
                 >
-                  <span className="text-[#F5F5F5] text-[15px] font-medium" style={{ fontFamily: 'var(--font-sans-inter)' }}>{faq.q}</span>
-                  <ChevronDownIcon className={`w-4 h-4 text-[#F5F5F5]/40 transition-transform ${openFaq === i ? 'rotate-180' : ''}`} />
+                  <span className="text-[#1A1A1A] text-[15px] font-semibold" style={{ fontFamily: 'var(--font-sans-inter)' }}>{faq.q}</span>
+                  <ChevronDownIcon className={`w-4 h-4 text-[#1A1A1A]/30 transition-transform ${openFaq === i ? 'rotate-180' : ''}`} />
                 </button>
                 <AnimatePresence>
                   {openFaq === i && (
@@ -1944,7 +1944,7 @@ function PricingSection() {
                       transition={{ duration: 0.2 }}
                       className="overflow-hidden"
                     >
-                      <p className="px-5 pb-4 text-[#F5F5F5]/60 text-sm" style={{ fontFamily: 'var(--font-sans-inter)' }}>{faq.a}</p>
+                      <p className="px-6 pb-5 text-[#1A1A1A]/50 text-sm" style={{ fontFamily: 'var(--font-sans-inter)' }}>{faq.a}</p>
                     </motion.div>
                   )}
                 </AnimatePresence>
