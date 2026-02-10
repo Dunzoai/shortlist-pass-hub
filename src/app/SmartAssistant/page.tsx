@@ -952,7 +952,7 @@ function HeroSection() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.7, delay: 0.35 }}
             >
-              <span className="flex items-center gap-1.5"><CheckCircleIcon className="w-4 h-4 text-[#4CAF50]" /> No credit card required</span>
+              <span className="flex items-center gap-1.5"><CheckCircleIcon className="w-4 h-4 text-[#4CAF50]" /> No charge for 7 days</span>
               <span className="flex items-center gap-1.5"><CheckCircleIcon className="w-4 h-4 text-[#4CAF50]" /> Setup in 5 minutes</span>
               <span className="flex items-center gap-1.5"><CheckCircleIcon className="w-4 h-4 text-[#4CAF50]" /> Cancel anytime</span>
             </motion.div>
@@ -995,7 +995,7 @@ function HeroSection() {
             className="flex flex-row gap-4 text-[#F5F5F5]/50 text-[11px]"
             style={{ fontFamily: 'var(--font-sans-inter)' }}
           >
-            <span className="flex items-center gap-1"><CheckCircleIcon className="w-3.5 h-3.5 text-[#4CAF50]" /> No credit card</span>
+            <span className="flex items-center gap-1"><CheckCircleIcon className="w-3.5 h-3.5 text-[#4CAF50]" /> No charge for 7 days</span>
             <span className="flex items-center gap-1"><CheckCircleIcon className="w-3.5 h-3.5 text-[#4CAF50]" /> 5 min setup</span>
             <span className="flex items-center gap-1"><CheckCircleIcon className="w-3.5 h-3.5 text-[#4CAF50]" /> Cancel anytime</span>
           </div>
@@ -1856,13 +1856,13 @@ function PricingSection() {
             ))}
           </div>
           <a
-            href="https://buy.stripe.com/3cI4gyfB1eg65uZ02Q4sE05"
+            href="https://app.shortlistpass.com/signup"
             className="mt-8 w-full inline-flex items-center justify-center gap-2 bg-[#F4F1EC] text-[#1A1A1A] font-semibold text-lg px-8 py-4 rounded-full hover:bg-[#D9D5CF] transition-colors"
             style={{ fontFamily: 'var(--font-sans-inter)' }}
           >
             Start 7-Day Free Trial
           </a>
-          <p className="mt-3 text-[#F5F5F5]/30 text-xs" style={{ fontFamily: 'var(--font-sans-inter)' }}>No credit card required</p>
+          <p className="mt-3 text-[#F5F5F5]/30 text-xs" style={{ fontFamily: 'var(--font-sans-inter)' }}>No charge for 7 days</p>
         </motion.div>
 
         {/* Add-ons */}
@@ -2004,7 +2004,7 @@ function FinalCTA() {
         </motion.p>
 
         <motion.a
-          href="https://buy.stripe.com/3cI4gyfB1eg65uZ02Q4sE05"
+          href="https://app.shortlistpass.com/signup"
           className="mt-10 inline-flex items-center justify-center gap-2 bg-[#2d2d2d] text-white font-bold text-lg md:text-xl px-12 py-5 md:py-6 rounded-full hover:bg-[#1A1A1A] transition-colors"
           style={{ fontFamily: 'var(--font-sans-inter)' }}
           initial={{ opacity: 0, y: 15 }}
@@ -2026,7 +2026,7 @@ function FinalCTA() {
           viewport={{ once: true }}
           transition={{ delay: 0.4 }}
         >
-          <span>No credit card required</span>
+          <span>No charge for 7 days</span>
           <span className="hidden sm:inline">·</span>
           <span>Setup takes 5 minutes</span>
           <span className="hidden sm:inline">·</span>
