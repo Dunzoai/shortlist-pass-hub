@@ -915,9 +915,9 @@ function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7 }}
             >
-              Your Business,<br />
+              Not a Tool.<br />
               <span className="text-[#F4F1EC]/70">
-                Always Available
+                Your Entire Business Online.
               </span>
             </motion.h1>
             <motion.p
@@ -927,7 +927,7 @@ function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.1 }}
             >
-              Your smart assistant that never sleeps — answering questions, booking appointments, taking orders, and more while you focus on what you do best.
+              Website, AI assistant, ordering, bookings, payments — all running 24/7. $25/mo. Done.
             </motion.p>
             {/* CTA + trust badges: visible on desktop, hidden on mobile (shown below phone instead) */}
             <motion.div
