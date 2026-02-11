@@ -2159,9 +2159,9 @@ export default function SmartPagesV2() {
       <IndustryCarousel />
       <ToolShedSection />
       <StripeSpotlight />
+      <PricingSection />
       <SocialProofStrip />
       <ProblemSection />
-      <PricingSection />
       <FinalCTA />
       <Footer />
     </main>
