@@ -1480,7 +1480,7 @@ function IndustryCarousel() {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   return (
-    <section className="relative bg-[#1A1A1A] py-16 md:py-24 overflow-hidden">
+    <section className="relative bg-[#1A1A1A] pt-6 md:pt-8 pb-16 md:pb-24 overflow-hidden">
       <GrainOverlay />
       <div className="max-w-[1280px] mx-auto px-4">
         <motion.h2
@@ -2156,10 +2156,10 @@ export default function SmartPagesV2() {
     <main className="min-h-screen bg-[#1A1A1A] w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
       <HeroSection />
       <SolutionSection />
-      <IndustryCarousel />
       <SocialProofStrip />
       <ProblemSection />
       <ToolShedSection />
+      <IndustryCarousel />
       <StripeSpotlight />
       <PricingSection />
       <FinalCTA />
