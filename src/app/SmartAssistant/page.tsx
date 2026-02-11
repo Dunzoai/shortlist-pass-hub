@@ -1653,7 +1653,7 @@ function ToolCard({ tool }: { tool: Tool }) {
 
 function ToolShedSection() {
   return (
-    <section id="toolshed" className="relative bg-[#1A1A1A] py-16 md:py-24 px-4">
+    <section id="toolshed" className="relative bg-[#1A1A1A] pt-6 md:pt-8 pb-16 md:pb-24 px-4">
       <GrainOverlay />
       <div className="max-w-[1100px] mx-auto">
         <motion.h2
@@ -2158,8 +2158,8 @@ export default function SmartPagesV2() {
       <SolutionSection />
       <SocialProofStrip />
       <ProblemSection />
-      <ToolShedSection />
       <IndustryCarousel />
+      <ToolShedSection />
       <StripeSpotlight />
       <PricingSection />
       <FinalCTA />
