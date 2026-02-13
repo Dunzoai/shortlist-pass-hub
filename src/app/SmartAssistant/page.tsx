@@ -2157,6 +2157,16 @@ export default function SmartPagesV2() {
       <HeroSection />
       <SolutionSection />
       <IndustryCarousel />
+
+      {/* Image divider between Industry and Tool Shed */}
+      <section className="w-full h-[250px] md:h-[350px] overflow-hidden">
+        <img
+          src="/image-above-tool-shed.png"
+          alt=""
+          className="w-full h-full object-cover"
+        />
+      </section>
+
       <ToolShedSection />
       <SocialProofStrip />
       <PricingSection />
