@@ -1870,6 +1870,166 @@ const faqs = [
   { q: 'Do you charge transaction fees?', a: "No. Mobile orders: 2.9% + 30¢. Walk-up orders: 2.7% + 15¢. No markup, no hidden fees from us." },
 ];
 
+const howItWorksSteps = [
+  {
+    number: '1',
+    title: 'Scan your website',
+    description: 'Enter your URL and SmartAssistant pulls in your business details automatically. Instant head start.',
+    image: '/setup.png',
+  },
+  {
+    number: '2',
+    title: 'Customize your SmartPage',
+    description: 'Add your offerings, hours, FAQs, and branding. Our built-in AI helper guides you through every section.',
+    image: '/offerings.png',
+  },
+  {
+    number: '3',
+    title: 'Share your link and grow',
+    description: 'Customers chat with your AI, place orders, and book appointments. You wake up to revenue.',
+    image: '/quick-order.png',
+  },
+];
+
+function HowItWorksSection() {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  // Auto-scroll on mobile
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % howItWorksSteps.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Scroll to active card on mobile
+  useEffect(() => {
+    if (scrollRef.current && window.innerWidth < 768) {
+      const cardWidth = scrollRef.current.scrollWidth / howItWorksSteps.length;
+      scrollRef.current.scrollTo({ left: cardWidth * activeIndex, behavior: 'smooth' });
+    }
+  }, [activeIndex]);
+
+  // Handle manual scroll
+  const handleScroll = () => {
+    if (scrollRef.current) {
+      const cardWidth = scrollRef.current.scrollWidth / howItWorksSteps.length;
+      const newIndex = Math.round(scrollRef.current.scrollLeft / cardWidth);
+      if (newIndex !== activeIndex) {
+        setActiveIndex(newIndex);
+      }
+    }
+  };
+
+  return (
+    <section className="relative bg-[#1A1A1A] py-16 md:py-24 px-4">
+      <GrainOverlay />
+      <div className="max-w-[1100px] mx-auto">
+        <motion.h2
+          className="text-[28px] sm:text-[36px] md:text-[48px] font-bold text-[#F5F5F5] text-center"
+          style={{ fontFamily: 'var(--font-sans-inter)' }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          How It Works
+        </motion.h2>
+        <motion.p
+          className="mt-4 text-base md:text-lg text-[#F5F5F5]/60 text-center max-w-2xl mx-auto"
+          style={{ fontFamily: 'var(--font-sans-inter)' }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.1 }}
+        >
+          Get your SmartAssistant live in minutes, not days.
+        </motion.p>
+
+        {/* Desktop: 3 columns */}
+        <div className="hidden md:grid md:grid-cols-3 gap-8 mt-12">
+          {howItWorksSteps.map((step, i) => (
+            <motion.div
+              key={step.number}
+              className="flex flex-col items-center text-center"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+            >
+              <div className="w-12 h-12 rounded-full bg-[#F4F1EC] flex items-center justify-center mb-4">
+                <span className="text-[#1A1A1A] font-bold text-xl" style={{ fontFamily: 'var(--font-sans-inter)' }}>
+                  {step.number}
+                </span>
+              </div>
+              <h3 className="text-xl font-semibold text-[#F5F5F5] mb-2" style={{ fontFamily: 'var(--font-sans-inter)' }}>
+                {step.title}
+              </h3>
+              <p className="text-[#F5F5F5]/60 text-sm leading-relaxed mb-6" style={{ fontFamily: 'var(--font-sans-inter)' }}>
+                {step.description}
+              </p>
+              <div className="w-full aspect-[9/16] max-w-[220px] rounded-2xl overflow-hidden shadow-2xl shadow-black/40">
+                <img
+                  src={step.image}
+                  alt={step.title}
+                  className="w-full h-full object-cover object-top"
+                />
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Mobile: Swipable carousel */}
+        <div
+          ref={scrollRef}
+          onScroll={handleScroll}
+          className="md:hidden flex overflow-x-auto snap-x snap-mandatory scrollbar-hide mt-10 -mx-4 px-4 gap-4"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
+          {howItWorksSteps.map((step) => (
+            <div
+              key={step.number}
+              className="flex-shrink-0 w-[85vw] snap-center flex flex-col items-center text-center"
+            >
+              <div className="w-10 h-10 rounded-full bg-[#F4F1EC] flex items-center justify-center mb-3">
+                <span className="text-[#1A1A1A] font-bold text-lg" style={{ fontFamily: 'var(--font-sans-inter)' }}>
+                  {step.number}
+                </span>
+              </div>
+              <h3 className="text-lg font-semibold text-[#F5F5F5] mb-2" style={{ fontFamily: 'var(--font-sans-inter)' }}>
+                {step.title}
+              </h3>
+              <p className="text-[#F5F5F5]/60 text-sm leading-relaxed mb-4 px-4" style={{ fontFamily: 'var(--font-sans-inter)' }}>
+                {step.description}
+              </p>
+              <div className="w-full max-w-[200px] aspect-[9/16] rounded-2xl overflow-hidden shadow-2xl shadow-black/40">
+                <img
+                  src={step.image}
+                  alt={step.title}
+                  className="w-full h-full object-cover object-top"
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Mobile: Dots indicator */}
+        <div className="md:hidden flex justify-center gap-2 mt-6">
+          {howItWorksSteps.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setActiveIndex(i)}
+              className={`w-2 h-2 rounded-full transition-all ${
+                i === activeIndex ? 'bg-[#F4F1EC] w-6' : 'bg-[#F5F5F5]/30'
+              }`}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function PricingSection() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
@@ -2228,6 +2388,7 @@ export default function SmartPagesV2() {
       <ParallaxSection image="/barber-shortlist.png" desktopPosition="center 30%" />
 
       <SocialProofStrip />
+      <HowItWorksSection />
       <PricingSection />
       <StripeSpotlight />
       <ProblemSection />
