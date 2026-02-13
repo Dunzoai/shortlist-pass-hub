@@ -1758,6 +1758,97 @@ const stripeFeatures = [
   { icon: DollarIcon, title: 'Keep more of your money', desc: "Mobile orders: 2.9% + 30¢\nWalk-up orders: 2.7% + 15¢\nNo markup, no hidden fees from us" },
 ];
 
+function SaveMoneyCallout() {
+  return (
+    <section className="bg-[#FF6B2B] py-16 md:py-24 px-4">
+      <div className="max-w-[900px] mx-auto text-center">
+        <motion.h2
+          className="text-[28px] sm:text-[36px] md:text-[48px] font-bold text-white leading-tight"
+          style={{ fontFamily: 'var(--font-sans-inter)' }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          Keep Your Money. Ditch the Middleman.
+        </motion.h2>
+        <motion.p
+          className="mt-4 text-lg md:text-xl text-white/90"
+          style={{ fontFamily: 'var(--font-sans-inter)' }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.1 }}
+        >
+          Platforms like DoorDash and GrubHub take up to 30% of every order.<br className="hidden sm:inline" />
+          On $5,000/month in sales, that&apos;s $1,500 gone.
+        </motion.p>
+
+        {/* Comparison */}
+        <motion.div
+          className="mt-10 flex flex-col sm:flex-row justify-center items-center gap-6 sm:gap-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+        >
+          {/* DoorDash side */}
+          <div className="bg-white/10 rounded-2xl px-8 py-6 min-w-[200px]">
+            <p className="text-white/70 text-sm font-medium uppercase tracking-wider mb-2" style={{ fontFamily: 'var(--font-sans-inter)' }}>
+              DoorDash
+            </p>
+            <p className="text-white text-2xl md:text-3xl font-bold line-through decoration-white/50 decoration-2" style={{ fontFamily: 'var(--font-sans-inter)' }}>
+              $1,500/mo
+            </p>
+            <p className="text-white/60 text-sm mt-1" style={{ fontFamily: 'var(--font-sans-inter)' }}>in fees</p>
+          </div>
+
+          {/* VS */}
+          <div className="text-white/50 text-xl font-bold hidden sm:block">vs</div>
+
+          {/* SmartAssistant side */}
+          <div className="bg-white rounded-2xl px-8 py-6 min-w-[200px]">
+            <p className="text-[#FF6B2B] text-sm font-medium uppercase tracking-wider mb-2" style={{ fontFamily: 'var(--font-sans-inter)' }}>
+              SmartAssistant
+            </p>
+            <p className="text-[#1A1A1A] text-2xl md:text-3xl font-bold" style={{ fontFamily: 'var(--font-sans-inter)' }}>
+              $25/mo
+            </p>
+            <p className="text-[#1A1A1A]/60 text-sm mt-1" style={{ fontFamily: 'var(--font-sans-inter)' }}>flat</p>
+          </div>
+        </motion.div>
+
+        {/* Savings line */}
+        <motion.p
+          className="mt-10 text-xl md:text-2xl font-semibold text-white"
+          style={{ fontFamily: 'var(--font-sans-inter)' }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
+        >
+          That&apos;s <span className="underline decoration-2 underline-offset-4">$17,700 saved</span> in your first year.
+        </motion.p>
+
+        {/* CTA Button */}
+        <motion.a
+          href="https://app.shortlistpass.com/signup"
+          className="mt-10 inline-flex items-center justify-center gap-2 bg-white text-[#1A1A1A] font-bold text-lg px-10 py-4 rounded-full hover:bg-white/90 transition-colors"
+          style={{ fontFamily: 'var(--font-sans-inter)' }}
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4 }}
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.98 }}
+        >
+          Start 7-Day Free Trial
+          <ArrowRightIcon className="w-5 h-5" />
+        </motion.a>
+      </div>
+    </section>
+  );
+}
+
 function StripeSpotlight() {
   return (
     <section className="bg-[#F5F5F5] py-16 md:py-24 px-4">
@@ -2387,6 +2478,7 @@ export default function SmartPagesV2() {
       <SocialProofStrip />
       <HowItWorksSection />
       <PricingSection />
+      <SaveMoneyCallout />
       <StripeSpotlight />
       <ProblemSection />
       <FinalCTA />
