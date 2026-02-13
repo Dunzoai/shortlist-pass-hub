@@ -1760,90 +1760,40 @@ const stripeFeatures = [
 
 function SaveMoneyCallout() {
   return (
-    <section className="bg-[#FF6B2B] py-16 md:py-24 px-4">
+    <section className="bg-[#FF6B2B] py-10 md:py-12 px-4">
       <div className="max-w-[900px] mx-auto text-center">
         <motion.h2
-          className="text-[28px] sm:text-[36px] md:text-[48px] font-bold text-white leading-tight"
+          className="text-[24px] sm:text-[32px] md:text-[40px] font-bold text-white leading-tight"
           style={{ fontFamily: 'var(--font-sans-inter)' }}
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          Keep Your Money. Ditch the Middleman.
+          They take 30%. We take $25.
         </motion.h2>
         <motion.p
-          className="mt-4 text-lg md:text-xl text-white/90"
+          className="mt-3 text-base md:text-lg text-white/90"
           style={{ fontFamily: 'var(--font-sans-inter)' }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
         >
-          Platforms like DoorDash and GrubHub take up to 30% of every order.<br className="hidden sm:inline" />
-          On $5,000/month in sales, that&apos;s $1,500 gone.
+          Keep the $4,975, plus get the tools to actually grow your business.
         </motion.p>
-
-        {/* Comparison */}
-        <motion.div
-          className="mt-10 flex flex-col sm:flex-row justify-center items-center gap-6 sm:gap-12"
-          initial={{ opacity: 0, y: 20 }}
+        <motion.a
+          href="https://app.shortlistpass.com/signup"
+          className="mt-6 inline-flex items-center justify-center gap-2 bg-white text-[#1A1A1A] font-bold text-base px-8 py-3 rounded-full hover:bg-white/90 transition-colors"
+          style={{ fontFamily: 'var(--font-sans-inter)' }}
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
-        >
-          {/* DoorDash side */}
-          <div className="bg-white/10 rounded-2xl px-8 py-6 min-w-[200px]">
-            <p className="text-white/70 text-sm font-medium uppercase tracking-wider mb-2" style={{ fontFamily: 'var(--font-sans-inter)' }}>
-              DoorDash
-            </p>
-            <p className="text-white text-2xl md:text-3xl font-bold line-through decoration-white/50 decoration-2" style={{ fontFamily: 'var(--font-sans-inter)' }}>
-              $1,500/mo
-            </p>
-            <p className="text-white/60 text-sm mt-1" style={{ fontFamily: 'var(--font-sans-inter)' }}>in fees</p>
-          </div>
-
-          {/* VS */}
-          <div className="text-white/50 text-xl font-bold hidden sm:block">vs</div>
-
-          {/* SmartAssistant side */}
-          <div className="bg-white rounded-2xl px-8 py-6 min-w-[200px]">
-            <p className="text-[#FF6B2B] text-sm font-medium uppercase tracking-wider mb-2" style={{ fontFamily: 'var(--font-sans-inter)' }}>
-              SmartAssistant
-            </p>
-            <p className="text-[#1A1A1A] text-2xl md:text-3xl font-bold" style={{ fontFamily: 'var(--font-sans-inter)' }}>
-              $25/mo
-            </p>
-            <p className="text-[#1A1A1A]/60 text-sm mt-1" style={{ fontFamily: 'var(--font-sans-inter)' }}>flat</p>
-          </div>
-        </motion.div>
-
-        {/* Savings line */}
-        <motion.p
-          className="mt-10 text-xl md:text-2xl font-bold text-white max-w-2xl mx-auto leading-relaxed"
-          style={{ fontFamily: 'var(--font-sans-inter)' }}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
-        >
-          DoorDash and GrubHub take 30% on $5K per month.<br className="hidden sm:inline" />
-          We ask for $25 and you keep the <span className="underline decoration-2 underline-offset-4">$4,975</span>.
-        </motion.p>
-
-        {/* CTA Button */}
-        <motion.a
-          href="https://app.shortlistpass.com/signup"
-          className="mt-10 inline-flex items-center justify-center gap-2 bg-white text-[#1A1A1A] font-bold text-lg px-10 py-4 rounded-full hover:bg-white/90 transition-colors"
-          style={{ fontFamily: 'var(--font-sans-inter)' }}
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.4 }}
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.98 }}
         >
           Start 7-Day Free Trial
-          <ArrowRightIcon className="w-5 h-5" />
+          <ArrowRightIcon className="w-4 h-4" />
         </motion.a>
       </div>
     </section>
