@@ -1759,28 +1759,64 @@ const stripeFeatures = [
 ];
 
 function SaveMoneyCallout() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [hasAnimated, setHasAnimated] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.6) {
+            setHasAnimated(true);
+          }
+        });
+      },
+      { threshold: [0.6] }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="bg-[#1B8F5A] py-10 md:py-12 px-4">
+    <section ref={sectionRef} className="bg-[#E61A27] py-10 md:py-12 px-4">
       <div className="max-w-[900px] mx-auto text-center">
-        <motion.h2
-          className="text-[24px] sm:text-[32px] md:text-[40px] font-bold text-white leading-tight"
-          style={{ fontFamily: 'var(--font-sans-inter)' }}
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          Keep Your Money. Ditch the Middleman.
-        </motion.h2>
-        <motion.p
-          className="mt-3 text-base md:text-lg text-white/90 max-w-2xl mx-auto"
+        <div className="flex justify-center items-center gap-2 flex-wrap">
+          <motion.span
+            className="text-[24px] sm:text-[32px] md:text-[40px] font-bold text-white leading-tight"
+            style={{ fontFamily: 'var(--font-sans-inter)' }}
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            animate={hasAnimated ? { x: 0 } : {}}
+            viewport={{ once: true }}
+          >
+            Keep Your Money.
+          </motion.span>
+          <motion.span
+            className="text-[24px] sm:text-[32px] md:text-[40px] font-bold text-white leading-tight"
+            style={{ fontFamily: 'var(--font-sans-inter)' }}
+            initial={{ opacity: 1, x: 0 }}
+            animate={hasAnimated ? { opacity: 0, x: 20, width: 0, marginLeft: 0 } : {}}
+            transition={{ duration: 0.6, ease: 'easeInOut' }}
+          >
+            Ditch the Middleman.
+          </motion.span>
+        </div>
+        <motion.div
+          className="mt-4 text-base md:text-lg text-white/90 max-w-2xl mx-auto space-y-1"
           style={{ fontFamily: 'var(--font-sans-inter)' }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
         >
-          You made $5K this month in orders and gave DoorDash $1,500 of it? We charge $25 and you would&apos;ve kept $4,975. Sounds like a no-brainer to us.
-        </motion.p>
+          <p>You made $5K this month in orders and gave DoorDash $1,500 of it?</p>
+          <p>We charge $25 and you would&apos;ve kept $4,975.</p>
+          <p className="font-semibold">Sounds like a no-brainer to us.</p>
+        </motion.div>
         <motion.a
           href="https://app.shortlistpass.com/signup"
           className="mt-6 inline-flex items-center justify-center gap-2 bg-white text-[#1A1A1A] font-bold text-base px-8 py-3 rounded-full hover:bg-white/90 transition-colors"
