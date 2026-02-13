@@ -2159,15 +2159,25 @@ export default function SmartPagesV2() {
       <IndustryCarousel />
 
       {/* Image divider between Industry and Tool Shed */}
-      <section className="w-full h-[300px] md:h-[450px] overflow-hidden">
+      <section className="w-full h-[250px] md:h-[350px] overflow-hidden">
         <img
           src="/image-above-tool-shed.png"
           alt=""
-          className="w-full h-full object-cover object-center md:object-[center_55%]"
+          className="w-full h-full object-cover object-center md:object-[center_35%]"
         />
       </section>
 
       <ToolShedSection />
+
+      {/* Image divider between Tool Shed and Social Proof */}
+      <section className="w-full h-[250px] md:h-[350px] overflow-hidden">
+        <img
+          src="/barber-shortlist.png"
+          alt=""
+          className="w-full h-full object-cover object-center md:object-[center_30%] brightness-[1.15]"
+        />
+      </section>
+
       <SocialProofStrip />
       <PricingSection />
       <StripeSpotlight />
