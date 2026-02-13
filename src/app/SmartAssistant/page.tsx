@@ -1782,7 +1782,7 @@ function SaveMoneyCallout() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="bg-[#E61A27] py-10 md:py-12 px-4">
+    <section ref={sectionRef} className="bg-[#1B8F5A] py-10 md:py-12 px-4">
       <div className="max-w-[900px] mx-auto text-center">
         <div className="flex justify-center items-center gap-2 flex-wrap">
           <motion.span
@@ -1799,8 +1799,8 @@ function SaveMoneyCallout() {
             className="text-[24px] sm:text-[32px] md:text-[40px] font-bold text-white leading-tight"
             style={{ fontFamily: 'var(--font-sans-inter)' }}
             initial={{ opacity: 1, x: 0 }}
-            animate={hasAnimated ? { opacity: 0, x: 20, width: 0, marginLeft: 0 } : {}}
-            transition={{ duration: 0.6, ease: 'easeInOut' }}
+            animate={hasAnimated ? { opacity: 0, x: 30, width: 0, marginLeft: 0 } : {}}
+            transition={{ duration: 2.5, ease: 'easeInOut', delay: 0.5 }}
           >
             Ditch the Middleman.
           </motion.span>
