@@ -1819,14 +1819,15 @@ function SaveMoneyCallout() {
 
         {/* Savings line */}
         <motion.p
-          className="mt-10 text-xl md:text-2xl font-semibold text-white"
+          className="mt-10 text-xl md:text-2xl font-bold text-white max-w-2xl mx-auto leading-relaxed"
           style={{ fontFamily: 'var(--font-sans-inter)' }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.3 }}
         >
-          That&apos;s <span className="underline decoration-2 underline-offset-4">$17,700 saved</span> in your first year.
+          DoorDash and GrubHub take 30% on $5K per month.<br className="hidden sm:inline" />
+          We ask for $25 and you keep the <span className="underline decoration-2 underline-offset-4">$4,975</span>.
         </motion.p>
 
         {/* CTA Button */}
