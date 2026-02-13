@@ -2158,25 +2158,25 @@ export default function SmartPagesV2() {
       <SolutionSection />
       <IndustryCarousel />
 
-      {/* Image divider between Industry and Tool Shed */}
-      <section className="w-full h-[250px] md:h-[350px] overflow-hidden">
-        <img
-          src="/image-above-tool-shed.png"
-          alt=""
-          className="w-full h-full object-cover object-center md:object-[center_35%]"
-        />
-      </section>
+      {/* Parallax image divider between Industry and Tool Shed */}
+      <section
+        className="w-full h-[250px] md:h-[350px] bg-cover bg-center bg-scroll md:bg-fixed brightness-[1.15]"
+        style={{
+          backgroundImage: 'url(/image-above-tool-shed.png)',
+          backgroundPosition: 'center 35%',
+        }}
+      />
 
       <ToolShedSection />
 
-      {/* Image divider between Tool Shed and Social Proof */}
-      <section className="w-full h-[250px] md:h-[350px] overflow-hidden">
-        <img
-          src="/barber-shortlist.png"
-          alt=""
-          className="w-full h-full object-cover object-center md:object-[center_30%] brightness-[1.15]"
-        />
-      </section>
+      {/* Parallax image divider between Tool Shed and Social Proof */}
+      <section
+        className="w-full h-[250px] md:h-[350px] bg-cover bg-center bg-scroll md:bg-fixed brightness-[1.15]"
+        style={{
+          backgroundImage: 'url(/barber-shortlist.png)',
+          backgroundPosition: 'center 30%',
+        }}
+      />
 
       <SocialProofStrip />
       <PricingSection />
