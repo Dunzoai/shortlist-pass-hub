@@ -1791,24 +1791,29 @@ function SaveMoneyCallout() {
   return (
     <section ref={sectionRef} className="bg-[#1B8F5A] py-10 md:py-12 px-4">
       <div className="max-w-[900px] mx-auto text-center">
-        {/* Desktop: single line */}
-        <div className="hidden md:block h-[50px] relative">
+        {/* Desktop: single line with sliding animation */}
+        <div className="hidden md:flex h-[50px] justify-center items-center overflow-hidden">
           <motion.span
-            className="text-[40px] font-bold text-white leading-tight absolute left-1/2 -translate-x-1/2 whitespace-nowrap"
+            className="text-[40px] font-bold text-white leading-tight whitespace-nowrap"
             style={{ fontFamily: 'var(--font-sans-inter)' }}
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
           >
             Keep Your Money.
-            <motion.span
-              className="ml-3"
-              initial={{ opacity: 1 }}
-              animate={hasAnimated ? { opacity: 0 } : { opacity: 1 }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}
-            >
-              Ditch the Middleman.
-            </motion.span>
+          </motion.span>
+          <motion.span
+            className="text-[40px] font-bold text-white leading-tight whitespace-nowrap overflow-hidden"
+            style={{ fontFamily: 'var(--font-sans-inter)' }}
+            initial={{ opacity: 1, width: 'auto', marginLeft: '12px' }}
+            animate={hasAnimated ? { opacity: 0, width: 0, marginLeft: 0 } : { opacity: 1, width: 'auto', marginLeft: '12px' }}
+            transition={{
+              opacity: { duration: 0.8, ease: 'easeOut' },
+              width: { duration: 0.6, delay: 0.6, ease: 'easeInOut' },
+              marginLeft: { duration: 0.6, delay: 0.6, ease: 'easeInOut' }
+            }}
+          >
+            Ditch the Middleman.
           </motion.span>
         </div>
         {/* Mobile: two lines stacked */}
