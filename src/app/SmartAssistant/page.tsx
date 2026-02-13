@@ -1784,7 +1784,7 @@ function SaveMoneyCallout() {
   return (
     <section ref={sectionRef} className="bg-[#1B8F5A] py-10 md:py-12 px-4">
       <div className="max-w-[900px] mx-auto text-center">
-        <div className="flex justify-center items-center gap-3 whitespace-nowrap overflow-hidden">
+        <div className="flex justify-center items-center gap-3">
           <motion.span
             className="text-[24px] sm:text-[32px] md:text-[40px] font-bold text-white leading-tight"
             style={{ fontFamily: 'var(--font-sans-inter)' }}
@@ -1795,17 +1795,20 @@ function SaveMoneyCallout() {
             Keep Your Money.
           </motion.span>
           <motion.span
-            className="text-[24px] sm:text-[32px] md:text-[40px] font-bold text-white/70 leading-tight overflow-hidden"
+            className="text-[24px] sm:text-[32px] md:text-[40px] font-bold text-white leading-tight"
             style={{ fontFamily: 'var(--font-sans-inter)' }}
-            initial={{ opacity: 1 }}
-            animate={hasAnimated ? { opacity: 0, width: 0, paddingLeft: 0, paddingRight: 0 } : {}}
-            transition={{ duration: 0.9, ease: 'easeOut' }}
+            initial={{ opacity: 1, width: 'auto' }}
+            animate={hasAnimated ? { opacity: 0, width: 0 } : { opacity: 1, width: 'auto' }}
+            transition={{
+              opacity: { duration: 0.6, delay: 0.5, ease: 'easeOut' },
+              width: { duration: 0.5, delay: 1.1, ease: 'easeInOut' }
+            }}
           >
             Ditch the Middleman.
           </motion.span>
         </div>
         <motion.div
-          className="mt-4 text-base md:text-lg text-white/90 max-w-2xl mx-auto space-y-1"
+          className="mt-2 text-base md:text-lg text-white/90 max-w-2xl mx-auto space-y-1"
           style={{ fontFamily: 'var(--font-sans-inter)' }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
