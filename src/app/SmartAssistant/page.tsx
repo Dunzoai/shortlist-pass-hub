@@ -1892,49 +1892,20 @@ const howItWorksSteps = [
 ];
 
 function HowItWorksSection() {
-  const scrollRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
 
-  // Detect mobile
+  // Auto-advance carousel
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  // Auto-scroll on mobile
-  useEffect(() => {
-    if (!isMobile) return;
     const interval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % howItWorksSteps.length);
-    }, 4000);
+    }, 5000);
     return () => clearInterval(interval);
-  }, [isMobile]);
+  }, []);
 
-  // Scroll to active card on mobile
-  useEffect(() => {
-    if (!isMobile || !scrollRef.current) return;
-    const container = scrollRef.current;
-    const cards = container.children;
-    if (cards[activeIndex]) {
-      const card = cards[activeIndex] as HTMLElement;
-      container.scrollTo({ left: card.offsetLeft - 16, behavior: 'smooth' });
-    }
-  }, [activeIndex, isMobile]);
+  const goToPrev = () => setActiveIndex((prev) => (prev - 1 + howItWorksSteps.length) % howItWorksSteps.length);
+  const goToNext = () => setActiveIndex((prev) => (prev + 1) % howItWorksSteps.length);
 
-  // Handle manual scroll
-  const handleScroll = () => {
-    if (!scrollRef.current || !isMobile) return;
-    const container = scrollRef.current;
-    const scrollLeft = container.scrollLeft;
-    const cardWidth = container.scrollWidth / howItWorksSteps.length;
-    const newIndex = Math.round(scrollLeft / cardWidth);
-    if (newIndex !== activeIndex && newIndex >= 0 && newIndex < howItWorksSteps.length) {
-      setActiveIndex(newIndex);
-    }
-  };
+  const currentStep = howItWorksSteps[activeIndex];
 
   return (
     <section className="relative bg-[#1A1A1A] py-16 md:py-24 px-4">
@@ -1960,81 +1931,93 @@ function HowItWorksSection() {
           Get your SmartAssistant live in minutes, not days.
         </motion.p>
 
-        {/* Desktop: 3 columns */}
-        <div className="hidden md:grid md:grid-cols-3 gap-8 mt-12">
-          {howItWorksSteps.map((step, i) => (
-            <motion.div
-              key={step.number}
-              className="flex flex-col items-center text-center"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
+        {/* Carousel */}
+        <div className="mt-12 relative">
+          {/* Desktop: Side by side layout */}
+          <div className="hidden md:flex items-center gap-12">
+            {/* Left arrow */}
+            <button
+              onClick={goToPrev}
+              className="flex-shrink-0 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition-colors flex items-center justify-center"
+              aria-label="Previous step"
             >
-              <div className="w-12 h-12 rounded-full bg-[#F4F1EC] flex items-center justify-center mb-4">
-                <span className="text-[#1A1A1A] font-bold text-xl" style={{ fontFamily: 'var(--font-sans-inter)' }}>
-                  {step.number}
-                </span>
-              </div>
-              <h3 className="text-xl font-semibold text-[#F5F5F5] mb-2" style={{ fontFamily: 'var(--font-sans-inter)' }}>
-                {step.title}
-              </h3>
-              <p className="text-[#F5F5F5]/60 text-sm leading-relaxed mb-6" style={{ fontFamily: 'var(--font-sans-inter)' }}>
-                {step.description}
-              </p>
-              <div className="w-full max-w-[220px] rounded-2xl overflow-hidden shadow-2xl shadow-black/40">
-                <img
-                  src={step.image}
-                  alt={step.title}
-                  className="w-full h-auto"
-                />
-              </div>
-            </motion.div>
-          ))}
-        </div>
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
 
-        {/* Mobile: Swipable carousel */}
-        <div
-          ref={scrollRef}
-          onScroll={handleScroll}
-          className="md:hidden flex overflow-x-auto snap-x snap-mandatory scrollbar-hide mt-10 -mx-4 px-4 gap-4"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-        >
-          {howItWorksSteps.map((step) => (
-            <div
-              key={step.number}
-              className="flex-shrink-0 w-[85vw] snap-center flex flex-col items-center text-center"
-            >
-              <div className="w-10 h-10 rounded-full bg-[#F4F1EC] flex items-center justify-center mb-3">
-                <span className="text-[#1A1A1A] font-bold text-lg" style={{ fontFamily: 'var(--font-sans-inter)' }}>
-                  {step.number}
-                </span>
+            {/* Content */}
+            <div className="flex-1 flex items-center gap-10">
+              {/* Text side */}
+              <div className="w-[35%] flex-shrink-0">
+                <div className="w-14 h-14 rounded-full bg-[#F4F1EC] flex items-center justify-center mb-5">
+                  <span className="text-[#1A1A1A] font-bold text-2xl" style={{ fontFamily: 'var(--font-sans-inter)' }}>
+                    {currentStep.number}
+                  </span>
+                </div>
+                <h3 className="text-2xl font-semibold text-[#F5F5F5] mb-3" style={{ fontFamily: 'var(--font-sans-inter)' }}>
+                  {currentStep.title}
+                </h3>
+                <p className="text-[#F5F5F5]/60 text-base leading-relaxed" style={{ fontFamily: 'var(--font-sans-inter)' }}>
+                  {currentStep.description}
+                </p>
               </div>
-              <h3 className="text-lg font-semibold text-[#F5F5F5] mb-2" style={{ fontFamily: 'var(--font-sans-inter)' }}>
-                {step.title}
-              </h3>
-              <p className="text-[#F5F5F5]/60 text-sm leading-relaxed mb-4 px-4" style={{ fontFamily: 'var(--font-sans-inter)' }}>
-                {step.description}
-              </p>
-              <div className="w-full max-w-[200px] rounded-2xl overflow-hidden shadow-2xl shadow-black/40">
-                <img
-                  src={step.image}
-                  alt={step.title}
-                  className="w-full h-auto"
-                />
+
+              {/* Image side */}
+              <div className="flex-1">
+                <div className="bg-white/5 border border-white/10 rounded-2xl p-3 shadow-2xl shadow-black/40">
+                  <img
+                    src={currentStep.image}
+                    alt={currentStep.title}
+                    className="w-full h-auto rounded-xl"
+                  />
+                </div>
               </div>
             </div>
-          ))}
+
+            {/* Right arrow */}
+            <button
+              onClick={goToNext}
+              className="flex-shrink-0 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition-colors flex items-center justify-center"
+              aria-label="Next step"
+            >
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Mobile: Stacked layout */}
+          <div className="md:hidden flex flex-col items-center text-center">
+            <div className="w-12 h-12 rounded-full bg-[#F4F1EC] flex items-center justify-center mb-4">
+              <span className="text-[#1A1A1A] font-bold text-xl" style={{ fontFamily: 'var(--font-sans-inter)' }}>
+                {currentStep.number}
+              </span>
+            </div>
+            <h3 className="text-xl font-semibold text-[#F5F5F5] mb-2" style={{ fontFamily: 'var(--font-sans-inter)' }}>
+              {currentStep.title}
+            </h3>
+            <p className="text-[#F5F5F5]/60 text-sm leading-relaxed mb-6 px-4" style={{ fontFamily: 'var(--font-sans-inter)' }}>
+              {currentStep.description}
+            </p>
+            <div className="w-full bg-white/5 border border-white/10 rounded-2xl p-2 shadow-2xl shadow-black/40">
+              <img
+                src={currentStep.image}
+                alt={currentStep.title}
+                className="w-full h-auto rounded-xl"
+              />
+            </div>
+          </div>
         </div>
 
-        {/* Mobile: Dots indicator */}
-        <div className="md:hidden flex justify-center gap-2 mt-6">
+        {/* Dots indicator */}
+        <div className="flex justify-center gap-2 mt-8">
           {howItWorksSteps.map((_, i) => (
             <button
               key={i}
               onClick={() => setActiveIndex(i)}
-              className={`w-2 h-2 rounded-full transition-all ${
-                i === activeIndex ? 'bg-[#F4F1EC] w-6' : 'bg-[#F5F5F5]/30'
+              className={`h-2 rounded-full transition-all ${
+                i === activeIndex ? 'bg-[#F4F1EC] w-8' : 'bg-[#F5F5F5]/30 w-2'
               }`}
             />
           ))}
