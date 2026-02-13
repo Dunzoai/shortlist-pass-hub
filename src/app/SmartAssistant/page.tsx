@@ -1898,7 +1898,7 @@ function HowItWorksSection() {
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % howItWorksSteps.length);
-    }, 5000);
+    }, 7000);
     return () => clearInterval(interval);
   }, []);
 
@@ -1965,7 +1965,7 @@ function HowItWorksSection() {
 
               {/* Image side */}
               <div className="flex-1">
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-3 shadow-2xl shadow-black/40">
+                <div className="bg-[#F4F1EC] rounded-2xl p-3 shadow-2xl shadow-black/40">
                   <img
                     src={currentStep.image}
                     alt={currentStep.title}
@@ -2000,7 +2000,7 @@ function HowItWorksSection() {
             <p className="text-[#F5F5F5]/60 text-sm leading-relaxed mb-6 px-4" style={{ fontFamily: 'var(--font-sans-inter)' }}>
               {currentStep.description}
             </p>
-            <div className="w-full bg-white/5 border border-white/10 rounded-2xl p-2 shadow-2xl shadow-black/40">
+            <div className="w-full bg-[#F4F1EC] rounded-2xl p-2 shadow-2xl shadow-black/40">
               <img
                 src={currentStep.image}
                 alt={currentStep.title}
