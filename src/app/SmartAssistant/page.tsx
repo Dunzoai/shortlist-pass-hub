@@ -1791,9 +1791,30 @@ function SaveMoneyCallout() {
   return (
     <section ref={sectionRef} className="bg-[#1B8F5A] py-10 md:py-12 px-4">
       <div className="max-w-[900px] mx-auto text-center">
-        <div className="flex justify-center items-center gap-3">
+        {/* Desktop: single line */}
+        <div className="hidden md:block h-[50px] relative">
           <motion.span
-            className="text-[24px] sm:text-[32px] md:text-[40px] font-bold text-white leading-tight"
+            className="text-[40px] font-bold text-white leading-tight absolute left-1/2 -translate-x-1/2 whitespace-nowrap"
+            style={{ fontFamily: 'var(--font-sans-inter)' }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+          >
+            Keep Your Money.
+            <motion.span
+              className="ml-3"
+              initial={{ opacity: 1 }}
+              animate={hasAnimated ? { opacity: 0 } : { opacity: 1 }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
+            >
+              Ditch the Middleman.
+            </motion.span>
+          </motion.span>
+        </div>
+        {/* Mobile: two lines stacked */}
+        <div className="md:hidden h-[70px] relative flex flex-col items-center justify-center">
+          <motion.span
+            className="text-[24px] sm:text-[28px] font-bold text-white leading-tight"
             style={{ fontFamily: 'var(--font-sans-inter)' }}
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -1802,14 +1823,11 @@ function SaveMoneyCallout() {
             Keep Your Money.
           </motion.span>
           <motion.span
-            className="text-[24px] sm:text-[32px] md:text-[40px] font-bold text-white leading-tight"
+            className="text-[24px] sm:text-[28px] font-bold text-white leading-tight"
             style={{ fontFamily: 'var(--font-sans-inter)' }}
-            initial={{ opacity: 1, width: 'auto' }}
-            animate={hasAnimated ? { opacity: 0, width: 0 } : { opacity: 1, width: 'auto' }}
-            transition={{
-              opacity: { duration: 0.8, ease: 'easeOut' },
-              width: { duration: 0.6, delay: 0.8, ease: 'easeInOut' }
-            }}
+            initial={{ opacity: 1 }}
+            animate={hasAnimated ? { opacity: 0 } : { opacity: 1 }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
           >
             Ditch the Middleman.
           </motion.span>
@@ -2050,13 +2068,13 @@ function HowItWorksSection() {
                 </p>
               </div>
 
-              {/* Image side */}
+              {/* Image side - fixed height to prevent layout bounce */}
               <div className="flex-1">
-                <div className="bg-[#F4F1EC] rounded-2xl p-3 shadow-2xl shadow-black/40">
+                <div className="bg-[#F4F1EC] rounded-2xl p-3 shadow-2xl shadow-black/40 h-[400px] flex items-center justify-center">
                   <img
                     src={currentStep.image}
                     alt={currentStep.title}
-                    className="w-full h-auto rounded-xl"
+                    className="max-w-full max-h-full rounded-xl object-contain"
                   />
                 </div>
               </div>
@@ -2074,7 +2092,7 @@ function HowItWorksSection() {
             </button>
           </div>
 
-          {/* Mobile: Stacked layout */}
+          {/* Mobile: Stacked layout - fixed height image container */}
           <div className="md:hidden flex flex-col items-center text-center">
             <div className="w-12 h-12 rounded-full bg-[#F4F1EC] flex items-center justify-center mb-4">
               <span className="text-[#1A1A1A] font-bold text-xl" style={{ fontFamily: 'var(--font-sans-inter)' }}>
@@ -2087,11 +2105,11 @@ function HowItWorksSection() {
             <p className="text-[#F5F5F5]/60 text-sm leading-relaxed mb-6 px-4" style={{ fontFamily: 'var(--font-sans-inter)' }}>
               {currentStep.description}
             </p>
-            <div className="w-full bg-[#F4F1EC] rounded-2xl p-2 shadow-2xl shadow-black/40">
+            <div className="w-full bg-[#F4F1EC] rounded-2xl p-2 shadow-2xl shadow-black/40 h-[320px] flex items-center justify-center">
               <img
                 src={currentStep.image}
                 alt={currentStep.title}
-                className="w-full h-auto rounded-xl"
+                className="max-w-full max-h-full rounded-xl object-contain"
               />
             </div>
           </div>
