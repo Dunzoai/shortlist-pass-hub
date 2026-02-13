@@ -871,6 +871,67 @@ function GrainOverlay() {
   );
 }
 
+function ParallaxSection({ image, desktopPosition = 'center 30%' }: { image: string; desktopPosition?: string }) {
+  const [isMobile, setIsMobile] = useState(false);
+  const imageRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  // Detect mobile
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Mobile parallax via JS
+  useEffect(() => {
+    if (!isMobile) return;
+
+    const handleScroll = () => {
+      if (!imageRef.current || !sectionRef.current) return;
+
+      const rect = sectionRef.current.getBoundingClientRect();
+      const scrollProgress = -rect.top;
+
+      // Only apply when section is in view
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        imageRef.current.style.transform = `translateY(${scrollProgress * 0.4}px)`;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isMobile]);
+
+  // MOBILE RENDER
+  if (isMobile) {
+    return (
+      <section ref={sectionRef} className="relative h-[250px] overflow-hidden">
+        <div
+          ref={imageRef}
+          className="absolute -top-[30%] left-0 w-full h-[160%] bg-cover bg-no-repeat will-change-transform brightness-[1.15]"
+          style={{
+            backgroundImage: `url(${image})`,
+            backgroundPosition: 'center center'
+          }}
+        />
+      </section>
+    );
+  }
+
+  // DESKTOP RENDER (uses CSS parallax)
+  return (
+    <section
+      className="w-full h-[350px] bg-cover bg-fixed bg-no-repeat brightness-[1.15]"
+      style={{
+        backgroundImage: `url(${image})`,
+        backgroundPosition: desktopPosition,
+      }}
+    />
+  );
+}
+
 function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-[120px] md:pt-[120px] pb-8 overflow-x-clip" style={{ background: 'linear-gradient(180deg, #1A1A1A 0%, #2A2A2A 100%)' }}>
@@ -2159,24 +2220,12 @@ export default function SmartPagesV2() {
       <IndustryCarousel />
 
       {/* Parallax image divider between Industry and Tool Shed */}
-      <section
-        className="w-full h-[250px] md:h-[350px] bg-cover bg-center bg-scroll md:bg-fixed brightness-[1.15]"
-        style={{
-          backgroundImage: 'url(/image-above-tool-shed.png)',
-          backgroundPosition: 'center 35%',
-        }}
-      />
+      <ParallaxSection image="/image-above-tool-shed.png" desktopPosition="center 35%" />
 
       <ToolShedSection />
 
       {/* Parallax image divider between Tool Shed and Social Proof */}
-      <section
-        className="w-full h-[250px] md:h-[350px] bg-cover bg-center bg-scroll md:bg-fixed brightness-[1.15]"
-        style={{
-          backgroundImage: 'url(/barber-shortlist.png)',
-          backgroundPosition: 'center 30%',
-        }}
-      />
+      <ParallaxSection image="/barber-shortlist.png" desktopPosition="center 30%" />
 
       <SocialProofStrip />
       <PricingSection />
