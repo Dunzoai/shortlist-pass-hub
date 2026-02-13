@@ -1894,31 +1894,45 @@ const howItWorksSteps = [
 function HowItWorksSection() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Auto-scroll on mobile
   useEffect(() => {
+    if (!isMobile) return;
     const interval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % howItWorksSteps.length);
     }, 4000);
     return () => clearInterval(interval);
-  }, []);
+  }, [isMobile]);
 
   // Scroll to active card on mobile
   useEffect(() => {
-    if (scrollRef.current && window.innerWidth < 768) {
-      const cardWidth = scrollRef.current.scrollWidth / howItWorksSteps.length;
-      scrollRef.current.scrollTo({ left: cardWidth * activeIndex, behavior: 'smooth' });
+    if (!isMobile || !scrollRef.current) return;
+    const container = scrollRef.current;
+    const cards = container.children;
+    if (cards[activeIndex]) {
+      const card = cards[activeIndex] as HTMLElement;
+      container.scrollTo({ left: card.offsetLeft - 16, behavior: 'smooth' });
     }
-  }, [activeIndex]);
+  }, [activeIndex, isMobile]);
 
   // Handle manual scroll
   const handleScroll = () => {
-    if (scrollRef.current) {
-      const cardWidth = scrollRef.current.scrollWidth / howItWorksSteps.length;
-      const newIndex = Math.round(scrollRef.current.scrollLeft / cardWidth);
-      if (newIndex !== activeIndex) {
-        setActiveIndex(newIndex);
-      }
+    if (!scrollRef.current || !isMobile) return;
+    const container = scrollRef.current;
+    const scrollLeft = container.scrollLeft;
+    const cardWidth = container.scrollWidth / howItWorksSteps.length;
+    const newIndex = Math.round(scrollLeft / cardWidth);
+    if (newIndex !== activeIndex && newIndex >= 0 && newIndex < howItWorksSteps.length) {
+      setActiveIndex(newIndex);
     }
   };
 
@@ -1968,11 +1982,11 @@ function HowItWorksSection() {
               <p className="text-[#F5F5F5]/60 text-sm leading-relaxed mb-6" style={{ fontFamily: 'var(--font-sans-inter)' }}>
                 {step.description}
               </p>
-              <div className="w-full aspect-[9/16] max-w-[220px] rounded-2xl overflow-hidden shadow-2xl shadow-black/40">
+              <div className="w-full max-w-[220px] rounded-2xl overflow-hidden shadow-2xl shadow-black/40">
                 <img
                   src={step.image}
                   alt={step.title}
-                  className="w-full h-full object-cover object-top"
+                  className="w-full h-auto"
                 />
               </div>
             </motion.div>
@@ -2002,11 +2016,11 @@ function HowItWorksSection() {
               <p className="text-[#F5F5F5]/60 text-sm leading-relaxed mb-4 px-4" style={{ fontFamily: 'var(--font-sans-inter)' }}>
                 {step.description}
               </p>
-              <div className="w-full max-w-[200px] aspect-[9/16] rounded-2xl overflow-hidden shadow-2xl shadow-black/40">
+              <div className="w-full max-w-[200px] rounded-2xl overflow-hidden shadow-2xl shadow-black/40">
                 <img
                   src={step.image}
                   alt={step.title}
-                  className="w-full h-full object-cover object-top"
+                  className="w-full h-auto"
                 />
               </div>
             </div>
