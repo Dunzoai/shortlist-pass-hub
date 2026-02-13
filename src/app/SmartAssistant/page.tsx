@@ -2163,7 +2163,7 @@ export default function SmartPagesV2() {
         <img
           src="/image-above-tool-shed.png"
           alt=""
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover object-center md:object-[center_30%]"
         />
       </section>
 
