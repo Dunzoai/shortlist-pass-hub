@@ -1760,7 +1760,7 @@ const stripeFeatures = [
 
 function SaveMoneyCallout() {
   return (
-    <section className="bg-[#FF6B2B] py-10 md:py-12 px-4">
+    <section className="bg-[#1B8F5A] py-10 md:py-12 px-4">
       <div className="max-w-[900px] mx-auto text-center">
         <motion.h2
           className="text-[24px] sm:text-[32px] md:text-[40px] font-bold text-white leading-tight"
@@ -1769,17 +1769,17 @@ function SaveMoneyCallout() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          They take 30%. We take $25.
+          Keep Your Money. Ditch the Middleman.
         </motion.h2>
         <motion.p
-          className="mt-3 text-base md:text-lg text-white/90"
+          className="mt-3 text-base md:text-lg text-white/90 max-w-2xl mx-auto"
           style={{ fontFamily: 'var(--font-sans-inter)' }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
         >
-          Keep the $4,975, plus get the tools to actually grow your business.
+          You made $5K this month in orders and gave DoorDash $1,500 of it? We charge $25 and you would&apos;ve kept $4,975. Sounds like a no-brainer to us.
         </motion.p>
         <motion.a
           href="https://app.shortlistpass.com/signup"
