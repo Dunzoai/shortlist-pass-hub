@@ -2159,11 +2159,11 @@ export default function SmartPagesV2() {
       <IndustryCarousel />
 
       {/* Image divider between Industry and Tool Shed */}
-      <section className="w-full h-[250px] md:h-[350px] overflow-hidden">
+      <section className="w-full h-[300px] md:h-[450px] overflow-hidden">
         <img
           src="/image-above-tool-shed.png"
           alt=""
-          className="w-full h-full object-cover object-center md:object-[center_30%]"
+          className="w-full h-full object-cover object-center md:object-[center_55%]"
         />
       </section>
 
