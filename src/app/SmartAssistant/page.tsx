@@ -1763,11 +1763,15 @@ function SaveMoneyCallout() {
   const [hasAnimated, setHasAnimated] = useState(false);
 
   useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting && entry.intersectionRatio > 0.6) {
-            setHasAnimated(true);
+            // Wait 1.5 seconds so user can read "Ditch the Middleman" before it fades
+            timeoutId = setTimeout(() => {
+              setHasAnimated(true);
+            }, 1500);
           }
         });
       },
@@ -1778,7 +1782,10 @@ function SaveMoneyCallout() {
       observer.observe(sectionRef.current);
     }
 
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      if (timeoutId) clearTimeout(timeoutId);
+    };
   }, []);
 
   return (
@@ -1800,8 +1807,8 @@ function SaveMoneyCallout() {
             initial={{ opacity: 1, width: 'auto' }}
             animate={hasAnimated ? { opacity: 0, width: 0 } : { opacity: 1, width: 'auto' }}
             transition={{
-              opacity: { duration: 0.6, delay: 0.5, ease: 'easeOut' },
-              width: { duration: 0.5, delay: 1.1, ease: 'easeInOut' }
+              opacity: { duration: 0.8, ease: 'easeOut' },
+              width: { duration: 0.6, delay: 0.8, ease: 'easeInOut' }
             }}
           >
             Ditch the Middleman.
