@@ -1784,23 +1784,22 @@ function SaveMoneyCallout() {
   return (
     <section ref={sectionRef} className="bg-[#1B8F5A] py-10 md:py-12 px-4">
       <div className="max-w-[900px] mx-auto text-center">
-        <div className="flex justify-center items-center gap-2 flex-wrap">
+        <div className="flex justify-center items-center gap-3 whitespace-nowrap overflow-hidden">
           <motion.span
             className="text-[24px] sm:text-[32px] md:text-[40px] font-bold text-white leading-tight"
             style={{ fontFamily: 'var(--font-sans-inter)' }}
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            animate={hasAnimated ? { x: 0 } : {}}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
           >
             Keep Your Money.
           </motion.span>
           <motion.span
-            className="text-[24px] sm:text-[32px] md:text-[40px] font-bold text-white leading-tight"
+            className="text-[24px] sm:text-[32px] md:text-[40px] font-bold text-white/70 leading-tight overflow-hidden"
             style={{ fontFamily: 'var(--font-sans-inter)' }}
-            initial={{ opacity: 1, x: 0 }}
-            animate={hasAnimated ? { opacity: 0, x: 30, width: 0, marginLeft: 0 } : {}}
-            transition={{ duration: 2.5, ease: 'easeInOut', delay: 0.5 }}
+            initial={{ opacity: 1 }}
+            animate={hasAnimated ? { opacity: 0, width: 0, paddingLeft: 0, paddingRight: 0 } : {}}
+            transition={{ duration: 0.9, ease: 'easeOut' }}
           >
             Ditch the Middleman.
           </motion.span>
