@@ -934,18 +934,19 @@ function ParallaxSection({ image, desktopPosition = 'center 30%' }: { image: str
 
 function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-end justify-center pb-16 md:pb-24 overflow-hidden">
-      {/* Hero background image */}
+    <section className="relative flex flex-col md:min-h-screen md:flex-row md:items-end md:justify-center overflow-hidden">
+      {/* Hero background image - 15vh strip on mobile, full on desktop */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        className="relative h-[15vh] md:absolute md:inset-0 md:h-auto bg-cover bg-top md:bg-center bg-no-repeat"
         style={{ backgroundImage: 'url(/barber-shortlist.png)' }}
-      />
-      {/* Gradient overlay for readability */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/10" />
+      >
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-black/50 md:bg-gradient-to-t md:from-black/70 md:via-black/30 md:to-black/10" />
+      </div>
 
       {/* Frosted glass card */}
       <motion.div
-        className="relative z-10 mx-4 px-8 py-6 md:px-12 md:py-8 backdrop-blur-xl bg-white/30 border border-white/40 rounded-3xl shadow-lg max-w-md w-full"
+        className="relative z-10 mx-4 -mt-8 mb-8 px-8 py-6 md:mt-0 md:mb-24 md:px-12 md:py-8 backdrop-blur-xl bg-white/30 border border-white/40 rounded-3xl shadow-lg max-w-md w-full md:mx-auto"
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
