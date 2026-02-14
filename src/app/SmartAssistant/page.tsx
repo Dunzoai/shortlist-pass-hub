@@ -2056,10 +2056,10 @@ function HowItWorksSection() {
               </svg>
             </button>
 
-            {/* Content */}
-            <div className="flex-1 flex items-center gap-10">
-              {/* Text side */}
-              <div className="w-[35%] flex-shrink-0">
+            {/* Content - fixed height container */}
+            <div className="flex-1 flex items-center gap-10 h-[400px]">
+              {/* Text side - fixed height to match image */}
+              <div className="w-[35%] flex-shrink-0 h-full flex flex-col justify-center">
                 <div className="w-14 h-14 rounded-full bg-[#F4F1EC] flex items-center justify-center mb-5">
                   <span className="text-[#1A1A1A] font-bold text-2xl" style={{ fontFamily: 'var(--font-sans-inter)' }}>
                     {currentStep.number}
@@ -2074,8 +2074,8 @@ function HowItWorksSection() {
               </div>
 
               {/* Image side - fixed height to prevent layout bounce */}
-              <div className="flex-1">
-                <div className="bg-[#F4F1EC] rounded-2xl p-3 shadow-2xl shadow-black/40 h-[400px] flex items-center justify-center">
+              <div className="flex-1 h-full">
+                <div className="bg-[#F4F1EC] rounded-2xl p-3 shadow-2xl shadow-black/40 h-full flex items-center justify-center">
                   <img
                     src={currentStep.image}
                     alt={currentStep.title}
@@ -2097,25 +2097,31 @@ function HowItWorksSection() {
             </button>
           </div>
 
-          {/* Mobile: Stacked layout - fixed height image container */}
-          <div className="md:hidden flex flex-col items-center text-center">
-            <div className="w-12 h-12 rounded-full bg-[#F4F1EC] flex items-center justify-center mb-4">
-              <span className="text-[#1A1A1A] font-bold text-xl" style={{ fontFamily: 'var(--font-sans-inter)' }}>
-                {currentStep.number}
-              </span>
+          {/* Mobile: Stacked layout - fixed height containers */}
+          <div className="md:hidden flex flex-col items-center text-center h-[500px]">
+            {/* Text area - fixed height */}
+            <div className="h-[160px] flex flex-col items-center justify-center">
+              <div className="w-12 h-12 rounded-full bg-[#F4F1EC] flex items-center justify-center mb-4">
+                <span className="text-[#1A1A1A] font-bold text-xl" style={{ fontFamily: 'var(--font-sans-inter)' }}>
+                  {currentStep.number}
+                </span>
+              </div>
+              <h3 className="text-xl font-semibold text-[#F5F5F5] mb-2" style={{ fontFamily: 'var(--font-sans-inter)' }}>
+                {currentStep.title}
+              </h3>
+              <p className="text-[#F5F5F5]/60 text-sm leading-relaxed px-4" style={{ fontFamily: 'var(--font-sans-inter)' }}>
+                {currentStep.description}
+              </p>
             </div>
-            <h3 className="text-xl font-semibold text-[#F5F5F5] mb-2" style={{ fontFamily: 'var(--font-sans-inter)' }}>
-              {currentStep.title}
-            </h3>
-            <p className="text-[#F5F5F5]/60 text-sm leading-relaxed mb-6 px-4" style={{ fontFamily: 'var(--font-sans-inter)' }}>
-              {currentStep.description}
-            </p>
-            <div className="w-full bg-[#F4F1EC] rounded-2xl p-2 shadow-2xl shadow-black/40 h-[320px] flex items-center justify-center">
-              <img
-                src={currentStep.image}
-                alt={currentStep.title}
-                className="max-w-full max-h-full rounded-xl object-contain"
-              />
+            {/* Image area - fixed height */}
+            <div className="w-full flex-1 mt-4">
+              <div className="bg-[#F4F1EC] rounded-2xl p-2 shadow-2xl shadow-black/40 h-full flex items-center justify-center">
+                <img
+                  src={currentStep.image}
+                  alt={currentStep.title}
+                  className="max-w-full max-h-full rounded-xl object-contain"
+                />
+              </div>
             </div>
           </div>
         </div>
