@@ -403,7 +403,7 @@ export default function Home() {
       title: "Smart Assistant",
       subhead: "One clear place customers trust.",
       description: "Once people want to learn more, they need a clear, reliable place to land. Smart Assistant brings everything about your business together — answers, hours, menus, links, updates, and booking — so customers don't have to hunt or second-guess. It's the framework that holds your business online, and makes it feel organized and real.",
-      href: "/SmartAssistant",
+      href: "/smartassistant",
       image: "/house-frame.png",
       cta: "Build your foundation",
     },

@@ -7,11 +7,11 @@ Documentation for the SmartAssistant marketing/pricing page and how it connects 
 ## 1. KEY FILES
 
 ### Main Landing/Pricing Page
-- `src/app/SmartAssistant/page.tsx` — Full marketing page with hero, features, pricing section (#pricing), FAQs, and final CTA
+- `src/app/smartassistant/page.tsx` — Full marketing page with hero, features, pricing section (#pricing), FAQs, and final CTA
 
 ### Navigation Links
-- `src/components/Nav.tsx` — Desktop and mobile nav links to `/SmartAssistant`
-- `src/app/page.tsx` — Homepage card linking to `/SmartAssistant`
+- `src/components/Nav.tsx` — Desktop and mobile nav links to `/smartassistant`
+- `src/app/page.tsx` — Homepage card linking to `/smartassistant`
 
 ---
 
