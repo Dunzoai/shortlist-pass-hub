@@ -934,147 +934,75 @@ function ParallaxSection({ image, desktopPosition = 'center 30%' }: { image: str
 
 function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-[120px] md:pt-[120px] pb-8 overflow-x-clip" style={{ background: 'linear-gradient(180deg, #1A1A1A 0%, #2A2A2A 100%)' }}>
-      <GrainOverlay />
-      {/* Animated gradient mesh */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div
-          className="absolute w-[600px] h-[600px] rounded-full opacity-[0.07]"
-          style={{
-            background: 'radial-gradient(circle, #F4F1EC, transparent 70%)',
-            top: '10%',
-            left: '60%',
-            animation: 'meshDrift1 20s ease-in-out infinite',
-          }}
-        />
-        <div
-          className="absolute w-[500px] h-[500px] rounded-full opacity-[0.05]"
-          style={{
-            background: 'radial-gradient(circle, #F4F1EC, transparent 70%)',
-            bottom: '10%',
-            right: '60%',
-            animation: 'meshDrift2 25s ease-in-out infinite',
-          }}
-        />
-      </div>
-
-      {/* Calendar — top-right, cut off right edge of screen, behind phone */}
-      <img
-        src="/calendar%20drawn.png"
-        alt=""
-        className="absolute z-[5] w-[280px] md:w-[480px] top-[40%] md:top-[8%] -right-[136px] md:-right-[180px] rotate-[12deg] opacity-40 pointer-events-none"
+    <section className="relative min-h-screen flex items-end justify-center pb-16 md:pb-24 overflow-hidden">
+      {/* Hero background image */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: 'url(/barber-shortlist.png)' }}
       />
+      {/* Gradient overlay for readability */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/10" />
 
-      <div className="relative z-10 max-w-[1280px] mx-auto px-6 md:px-8 w-full">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-8 items-center">
-          {/* Copy */}
-          <div className="relative text-center md:text-left">
-            <motion.h1
-              className="text-[32px] sm:text-[44px] md:text-[56px] font-extrabold text-[#F5F5F5] leading-[1.1] tracking-tight"
-              style={{ fontFamily: 'var(--font-sans-inter)' }}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7 }}
-            >
-              Not a Tool.<br />
-              <span className="text-[#F4F1EC]/70">
-                Your Entire Business Online.
-              </span>
-            </motion.h1>
-            <motion.p
-              className="mt-4 md:mt-6 text-[14px] md:text-[20px] text-[#F5F5F5]/70 leading-relaxed md:max-w-[560px] mx-auto md:mx-0"
-              style={{ fontFamily: 'var(--font-sans-inter)' }}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.1 }}
-            >
-              Website, AI assistant, ordering, bookings, payments — all running 24/7. $25/mo. Done.
-            </motion.p>
-            {/* CTA + trust badges: visible on desktop, hidden on mobile (shown below phone instead) */}
-            <motion.div
-              className="hidden md:flex mt-8 justify-start"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-            >
-              <a
-                href="#pricing"
-                className="bg-[#F4F1EC] text-[#1A1A1A] font-semibold text-lg px-8 py-4 rounded-full hover:bg-[#D9D5CF] transition-colors inline-flex items-center justify-center gap-2"
-                style={{ fontFamily: 'var(--font-sans-inter)' }}
-              >
-                Start 7-Day Free Trial
-                <ArrowRightIcon className="w-5 h-5" />
-              </a>
-            </motion.div>
-            <motion.div
-              className="hidden md:flex mt-6 flex-row gap-6 justify-start text-[#F5F5F5]/50 text-sm"
-              style={{ fontFamily: 'var(--font-sans-inter)' }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.7, delay: 0.35 }}
-            >
-              <span className="flex items-center gap-1.5"><CheckCircleIcon className="w-4 h-4 text-[#4CAF50]" /> No charge for 7 days</span>
-              <span className="flex items-center gap-1.5"><CheckCircleIcon className="w-4 h-4 text-[#4CAF50]" /> Setup in 5 minutes</span>
-              <span className="flex items-center gap-1.5"><CheckCircleIcon className="w-4 h-4 text-[#4CAF50]" /> Cancel anytime</span>
-            </motion.div>
+      {/* Frosted glass card */}
+      <motion.div
+        className="relative z-10 mx-4 px-8 py-6 md:px-12 md:py-8 backdrop-blur-xl bg-white/30 border border-white/40 rounded-3xl shadow-lg max-w-md w-full"
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+      >
+        <div className="flex flex-col items-center text-center">
+          {/* Logo with white ring */}
+          <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-white shadow-lg ring-4 ring-white/50 flex items-center justify-center overflow-hidden">
+            <img
+              src="/logo.png"
+              alt="Logo"
+              className="w-14 h-14 md:w-16 md:h-16 object-contain"
+            />
           </div>
 
-          {/* Phone */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative flex justify-center"
+          {/* Business name */}
+          <h1
+            className="mt-4 text-2xl md:text-3xl font-bold text-[#1a1a1a]"
+            style={{ fontFamily: 'var(--font-sans-inter)' }}
           >
-            {/* Text bubble — top-left of phone, offset right */}
-            <img
-              src="/text%20bubble.png"
-              alt=""
-              className="absolute z-10 w-[160px] md:w-[240px] -top-8 -left-10 md:-top-12 md:-left-12 opacity-40 pointer-events-none"
-            />
-            {/* Checkmark — bottom-left of phone */}
-            <img
-              src="/checkmark%20drawn.png"
-              alt=""
-              className="absolute z-10 w-[120px] md:w-[180px] -bottom-4 -left-6 md:-bottom-8 md:-left-28 opacity-40 pointer-events-none"
-            />
-            <HeroPhoneAnimation />
-          </motion.div>
-        </div>
+            The Shortlist Co
+          </h1>
 
-        {/* Mobile-only CTA + trust badges below phone */}
-        <div className="md:hidden flex flex-col items-center gap-4 mt-4">
+          {/* Headline */}
+          <p
+            className="mt-2 text-sm md:text-base text-[#1a1a1a]/70"
+            style={{ fontFamily: 'var(--font-sans-inter)' }}
+          >
+            Your entire business, always online.
+          </p>
+
+          {/* Social icons row */}
+          <div className="mt-5 flex items-center gap-4">
+            <a href="#" className="w-10 h-10 rounded-full bg-white/60 hover:bg-white/80 transition-colors flex items-center justify-center text-[#1a1a1a]/70 hover:text-[#1a1a1a]">
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+            <a href="#" className="w-10 h-10 rounded-full bg-white/60 hover:bg-white/80 transition-colors flex items-center justify-center text-[#1a1a1a]/70 hover:text-[#1a1a1a]">
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <a href="#" className="w-10 h-10 rounded-full bg-white/60 hover:bg-white/80 transition-colors flex items-center justify-center text-[#1a1a1a]/70 hover:text-[#1a1a1a]">
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <a href="#" className="w-10 h-10 rounded-full bg-white/60 hover:bg-white/80 transition-colors flex items-center justify-center text-[#1a1a1a]/70 hover:text-[#1a1a1a]">
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+            </a>
+          </div>
+
+          {/* CTA Button */}
           <a
             href="#pricing"
-            className="bg-[#F4F1EC] text-[#1A1A1A] font-semibold text-sm px-6 py-3 rounded-full hover:bg-[#D9D5CF] transition-colors inline-flex items-center justify-center gap-2"
+            className="mt-6 w-full bg-[#1a1a1a] text-white font-semibold text-sm md:text-base px-6 py-3 rounded-full hover:bg-[#333] transition-colors inline-flex items-center justify-center gap-2"
             style={{ fontFamily: 'var(--font-sans-inter)' }}
           >
             Start 7-Day Free Trial
             <ArrowRightIcon className="w-4 h-4" />
           </a>
-          <div
-            className="flex flex-row gap-4 text-[#F5F5F5]/50 text-[11px]"
-            style={{ fontFamily: 'var(--font-sans-inter)' }}
-          >
-            <span className="flex items-center gap-1"><CheckCircleIcon className="w-3.5 h-3.5 text-[#4CAF50]" /> No charge for 7 days</span>
-            <span className="flex items-center gap-1"><CheckCircleIcon className="w-3.5 h-3.5 text-[#4CAF50]" /> 5 min setup</span>
-            <span className="flex items-center gap-1"><CheckCircleIcon className="w-3.5 h-3.5 text-[#4CAF50]" /> Cancel anytime</span>
-          </div>
         </div>
-      </div>
-
-      {/* Mesh drift animations */}
-      <style jsx>{`
-        @keyframes meshDrift1 {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          33% { transform: translate(-60px, 40px) scale(1.1); }
-          66% { transform: translate(40px, -30px) scale(0.95); }
-        }
-        @keyframes meshDrift2 {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          50% { transform: translate(50px, -50px) scale(1.15); }
-        }
-      `}</style>
+      </motion.div>
     </section>
   );
 }
