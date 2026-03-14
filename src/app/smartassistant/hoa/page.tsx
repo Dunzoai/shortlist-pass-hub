@@ -39,8 +39,6 @@ import {
   Smartphone,
   HelpCircle,
   Instagram,
-  Twitter,
-  Linkedin,
   Mail,
   ChevronDown,
   Link,
@@ -747,10 +745,8 @@ const footerLinks = {
 };
 
 const socialLinks = [
-  { icon: Instagram, href: '#', label: 'Instagram' },
-  { icon: Twitter, href: '#', label: 'Twitter' },
-  { icon: Linkedin, href: '#', label: 'LinkedIn' },
-  { icon: Mail, href: '#', label: 'Email' },
+  { icon: Instagram, href: 'https://instagram.com/shortlistpass', label: 'Instagram' },
+  { icon: Mail, href: 'mailto:hello@shortlistpass.com', label: 'Email' },
 ];
 
 function Footer() {
