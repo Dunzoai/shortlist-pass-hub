@@ -83,193 +83,174 @@ function AnimatedSection({
 // SECTION 1 - HERO (Fullscreen Cinematic Sequence)
 // =============================================================================
 
-function HeroSection() {
-  // Phase: 'phase1' | 'phase1-fadeout' | 'phase2' | 'phase3'
-  const [phase, setPhase] = useState<string>('phase1');
-  const [showLine1a, setShowLine1a] = useState(false);
-  const [showLine1b, setShowLine1b] = useState(false);
-  const [showLine1c, setShowLine1c] = useState(false);
-  const [phase1Visible, setPhase1Visible] = useState(true);
-  const [currentLine, setCurrentLine] = useState(0);
-  const [showCurrentLine, setShowCurrentLine] = useState(false);
-  const [showResolve1, setShowResolve1] = useState(false);
-  const [showResolve2, setShowResolve2] = useState(false);
-  const [showArrow, setShowArrow] = useState(false);
+type AnimationStep = {
+  id: string;
+  text: string;
+  delay: number;
+  duration: number;
+  style?: 'normal' | 'bold' | 'italic' | 'muted' | 'resolve' | 'resolveBold';
+};
 
-  const phase2Lines = [
-    "Your residents are in a Facebook group right now. Arguing.",
-    "Emails — unopened.",
-    "You're not the problem. Your tools are.",
-  ];
+const ANIMATION_STEPS: AnimationStep[] = [
+  // Phase 1: The Accusation (all same font size)
+  { id: 'p1-1', text: 'Communication is the problem.', delay: 0, duration: 500, style: 'normal' },
+  { id: 'p1-2', text: "And it's your fault.", delay: 800, duration: 400, style: 'bold' },
+  { id: 'p1-3', text: "(Even if it's not.)", delay: 1400, duration: 600, style: 'italic' },
+  // Phase 1 fadeout marker
+  { id: 'p1-fadeout', text: '', delay: 3500, duration: 400, style: 'normal' },
+  // Phase 2: Single rotating lines
+  { id: 'p2-1', text: 'Your residents are in a Facebook group right now. Arguing.', delay: 3900, duration: 400, style: 'muted' },
+  { id: 'p2-2', text: 'Emails — unopened.', delay: 6700, duration: 400, style: 'muted' },
+  { id: 'p2-3', text: "You're not the problem. Your tools are.", delay: 9500, duration: 400, style: 'muted' },
+  // Phase 3: Resolution
+  { id: 'p3-1', text: "Don't worry —", delay: 12300, duration: 400, style: 'resolve' },
+  { id: 'p3-2', text: "We're the solution.", delay: 12800, duration: 400, style: 'resolveBold' },
+  { id: 'p3-arrow', text: 'arrow', delay: 13400, duration: 400, style: 'normal' },
+];
+
+function HeroSection() {
+  const [currentStep, setCurrentStep] = useState(0);
+  const [visibleSteps, setVisibleSteps] = useState<Set<string>>(new Set());
+
+  const baseFontSize = 'clamp(1.6rem, 3.5vw, 2.4rem)';
 
   useEffect(() => {
-    // PHASE 1: Build accusation lines
-    // Step 1a: Show first line immediately
-    setShowLine1a(true);
+    const timers: NodeJS.Timeout[] = [];
 
-    // Step 1b: 0.8s after 1a
-    const timer1b = setTimeout(() => setShowLine1b(true), 800);
+    ANIMATION_STEPS.forEach((step, index) => {
+      const timer = setTimeout(() => {
+        if (step.id === 'p1-fadeout') {
+          // Hide all phase 1 lines
+          setVisibleSteps(prev => {
+            const next = new Set(prev);
+            next.delete('p1-1');
+            next.delete('p1-2');
+            next.delete('p1-3');
+            return next;
+          });
+        } else if (step.id.startsWith('p2-')) {
+          // Phase 2: show this line, hide previous phase 2 lines
+          setVisibleSteps(prev => {
+            const next = new Set(prev);
+            // Remove other p2 lines
+            next.delete('p2-1');
+            next.delete('p2-2');
+            next.delete('p2-3');
+            next.add(step.id);
+            return next;
+          });
+        } else {
+          // Phase 1 and Phase 3: just add to visible
+          setVisibleSteps(prev => new Set(prev).add(step.id));
+        }
+        setCurrentStep(index);
+      }, step.delay);
+      timers.push(timer);
+    });
 
-    // Step 1c: 0.6s after 1b (1.4s total)
-    const timer1c = setTimeout(() => setShowLine1c(true), 1400);
-
-    // All visible for 1.5s, then fade out (starts at 2.9s)
-    // Duration of 1c animation is 0.6s, so it's done at 2s. Add 1.5s = 3.5s
-    const timerFadeOut = setTimeout(() => {
-      setPhase1Visible(false);
-    }, 3500);
-
-    // After fade out (0.4s), start Phase 2 (at 3.9s)
-    const timerPhase2 = setTimeout(() => {
-      setPhase('phase2');
-      setShowCurrentLine(true);
-    }, 3900);
-
-    return () => {
-      clearTimeout(timer1b);
-      clearTimeout(timer1c);
-      clearTimeout(timerFadeOut);
-      clearTimeout(timerPhase2);
-    };
+    return () => timers.forEach(t => clearTimeout(t));
   }, []);
 
-  // PHASE 2: Cycle through lines
-  useEffect(() => {
-    if (phase !== 'phase2') return;
+  const getStyleForStep = (style?: string) => {
+    switch (style) {
+      case 'bold':
+        return { className: 'font-black text-white', fontSize: baseFontSize };
+      case 'italic':
+        return { className: 'font-normal italic text-[#6b7280]', fontSize: baseFontSize };
+      case 'muted':
+        return { className: 'font-semibold text-[#f5f5f5]', fontSize: 'clamp(1.4rem, 3.5vw, 2.2rem)' };
+      case 'resolve':
+        return { className: 'font-normal text-[#9ca3af]', fontSize: 'clamp(1.5rem, 3vw, 2rem)' };
+      case 'resolveBold':
+        return { className: 'font-black text-white', fontSize: 'clamp(3rem, 7vw, 5rem)' };
+      default:
+        return { className: 'font-semibold text-[#f5f5f5]', fontSize: baseFontSize };
+    }
+  };
 
-    const lineTimings = () => {
-      // Show line (already shown via setShowCurrentLine)
-      // After 1.8s sitting + 0.4s fade in = 2.2s, start fade out
-      const fadeOutTimer = setTimeout(() => {
-        setShowCurrentLine(false);
-      }, 2200);
-
-      // After fade out (0.3s) + gap (0.3s) = 2.8s, next line or Phase 3
-      const nextTimer = setTimeout(() => {
-        if (currentLine < phase2Lines.length - 1) {
-          setCurrentLine(prev => prev + 1);
-          setShowCurrentLine(true);
-        } else {
-          // Move to Phase 3
-          setPhase('phase3');
-        }
-      }, 2800);
-
-      return () => {
-        clearTimeout(fadeOutTimer);
-        clearTimeout(nextTimer);
-      };
-    };
-
-    const cleanup = lineTimings();
-    return cleanup;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase, currentLine]);
-
-  // PHASE 3: Resolution sequence
-  useEffect(() => {
-    if (phase !== 'phase3') return;
-
-    // Show "Don't worry —"
-    setShowResolve1(true);
-
-    // 0.5s later, show "We're the solution."
-    const timer2 = setTimeout(() => setShowResolve2(true), 500);
-
-    // 0.6s after that, show arrow (1.1s total)
-    const timerArrow = setTimeout(() => setShowArrow(true), 1100);
-
-    return () => {
-      clearTimeout(timer2);
-      clearTimeout(timerArrow);
-    };
-  }, [phase]);
+  const isPhase1 = visibleSteps.has('p1-1') || visibleSteps.has('p1-2') || visibleSteps.has('p1-3');
+  const isPhase2 = visibleSteps.has('p2-1') || visibleSteps.has('p2-2') || visibleSteps.has('p2-3');
+  const isPhase3 = visibleSteps.has('p3-1') || visibleSteps.has('p3-2') || visibleSteps.has('p3-arrow');
 
   return (
     <section className="relative bg-[#1a1a1a] h-screen flex items-center justify-center px-6 overflow-hidden">
       <div className="max-w-[700px] mx-auto text-center">
         {/* PHASE 1: The Accusation */}
-        <AnimatePresence>
-          {phase === 'phase1' && phase1Visible && (
+        <AnimatePresence mode="wait">
+          {isPhase1 && (
             <motion.div
               key="phase1"
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4 }}
               className="flex flex-col items-center"
             >
-              <AnimatePresence>
-                {showLine1a && (
-                  <motion.p
-                    key="line1a"
-                    className="font-semibold text-[#f5f5f5] mb-4"
-                    style={{ fontSize: 'clamp(1.8rem, 4vw, 2.8rem)' }}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    Communication is the problem.
-                  </motion.p>
-                )}
-              </AnimatePresence>
-
-              <AnimatePresence>
-                {showLine1b && (
-                  <motion.p
-                    key="line1b"
-                    className="font-black text-white mb-4"
-                    style={{ fontSize: 'clamp(3.5rem, 8vw, 6rem)' }}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4 }}
-                  >
-                    And it's your fault.
-                  </motion.p>
-                )}
-              </AnimatePresence>
-
-              <AnimatePresence>
-                {showLine1c && (
-                  <motion.p
-                    key="line1c"
-                    className="text-[1.1rem] font-normal italic text-[#6b7280]"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.6 }}
-                  >
-                    (Even if it's not.)
-                  </motion.p>
-                )}
-              </AnimatePresence>
+              {['p1-1', 'p1-2', 'p1-3'].map(id => {
+                const step = ANIMATION_STEPS.find(s => s.id === id)!;
+                const style = getStyleForStep(step.style);
+                return (
+                  <AnimatePresence key={id}>
+                    {visibleSteps.has(id) && (
+                      <motion.p
+                        key={id}
+                        className={`${style.className} mb-4`}
+                        style={{ fontSize: style.fontSize }}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: step.duration / 1000 }}
+                      >
+                        {step.text}
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
+                );
+              })}
             </motion.div>
           )}
         </AnimatePresence>
 
         {/* PHASE 2: Single lines, one at a time */}
-        {phase === 'phase2' && (
-          <div className="flex items-center justify-center min-h-[200px]">
-            <AnimatePresence mode="wait">
-              {showCurrentLine && (
-                <motion.p
-                  key={`phase2-line-${currentLine}`}
-                  className="font-semibold text-[#f5f5f5] max-w-[700px]"
-                  style={{ fontSize: 'clamp(1.4rem, 3.5vw, 2.2rem)' }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.4 }}
-                >
-                  {phase2Lines[currentLine]}
-                </motion.p>
-              )}
-            </AnimatePresence>
-          </div>
-        )}
+        <AnimatePresence mode="wait">
+          {isPhase2 && !isPhase1 && (
+            <motion.div
+              key="phase2"
+              className="flex items-center justify-center min-h-[200px]"
+              initial={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <AnimatePresence mode="wait">
+                {['p2-1', 'p2-2', 'p2-3'].map(id => {
+                  const step = ANIMATION_STEPS.find(s => s.id === id)!;
+                  const style = getStyleForStep(step.style);
+                  return visibleSteps.has(id) ? (
+                    <motion.p
+                      key={id}
+                      className={`${style.className} max-w-[700px]`}
+                      style={{ fontSize: style.fontSize }}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.4 }}
+                    >
+                      {step.text}
+                    </motion.p>
+                  ) : null;
+                })}
+              </AnimatePresence>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* PHASE 3: The Resolution */}
-        {phase === 'phase3' && (
-          <div className="flex flex-col items-center justify-center min-h-[300px]">
-            <AnimatePresence>
-              {showResolve1 && (
+        <AnimatePresence>
+          {isPhase3 && !isPhase2 && (
+            <motion.div
+              key="phase3"
+              className="flex flex-col items-center justify-center min-h-[300px]"
+              initial={{ opacity: 1 }}
+            >
+              {visibleSteps.has('p3-1') && (
                 <motion.p
                   key="resolve1"
                   className="font-normal text-[#9ca3af] mb-4"
@@ -281,10 +262,8 @@ function HeroSection() {
                   Don't worry —
                 </motion.p>
               )}
-            </AnimatePresence>
 
-            <AnimatePresence>
-              {showResolve2 && (
+              {visibleSteps.has('p3-2') && (
                 <motion.p
                   key="resolve2"
                   className="font-black text-white mb-8"
@@ -296,10 +275,8 @@ function HeroSection() {
                   We're the solution.
                 </motion.p>
               )}
-            </AnimatePresence>
 
-            <AnimatePresence>
-              {showArrow && (
+              {visibleSteps.has('p3-arrow') && (
                 <motion.div
                   key="arrow"
                   initial={{ opacity: 0 }}
@@ -314,9 +291,9 @@ function HeroSection() {
                   </motion.div>
                 </motion.div>
               )}
-            </AnimatePresence>
-          </div>
-        )}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );
