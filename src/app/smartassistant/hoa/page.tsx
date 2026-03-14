@@ -143,8 +143,6 @@ function HeroSection() {
   const [showLine1, setShowLine1] = useState(true);
   const [showLine2, setShowLine2] = useState(false);
   const [showLine3, setShowLine3] = useState(false);
-  const [showP3Line1, setShowP3Line1] = useState(false);
-  const [showP3Line2, setShowP3Line2] = useState(false);
   const [showArrow, setShowArrow] = useState(false);
 
   const baseFontSize = 'clamp(1.6rem, 3.5vw, 2.4rem)';
@@ -202,22 +200,8 @@ function HeroSection() {
       setTimeout(() => {
         setPhase('p3-1');
         setPhase3Started(true);
-        setShowP3Line1(true);
       }, 400);
     }, 1000);
-  };
-
-  // Phase 3 completion handlers
-  const onP3Line1Complete = () => {
-    setTimeout(() => {
-      setShowP3Line2(true);
-      setPhase('p3-2');
-    }, 300);
-  };
-
-  const onP3Line2Complete = () => {
-    setShowArrow(true);
-    setPhase('p3-arrow');
   };
 
   const isPhase1 = phase.startsWith('p1-') && phase !== 'p1-fadeout';
@@ -290,12 +274,12 @@ function HeroSection() {
               transition={{ duration: 0.4 }}
             >
               <p
-                className="font-semibold text-[#f5f5f5] max-w-[900px]"
+                className="font-semibold text-[#f5f5f5] max-w-[900px] text-center whitespace-pre-line"
                 style={{ fontSize: baseFontSize }}
               >
                 {phase2Line === 'p2-1' && (
                   <TypewriterText
-                    text="Your residents are in a Facebook group right now. Arguing."
+                    text={"Your residents are in a Facebook group right now.\nArguing."}
                     speed={55}
                     onComplete={onP2Line1Complete}
                   />
@@ -329,45 +313,30 @@ function HeroSection() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.4 }}
             >
-              {showP3Line1 && (
-                <p
-                  className="font-semibold text-[#f5f5f5] mb-4"
-                  style={{ fontSize: baseFontSize }}
-                >
-                  <TypewriterText
-                    text="Don't worry —"
-                    speed={90}
-                    onComplete={onP3Line1Complete}
-                  />
-                </p>
-              )}
+              <p
+                className="font-semibold text-[#f5f5f5] mb-6"
+                style={{ fontSize: baseFontSize }}
+              >
+                <TypewriterText
+                  text="Ready for the solution?"
+                  speed={70}
+                  onComplete={() => setShowArrow(true)}
+                />
+              </p>
 
-              {showP3Line2 && (
-                <p
-                  className="font-black text-white flex items-center justify-center gap-3"
-                  style={{ fontSize: baseFontSize }}
+              {showArrow && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.4 }}
                 >
-                  <TypewriterText
-                    text="We're the solution."
-                    speed={80}
-                    onComplete={onP3Line2Complete}
-                  />
-                  {showArrow && (
-                    <motion.span
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.4 }}
-                    >
-                      <motion.span
-                        className="inline-block"
-                        animate={{ y: [0, 6, 0] }}
-                        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                      >
-                        <ChevronDown className="w-7 h-7 text-[#4ade80]" />
-                      </motion.span>
-                    </motion.span>
-                  )}
-                </p>
+                  <motion.div
+                    animate={{ y: [0, 8, 0] }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    <ChevronDown className="w-8 h-8 text-[#4ade80]" />
+                  </motion.div>
+                </motion.div>
               )}
             </motion.div>
           )}
