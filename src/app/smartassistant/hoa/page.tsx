@@ -106,37 +106,46 @@ function HeroSection() {
           Communication is the problem. We solved it.
         </motion.h1>
 
-        {/* Body paragraphs */}
-        <motion.div
-          className="max-w-[680px] mx-auto text-base md:text-lg text-[#f5f5f5]/70 leading-relaxed space-y-6 mb-10"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+        {/* Paragraph 1 — slides in from LEFT */}
+        <motion.p
+          className="max-w-[680px] mx-auto text-base md:text-lg text-[#f5f5f5]/70 leading-relaxed mb-6"
+          initial={{ opacity: 0, x: -60 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
         >
-          <p>
-            Websites are brochures and nobody wants to chase links in 2026. Make residents hunt for answers and they give up — then blame the board. Let Facebook groups run your information and it becomes a free for all. Send emails and less than 10% get opened. Newsletters? Nobody can find them a week later.
-          </p>
-          <p>
-            Community communication has been too spread out and too messy for residents to care. And it always falls back on the board as the fall guys. The truth is you can't communicate well because they expect you to be everywhere. We fixed that.
-          </p>
-        </motion.div>
+          Websites are brochures and nobody wants to chase links in 2026. Make residents hunt for answers and they give up — then blame the board. Let Facebook groups run your information and it becomes a free for all. Send emails and less than 10% get opened. Newsletters? Nobody can find them a week later.
+        </motion.p>
 
-        {/* Accent statement */}
+        {/* Paragraph 2 — slides in from RIGHT */}
+        <motion.p
+          className="max-w-[680px] mx-auto text-base md:text-lg text-[#f5f5f5]/70 leading-relaxed mb-10"
+          initial={{ opacity: 0, x: 60 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.35 }}
+        >
+          Community communication has been too spread out and too messy for residents to care. And it always falls back on the board as the fall guys. The truth is you can't communicate well because they expect you to be everywhere. We fixed that.
+        </motion.p>
+
+        {/* Accent statement — fades and scales up from below */}
         <motion.p
           className="text-xl md:text-2xl lg:text-3xl font-semibold text-[#4ade80] mb-10"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
+          initial={{ opacity: 0, y: 20, scale: 0.95 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.5 }}
         >
           One app. One place. Your entire community.
         </motion.p>
 
-        {/* Third paragraph */}
+        {/* Paragraph 3 — slides in from LEFT */}
         <motion.p
           className="max-w-[680px] mx-auto text-base md:text-lg text-[#f5f5f5]/70 leading-relaxed mb-12"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
+          initial={{ opacity: 0, x: -60 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.65 }}
         >
           Not your management company's app — the one that's self-serving for them and stuffs ChatGPT inside a chat widget and calls it cutting edge. We're not that. We built an actual assistant in digital form. It answers any question your board president can — but better. 24/7. No days off. No bad moods.
         </motion.p>
