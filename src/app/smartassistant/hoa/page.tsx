@@ -21,6 +21,10 @@ import {
   Linkedin,
   Mail,
   ChevronDown,
+  Link,
+  Clock,
+  Gift,
+  Globe,
 } from 'lucide-react';
 
 // =============================================================================
@@ -209,15 +213,26 @@ function HeroSection() {
 // =============================================================================
 
 function PhoneMockupSection() {
-  const features = [
+  const marqueeItems = [
     { icon: Calendar, label: "Events & Announcements" },
     { icon: MessageCircle, label: "Ask Anything. Get Answers." },
     { icon: BookOpen, label: "Newsletters. Always There." },
+    { icon: Link, label: "Important Links." },
+    { icon: HelpCircle, label: "FAQs." },
+    { icon: Store, label: "Resident Owned Business Promotion." },
+    { icon: Globe, label: "City Wide Connections." },
+    { icon: Gift, label: "Perks and Resident Discounts." },
+    { icon: Clock, label: "24/7 - No Days Off." },
   ];
 
   return (
-    <AnimatedSection className="bg-[#1a1a1a] py-16 md:py-24 px-6">
+    <AnimatedSection className="bg-[#1a1a1a] py-16 md:py-24 px-6 overflow-hidden">
       <div className="max-w-4xl mx-auto">
+        {/* Headline */}
+        <h2 className="text-2xl md:text-4xl font-bold text-[#f5f5f5] text-center mb-12">
+          Meet your new 24/7 SmartAssistant.
+        </h2>
+
         {/* Phone Frame */}
         <div className="flex justify-center mb-12">
           <div className="relative w-[240px] md:w-[280px] h-[480px] md:h-[560px] rounded-[32px] md:rounded-[40px] border-2 border-[#4ade80] bg-[#111111] flex items-center justify-center">
@@ -230,18 +245,37 @@ function PhoneMockupSection() {
           </div>
         </div>
 
-        {/* Feature Labels */}
-        <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12">
-          {features.map((feature, index) => (
-            <div key={index} className="flex items-center gap-3">
-              <feature.icon className="w-5 h-5 text-[#4ade80]" />
-              <span className="text-sm md:text-base font-semibold text-[#f5f5f5]">
-                {feature.label}
-              </span>
-            </div>
-          ))}
+        {/* Scrolling Marquee */}
+        <div className="relative w-screen left-1/2 -translate-x-1/2">
+          <div className="flex animate-marquee">
+            {[...marqueeItems, ...marqueeItems].map((item, index) => (
+              <div
+                key={index}
+                className="flex items-center gap-2 px-6 shrink-0"
+              >
+                <item.icon className="w-5 h-5 text-[#4ade80]" />
+                <span className="text-sm md:text-base font-semibold text-[#f5f5f5] whitespace-nowrap">
+                  {item.label}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes marquee {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
+        .animate-marquee {
+          animation: marquee 30s linear infinite;
+        }
+      `}</style>
     </AnimatedSection>
   );
 }
