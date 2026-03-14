@@ -1,3 +1,24 @@
+/*
+  Run this in Supabase SQL editor:
+
+  CREATE TABLE hoa_leads (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    community_name TEXT NOT NULL,
+    num_homes TEXT NOT NULL,
+    message TEXT,
+    status TEXT DEFAULT 'new',
+    created_at TIMESTAMPTZ DEFAULT NOW()
+  );
+
+  ALTER TABLE hoa_leads ENABLE ROW LEVEL SECURITY;
+
+  CREATE POLICY "Allow public insert for hoa leads"
+    ON hoa_leads FOR INSERT TO anon
+    WITH CHECK (true);
+*/
+
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
@@ -5,6 +26,7 @@ import { useInView } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Caveat } from 'next/font/google';
+import { createClient } from '@supabase/supabase-js';
 import {
   Monitor,
   Calendar,
@@ -25,6 +47,8 @@ import {
   Clock,
   Gift,
   Globe,
+  Loader2,
+  CheckCircle,
 } from 'lucide-react';
 
 // =============================================================================
@@ -323,10 +347,10 @@ function FeaturesSection() {
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section ref={ref} id="features" className="bg-[#f5f5f5] py-16 md:py-24 px-6">
+    <section ref={ref} id="features" className="bg-[#1a1a1a] py-16 md:py-24 px-6">
       <div className="max-w-5xl mx-auto">
         <motion.h2
-          className="text-2xl md:text-4xl font-bold text-[#1a1a1a] text-center mb-16"
+          className="text-2xl md:text-4xl font-bold text-white text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
@@ -355,10 +379,10 @@ function FeaturesSection() {
 
                 {/* Text */}
                 <div className={`text-center md:text-left ${isEven ? 'md:text-right' : ''}`}>
-                  <h3 className="text-xl md:text-2xl font-bold text-[#1a1a1a] mb-3">
+                  <h3 className="text-xl md:text-2xl font-bold text-white mb-3">
                     {feature.headline}
                   </h3>
-                  <p className="text-base md:text-lg text-[#1a1a1a]/70 leading-relaxed max-w-xl">
+                  <p className="text-base md:text-lg text-[#9ca3af] leading-relaxed max-w-xl">
                     {feature.description}
                   </p>
                 </div>
@@ -438,29 +462,14 @@ function SocialProofSection() {
 // =============================================================================
 
 function ObjectionSection() {
-  const objections = [
-    {
-      question: "Our management company already has an app.",
-      answer: "Their app serves them, not you. It's designed to protect their contract, not your residents. Ours is built for the community you were elected to serve.",
-    },
-    {
-      question: "Is this expensive?",
-      answer: "It's free for your community. The businesses and vendors in your network cover the cost. You bring the residents. We handle the rest.",
-    },
-    {
-      question: "Our residents won't use it.",
-      answer: "They already use their phones for everything. You're just giving them one place that works instead of seven that don't.",
-    },
-  ];
-
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section ref={ref} className="bg-[#f5f5f5] py-16 md:py-24 px-6">
+    <section ref={ref} className="bg-[#1a1a1a] py-16 md:py-24 px-6">
       <div className="max-w-5xl mx-auto">
         <motion.h2
-          className="text-2xl md:text-4xl font-bold text-[#1a1a1a] text-center mb-12"
+          className="text-2xl md:text-4xl font-bold text-white text-center mb-12"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
@@ -474,21 +483,50 @@ function ObjectionSection() {
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-          {objections.map((obj, index) => (
-            <motion.div
-              key={index}
-              className="bg-white rounded-xl p-6 shadow-sm"
-              variants={fadeInUp}
-            >
-              <HelpCircle className="w-6 h-6 text-[#4ade80] mb-4" />
-              <p className="text-base md:text-lg font-bold text-[#1a1a1a] mb-3">
-                {obj.question}
-              </p>
-              <p className="text-sm md:text-base text-[#1a1a1a]/70 leading-relaxed">
-                {obj.answer}
-              </p>
-            </motion.div>
-          ))}
+          {/* Card 1 */}
+          <motion.div
+            className="bg-[#2a2a2a] rounded-xl p-8 border border-[#2f2f2f] border-t-[3px] border-t-[#4ade80]"
+            variants={fadeInUp}
+          >
+            <p className="text-lg font-bold text-white mb-4">
+              Your management company has an app.
+            </p>
+            <p className="text-[#9ca3af] leading-relaxed mb-4">
+              Theirs links to their pages, routes complaints back to their desk, and protects their contract. It's a glorified chatbot dressed up as a community tool.
+            </p>
+            <p className="text-sm font-bold text-[#4ade80]">
+              Ours is a 24/7 point of contact for your neighborhood — connected to businesses and events across your entire city. Your residents actually use it.
+            </p>
+          </motion.div>
+
+          {/* Card 2 */}
+          <motion.div
+            className="bg-[#2a2a2a] rounded-xl p-8 border border-[#2f2f2f] border-t-[3px] border-t-[#4ade80]"
+            variants={fadeInUp}
+          >
+            <p className="text-lg font-bold text-white mb-1">
+              Is this expensive?
+            </p>
+            <p className="text-[2.5rem] font-bold text-[#4ade80] leading-tight mb-4">
+              No. It's free.
+            </p>
+            <p className="text-[#9ca3af] leading-relaxed">
+              The businesses and vendors in the network cover the cost. You bring the residents. We handle everything else.
+            </p>
+          </motion.div>
+
+          {/* Card 3 */}
+          <motion.div
+            className="bg-[#2a2a2a] rounded-xl p-8 border border-[#2f2f2f] border-t-[3px] border-t-[#4ade80]"
+            variants={fadeInUp}
+          >
+            <p className="text-lg font-bold text-white mb-4">
+              Our residents won't use it.
+            </p>
+            <p className="text-[#9ca3af] leading-relaxed">
+              They already use their phones for everything. You're just giving them one place that works instead of seven that don't.
+            </p>
+          </motion.div>
         </motion.div>
       </div>
     </section>
@@ -503,7 +541,72 @@ function ContactSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
-  // TODO: wire up form submission to Supabase or email
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    community_name: '',
+    num_homes: '',
+    message: '',
+  });
+  const [errors, setErrors] = useState<Record<string, boolean>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: false }));
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitError('');
+
+    // Validate required fields
+    const newErrors: Record<string, boolean> = {};
+    if (!formData.name.trim()) newErrors.name = true;
+    if (!formData.email.trim()) newErrors.email = true;
+    if (!formData.community_name.trim()) newErrors.community_name = true;
+    if (!formData.num_homes.trim()) newErrors.num_homes = true;
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      );
+
+      const { error } = await supabase.from('hoa_leads').insert({
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        community_name: formData.community_name.trim(),
+        num_homes: formData.num_homes.trim(),
+        message: formData.message.trim() || null,
+      });
+
+      if (error) throw error;
+
+      setIsSuccess(true);
+    } catch {
+      setSubmitError('Something went wrong. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const inputClass = (field: string) =>
+    `w-full px-5 py-4 rounded-lg bg-[#2a2a2a] border text-[#f5f5f5] placeholder-[#f5f5f5]/40 focus:outline-none focus:border-[#4ade80] transition-colors ${
+      errors[field] ? 'border-red-500' : 'border-[#3a3a3a]'
+    }`;
 
   return (
     <section ref={ref} id="contact" className="bg-[#1a1a1a] py-16 md:py-24 px-6">
@@ -526,45 +629,88 @@ function ContactSection() {
           Free to join. No contracts. No management company approval needed. Just a better experience for your residents starting this week.
         </motion.p>
 
-        <motion.form
-          className="space-y-4"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          onSubmit={(e) => e.preventDefault()}
-        >
-          <input
-            type="text"
-            placeholder="Your name"
-            className="w-full px-5 py-4 rounded-lg bg-[#2a2a2a] border border-[#3a3a3a] text-[#f5f5f5] placeholder-[#f5f5f5]/40 focus:outline-none focus:border-[#4ade80] transition-colors"
-          />
-          <input
-            type="email"
-            placeholder="Your email"
-            className="w-full px-5 py-4 rounded-lg bg-[#2a2a2a] border border-[#3a3a3a] text-[#f5f5f5] placeholder-[#f5f5f5]/40 focus:outline-none focus:border-[#4ade80] transition-colors"
-          />
-          <input
-            type="text"
-            placeholder="Community name"
-            className="w-full px-5 py-4 rounded-lg bg-[#2a2a2a] border border-[#3a3a3a] text-[#f5f5f5] placeholder-[#f5f5f5]/40 focus:outline-none focus:border-[#4ade80] transition-colors"
-          />
-          <input
-            type="text"
-            placeholder="Approximate number of homes"
-            className="w-full px-5 py-4 rounded-lg bg-[#2a2a2a] border border-[#3a3a3a] text-[#f5f5f5] placeholder-[#f5f5f5]/40 focus:outline-none focus:border-[#4ade80] transition-colors"
-          />
-          <textarea
-            placeholder="Anything you want us to know (optional)"
-            rows={4}
-            className="w-full px-5 py-4 rounded-lg bg-[#2a2a2a] border border-[#3a3a3a] text-[#f5f5f5] placeholder-[#f5f5f5]/40 focus:outline-none focus:border-[#4ade80] transition-colors resize-none"
-          />
-          <button
-            type="submit"
-            className="w-full py-4 rounded-lg bg-[#4ade80] text-[#1a1a1a] font-bold text-base hover:bg-[#3fcf70] transition-colors"
+        {isSuccess ? (
+          <motion.div
+            className="py-12"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4 }}
           >
-            Let's talk — we'll reach out within 24 hours
-          </button>
-        </motion.form>
+            <CheckCircle className="w-12 h-12 text-[#4ade80] mx-auto mb-4" />
+            <h3 className="text-xl font-bold text-white mb-2">
+              We'll be in touch within 24 hours.
+            </h3>
+            <p className="text-[#9ca3af]">
+              Check your email — we'll reach out shortly.
+            </p>
+          </motion.div>
+        ) : (
+          <motion.form
+            className="space-y-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            onSubmit={handleSubmit}
+          >
+            <input
+              type="text"
+              name="name"
+              placeholder="Your name"
+              value={formData.name}
+              onChange={handleChange}
+              className={inputClass('name')}
+            />
+            <input
+              type="email"
+              name="email"
+              placeholder="Your email"
+              value={formData.email}
+              onChange={handleChange}
+              className={inputClass('email')}
+            />
+            <input
+              type="text"
+              name="community_name"
+              placeholder="Community name"
+              value={formData.community_name}
+              onChange={handleChange}
+              className={inputClass('community_name')}
+            />
+            <input
+              type="text"
+              name="num_homes"
+              placeholder="Approximate number of homes"
+              value={formData.num_homes}
+              onChange={handleChange}
+              className={inputClass('num_homes')}
+            />
+            <textarea
+              name="message"
+              placeholder="Anything you want us to know (optional)"
+              rows={4}
+              value={formData.message}
+              onChange={handleChange}
+              className="w-full px-5 py-4 rounded-lg bg-[#2a2a2a] border border-[#3a3a3a] text-[#f5f5f5] placeholder-[#f5f5f5]/40 focus:outline-none focus:border-[#4ade80] transition-colors resize-none"
+            />
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full py-4 rounded-lg bg-[#4ade80] text-[#1a1a1a] font-bold text-base hover:bg-[#3fcf70] transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Sending...
+                </>
+              ) : (
+                "Let's talk — we'll reach out within 24 hours"
+              )}
+            </button>
+            {submitError && (
+              <p className="text-red-500 text-sm mt-2">{submitError}</p>
+            )}
+          </motion.form>
+        )}
       </div>
     </section>
   );
