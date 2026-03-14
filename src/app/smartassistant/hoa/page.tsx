@@ -250,16 +250,16 @@ function PhoneMockupSection() {
         {/* Scrolling Marquee */}
         <div className="relative w-screen left-1/2 -translate-x-1/2 overflow-hidden">
           <div
-            className="flex gap-8 animate-scroll-left"
+            className="flex gap-3 animate-scroll-left"
             style={{ width: 'max-content' }}
           >
             {[...marqueeItems, ...marqueeItems].map((item, index) => (
               <div
                 key={index}
-                className="flex items-center gap-2 shrink-0"
+                className="flex items-center gap-1.5 shrink-0 py-2 px-4 rounded-full bg-[#1f1f1f] border border-[#4ade80] hover:bg-[#2a2a2a] hover:border-[#5eed9a] transition-colors"
               >
-                <item.icon className="w-5 h-5 text-[#4ade80]" />
-                <span className="text-sm md:text-base font-semibold text-[#f5f5f5] whitespace-nowrap">
+                <item.icon className="w-4 h-4 text-[#4ade80]" />
+                <span className="text-[0.85rem] font-medium text-[#f5f5f5] whitespace-nowrap">
                   {item.label}
                 </span>
               </div>
