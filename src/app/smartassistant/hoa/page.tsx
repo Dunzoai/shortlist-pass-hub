@@ -830,8 +830,8 @@ export default function HOALandingPage() {
       <HeroSection />
       <PhoneMockupSection />
       <FeaturesSection />
-      <SocialProofSection />
       <ObjectionSection />
+      <SocialProofSection />
       <ContactSection />
       <Footer />
     </main>
