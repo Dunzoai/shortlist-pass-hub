@@ -216,16 +216,6 @@ export default function SmartAssistantRoutingPage() {
             </motion.button>
           </div>
 
-          {/* Bottom link */}
-          <p className="text-xs text-[#6b7280] text-center mt-5 md:mt-8">
-            Not sure?{' '}
-            <a
-              href="/smartassistant/hoa#contact"
-              className="text-[#6b7280] hover:text-[#4ade80] transition-colors"
-            >
-              → Talk to us
-            </a>
-          </p>
         </motion.div>
       </div>
     </div>
