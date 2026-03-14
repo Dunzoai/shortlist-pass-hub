@@ -256,10 +256,7 @@ function HeroSection() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
-                  transition={{
-                    enter: { duration: 0.4 },
-                    exit: { duration: 0.3 }
-                  }}
+                  transition={{ duration: 0.4 }}
                 >
                   {phase2Lines[currentLine]}
                 </motion.p>
