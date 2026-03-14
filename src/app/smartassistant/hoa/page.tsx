@@ -125,20 +125,25 @@ function HeroSection() {
           Communication is the problem. We solved it.
         </motion.h1>
 
-        {/* Punchy Lines Block — slide in from LEFT */}
-        <div className="mb-8 text-left md:text-center">
-          {punchyLines.map((line, index) => (
-            <motion.p
-              key={index}
-              className="text-lg md:text-xl text-[#f5f5f5] mb-3"
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, ease: "easeOut", delay: 0.4 * index }}
-            >
-              {line}
-            </motion.p>
-          ))}
+        {/* Punchy Lines Block — alternating slide cards */}
+        <div className="mb-8 space-y-4">
+          {punchyLines.map((line, index) => {
+            const fromLeft = index === 0 || index === 2;
+            return (
+              <motion.div
+                key={index}
+                className="bg-[#2a2a2a] border-l-[3px] border-[#4ade80] py-4 px-6 rounded-r-lg max-w-[580px]"
+                initial={{ opacity: 0, x: fromLeft ? -80 : 80 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, ease: "easeOut", delay: 0.35 * index }}
+              >
+                <p className="text-base md:text-lg text-[#f5f5f5] text-left">
+                  {line}
+                </p>
+              </motion.div>
+            );
+          })}
         </div>
 
         {/* Mint Green Divider */}
@@ -186,7 +191,15 @@ function HeroSection() {
           transition={{ duration: 0.5, ease: "easeOut", delay: 1.5 }}
         >
           So we built an{" "}
-          <span className="line-through text-[#4ade80]/60">app</span>{" "}
+          <span
+            className="font-normal"
+            style={{
+              color: '#d1d5db',
+              textDecoration: 'line-through',
+              textDecorationColor: '#ef4444',
+              textDecorationThickness: '3px'
+            }}
+          >app</span>{" "}
           <span className="font-bold text-[#4ade80]">digital assistant.</span>
         </motion.p>
 
