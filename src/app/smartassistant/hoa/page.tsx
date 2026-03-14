@@ -279,7 +279,7 @@ function HeroSection() {
               >
                 {phase2Line === 'p2-1' && (
                   <TypewriterText
-                    text={"Your residents are in a Facebook group right now.\nArguing."}
+                    text={"Your residents are in a Facebook group.\nArguing."}
                     speed={55}
                     onComplete={onP2Line1Complete}
                   />
@@ -293,7 +293,7 @@ function HeroSection() {
                 )}
                 {phase2Line === 'p2-3' && (
                   <TypewriterText
-                    text="You're not the problem. Your tools are."
+                    text={"You're not the problem.\nYour tools are."}
                     speed={75}
                     onComplete={onP2Line3Complete}
                   />
