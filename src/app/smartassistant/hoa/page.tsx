@@ -85,7 +85,7 @@ function AnimatedSection({
 
 function TypewriterText({
   text,
-  speed = 40,
+  speed = 70,
   onComplete,
   className = '',
 }: {
@@ -96,6 +96,8 @@ function TypewriterText({
 }) {
   const [displayedText, setDisplayedText] = useState('');
   const [isComplete, setIsComplete] = useState(false);
+  const onCompleteRef = useRef(onComplete);
+  onCompleteRef.current = onComplete;
 
   useEffect(() => {
     let index = 0;
@@ -109,12 +111,12 @@ function TypewriterText({
       } else {
         clearInterval(interval);
         setIsComplete(true);
-        onComplete?.();
+        onCompleteRef.current?.();
       }
     }, speed);
 
     return () => clearInterval(interval);
-  }, [text, speed, onComplete]);
+  }, [text, speed]);
 
   return (
     <span className={className}>
@@ -241,7 +243,7 @@ function HeroSection() {
                 >
                   <TypewriterText
                     text="Communication is the problem."
-                    speed={45}
+                    speed={80}
                     onComplete={onP1Line1Complete}
                   />
                 </p>
@@ -254,7 +256,7 @@ function HeroSection() {
                 >
                   <TypewriterText
                     text="And it's your fault."
-                    speed={45}
+                    speed={80}
                     onComplete={onP1Line2Complete}
                   />
                 </p>
@@ -267,7 +269,7 @@ function HeroSection() {
                 >
                   <TypewriterText
                     text="(Even if it's not.)"
-                    speed={55}
+                    speed={100}
                     onComplete={onP1Line3Complete}
                   />
                 </p>
@@ -294,21 +296,21 @@ function HeroSection() {
                 {phase2Line === 'p2-1' && (
                   <TypewriterText
                     text="Your residents are in a Facebook group right now. Arguing."
-                    speed={35}
+                    speed={55}
                     onComplete={onP2Line1Complete}
                   />
                 )}
                 {phase2Line === 'p2-2' && (
                   <TypewriterText
                     text="Emails — unopened."
-                    speed={60}
+                    speed={110}
                     onComplete={onP2Line2Complete}
                   />
                 )}
                 {phase2Line === 'p2-3' && (
                   <TypewriterText
                     text="You're not the problem. Your tools are."
-                    speed={45}
+                    speed={75}
                     onComplete={onP2Line3Complete}
                   />
                 )}
@@ -334,7 +336,7 @@ function HeroSection() {
                 >
                   <TypewriterText
                     text="Don't worry —"
-                    speed={50}
+                    speed={90}
                     onComplete={onP3Line1Complete}
                   />
                 </p>
@@ -347,7 +349,7 @@ function HeroSection() {
                 >
                   <TypewriterText
                     text="We're the solution."
-                    speed={45}
+                    speed={80}
                     onComplete={onP3Line2Complete}
                   />
                 </p>
