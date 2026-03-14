@@ -149,88 +149,84 @@ function HeroSection() {
 
   return (
     <section className="relative bg-[#1a1a1a] min-h-screen flex items-center justify-center px-6">
-      <div className="max-w-[700px] mx-auto text-center">
-        {/* PHASE 1: The Accusation */}
-        <AnimatePresence>
-          {phase === 'accusation' && (
-            <motion.div
-              key="accusation"
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
-            >
-              <motion.p
-                className="text-[1.8rem] md:text-[2.5rem] font-semibold text-[#f5f5f5] mb-4"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0 }}
-              >
-                Resident communication is the problem.
-              </motion.p>
-              <motion.p
-                className="text-[2.8rem] md:text-[4rem] font-black text-white mb-4"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-              >
-                And it's your fault.
-              </motion.p>
-              <motion.p
-                className="text-[1rem] md:text-[1.2rem] font-normal italic text-[#9ca3af]"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.8 }}
-              >
-                (Even if it's not.)
-              </motion.p>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* PHASE 2: Rotating Problems */}
-        {phase === 'problems' && (
-          <div className="min-h-[200px] flex flex-col items-center justify-center">
-            <AnimatePresence mode="wait">
-              {showTool && (
-                <motion.p
-                  key={`tool-${currentProblem}`}
-                  className="text-[2rem] md:text-[3rem] font-bold text-[#f5f5f5] mb-4"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {problems[currentProblem].tool}
-                </motion.p>
-              )}
-            </AnimatePresence>
-            <AnimatePresence mode="wait">
-              {showRebuttal && (
-                <motion.p
-                  key={`rebuttal-${currentProblem}`}
-                  className={`text-[1.3rem] md:text-[1.6rem] text-[#4ade80] ${caveat.className}`}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {problems[currentProblem].rebuttal}
-                </motion.p>
-              )}
-            </AnimatePresence>
-          </div>
-        )}
-
-        {/* PHASE 3: Done - show placeholder for now */}
-        {phase === 'done' && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
+      <div className="max-w-[800px] mx-auto text-center">
+        {/* PHASE 1: The Accusation - Always visible */}
+        <div className="mb-12">
+          <motion.p
+            className="text-[1.5rem] md:text-[2rem] md:whitespace-nowrap font-semibold text-[#f5f5f5] mb-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0 }}
           >
-            <p className="text-[2rem] md:text-[3rem] font-bold text-[#4ade80]">
-              We solved it.
-            </p>
-          </motion.div>
+            Resident communication is the problem.
+          </motion.p>
+          <motion.p
+            className="text-[2.8rem] md:text-[4rem] font-black text-white mb-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            And it's your fault.
+          </motion.p>
+          <motion.p
+            className="text-[1rem] md:text-[1.2rem] font-normal italic text-[#9ca3af]"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.8 }}
+          >
+            (Even if it's not.)
+          </motion.p>
+        </div>
+
+        {/* PHASE 2: Rotating Problems - appears below Phase 1 */}
+        {(phase === 'problems' || phase === 'done') && (
+          <div className="min-h-[150px] flex flex-col items-center justify-center">
+            {phase === 'problems' && (
+              <>
+                <AnimatePresence mode="wait">
+                  {showTool && (
+                    <motion.p
+                      key={`tool-${currentProblem}`}
+                      className="text-[2rem] md:text-[3rem] font-bold text-[#f5f5f5] mb-4"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      {problems[currentProblem].tool}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+                <AnimatePresence mode="wait">
+                  {showRebuttal && (
+                    <motion.p
+                      key={`rebuttal-${currentProblem}`}
+                      className={`text-[1.3rem] md:text-[1.6rem] text-[#4ade80] ${caveat.className}`}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      {problems[currentProblem].rebuttal}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+              </>
+            )}
+
+            {/* PHASE 3: Done - show placeholder for now */}
+            {phase === 'done' && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                <p className="text-[2rem] md:text-[3rem] font-bold text-[#4ade80]">
+                  We solved it.
+                </p>
+              </motion.div>
+            )}
+          </div>
         )}
       </div>
     </section>
