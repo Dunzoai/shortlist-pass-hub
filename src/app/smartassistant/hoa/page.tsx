@@ -402,7 +402,7 @@ function FeaturesSection() {
 function SocialProofSection() {
   const stats = [
     { number: "24/7", label: "Board assistant availability" },
-    { number: "2,000+", label: "Avg. homes per community" },
+    { number: "2000+", label: "Avg. residents per community" },
     { number: "0", label: "App store downloads required" },
   ];
 
