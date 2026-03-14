@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useEffect } from 'react';
 import Image from 'next/image';
+import { Caveat } from 'next/font/google';
 import {
   Monitor,
   Calendar,
@@ -20,6 +21,12 @@ import {
   Linkedin,
   Mail,
 } from 'lucide-react';
+
+// =============================================================================
+// FONTS
+// =============================================================================
+
+const caveat = Caveat({ subsets: ['latin'] });
 
 // =============================================================================
 // ANIMATION VARIANTS
@@ -83,11 +90,11 @@ function HeroSection() {
     }
   };
 
-  const punchyLines = [
-    "Your residents don't want to chase links.",
-    "Facebook? Good luck. Arguments and key info buried.",
-    "Emails? It's 2026. You're lucky if 10% open them.",
-    "Newsletters — where do they even live?",
+  const rebuttalRows = [
+    { their: "Website", reality: "Residents don't chase links." },
+    { their: "Facebook", reality: "Arguments. Key info buried." },
+    { their: "Email", reality: "10% open rate. It's 2026." },
+    { their: "Newsletter", reality: "Where does it even live?" },
   ];
 
   const gutPunchLines = [
@@ -115,35 +122,85 @@ function HeroSection() {
           For HOA Boards & Community Managers
         </motion.p>
 
-        {/* Headline */}
-        <motion.h1
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#f5f5f5] leading-tight mb-12 text-center"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          Communication is the problem. We solved it.
-        </motion.h1>
+        {/* Two-Line Headline */}
+        <div className="text-center mb-12">
+          <motion.span
+            className="block text-[2.5rem] md:text-[3.5rem] font-bold text-[#f5f5f5] leading-tight"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            Communication is the problem.
+          </motion.span>
+          <motion.span
+            className="relative inline-block text-[3rem] md:text-[4.5rem] font-black text-white leading-tight"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            We solved it.
+            {/* Hand-drawn circle SVG */}
+            <motion.svg
+              className="absolute -inset-x-4 -inset-y-2 w-[calc(100%+2rem)] h-[calc(100%+1rem)]"
+              viewBox="0 0 220 110"
+              fill="none"
+              preserveAspectRatio="none"
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={{ pathLength: 1, opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
+            >
+              <motion.path
+                d="M 10,55 C 20,15 60,5 110,8 C 160,11 200,20 210,55 C 220,90 180,102 110,105 C 40,108 5,95 10,55"
+                stroke="#4ade80"
+                strokeWidth="3"
+                fill="none"
+                strokeLinecap="round"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
+              />
+            </motion.svg>
+          </motion.span>
+        </div>
 
-        {/* Punchy Lines Block — alternating slide cards */}
-        <div className="mb-8 space-y-4">
-          {punchyLines.map((line, index) => {
-            const fromLeft = index === 0 || index === 2;
-            return (
-              <motion.div
-                key={index}
-                className="bg-[#2a2a2a] border-l-[3px] border-[#4ade80] py-4 px-6 rounded-r-lg max-w-[580px]"
-                initial={{ opacity: 0, x: fromLeft ? -80 : 80 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, ease: "easeOut", delay: 0.35 * index }}
-              >
-                <p className="text-base md:text-lg text-[#f5f5f5] text-left">
-                  {line}
-                </p>
-              </motion.div>
-            );
-          })}
+        {/* Two-Column Rebuttal Section */}
+        <div className="max-w-[680px] mx-auto mt-12 mb-8">
+          {/* Headers */}
+          <div className="grid grid-cols-2 gap-4 mb-4">
+            <p className="text-xs uppercase tracking-widest text-[#6b7280] font-medium">
+              Their way
+            </p>
+            <p className="text-xs uppercase tracking-widest text-[#4ade80] font-medium text-right md:text-left">
+              Reality
+            </p>
+          </div>
+
+          {/* Rows */}
+          <div className="space-y-4">
+            {rebuttalRows.map((row, index) => (
+              <div key={index} className="grid grid-cols-2 gap-4 items-center">
+                <motion.p
+                  className="text-[1.1rem] text-[#6b7280]"
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 * index }}
+                >
+                  {row.their}
+                </motion.p>
+                <motion.p
+                  className={`text-[1.3rem] text-[#4ade80] text-right md:text-left ${caveat.className}`}
+                  style={{ transform: index % 2 === 0 ? 'rotate(-1deg)' : 'rotate(1deg)' }}
+                  initial={{ opacity: 0, x: 30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 * index }}
+                >
+                  {row.reality}
+                </motion.p>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Mint Green Divider */}
