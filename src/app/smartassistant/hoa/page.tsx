@@ -585,18 +585,26 @@ function ContactSection() {
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
       );
 
-      const { error } = await supabase.from('hoa_leads').insert({
+      const insertData = {
         name: formData.name.trim(),
         email: formData.email.trim(),
         community_name: formData.community_name.trim(),
         num_homes: formData.num_homes.trim(),
         message: formData.message.trim() || null,
-      });
+      };
 
-      if (error) throw error;
+      console.log('Attempting insert with data:', insertData);
+
+      const { error } = await supabase.from('hoa_leads').insert(insertData);
+
+      if (error) {
+        console.error('Supabase error:', JSON.stringify(error, null, 2));
+        throw error;
+      }
 
       setIsSuccess(true);
-    } catch {
+    } catch (err) {
+      console.error('Supabase error:', JSON.stringify(err, null, 2));
       setSubmitError('Something went wrong. Please try again.');
     } finally {
       setIsSubmitting(false);
