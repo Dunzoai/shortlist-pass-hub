@@ -32,7 +32,7 @@ const travelingDotLines = [
 
 function NetworkBackground() {
   return (
-    <div className="fixed inset-0 bg-[#1a1a1a]" style={{ opacity: 0.15 }}>
+    <div className="fixed inset-0 bg-[#1a1a1a]" style={{ opacity: 0.4 }}>
       <svg
         className="absolute inset-0 w-full h-full"
         viewBox="0 0 100 100"
@@ -139,13 +139,13 @@ export default function SmartAssistantRoutingPage() {
       <div
         className="absolute inset-0"
         style={{
-          background: 'radial-gradient(ellipse at center, rgba(26,26,26,0.7) 0%, rgba(26,26,26,0.85) 100%)',
+          background: 'radial-gradient(ellipse at center, rgba(26,26,26,0.3) 0%, rgba(26,26,26,0.5) 100%)',
         }}
       />
 
-      {/* Modal overlay */}
+      {/* Modal overlay - no blur to preserve network visibility */}
       <motion.div
-        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/20"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.2 }}
