@@ -6,14 +6,14 @@ import { Building2, Store } from 'lucide-react';
 
 // Node positions and labels
 const nodes = [
-  { id: 1, x: 15, y: 20, label: 'Communities' },
-  { id: 2, x: 35, y: 65, label: 'Local Eats' },
-  { id: 3, x: 20, y: 80, label: 'Service Pros' },
-  { id: 4, x: 65, y: 30, label: 'Your City' },
-  { id: 5, x: 80, y: 70, label: 'Communities' },
-  { id: 6, x: 50, y: 85, label: 'Local Eats' },
-  { id: 7, x: 75, y: 15, label: 'Service Pros' },
-  { id: 8, x: 45, y: 45, label: 'Your City' },
+  { id: 1, x: 15, y: 20, label: 'Willow Creek HOA' },
+  { id: 2, x: 35, y: 65, label: "Tony's Pizza" },
+  { id: 3, x: 20, y: 80, label: 'Bright Electric Co.' },
+  { id: 4, x: 65, y: 30, label: 'Lakeside Villas' },
+  { id: 5, x: 80, y: 70, label: 'The Garden District' },
+  { id: 6, x: 50, y: 85, label: 'Main St. Bakery' },
+  { id: 7, x: 75, y: 15, label: 'Summit Plumbing' },
+  { id: 8, x: 45, y: 45, label: 'Riverside Condos' },
 ];
 
 // Line connections (pairs of node IDs)
