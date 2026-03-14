@@ -20,6 +20,7 @@ import {
   Twitter,
   Linkedin,
   Mail,
+  ChevronDown,
 } from 'lucide-react';
 
 // =============================================================================
@@ -79,153 +80,244 @@ function AnimatedSection({
 }
 
 // =============================================================================
-// SECTION 1 - HERO (Cinematic Sequence)
+// SECTION 1 - HERO (Fullscreen Cinematic Sequence)
 // =============================================================================
 
 function HeroSection() {
-  const [phase, setPhase] = useState<'accusation' | 'problems' | 'done'>('accusation');
-  const [currentProblem, setCurrentProblem] = useState(0);
-  const [showTool, setShowTool] = useState(false);
-  const [showRebuttal, setShowRebuttal] = useState(false);
+  // Phase: 'phase1' | 'phase1-fadeout' | 'phase2' | 'phase3'
+  const [phase, setPhase] = useState<string>('phase1');
+  const [showLine1a, setShowLine1a] = useState(false);
+  const [showLine1b, setShowLine1b] = useState(false);
+  const [showLine1c, setShowLine1c] = useState(false);
+  const [phase1Visible, setPhase1Visible] = useState(true);
+  const [currentLine, setCurrentLine] = useState(0);
+  const [showCurrentLine, setShowCurrentLine] = useState(false);
+  const [showResolve1, setShowResolve1] = useState(false);
+  const [showResolve2, setShowResolve2] = useState(false);
+  const [showArrow, setShowArrow] = useState(false);
 
-  const problems = [
-    { tool: "Website.", rebuttal: "Nobody wants to chase links." },
-    { tool: "Facebook.", rebuttal: "Arguments and buried info." },
-    { tool: "Email.", rebuttal: "Less than 10% open rate." },
-    { tool: "Newsletters.", rebuttal: "Where do they even find them?" },
+  const phase2Lines = [
+    "Your residents are in a Facebook group right now. Arguing.",
+    "Emails — unopened.",
+    "You're not the problem. Your tools are.",
   ];
 
-  // Phase 1 -> Phase 2 transition (after accusation lines appear + 1.2s pause)
   useEffect(() => {
-    if (phase === 'accusation') {
-      // Line 1: 0s, Line 2: 0.4s, Line 3: 0.8s
-      // All visible by ~1.3s, then pause 1.2s = 2.5s total
-      const timer = setTimeout(() => {
-        setPhase('problems');
-      }, 2500);
-      return () => clearTimeout(timer);
-    }
-  }, [phase]);
+    // PHASE 1: Build accusation lines
+    // Step 1a: Show first line immediately
+    setShowLine1a(true);
 
-  // Phase 2: Cycle through problems
+    // Step 1b: 0.8s after 1a
+    const timer1b = setTimeout(() => setShowLine1b(true), 800);
+
+    // Step 1c: 0.6s after 1b (1.4s total)
+    const timer1c = setTimeout(() => setShowLine1c(true), 1400);
+
+    // All visible for 1.5s, then fade out (starts at 2.9s)
+    // Duration of 1c animation is 0.6s, so it's done at 2s. Add 1.5s = 3.5s
+    const timerFadeOut = setTimeout(() => {
+      setPhase1Visible(false);
+    }, 3500);
+
+    // After fade out (0.4s), start Phase 2 (at 3.9s)
+    const timerPhase2 = setTimeout(() => {
+      setPhase('phase2');
+      setShowCurrentLine(true);
+    }, 3900);
+
+    return () => {
+      clearTimeout(timer1b);
+      clearTimeout(timer1c);
+      clearTimeout(timerFadeOut);
+      clearTimeout(timerPhase2);
+    };
+  }, []);
+
+  // PHASE 2: Cycle through lines
   useEffect(() => {
-    if (phase !== 'problems') return;
+    if (phase !== 'phase2') return;
 
-    const runCycle = () => {
-      // Show tool
-      setShowTool(true);
-      setShowRebuttal(false);
+    const lineTimings = () => {
+      // Show line (already shown via setShowCurrentLine)
+      // After 1.8s sitting + 0.4s fade in = 2.2s, start fade out
+      const fadeOutTimer = setTimeout(() => {
+        setShowCurrentLine(false);
+      }, 2200);
 
-      // After 0.8s, show rebuttal
-      setTimeout(() => {
-        setShowRebuttal(true);
-      }, 800);
+      // After fade out (0.3s) + gap (0.3s) = 2.8s, next line or Phase 3
+      const nextTimer = setTimeout(() => {
+        if (currentLine < phase2Lines.length - 1) {
+          setCurrentLine(prev => prev + 1);
+          setShowCurrentLine(true);
+        } else {
+          // Move to Phase 3
+          setPhase('phase3');
+        }
+      }, 2800);
 
-      // After 0.8s + 1.2s = 2s, fade out both
-      setTimeout(() => {
-        setShowTool(false);
-        setShowRebuttal(false);
-      }, 2000);
-
-      // After 2s + 0.3s = 2.3s, next cycle or end
-      setTimeout(() => {
-        setCurrentProblem((prev) => {
-          if (prev < problems.length - 1) {
-            return prev + 1;
-          } else {
-            // End of cycles, move to done phase after 0.5s
-            setTimeout(() => setPhase('done'), 500);
-            return prev;
-          }
-        });
-      }, 2300);
+      return () => {
+        clearTimeout(fadeOutTimer);
+        clearTimeout(nextTimer);
+      };
     };
 
-    runCycle();
-
-    // Re-run when currentProblem changes (but not on initial mount with problems phase)
+    const cleanup = lineTimings();
+    return cleanup;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase, currentProblem]);
+  }, [phase, currentLine]);
+
+  // PHASE 3: Resolution sequence
+  useEffect(() => {
+    if (phase !== 'phase3') return;
+
+    // Show "Don't worry —"
+    setShowResolve1(true);
+
+    // 0.5s later, show "We're the solution."
+    const timer2 = setTimeout(() => setShowResolve2(true), 500);
+
+    // 0.6s after that, show arrow (1.1s total)
+    const timerArrow = setTimeout(() => setShowArrow(true), 1100);
+
+    return () => {
+      clearTimeout(timer2);
+      clearTimeout(timerArrow);
+    };
+  }, [phase]);
 
   return (
-    <section className="relative bg-[#1a1a1a] min-h-screen flex items-center justify-center px-6">
-      <div className="max-w-[800px] mx-auto text-center">
-        {/* PHASE 1: The Accusation - Always visible */}
-        <div className="mb-12">
-          <motion.p
-            className="text-[1.5rem] md:text-[2rem] md:whitespace-nowrap font-semibold text-[#f5f5f5] mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0 }}
-          >
-            Resident communication is the problem.
-          </motion.p>
-          <motion.p
-            className="text-[2.8rem] md:text-[4rem] font-black text-white mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-          >
-            And it's your fault.
-          </motion.p>
-          <motion.p
-            className="text-[1rem] md:text-[1.2rem] font-normal italic text-[#9ca3af]"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.8 }}
-          >
-            (Even if it's not.)
-          </motion.p>
-        </div>
+    <section className="relative bg-[#1a1a1a] h-screen flex items-center justify-center px-6 overflow-hidden">
+      <div className="max-w-[700px] mx-auto text-center">
+        {/* PHASE 1: The Accusation */}
+        <AnimatePresence>
+          {phase === 'phase1' && phase1Visible && (
+            <motion.div
+              key="phase1"
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              className="flex flex-col items-center"
+            >
+              <AnimatePresence>
+                {showLine1a && (
+                  <motion.p
+                    key="line1a"
+                    className="font-semibold text-[#f5f5f5] mb-4"
+                    style={{ fontSize: 'clamp(1.8rem, 4vw, 2.8rem)' }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    Communication is the problem.
+                  </motion.p>
+                )}
+              </AnimatePresence>
 
-        {/* PHASE 2: Rotating Problems - appears below Phase 1 */}
-        {(phase === 'problems' || phase === 'done') && (
-          <div className="min-h-[150px] flex flex-col items-center justify-center">
-            {phase === 'problems' && (
-              <>
-                <AnimatePresence mode="wait">
-                  {showTool && (
-                    <motion.p
-                      key={`tool-${currentProblem}`}
-                      className="text-[2rem] md:text-[3rem] font-bold text-[#f5f5f5] mb-4"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      {problems[currentProblem].tool}
-                    </motion.p>
-                  )}
-                </AnimatePresence>
-                <AnimatePresence mode="wait">
-                  {showRebuttal && (
-                    <motion.p
-                      key={`rebuttal-${currentProblem}`}
-                      className={`text-[1.3rem] md:text-[1.6rem] text-[#4ade80] ${caveat.className}`}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      {problems[currentProblem].rebuttal}
-                    </motion.p>
-                  )}
-                </AnimatePresence>
-              </>
-            )}
+              <AnimatePresence>
+                {showLine1b && (
+                  <motion.p
+                    key="line1b"
+                    className="font-black text-white mb-4"
+                    style={{ fontSize: 'clamp(3.5rem, 8vw, 6rem)' }}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4 }}
+                  >
+                    And it's your fault.
+                  </motion.p>
+                )}
+              </AnimatePresence>
 
-            {/* PHASE 3: Done - show placeholder for now */}
-            {phase === 'done' && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5 }}
-              >
-                <p className="text-[2rem] md:text-[3rem] font-bold text-[#4ade80]">
-                  We solved it.
-                </p>
-              </motion.div>
-            )}
+              <AnimatePresence>
+                {showLine1c && (
+                  <motion.p
+                    key="line1c"
+                    className="text-[1.1rem] font-normal italic text-[#6b7280]"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.6 }}
+                  >
+                    (Even if it's not.)
+                  </motion.p>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* PHASE 2: Single lines, one at a time */}
+        {phase === 'phase2' && (
+          <div className="flex items-center justify-center min-h-[200px]">
+            <AnimatePresence mode="wait">
+              {showCurrentLine && (
+                <motion.p
+                  key={`phase2-line-${currentLine}`}
+                  className="font-semibold text-[#f5f5f5] max-w-[700px]"
+                  style={{ fontSize: 'clamp(1.4rem, 3.5vw, 2.2rem)' }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{
+                    enter: { duration: 0.4 },
+                    exit: { duration: 0.3 }
+                  }}
+                >
+                  {phase2Lines[currentLine]}
+                </motion.p>
+              )}
+            </AnimatePresence>
+          </div>
+        )}
+
+        {/* PHASE 3: The Resolution */}
+        {phase === 'phase3' && (
+          <div className="flex flex-col items-center justify-center min-h-[300px]">
+            <AnimatePresence>
+              {showResolve1 && (
+                <motion.p
+                  key="resolve1"
+                  className="font-normal text-[#9ca3af] mb-4"
+                  style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)' }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  Don't worry —
+                </motion.p>
+              )}
+            </AnimatePresence>
+
+            <AnimatePresence>
+              {showResolve2 && (
+                <motion.p
+                  key="resolve2"
+                  className="font-black text-white mb-8"
+                  style={{ fontSize: 'clamp(3rem, 7vw, 5rem)' }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  We're the solution.
+                </motion.p>
+              )}
+            </AnimatePresence>
+
+            <AnimatePresence>
+              {showArrow && (
+                <motion.div
+                  key="arrow"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  <motion.div
+                    animate={{ y: [0, 8, 0] }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    <ChevronDown className="w-8 h-8 text-[#4ade80]" />
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         )}
       </div>
