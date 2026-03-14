@@ -272,7 +272,12 @@ function PhoneMockupSection() {
           100% { transform: translateX(-50%); }
         }
         .animate-scroll-left {
-          animation: scrollLeft 25s linear infinite;
+          animation: scrollLeft 18s linear infinite;
+        }
+        @media (min-width: 768px) {
+          .animate-scroll-left {
+            animation: scrollLeft 25s linear infinite;
+          }
         }
       `}</style>
     </AnimatedSection>
