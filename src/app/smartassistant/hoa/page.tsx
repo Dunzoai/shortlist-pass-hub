@@ -133,213 +133,71 @@ function TypewriterText({
   );
 }
 
-type HeroPhase = 'p1-1' | 'p1-2' | 'p1-3' | 'p1-wait' | 'p1-fadeout' | 'p2-1' | 'p2-2' | 'p2-3' | 'p3-1' | 'p3-2' | 'p3-arrow' | 'done';
-
 function HeroSection() {
-  const [phase, setPhase] = useState<HeroPhase>('p1-1');
-  const [phase1Visible, setPhase1Visible] = useState(true);
-  const [phase2Line, setPhase2Line] = useState<string | null>(null);
-  const [phase3Started, setPhase3Started] = useState(false);
-  const [showLine1, setShowLine1] = useState(true);
-  const [showLine2, setShowLine2] = useState(false);
-  const [showLine3, setShowLine3] = useState(false);
+  const [currentLine, setCurrentLine] = useState(0);
   const [showArrow, setShowArrow] = useState(false);
 
   const baseFontSize = 'clamp(1.6rem, 3.5vw, 2.4rem)';
 
-  // Phase 1 completion handlers
-  const onP1Line1Complete = () => {
-    setTimeout(() => {
-      setShowLine2(true);
-      setPhase('p1-2');
-    }, 400);
-  };
+  const lines = [
+    { text: "Emails go unopened.", speed: 80 },
+    { text: "Your residents are in a Facebook group.\nArguing.", speed: 55 },
+    { text: "Website?\nLink hunting & never ending scrolls.", speed: 55 },
+    { text: "Communication was a problem.", speed: 70 },
+    { text: "Until now.", speed: 90, isFinal: true },
+  ];
 
-  const onP1Line2Complete = () => {
-    setTimeout(() => {
-      setShowLine3(true);
-      setPhase('p1-3');
-    }, 400);
-  };
-
-  const onP1Line3Complete = () => {
-    setTimeout(() => {
-      setPhase('p1-fadeout');
-      setPhase1Visible(false);
+  const onLineComplete = () => {
+    if (currentLine < lines.length - 1) {
       setTimeout(() => {
-        setPhase('p2-1');
-        setPhase2Line('p2-1');
-      }, 400);
-    }, 1500);
-  };
-
-  // Phase 2 completion handlers
-  const onP2Line1Complete = () => {
-    setTimeout(() => {
-      setPhase2Line(null);
+        setCurrentLine(prev => prev + 1);
+      }, 1200);
+    } else {
       setTimeout(() => {
-        setPhase('p2-2');
-        setPhase2Line('p2-2');
+        setShowArrow(true);
       }, 400);
-    }, 1000);
+    }
   };
-
-  const onP2Line2Complete = () => {
-    setTimeout(() => {
-      setPhase2Line(null);
-      setTimeout(() => {
-        setPhase('p2-3');
-        setPhase2Line('p2-3');
-      }, 400);
-    }, 1000);
-  };
-
-  const onP2Line3Complete = () => {
-    setTimeout(() => {
-      setPhase2Line(null);
-      setTimeout(() => {
-        setPhase('p3-1');
-        setPhase3Started(true);
-      }, 400);
-    }, 1000);
-  };
-
-  const isPhase1 = phase.startsWith('p1-') && phase !== 'p1-fadeout';
-  const isPhase2 = phase.startsWith('p2-');
-  const isPhase3 = phase.startsWith('p3-');
 
   return (
     <section className="relative bg-[#1a1a1a] h-screen flex items-center justify-center px-6 overflow-hidden">
       <div className="max-w-[900px] mx-auto text-center">
-        {/* PHASE 1: The Accusation */}
         <AnimatePresence mode="wait">
-          {phase1Visible && (
-            <motion.div
-              key="phase1"
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
-              className="flex flex-col items-center"
+          <motion.div
+            key={currentLine}
+            className="flex flex-col items-center justify-center min-h-[200px]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            <p
+              className="font-semibold text-[#f5f5f5] max-w-[900px] text-center whitespace-pre-line"
+              style={{ fontSize: baseFontSize }}
             >
-              {showLine1 && (
-                <p
-                  className="font-semibold text-[#f5f5f5] mb-4"
-                  style={{ fontSize: baseFontSize }}
-                >
-                  <TypewriterText
-                    text="Communication is the problem."
-                    speed={80}
-                    onComplete={onP1Line1Complete}
-                  />
-                </p>
-              )}
+              <TypewriterText
+                text={lines[currentLine].text}
+                speed={lines[currentLine].speed}
+                onComplete={onLineComplete}
+              />
+            </p>
 
-              {showLine2 && (
-                <p
-                  className="font-black text-white mb-4"
-                  style={{ fontSize: baseFontSize }}
-                >
-                  <TypewriterText
-                    text="And it's your fault."
-                    speed={80}
-                    onComplete={onP1Line2Complete}
-                  />
-                </p>
-              )}
-
-              {showLine3 && (
-                <p
-                  className="font-normal text-[#6b7280] italic"
-                  style={{ fontSize: 'clamp(1rem, 2vw, 1.25rem)' }}
-                >
-                  <TypewriterText
-                    text="(Even if it's not.)"
-                    speed={100}
-                    onComplete={onP1Line3Complete}
-                  />
-                </p>
-              )}
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* PHASE 2: Single lines, one at a time */}
-        <AnimatePresence mode="wait">
-          {isPhase2 && phase2Line && (
-            <motion.div
-              key={phase2Line}
-              className="flex items-center justify-center min-h-[200px]"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
-            >
-              <p
-                className="font-semibold text-[#f5f5f5] max-w-[900px] text-center whitespace-pre-line"
-                style={{ fontSize: baseFontSize }}
+            {showArrow && lines[currentLine].isFinal && (
+              <motion.div
+                className="mt-8"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.4 }}
               >
-                {phase2Line === 'p2-1' && (
-                  <TypewriterText
-                    text={"Your residents are in a Facebook group.\nArguing."}
-                    speed={55}
-                    onComplete={onP2Line1Complete}
-                  />
-                )}
-                {phase2Line === 'p2-2' && (
-                  <TypewriterText
-                    text="Emails — unopened."
-                    speed={110}
-                    onComplete={onP2Line2Complete}
-                  />
-                )}
-                {phase2Line === 'p2-3' && (
-                  <TypewriterText
-                    text={"You're not the problem.\nYour tools are."}
-                    speed={75}
-                    onComplete={onP2Line3Complete}
-                  />
-                )}
-              </p>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* PHASE 3: The Resolution */}
-        <AnimatePresence>
-          {phase3Started && (
-            <motion.div
-              key="phase3"
-              className="flex flex-col items-center justify-center min-h-[300px]"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.4 }}
-            >
-              <p
-                className="font-semibold text-[#f5f5f5] mb-6"
-                style={{ fontSize: baseFontSize }}
-              >
-                <TypewriterText
-                  text="Ready for the solution?"
-                  speed={70}
-                  onComplete={() => setShowArrow(true)}
-                />
-              </p>
-
-              {showArrow && (
                 <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.4 }}
+                  animate={{ y: [0, 8, 0] }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
                 >
-                  <motion.div
-                    animate={{ y: [0, 8, 0] }}
-                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                  >
-                    <ChevronDown className="w-8 h-8 text-[#4ade80]" />
-                  </motion.div>
+                  <ChevronDown className="w-8 h-8 text-[#4ade80]" />
                 </motion.div>
-              )}
-            </motion.div>
-          )}
+              </motion.div>
+            )}
+          </motion.div>
         </AnimatePresence>
       </div>
     </section>
