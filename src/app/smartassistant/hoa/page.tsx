@@ -264,8 +264,8 @@ function HeroSection() {
 
               {showLine3 && (
                 <p
-                  className="font-semibold text-[#f5f5f5]"
-                  style={{ fontSize: baseFontSize }}
+                  className="font-normal text-[#6b7280] italic"
+                  style={{ fontSize: 'clamp(1rem, 2vw, 1.25rem)' }}
                 >
                   <TypewriterText
                     text="(Even if it's not.)"
@@ -344,7 +344,7 @@ function HeroSection() {
 
               {showP3Line2 && (
                 <p
-                  className="font-black text-white mb-8"
+                  className="font-black text-white flex items-center justify-center gap-3"
                   style={{ fontSize: baseFontSize }}
                 >
                   <TypewriterText
@@ -352,22 +352,22 @@ function HeroSection() {
                     speed={80}
                     onComplete={onP3Line2Complete}
                   />
+                  {showArrow && (
+                    <motion.span
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.4 }}
+                    >
+                      <motion.span
+                        className="inline-block"
+                        animate={{ y: [0, 6, 0] }}
+                        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                      >
+                        <ChevronDown className="w-7 h-7 text-[#4ade80]" />
+                      </motion.span>
+                    </motion.span>
+                  )}
                 </p>
-              )}
-
-              {showArrow && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.4 }}
-                >
-                  <motion.div
-                    animate={{ y: [0, 8, 0] }}
-                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                  >
-                    <ChevronDown className="w-8 h-8 text-[#4ade80]" />
-                  </motion.div>
-                </motion.div>
               )}
             </motion.div>
           )}
