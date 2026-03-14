@@ -9,16 +9,16 @@ import {
   Calendar,
   MessageCircle,
   BookOpen,
-  Mail,
-  Users,
-  FileText,
-  MessageSquare,
+  Brain,
+  Rss,
+  Store,
   Bell,
-  Building2,
+  Smartphone,
+  HelpCircle,
   Instagram,
   Twitter,
   Linkedin,
-  MailIcon,
+  Mail,
 } from 'lucide-react';
 
 // =============================================================================
@@ -35,7 +35,7 @@ const staggerContainer = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
+      staggerChildren: 0.15,
     },
   },
 };
@@ -46,17 +46,20 @@ const staggerContainer = {
 
 function AnimatedSection({
   children,
-  className = ''
+  className = '',
+  id,
 }: {
   children: React.ReactNode;
   className?: string;
+  id?: string;
 }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
     <motion.section
       ref={ref}
+      id={id}
       className={className}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
@@ -73,35 +76,91 @@ function AnimatedSection({
 // =============================================================================
 
 function HeroSection() {
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section className="relative bg-[#1a1a1a] pt-24 pb-16 md:pt-32 md:pb-24 px-6">
       <div className="max-w-4xl mx-auto text-center">
-        <motion.h1
-          className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-[#f5f5f5] leading-tight mb-6"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          Email gets ignored. Meetings get argued. Newsletters get lost.
-        </motion.h1>
-
+        {/* Label */}
         <motion.p
-          className="text-base md:text-xl text-[#f5f5f5]/70 max-w-[600px] mx-auto leading-relaxed mb-6"
+          className="text-xs md:text-sm uppercase tracking-widest text-[#4ade80] font-medium mb-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.15 }}
+          transition={{ duration: 0.5 }}
         >
-          Your community deserves one place that works for everyone — and a board assistant that never clocks out.
+          For HOA Boards & Community Managers
         </motion.p>
 
+        {/* Headline */}
+        <motion.h1
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#f5f5f5] leading-tight mb-10 max-w-[800px] mx-auto"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+        >
+          Communication is the problem. We solved it.
+        </motion.h1>
+
+        {/* Body paragraphs */}
+        <motion.div
+          className="max-w-[680px] mx-auto text-base md:text-lg text-[#f5f5f5]/70 leading-relaxed space-y-6 mb-10"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          <p>
+            Websites are brochures and nobody wants to chase links in 2026. Make residents hunt for answers and they give up — then blame the board. Let Facebook groups run your information and it becomes a free for all. Send emails and less than 10% get opened. Newsletters? Nobody can find them a week later.
+          </p>
+          <p>
+            Community communication has been too spread out and too messy for residents to care. And it always falls back on the board as the fall guys. The truth is you can't communicate well because they expect you to be everywhere. We fixed that.
+          </p>
+        </motion.div>
+
+        {/* Accent statement */}
         <motion.p
-          className="text-sm md:text-lg font-medium text-[#4ade80]"
+          className="text-xl md:text-2xl lg:text-3xl font-semibold text-[#4ade80] mb-10"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
-          24/7. Every resident. Every question. Every announcement. Free.
+          One app. One place. Your entire community.
         </motion.p>
+
+        {/* Third paragraph */}
+        <motion.p
+          className="max-w-[680px] mx-auto text-base md:text-lg text-[#f5f5f5]/70 leading-relaxed mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+        >
+          Not your management company's app — the one that's self-serving for them and stuffs ChatGPT inside a chat widget and calls it cutting edge. We're not that. We built an actual assistant in digital form. It answers any question your board president can — but better. 24/7. No days off. No bad moods.
+        </motion.p>
+
+        {/* CTA Buttons */}
+        <motion.div
+          className="flex flex-col sm:flex-row items-center justify-center gap-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+        >
+          <button
+            onClick={() => scrollToSection('contact')}
+            className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-[#4ade80] text-[#1a1a1a] font-semibold text-base hover:bg-[#3fcf70] transition-colors"
+          >
+            Get your community on the network
+          </button>
+          <button
+            onClick={() => scrollToSection('features')}
+            className="w-full sm:w-auto px-8 py-3.5 rounded-full border-2 border-[#4ade80] text-[#4ade80] font-semibold text-base hover:bg-[#4ade80]/10 transition-colors"
+          >
+            See how it works
+          </button>
+        </motion.div>
       </div>
     </section>
   );
@@ -114,8 +173,8 @@ function HeroSection() {
 function PhoneMockupSection() {
   const features = [
     { icon: Calendar, label: "Events & Announcements" },
-    { icon: MessageCircle, label: "Ask Anything, Get Answers" },
-    { icon: BookOpen, label: "Newsletters & FAQs" },
+    { icon: MessageCircle, label: "Ask Anything. Get Answers." },
+    { icon: BookOpen, label: "Newsletters. Always There." },
   ];
 
   return (
@@ -123,13 +182,11 @@ function PhoneMockupSection() {
       <div className="max-w-4xl mx-auto">
         {/* Phone Frame */}
         <div className="flex justify-center mb-12">
-          <div
-            className="relative w-[240px] md:w-[280px] h-[480px] md:h-[560px] rounded-[32px] md:rounded-[40px] border-2 border-[#4ade80] bg-[#111] flex items-center justify-center"
-          >
+          <div className="relative w-[240px] md:w-[280px] h-[480px] md:h-[560px] rounded-[32px] md:rounded-[40px] border-2 border-[#4ade80] bg-[#111111] flex items-center justify-center">
             <div className="text-center">
               <Monitor className="w-12 h-12 md:w-16 md:h-16 text-[#4ade80] mx-auto mb-4" />
-              <p className="text-sm md:text-base text-[#4ade80] font-medium px-4">
-                App demo coming soon
+              <p className="text-sm text-[#4ade80] font-medium px-4">
+                Live demo coming soon
               </p>
             </div>
           </div>
@@ -140,7 +197,7 @@ function PhoneMockupSection() {
           {features.map((feature, index) => (
             <div key={index} className="flex items-center gap-3">
               <feature.icon className="w-5 h-5 text-[#4ade80]" />
-              <span className="text-sm md:text-base text-[#f5f5f5]/80">
+              <span className="text-sm md:text-base font-semibold text-[#f5f5f5]">
                 {feature.label}
               </span>
             </div>
@@ -152,67 +209,143 @@ function PhoneMockupSection() {
 }
 
 // =============================================================================
-// SECTION 3 - THE PROBLEM
+// SECTION 3 - FEATURES
 // =============================================================================
 
-function ProblemSection() {
-  const problems = [
+function FeaturesSection() {
+  const features = [
     {
-      icon: Mail,
-      headline: "Emails nobody opens",
-      description: "You send it. Half the community never sees it. The other half says they never got it.",
+      icon: Brain,
+      headline: "An assistant that actually knows your community",
+      description: "Upload your bylaws, rules, and documents by scanning, copy-pasting, or typing. A resident can ask what color they're allowed to paint their door at 2am from bed and get the exact answer. No board member woken up. No thread of 34 replies.",
     },
     {
-      icon: Users,
-      headline: "Meetings that go nowhere",
-      description: "One person dominates. Important things get tabled. Nobody leaves with answers.",
+      icon: Rss,
+      headline: "An Instagram-style feed for your community",
+      description: "Every event, announcement, and newsletter lives in a scrollable feed that residents actually check. Not buried in an inbox. Not lost in a Facebook thread. Right there, always available, always current.",
     },
     {
-      icon: FileText,
-      headline: "Newsletters that get buried",
-      description: "You spend hours writing it. Residents can't find it a week later. You write it again.",
+      icon: Store,
+      headline: "Neighbors hiring neighbors",
+      description: "Resident-owned businesses get their own verified listing inside your community app. Neighbors can tap in, ask questions 24/7, book appointments, place orders — without ever leaving your community. Local commerce that stays local.",
     },
     {
-      icon: MessageSquare,
-      headline: "Group chats that explode",
-      description: "One complaint turns into 47 replies. The board gets tagged at 11pm. Every time.",
+      icon: Bell,
+      headline: "Push notifications that actually land",
+      description: "Important memo? Gate closure? Hurricane prep? Send a push notification and it hits their phone — where they spend 70% of their day. Not their inbox. Not a Facebook group. Their home screen.",
+    },
+    {
+      icon: Smartphone,
+      headline: "A PWA — not another app to download",
+      description: "Older residents who refuse to download apps open your branded website and get the full experience. Tech-savvy residents add it to their home screen like a native app. Everyone gets it. Nobody gets left out.",
     },
   ];
 
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section ref={ref} className="bg-[#1a1a1a] py-16 md:py-24 px-6">
+    <section ref={ref} id="features" className="bg-[#f5f5f5] py-16 md:py-24 px-6">
       <div className="max-w-5xl mx-auto">
         <motion.h2
-          className="text-2xl md:text-4xl font-bold text-[#f5f5f5] text-center mb-12 md:mb-16"
+          className="text-2xl md:text-4xl font-bold text-[#1a1a1a] text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
         >
-          Sound familiar?
+          Everything your community needs. Nothing they have to dig for.
         </motion.h2>
 
+        <div className="space-y-16 md:space-y-20">
+          {features.map((feature, index) => {
+            const isEven = index % 2 === 1;
+
+            return (
+              <motion.div
+                key={index}
+                className={`flex flex-col md:flex-row items-center gap-8 md:gap-12 ${isEven ? 'md:flex-row-reverse' : ''}`}
+                initial={{ opacity: 0, y: 30 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+              >
+                {/* Icon */}
+                <div className="flex-shrink-0">
+                  <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-[#4ade80]/15 flex items-center justify-center">
+                    <feature.icon className="w-10 h-10 md:w-12 md:h-12 text-[#4ade80]" />
+                  </div>
+                </div>
+
+                {/* Text */}
+                <div className={`text-center md:text-left ${isEven ? 'md:text-right' : ''}`}>
+                  <h3 className="text-xl md:text-2xl font-bold text-[#1a1a1a] mb-3">
+                    {feature.headline}
+                  </h3>
+                  <p className="text-base md:text-lg text-[#1a1a1a]/70 leading-relaxed max-w-xl">
+                    {feature.description}
+                  </p>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// =============================================================================
+// SECTION 4 - SOCIAL PROOF
+// =============================================================================
+
+function SocialProofSection() {
+  const stats = [
+    { number: "24/7", label: "Board assistant availability" },
+    { number: "2,000+", label: "Avg. homes per community" },
+    { number: "0", label: "App store downloads required" },
+  ];
+
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
+
+  return (
+    <section ref={ref} className="bg-[#1a1a1a] py-16 md:py-24 px-6">
+      <div className="max-w-4xl mx-auto">
+        {/* Quote */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6"
+          className="text-center mb-16"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={isInView ? { opacity: 1, scale: 1 } : {}}
+          transition={{ duration: 0.6 }}
+        >
+          <span className="text-6xl md:text-8xl text-[#4ade80] font-serif leading-none block">
+            "
+          </span>
+          <p className="text-lg md:text-2xl text-[#f5f5f5] italic leading-relaxed max-w-[600px] mx-auto mb-6 -mt-4 md:-mt-6">
+            Residents started getting answers the same day we went live. The board finally stopped getting texts at night.
+          </p>
+          <p className="text-sm md:text-base text-[#4ade80]">
+            — A Grand Strand community, active on the network
+          </p>
+        </motion.div>
+
+        {/* Stats */}
+        <motion.div
+          className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16"
           variants={staggerContainer}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-          {problems.map((problem, index) => (
+          {stats.map((stat, index) => (
             <motion.div
               key={index}
-              className="bg-[#2a2a2a] border border-[#3a3a3a] rounded-xl p-6"
+              className="text-center"
               variants={fadeInUp}
-              transition={{ duration: 0.5 }}
             >
-              <problem.icon className="w-8 h-8 text-[#4ade80] mb-4" />
-              <h3 className="text-lg md:text-xl font-semibold text-[#f5f5f5] mb-2">
-                {problem.headline}
-              </h3>
-              <p className="text-sm md:text-base text-[#f5f5f5]/60 leading-relaxed">
-                {problem.description}
+              <p className="text-4xl md:text-5xl font-bold text-[#4ade80] mb-2">
+                {stat.number}
+              </p>
+              <p className="text-sm md:text-base text-[#f5f5f5]/70">
+                {stat.label}
               </p>
             </motion.div>
           ))}
@@ -223,73 +356,58 @@ function ProblemSection() {
 }
 
 // =============================================================================
-// SECTION 4 - THE SOLUTION
+// SECTION 5 - OBJECTION BLOCK
 // =============================================================================
 
-function SolutionSection() {
-  const features = [
+function ObjectionSection() {
+  const objections = [
     {
-      icon: MessageCircle,
-      headline: "Residents get answers instantly",
-      description: "Pool hours, gate codes, trash pickup, event details. Answered in seconds without anyone on the board lifting a finger.",
+      question: "Our management company already has an app.",
+      answer: "Their app serves them, not you. It's designed to protect their contract, not your residents. Ours is built for the community you were elected to serve.",
     },
     {
-      icon: Bell,
-      headline: "Announcements that actually land",
-      description: "Post once. Every resident sees it. No more wondering if people got the message.",
+      question: "Is this expensive?",
+      answer: "It's free for your community. The businesses and vendors in your network cover the cost. You bring the residents. We handle the rest.",
     },
     {
-      icon: Building2,
-      headline: "Your Local Biz directory",
-      description: "Resident-owned businesses live inside your community app. Neighbors hire neighbors. No searching required.",
+      question: "Our residents won't use it.",
+      answer: "They already use their phones for everything. You're just giving them one place that works instead of seven that don't.",
     },
   ];
 
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
     <section ref={ref} className="bg-[#f5f5f5] py-16 md:py-24 px-6">
       <div className="max-w-5xl mx-auto">
         <motion.h2
-          className="text-2xl md:text-4xl font-bold text-[#1a1a1a] text-center mb-4"
+          className="text-2xl md:text-4xl font-bold text-[#1a1a1a] text-center mb-12"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
         >
-          One place. Every resident. Every question. Every announcement.
+          We know what you're thinking.
         </motion.h2>
 
-        <motion.p
-          className="text-base md:text-lg text-[#1a1a1a]/70 text-center max-w-3xl mx-auto mb-12 md:mb-16 leading-relaxed"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.15 }}
-        >
-          Shorty is your board's 24/7 assistant. It answers resident questions instantly, shares your announcements, posts your newsletters, and logs maintenance requests — so your board can focus on running the community, not answering the same question 40 times a week.
-        </motion.p>
-
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          className="grid grid-cols-1 md:grid-cols-3 gap-6"
           variants={staggerContainer}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-          {features.map((feature, index) => (
+          {objections.map((obj, index) => (
             <motion.div
               key={index}
-              className="text-center"
+              className="bg-white rounded-xl p-6 shadow-sm"
               variants={fadeInUp}
-              transition={{ duration: 0.5 }}
             >
-              <div className="w-14 h-14 rounded-full bg-[#4ade80]/20 flex items-center justify-center mx-auto mb-4">
-                <feature.icon className="w-7 h-7 text-[#4ade80]" />
-              </div>
-              <h3 className="text-lg md:text-xl font-semibold text-[#1a1a1a] mb-3">
-                {feature.headline}
-              </h3>
-              <p className="text-sm md:text-base text-[#1a1a1a]/60 leading-relaxed">
-                {feature.description}
+              <HelpCircle className="w-6 h-6 text-[#4ade80] mb-4" />
+              <p className="text-base md:text-lg font-bold text-[#1a1a1a] mb-3">
+                {obj.question}
+              </p>
+              <p className="text-sm md:text-base text-[#1a1a1a]/70 leading-relaxed">
+                {obj.answer}
               </p>
             </motion.div>
           ))}
@@ -300,54 +418,20 @@ function SolutionSection() {
 }
 
 // =============================================================================
-// SECTION 5 - SOCIAL PROOF
+// SECTION 6 - CTA / CONTACT FORM
 // =============================================================================
 
-function SocialProofSection() {
+function ContactSection() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
+
+  // TODO: wire up form submission to Supabase or email
 
   return (
-    <section ref={ref} className="bg-[#1a1a1a] py-16 md:py-24 px-6">
-      <div className="max-w-[600px] mx-auto text-center">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={isInView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 0.6 }}
-        >
-          {/* Large quotation mark */}
-          <span className="text-6xl md:text-8xl text-[#4ade80] font-serif leading-none">
-            "
-          </span>
-
-          <p className="text-lg md:text-2xl text-[#f5f5f5] italic leading-relaxed mb-6 -mt-4 md:-mt-6">
-            Residents started getting answers the same day we went live. The board finally stopped getting texts at night.
-          </p>
-
-          <p className="text-sm md:text-base text-[#4ade80]">
-            — A Grand Strand community, active on the network
-          </p>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-
-// =============================================================================
-// SECTION 6 - CTA FORM
-// =============================================================================
-
-function CTASection() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-
-  // TODO: Wire up form submission
-
-  return (
-    <section ref={ref} className="bg-[#1a1a1a] py-16 md:py-24 px-6">
-      <div className="max-w-[500px] mx-auto text-center">
+    <section ref={ref} id="contact" className="bg-[#1a1a1a] py-16 md:py-24 px-6">
+      <div className="max-w-[480px] mx-auto text-center">
         <motion.h2
-          className="text-2xl md:text-4xl font-bold text-[#f5f5f5] mb-3"
+          className="text-2xl md:text-4xl font-bold text-[#f5f5f5] mb-4"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
@@ -356,12 +440,12 @@ function CTASection() {
         </motion.h2>
 
         <motion.p
-          className="text-base md:text-lg text-[#f5f5f5]/70 mb-10"
+          className="text-base md:text-lg text-[#f5f5f5]/70 mb-10 leading-relaxed"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.1 }}
         >
-          It's free. No contracts. No management company approval needed.
+          Free to join. No contracts. No management company approval needed. Just a better experience for your residents starting this week.
         </motion.p>
 
         <motion.form
@@ -373,34 +457,34 @@ function CTASection() {
         >
           <input
             type="text"
-            placeholder="Board member name"
-            className="w-full px-4 py-3 rounded-lg bg-[#2a2a2a] border border-[#3a3a3a] text-[#f5f5f5] placeholder-[#f5f5f5]/40 focus:outline-none focus:border-[#4ade80] transition-colors"
+            placeholder="Your name"
+            className="w-full px-5 py-4 rounded-lg bg-[#2a2a2a] border border-[#3a3a3a] text-[#f5f5f5] placeholder-[#f5f5f5]/40 focus:outline-none focus:border-[#4ade80] transition-colors"
           />
           <input
             type="email"
-            placeholder="Email address"
-            className="w-full px-4 py-3 rounded-lg bg-[#2a2a2a] border border-[#3a3a3a] text-[#f5f5f5] placeholder-[#f5f5f5]/40 focus:outline-none focus:border-[#4ade80] transition-colors"
+            placeholder="Your email"
+            className="w-full px-5 py-4 rounded-lg bg-[#2a2a2a] border border-[#3a3a3a] text-[#f5f5f5] placeholder-[#f5f5f5]/40 focus:outline-none focus:border-[#4ade80] transition-colors"
           />
           <input
             type="text"
             placeholder="Community name"
-            className="w-full px-4 py-3 rounded-lg bg-[#2a2a2a] border border-[#3a3a3a] text-[#f5f5f5] placeholder-[#f5f5f5]/40 focus:outline-none focus:border-[#4ade80] transition-colors"
+            className="w-full px-5 py-4 rounded-lg bg-[#2a2a2a] border border-[#3a3a3a] text-[#f5f5f5] placeholder-[#f5f5f5]/40 focus:outline-none focus:border-[#4ade80] transition-colors"
           />
           <input
             type="text"
             placeholder="Approximate number of homes"
-            className="w-full px-4 py-3 rounded-lg bg-[#2a2a2a] border border-[#3a3a3a] text-[#f5f5f5] placeholder-[#f5f5f5]/40 focus:outline-none focus:border-[#4ade80] transition-colors"
+            className="w-full px-5 py-4 rounded-lg bg-[#2a2a2a] border border-[#3a3a3a] text-[#f5f5f5] placeholder-[#f5f5f5]/40 focus:outline-none focus:border-[#4ade80] transition-colors"
           />
           <textarea
             placeholder="Anything you want us to know (optional)"
             rows={4}
-            className="w-full px-4 py-3 rounded-lg bg-[#2a2a2a] border border-[#3a3a3a] text-[#f5f5f5] placeholder-[#f5f5f5]/40 focus:outline-none focus:border-[#4ade80] transition-colors resize-none"
+            className="w-full px-5 py-4 rounded-lg bg-[#2a2a2a] border border-[#3a3a3a] text-[#f5f5f5] placeholder-[#f5f5f5]/40 focus:outline-none focus:border-[#4ade80] transition-colors resize-none"
           />
           <button
             type="submit"
-            className="w-full py-3.5 rounded-lg bg-[#4ade80] text-[#1a1a1a] font-semibold text-base hover:bg-[#3fcf70] transition-colors"
+            className="w-full py-4 rounded-lg bg-[#4ade80] text-[#1a1a1a] font-bold text-base hover:bg-[#3fcf70] transition-colors"
           >
-            Let's talk
+            Let's talk — we'll reach out within 24 hours
           </button>
         </motion.form>
       </div>
@@ -434,7 +518,7 @@ const socialLinks = [
   { icon: Instagram, href: '#', label: 'Instagram' },
   { icon: Twitter, href: '#', label: 'Twitter' },
   { icon: Linkedin, href: '#', label: 'LinkedIn' },
-  { icon: MailIcon, href: '#', label: 'Email' },
+  { icon: Mail, href: '#', label: 'Email' },
 ];
 
 function Footer() {
@@ -521,10 +605,10 @@ export default function HOALandingPage() {
     <main className="min-h-screen bg-[#1a1a1a]">
       <HeroSection />
       <PhoneMockupSection />
-      <ProblemSection />
-      <SolutionSection />
+      <FeaturesSection />
       <SocialProofSection />
-      <CTASection />
+      <ObjectionSection />
+      <ContactSection />
       <Footer />
     </main>
   );
