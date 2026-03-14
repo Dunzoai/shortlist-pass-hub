@@ -246,12 +246,15 @@ function PhoneMockupSection() {
         </div>
 
         {/* Scrolling Marquee */}
-        <div className="relative w-screen left-1/2 -translate-x-1/2">
-          <div className="flex animate-marquee">
+        <div className="relative w-screen left-1/2 -translate-x-1/2 overflow-hidden">
+          <div
+            className="flex gap-8 animate-scroll-left"
+            style={{ width: 'max-content' }}
+          >
             {[...marqueeItems, ...marqueeItems].map((item, index) => (
               <div
                 key={index}
-                className="flex items-center gap-2 px-6 shrink-0"
+                className="flex items-center gap-2 shrink-0"
               >
                 <item.icon className="w-5 h-5 text-[#4ade80]" />
                 <span className="text-sm md:text-base font-semibold text-[#f5f5f5] whitespace-nowrap">
@@ -263,17 +266,13 @@ function PhoneMockupSection() {
         </div>
       </div>
 
-      <style jsx>{`
-        @keyframes marquee {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
+      <style>{`
+        @keyframes scrollLeft {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
         }
-        .animate-marquee {
-          animation: marquee 30s linear infinite;
+        .animate-scroll-left {
+          animation: scrollLeft 25s linear infinite;
         }
       `}</style>
     </AnimatedSection>
