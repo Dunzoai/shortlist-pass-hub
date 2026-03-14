@@ -1,8 +1,8 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Caveat } from 'next/font/google';
 import {
@@ -79,268 +79,159 @@ function AnimatedSection({
 }
 
 // =============================================================================
-// SECTION 1 - HERO
+// SECTION 1 - HERO (Cinematic Sequence)
 // =============================================================================
 
 function HeroSection() {
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+  const [phase, setPhase] = useState<'accusation' | 'problems' | 'done'>('accusation');
+  const [currentProblem, setCurrentProblem] = useState(0);
+  const [showTool, setShowTool] = useState(false);
+  const [showRebuttal, setShowRebuttal] = useState(false);
+
+  const problems = [
+    { tool: "Website.", rebuttal: "Nobody wants to chase links." },
+    { tool: "Facebook.", rebuttal: "Arguments and buried info." },
+    { tool: "Email.", rebuttal: "Less than 10% open rate." },
+    { tool: "Newsletters.", rebuttal: "Where do they even find them?" },
+  ];
+
+  // Phase 1 -> Phase 2 transition (after accusation lines appear + 1.2s pause)
+  useEffect(() => {
+    if (phase === 'accusation') {
+      // Line 1: 0s, Line 2: 0.4s, Line 3: 0.8s
+      // All visible by ~1.3s, then pause 1.2s = 2.5s total
+      const timer = setTimeout(() => {
+        setPhase('problems');
+      }, 2500);
+      return () => clearTimeout(timer);
     }
-  };
+  }, [phase]);
 
-  const rebuttalRows = [
-    { their: "Website", reality: "Residents don't chase links." },
-    { their: "Facebook", reality: "Arguments. Key info buried." },
-    { their: "Email", reality: "10% open rate. It's 2026." },
-    { their: "Newsletter", reality: "Where does it even live?" },
-  ];
+  // Phase 2: Cycle through problems
+  useEffect(() => {
+    if (phase !== 'problems') return;
 
-  const gutPunchLines = [
-    { text: "Community communication is spread out. It's messy.", className: "font-normal" },
-    { text: "And it's YOUR fault.", className: "font-bold text-xl md:text-2xl" },
-    { text: "...Even if it's not.", className: "text-sm md:text-base italic text-[#f5f5f5]/60" },
-  ];
+    const runCycle = () => {
+      // Show tool
+      setShowTool(true);
+      setShowRebuttal(false);
 
-  const managementLines = [
-    "We know — your management company has an app.",
-    "No. They have a self-serving ChatGPT wrapper stuffed inside a chat widget.",
-    "Cutting edge to them. That's 2024 stuff. Your community deserves better.",
-  ];
+      // After 0.8s, show rebuttal
+      setTimeout(() => {
+        setShowRebuttal(true);
+      }, 800);
+
+      // After 0.8s + 1.2s = 2s, fade out both
+      setTimeout(() => {
+        setShowTool(false);
+        setShowRebuttal(false);
+      }, 2000);
+
+      // After 2s + 0.3s = 2.3s, next cycle or end
+      setTimeout(() => {
+        setCurrentProblem((prev) => {
+          if (prev < problems.length - 1) {
+            return prev + 1;
+          } else {
+            // End of cycles, move to done phase after 0.5s
+            setTimeout(() => setPhase('done'), 500);
+            return prev;
+          }
+        });
+      }, 2300);
+    };
+
+    runCycle();
+
+    // Re-run when currentProblem changes (but not on initial mount with problems phase)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase, currentProblem]);
 
   return (
-    <section className="relative bg-[#1a1a1a] pt-24 pb-16 md:pt-32 md:pb-24 px-6">
-      <div className="max-w-[700px] mx-auto">
-        {/* Top Label */}
-        <motion.p
-          className="text-xs md:text-sm uppercase tracking-widest text-[#4ade80] font-medium mb-8 text-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          For HOA Boards & Community Managers
-        </motion.p>
-
-        {/* Two-Line Headline */}
-        <div className="text-center mb-12">
-          <motion.span
-            className="block text-[2.5rem] md:text-[3.5rem] font-bold text-[#f5f5f5] leading-tight"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            Communication is the problem.
-          </motion.span>
-          <motion.span
-            className="relative inline-block text-[3rem] md:text-[4.5rem] font-black text-white leading-tight"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            We solved it.
-            {/* Hand-drawn circle SVG */}
-            <motion.svg
-              className="absolute -inset-x-4 -inset-y-2 w-[calc(100%+2rem)] h-[calc(100%+1rem)]"
-              viewBox="0 0 220 110"
-              fill="none"
-              preserveAspectRatio="none"
-              initial={{ pathLength: 0, opacity: 0 }}
-              animate={{ pathLength: 1, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
+    <section className="relative bg-[#1a1a1a] min-h-screen flex items-center justify-center px-6">
+      <div className="max-w-[700px] mx-auto text-center">
+        {/* PHASE 1: The Accusation */}
+        <AnimatePresence>
+          {phase === 'accusation' && (
+            <motion.div
+              key="accusation"
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
             >
-              <motion.path
-                d="M 10,55 C 20,15 60,5 110,8 C 160,11 200,20 210,55 C 220,90 180,102 110,105 C 40,108 5,95 10,55"
-                stroke="#4ade80"
-                strokeWidth="3"
-                fill="none"
-                strokeLinecap="round"
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
-              />
-            </motion.svg>
-          </motion.span>
-        </div>
+              <motion.p
+                className="text-[1.8rem] md:text-[2.5rem] font-semibold text-[#f5f5f5] mb-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0 }}
+              >
+                Resident communication is the problem.
+              </motion.p>
+              <motion.p
+                className="text-[2.8rem] md:text-[4rem] font-black text-white mb-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+              >
+                And it's your fault.
+              </motion.p>
+              <motion.p
+                className="text-[1rem] md:text-[1.2rem] font-normal italic text-[#9ca3af]"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.8 }}
+              >
+                (Even if it's not.)
+              </motion.p>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        {/* Two-Column Rebuttal Section */}
-        <div className="max-w-[680px] mx-auto mt-12 mb-8">
-          {/* Headers */}
-          <div className="grid grid-cols-2 gap-4 mb-4">
-            <p className="text-xs uppercase tracking-widest text-[#6b7280] font-medium">
-              Their way
-            </p>
-            <p className="text-xs uppercase tracking-widest text-[#4ade80] font-medium text-right md:text-left">
-              Reality
-            </p>
-          </div>
-
-          {/* Rows */}
-          <div className="space-y-4">
-            {rebuttalRows.map((row, index) => (
-              <div key={index} className="grid grid-cols-2 gap-4 items-center">
+        {/* PHASE 2: Rotating Problems */}
+        {phase === 'problems' && (
+          <div className="min-h-[200px] flex flex-col items-center justify-center">
+            <AnimatePresence mode="wait">
+              {showTool && (
                 <motion.p
-                  className="text-[1.1rem] text-[#6b7280]"
-                  initial={{ opacity: 0, x: -30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 * index }}
+                  key={`tool-${currentProblem}`}
+                  className="text-[2rem] md:text-[3rem] font-bold text-[#f5f5f5] mb-4"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
                 >
-                  {row.their}
+                  {problems[currentProblem].tool}
                 </motion.p>
+              )}
+            </AnimatePresence>
+            <AnimatePresence mode="wait">
+              {showRebuttal && (
                 <motion.p
-                  className={`text-[1.3rem] text-[#4ade80] text-right md:text-left ${caveat.className}`}
-                  style={{ transform: index % 2 === 0 ? 'rotate(-1deg)' : 'rotate(1deg)' }}
-                  initial={{ opacity: 0, x: 30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 * index }}
+                  key={`rebuttal-${currentProblem}`}
+                  className={`text-[1.3rem] md:text-[1.6rem] text-[#4ade80] ${caveat.className}`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
                 >
-                  {row.reality}
+                  {problems[currentProblem].rebuttal}
                 </motion.p>
-              </div>
-            ))}
+              )}
+            </AnimatePresence>
           </div>
-        </div>
+        )}
 
-        {/* Mint Green Divider */}
-        <motion.div
-          className="w-16 h-0.5 bg-[#4ade80] mx-auto mb-10"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 1.6 }}
-        />
-
-        {/* Gut Punch Block — slide in from RIGHT */}
-        <div className="mb-6 text-left md:text-center">
-          {gutPunchLines.map((line, index) => (
-            <motion.p
-              key={index}
-              className={`text-[#f5f5f5] mb-3 ${line.className}`}
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, ease: "easeOut", delay: 0.3 * index }}
-            >
-              {line.text}
-            </motion.p>
-          ))}
-        </div>
-
-        {/* Truth line */}
-        <motion.p
-          className="text-[#f5f5f5] mb-6 text-left md:text-center"
-          initial={{ opacity: 0, x: 50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, ease: "easeOut", delay: 1.2 }}
-        >
-          The truth is you can't communicate every place for everybody.
-        </motion.p>
-
-        {/* Strikethrough correction line */}
-        <motion.p
-          className="text-[#f5f5f5] mb-12 text-left md:text-center text-lg md:text-xl"
-          initial={{ opacity: 0, x: 50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, ease: "easeOut", delay: 1.5 }}
-        >
-          So we built an{" "}
-          <span
-            className="font-normal"
-            style={{
-              color: '#d1d5db',
-              textDecoration: 'line-through',
-              textDecorationColor: '#ef4444',
-              textDecorationThickness: '3px'
-            }}
-          >app</span>{" "}
-          <span className="font-bold text-[#4ade80]">digital assistant.</span>
-        </motion.p>
-
-        {/* Accent Statement */}
-        <motion.p
-          className="text-2xl md:text-3xl lg:text-4xl font-bold text-[#4ade80] mb-14 text-center"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-        >
-          One app. One place. Your entire community.
-        </motion.p>
-
-        {/* Management Company Callout Block — slide in from LEFT */}
-        <div className="mb-6 text-left md:text-center">
-          {managementLines.map((line, index) => (
-            <motion.p
-              key={index}
-              className="text-[#f5f5f5] mb-3"
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, ease: "easeOut", delay: 0.3 * index }}
-            >
-              {line}
-            </motion.p>
-          ))}
-        </div>
-
-        {/* Bold statement */}
-        <motion.p
-          className="text-xl md:text-2xl font-bold text-[#f5f5f5] mb-4 text-left md:text-center"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, ease: "easeOut", delay: 0.9 }}
-        >
-          We built the 24/7 digital board member that knows more than your president.
-        </motion.p>
-
-        {/* Apology line */}
-        <motion.p
-          className="text-sm md:text-base italic text-[#f5f5f5]/60 mb-6 text-left md:text-center"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, ease: "easeOut", delay: 1.1 }}
-        >
-          Sorry if you're reading this, Pres. It's true.
-        </motion.p>
-
-        {/* Sally paragraph */}
-        <motion.p
-          className="text-[#f5f5f5] mb-14 text-left md:text-center leading-relaxed"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, ease: "easeOut", delay: 1.3 }}
-        >
-          Any data your community has gets answered instantly via chat. Sally from South Street sitting in bed at 2am gets the exact color she's allowed to paint her door. No texts. No emails. No board meeting required.
-        </motion.p>
-
-        {/* CTA Buttons */}
-        <motion.div
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, ease: "easeOut", delay: 1.5 }}
-        >
-          <button
-            onClick={() => scrollToSection('contact')}
-            className="w-full sm:w-auto px-8 py-4 rounded-full bg-[#4ade80] text-[#1a1a1a] font-semibold text-base hover:bg-[#3fcf70] transition-colors"
+        {/* PHASE 3: Done - show placeholder for now */}
+        {phase === 'done' && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
           >
-            Get your community on the network
-          </button>
-          <button
-            onClick={() => scrollToSection('features')}
-            className="w-full sm:w-auto px-8 py-4 rounded-full border-2 border-[#4ade80] text-[#4ade80] font-semibold text-base hover:bg-[#4ade80]/10 transition-colors"
-          >
-            See how it works
-          </button>
-        </motion.div>
+            <p className="text-[2rem] md:text-[3rem] font-bold text-[#4ade80]">
+              We solved it.
+            </p>
+          </motion.div>
+        )}
       </div>
     </section>
   );
