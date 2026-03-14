@@ -235,13 +235,15 @@ function PhoneMockupSection() {
 
         {/* Phone Frame */}
         <div className="flex justify-center mb-12">
-          <div className="relative w-[240px] md:w-[280px] h-[480px] md:h-[560px] rounded-[32px] md:rounded-[40px] border-2 border-[#4ade80] bg-[#111111] flex items-center justify-center">
-            <div className="text-center">
-              <Monitor className="w-12 h-12 md:w-16 md:h-16 text-[#4ade80] mx-auto mb-4" />
-              <p className="text-sm text-[#4ade80] font-medium px-4">
-                Live demo coming soon
-              </p>
-            </div>
+          <div className="relative w-[240px] md:w-[280px] h-[480px] md:h-[560px] rounded-[32px] md:rounded-[40px] border-[3px] border-[#4ade80] bg-[#111111] overflow-hidden">
+            <video
+              src="/demo.mov"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-cover"
+            />
           </div>
         </div>
 
