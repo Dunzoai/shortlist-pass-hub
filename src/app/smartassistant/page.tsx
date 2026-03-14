@@ -6,14 +6,14 @@ import { Building2, Store } from 'lucide-react';
 
 // Node positions and labels
 const nodes = [
-  { id: 1, x: 15, y: 20, label: 'Willow Creek HOA' },
-  { id: 2, x: 35, y: 65, label: "Tony's Pizza" },
-  { id: 3, x: 20, y: 80, label: 'Bright Electric Co.' },
-  { id: 4, x: 65, y: 30, label: 'Lakeside Villas' },
-  { id: 5, x: 80, y: 70, label: 'The Garden District' },
-  { id: 6, x: 50, y: 85, label: 'Main St. Bakery' },
-  { id: 7, x: 75, y: 15, label: 'Summit Plumbing' },
-  { id: 8, x: 45, y: 45, label: 'Riverside Condos' },
+  { id: 1, x: 8, y: 12, label: 'Willow Creek HOA' },
+  { id: 2, x: 12, y: 55, label: "Tony's Pizza" },
+  { id: 3, x: 8, y: 88, label: 'Bright Electric Co.' },
+  { id: 4, x: 88, y: 18, label: 'Lakeside Villas' },
+  { id: 5, x: 92, y: 65, label: 'The Garden District' },
+  { id: 6, x: 50, y: 92, label: 'Main St. Bakery' },
+  { id: 7, x: 85, y: 8, label: 'Summit Plumbing' },
+  { id: 8, x: 92, y: 88, label: 'Riverside Condos' },
 ];
 
 // Line connections (pairs of node IDs)
@@ -132,6 +132,13 @@ export default function SmartAssistantRoutingPage() {
 
   return (
     <div className="fixed inset-0 bg-[#1a1a1a]">
+      {/* Hide the chat widget on this page */}
+      <style jsx global>{`
+        [data-slp-widget], .slp-widget, #slp-widget, [id^="slp-"] {
+          display: none !important;
+        }
+      `}</style>
+
       {/* Animated SVG network background */}
       <NetworkBackground />
 
@@ -154,40 +161,40 @@ export default function SmartAssistantRoutingPage() {
       {/* Modal */}
       <div className="absolute inset-0 flex items-center justify-center p-4">
         <motion.div
-          className="w-full max-w-[520px] bg-[#1f1f1f] border border-[#2f2f2f] rounded-2xl p-6 md:p-10"
+          className="w-full max-w-[520px] bg-[#1f1f1f]/95 backdrop-blur-sm border border-[#2f2f2f] rounded-2xl p-5 md:p-10"
           initial={{ opacity: 0, scale: 0.95, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.3, ease: 'easeOut', delay: 0.1 }}
         >
           {/* Top label */}
-          <p className="text-xs uppercase tracking-widest text-[#4ade80] text-center mb-4">
+          <p className="text-xs uppercase tracking-widest text-[#4ade80] text-center mb-3 md:mb-4">
             Shortlist SmartAssistant
           </p>
 
           {/* Headline */}
-          <h1 className="text-2xl md:text-3xl font-bold text-white text-center mb-2">
+          <h1 className="text-xl md:text-3xl font-bold text-white text-center mb-1 md:mb-2">
             What best describes you?
           </h1>
 
           {/* Subtext */}
-          <p className="text-sm text-[#6b7280] text-center mb-8">
+          <p className="text-sm text-[#6b7280] text-center mb-5 md:mb-8">
             We'll show you exactly how SmartAssistant works for your world.
           </p>
 
           {/* Choice cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
             {/* Community Manager Card */}
             <motion.button
               onClick={() => router.push('/smartassistant/hoa')}
-              className="bg-[#2a2a2a] border border-[#3f3f3f] rounded-xl p-7 text-left cursor-pointer transition-colors hover:border-[#4ade80] hover:bg-[#2f2f2f] h-full"
+              className="bg-[#2a2a2a] border border-[#3f3f3f] rounded-xl p-5 md:p-7 text-left cursor-pointer transition-colors hover:border-[#4ade80] hover:bg-[#2f2f2f] h-full"
               whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.2 }}
             >
-              <Building2 className="w-8 h-8 text-[#4ade80] mb-4" />
-              <p className="text-[1.2rem] font-bold text-white">
+              <Building2 className="w-7 h-7 md:w-8 md:h-8 text-[#4ade80] mb-3 md:mb-4" />
+              <p className="text-[1.1rem] md:text-[1.2rem] font-bold text-white">
                 I manage a community
               </p>
-              <p className="text-[0.875rem] text-[#6b7280] mt-2">
+              <p className="text-[0.8rem] md:text-[0.875rem] text-[#6b7280] mt-1 md:mt-2">
                 HOA, apartment complex, or residential community
               </p>
             </motion.button>
@@ -195,22 +202,22 @@ export default function SmartAssistantRoutingPage() {
             {/* Business Owner Card */}
             <motion.button
               onClick={() => router.push('/smartassistant/business')}
-              className="bg-[#2a2a2a] border border-[#3f3f3f] rounded-xl p-7 text-left cursor-pointer transition-colors hover:border-[#4ade80] hover:bg-[#2f2f2f] h-full"
+              className="bg-[#2a2a2a] border border-[#3f3f3f] rounded-xl p-5 md:p-7 text-left cursor-pointer transition-colors hover:border-[#4ade80] hover:bg-[#2f2f2f] h-full"
               whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.2 }}
             >
-              <Store className="w-8 h-8 text-[#4ade80] mb-4" />
-              <p className="text-[1.2rem] font-bold text-white">
+              <Store className="w-7 h-7 md:w-8 md:h-8 text-[#4ade80] mb-3 md:mb-4" />
+              <p className="text-[1.1rem] md:text-[1.2rem] font-bold text-white">
                 I own a local business
               </p>
-              <p className="text-[0.875rem] text-[#6b7280] mt-2">
+              <p className="text-[0.8rem] md:text-[0.875rem] text-[#6b7280] mt-1 md:mt-2">
                 Restaurant, food truck, or service business
               </p>
             </motion.button>
           </div>
 
           {/* Bottom link */}
-          <p className="text-xs text-[#6b7280] text-center mt-8">
+          <p className="text-xs text-[#6b7280] text-center mt-5 md:mt-8">
             Not sure?{' '}
             <a
               href="/smartassistant/hoa#contact"
