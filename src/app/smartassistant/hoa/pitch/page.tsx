@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   Mail,
@@ -143,8 +144,19 @@ function Badge({ children }: { children: React.ReactNode }) {
 
 function SlideHero({ onNext }: { onNext: () => void }) {
   return (
-    <SlideWrapper>
-      <div className="max-w-4xl text-center">
+    <SlideWrapper className="relative">
+      {/* Background image */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1920&q=80"
+          alt="Residential community"
+          fill
+          className="object-cover opacity-15"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0B1018] via-[#0B1018]/80 to-[#0B1018]/60" />
+      </div>
+      <div className="max-w-4xl text-center relative z-10">
         <Badge>
           <Home className="w-3.5 h-3.5" />
           SmartPages for HOA Communities
@@ -391,6 +403,8 @@ function SlideSmartAssistant() {
 /* ─── SLIDE 5: LOCAL BUSINESS ─── */
 
 function SlideLocalBusiness() {
+  const bgImage = "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1920&q=80";
+
   const features = [
     { icon: ShieldCheck, title: 'Verified resident businesses only', desc: 'Every listing is tied to a real resident in your community.' },
     { icon: Star, title: 'Real transaction-verified reviews', desc: 'Only people who actually purchased can leave a review.' },
@@ -399,8 +413,17 @@ function SlideLocalBusiness() {
   ];
 
   return (
-    <SlideWrapper>
-      <div className="max-w-5xl w-full">
+    <SlideWrapper className="relative">
+      <div className="absolute inset-0 z-0">
+        <Image
+          src={bgImage}
+          alt="Local business storefront"
+          fill
+          className="object-cover opacity-10"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0B1018] via-[#0B1018]/85 to-[#0B1018]/70" />
+      </div>
+      <div className="max-w-5xl w-full relative z-10">
         <Badge>
           <Heart className="w-3.5 h-3.5" />
           Local Business Directory
@@ -441,6 +464,9 @@ function SlideLocalBusiness() {
 /* ─── SLIDE 6: LIVE PROOF ─── */
 
 function SlideLiveProof() {
+  /* Background: aerial view of a residential community */
+  const bgImage = "https://images.unsplash.com/photo-1592595896616-c37162298647?w=1920&q=80";
+
   const stats = [
     { value: '400+', label: 'Homes at Clear Pond', sub: 'Live today' },
     { value: '5+', label: 'Communities onboarding', sub: 'And growing' },
@@ -456,8 +482,17 @@ function SlideLiveProof() {
   ];
 
   return (
-    <SlideWrapper>
-      <div className="max-w-5xl w-full">
+    <SlideWrapper className="relative">
+      <div className="absolute inset-0 z-0">
+        <Image
+          src={bgImage}
+          alt="Aerial view of residential neighborhood"
+          fill
+          className="object-cover opacity-10"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0B1018] via-[#0B1018]/85 to-[#0B1018]/70" />
+      </div>
+      <div className="max-w-5xl w-full relative z-10">
         <Badge>
           <CheckCircle2 className="w-3.5 h-3.5" />
           Live Proof
@@ -628,8 +663,17 @@ function SlidePricing() {
 
 function SlideClose() {
   return (
-    <SlideWrapper>
-      <div className="max-w-3xl w-full text-center">
+    <SlideWrapper className="relative">
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&q=80"
+          alt="Beautiful residential community"
+          fill
+          className="object-cover opacity-10"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0B1018] via-[#0B1018]/80 to-[#0B1018]/60" />
+      </div>
+      <div className="max-w-3xl w-full text-center relative z-10">
         <Badge>
           <Coffee className="w-3.5 h-3.5" />
           Let&apos;s Talk
@@ -637,7 +681,7 @@ function SlideClose() {
 
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-8">
           Let&apos;s get Waterbridge{' '}
-          <span className="text-[#34D399]">on the map.</span>
+          <span className="text-[#34D399]">on the Shortlist.</span>
         </h2>
 
         {/* Quote */}
