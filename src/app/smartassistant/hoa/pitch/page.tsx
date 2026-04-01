@@ -468,7 +468,7 @@ function SlideLiveProof() {
   const bgImage = "https://images.unsplash.com/photo-1592595896616-c37162298647?w=1920&q=80";
 
   const stats = [
-    { value: '400+', label: 'Homes at Clear Pond', sub: 'Live today' },
+    { value: '450+', label: 'Homes at Clear Pond', sub: 'Live and growing' },
     { value: '5+', label: 'Communities onboarding', sub: 'And growing' },
     { value: '$0', label: 'Cost to Waterbridge', sub: 'Ever' },
   ];
@@ -477,8 +477,7 @@ function SlideLiveProof() {
     'Clear Pond HOA',
     'The Bluffs on the Waterway',
     'Berkshire HOA',
-    'Covington Lake East',
-    'Carolina Waterway Plantation',
+    'Covington Lakes',
   ];
 
   return (
@@ -520,7 +519,7 @@ function SlideLiveProof() {
         </div>
 
         <div className="text-center">
-          <p className="text-sm text-white/40 uppercase tracking-widest mb-4">Communities in the network</p>
+          <p className="text-sm text-white/40 uppercase tracking-widest mb-4">Communities onboarding or in contact</p>
           <div className="flex flex-wrap justify-center gap-3">
             {communities.map((c, i) => (
               <motion.span
