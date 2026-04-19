@@ -16,9 +16,8 @@ export default function MagazineLayout({
       <style
         dangerouslySetInnerHTML={{
           __html: `
-            /* Override root layout for magazine */
-            body.font-sans { background: #0E0F0D !important; color: #F1E9D7 !important; }
-            body > nav, body > .nav, body > header, body > script[data-slp-subdomain] + div, #shortlist-chat-widget { display: none !important; }
+            body.font-sans { background: #0E0F0D !important; }
+            body > nav, body > .nav, body > header, #shortlist-chat-widget { display: none !important; }
           `,
         }}
       />
