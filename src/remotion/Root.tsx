@@ -4,6 +4,8 @@ import { SmartPageCommercial } from "./SmartPageCommercial";
 import { SmartPageAd } from "./SmartPageAd";
 import { SmartPageIntelligence } from "./SmartPageIntelligence";
 import { HeroPhoneChat } from "./HeroPhoneChat";
+import { LocalPassAd } from "./LocalPassAd";
+import { TOTAL_FRAMES as LOCAL_PASS_FRAMES } from "./LocalPassAd/constants";
 
 export const RemotionRoot = () => {
   return (
@@ -122,6 +124,32 @@ export const RemotionRoot = () => {
         defaultProps={{
           logoUrl: staticFile("shortlist-logo-ivory-transparent.png"),
         }}
+      />
+    
+      {/* The Local Pass — consumer ad (9:16 / 1:1 / 4:5) */}
+      <Composition
+        id="LocalPassAd-9x16"
+        component={LocalPassAd}
+        durationInFrames={LOCAL_PASS_FRAMES}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="LocalPassAd-1x1"
+        component={LocalPassAd}
+        durationInFrames={LOCAL_PASS_FRAMES}
+        fps={30}
+        width={1080}
+        height={1080}
+      />
+      <Composition
+        id="LocalPassAd-4x5"
+        component={LocalPassAd}
+        durationInFrames={LOCAL_PASS_FRAMES}
+        fps={30}
+        width={1080}
+        height={1350}
       />
     </Folder>
   );

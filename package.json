@@ -15,7 +15,10 @@
     "remotion:render:ad-4x5": "remotion render src/remotion/index.ts SmartPageAd-4x5 out/SmartPageAd-4x5.mp4",
     "remotion:render:intel-9x16": "remotion render src/remotion/index.ts SmartPageIntelligence-9x16 out/SmartPageIntelligence-9x16.mp4",
     "remotion:render:intel-1x1": "remotion render src/remotion/index.ts SmartPageIntelligence-1x1 out/SmartPageIntelligence-1x1.mp4",
-    "remotion:render:intel-16x9": "remotion render src/remotion/index.ts SmartPageIntelligence-16x9 out/SmartPageIntelligence-16x9.mp4"
+    "remotion:render:intel-16x9": "remotion render src/remotion/index.ts SmartPageIntelligence-16x9 out/SmartPageIntelligence-16x9.mp4",
+    "remotion:render:localpass-9x16": "remotion render src/remotion/index.ts LocalPassAd-9x16 out/LocalPassAd-9x16.mp4",
+    "remotion:render:localpass-1x1": "remotion render src/remotion/index.ts LocalPassAd-1x1 out/LocalPassAd-1x1.mp4",
+    "remotion:render:localpass-4x5": "remotion render src/remotion/index.ts LocalPassAd-4x5 out/LocalPassAd-4x5.mp4"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

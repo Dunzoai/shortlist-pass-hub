@@ -1,4 +1,15 @@
 import type { Metadata } from "next";
+import { Fraunces } from "next/font/google";
+
+// Display face from the Shortlist Consumer design system (theme.json).
+// Loaded on this route only — the Hub's own fonts are untouched.
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "The Local Pass — the Grand Strand shortlist",
@@ -13,7 +24,7 @@ export default function LocalPassLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
+    <div className={fraunces.variable}>
       <style
         dangerouslySetInnerHTML={{
           __html: `
@@ -24,6 +35,6 @@ export default function LocalPassLayout({
         }}
       />
       {children}
-    </>
+    </div>
   );
 }
