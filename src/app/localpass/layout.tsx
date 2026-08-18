@@ -38,7 +38,15 @@ export default function LocalPassLayout({
           at opacity 0. This rule only applies when scripting is off. */}
       <noscript
         dangerouslySetInnerHTML={{
-          __html: `<style>[data-reveal]{opacity:1!important;transform:none!important}</style>`,
+          __html: `<style>
+            [data-reveal]{opacity:1!important;transform:none!important}
+            /* With no JS the track cannot slide, so stack the slides instead
+               of hiding two of three behind overflow. */
+            [data-carousel-viewport]{overflow:visible!important}
+            [data-carousel-track]{flex-direction:column!important;gap:40px;transform:none!important}
+            [data-carousel-slide]{width:100%!important}
+            [data-carousel-chrome]{display:none!important}
+          </style>`,
         }}
       />
       {children}
