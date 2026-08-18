@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
 // ---------------------------------------------------------------------------
@@ -108,6 +108,49 @@ const TERMS = [
 
 const display = { fontFamily: "var(--font-fraunces)" };
 
+// Same reveal the homepage uses (src/app/page.tsx).
+const fadeUpVariant = {
+  hidden: { opacity: 0, y: 12 },
+  visible: { opacity: 1, y: 0 },
+};
+
+/**
+ * Section reveal. `plain` renders a normal div with no motion and no hidden
+ * state — used for reduced motion and for browsers without IntersectionObserver,
+ * so content can never be stranded invisible. The data-reveal hook is what the
+ * <noscript> rule in layout.tsx targets when JS never runs at all.
+ */
+function Reveal({
+  children,
+  plain,
+  className,
+}: {
+  children: React.ReactNode;
+  plain: boolean;
+  className?: string;
+}) {
+  if (plain) {
+    return (
+      <div data-reveal className={className}>
+        {children}
+      </div>
+    );
+  }
+  return (
+    <motion.div
+      data-reveal
+      className={className}
+      variants={fadeUpVariant}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 // Halftone wash — the printed-paper texture the consumer system uses.
 const halftone = {
   backgroundImage: "radial-gradient(rgba(242,245,243,0.055) 1px, transparent 1px)",
@@ -181,6 +224,16 @@ export default function LocalPassPage() {
   const prefersReducedMotion = useReducedMotion();
   const still = prefersReducedMotion === true;
 
+  // whileInView needs IntersectionObserver. Where it is missing, render every
+  // section plainly rather than leaving it stranded at opacity 0. Server
+  // assumes it exists, so the markup hydrates without a mismatch.
+  const canObserve = useSyncExternalStore(
+    () => () => {},
+    () => typeof IntersectionObserver !== "undefined",
+    () => true
+  );
+  const plain = still || !canObserve;
+
   // Rotating category line. Static on reduced motion.
   useEffect(() => {
     if (still) return;
@@ -203,6 +256,7 @@ export default function LocalPassPage() {
 
           {/* The pass. Credit-card proportions at every width. */}
           <motion.div
+            data-reveal
             initial={still ? false : { opacity: 0, y: 14, rotate: 0 }}
             animate={{ opacity: 1, y: 0, rotate: -3 }}
             transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
@@ -281,6 +335,7 @@ export default function LocalPassPage() {
                   ) : (
                     <AnimatePresence mode="wait">
                       <motion.span
+                        data-reveal
                         key={vertical}
                         initial={{ opacity: 0, y: 6 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -340,23 +395,17 @@ export default function LocalPassPage() {
       {/* ================= THE STRAND — placeholder line art =============== */}
       <section className="relative overflow-hidden border-y border-dashed border-[#F2F5F3]/20">
         <div className="absolute inset-0" style={halftone} />
-        <motion.div
-          initial={still ? false : { opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.7, ease: "easeOut" }}
-          className="relative mx-auto max-w-[600px] px-6 pt-5 pb-5"
-        >
+        <Reveal plain={plain} className="relative mx-auto max-w-[600px] px-6 pt-5 pb-5">
           <StrandScene />
           <p className="mt-4 text-center text-[13px] leading-[1.6] text-[#9AA49E]">
             Little River, Myrtle Beach, Murrells Inlet, Pawleys. One pass, the whole of it.
           </p>
-        </motion.div>
+        </Reveal>
       </section>
 
       {/* ================= TRUST STRIP ===================================== */}
       <section className="px-6">
-        <div className="mx-auto grid max-w-[600px] grid-cols-3 gap-px bg-[#1A211D]">
+        <Reveal plain={plain} className="mx-auto grid max-w-[600px] grid-cols-3 gap-px bg-[#1A211D]">
           {["Nothing to download", "Little River to Pawleys", "Every dollar stays local"].map(
             (item) => (
               <div key={item} className="bg-[#0B0F0D] px-3 py-5 text-center">
@@ -366,12 +415,12 @@ export default function LocalPassPage() {
               </div>
             )
           )}
-        </div>
+        </Reveal>
       </section>
 
       {/* ================= HOW IT WORKS ==================================== */}
       <section className="px-6 pt-12 pb-12">
-        <div className="mx-auto max-w-[600px]">
+        <Reveal plain={plain} className="mx-auto max-w-[600px]">
           <h2
             className="mb-1 text-[27px] leading-[1.2] text-[#F2F5F3]"
             style={display}
@@ -395,12 +444,12 @@ export default function LocalPassPage() {
               </div>
             </div>
           ))}
-        </div>
+        </Reveal>
       </section>
 
       {/* ================= THE LIST — three states ========================= */}
       <section className="px-6 pb-14">
-        <div className="mx-auto max-w-[600px]">
+        <Reveal plain={plain} className="mx-auto max-w-[600px]">
           <div className="mb-5 flex items-end justify-between gap-3">
             <div>
               <span className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.22em] text-[#34D399]">
@@ -519,12 +568,12 @@ export default function LocalPassPage() {
               </div>
             </>
           )}
-        </div>
+        </Reveal>
       </section>
 
       {/* ================= MEMBER PERKS ==================================== */}
       <section className="px-6 pb-14">
-        <div className="mx-auto max-w-[600px]">
+        <Reveal plain={plain} className="mx-auto max-w-[600px]">
           <span className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.22em] text-[#34D399]">
             Beyond dinner
           </span>
@@ -550,12 +599,12 @@ export default function LocalPassPage() {
               </div>
             ))}
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* ================= PRICING ========================================= */}
       <section className="px-6 pb-14">
-        <div className="mx-auto max-w-[600px] rounded-[18px] border border-[#34D399]/45 bg-[#34D399]/8 px-6 py-8">
+        <Reveal plain={plain} className="mx-auto max-w-[600px] rounded-[18px] border border-[#34D399]/45 bg-[#34D399]/8 px-6 py-8">
           <div className="mb-6 flex flex-col gap-1">
             <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#34D399]">
               Founding membership
@@ -595,12 +644,12 @@ export default function LocalPassPage() {
           >
             Get on the list — $4.99/month
           </button>
-        </div>
+        </Reveal>
       </section>
 
       {/* ================= FAQ ============================================= */}
       <section className="px-6 pb-14">
-        <div className="mx-auto max-w-[600px]">
+        <Reveal plain={plain} className="mx-auto max-w-[600px]">
           <h2 className="mb-4 text-[27px] leading-[1.2] text-[#F2F5F3]" style={display}>
             Questions
           </h2>
@@ -610,12 +659,12 @@ export default function LocalPassPage() {
               <p className="text-[14px] leading-[1.65] text-[#9AA49E]">{f.a}</p>
             </div>
           ))}
-        </div>
+        </Reveal>
       </section>
 
       {/* ================= FOOTER ========================================== */}
       <footer className="border-t border-[#F2F5F3]/14 px-6 pt-8 pb-11">
-        <div className="mx-auto flex max-w-[600px] flex-col gap-3.5">
+        <Reveal plain={plain} className="mx-auto flex max-w-[600px] flex-col gap-3.5">
           <span className="text-[15px] font-semibold text-[#F2F5F3]">The Shortlist Co</span>
           <span className="text-[13px] leading-[1.6] text-[#9AA49E]">
             Myrtle Beach, South Carolina. We are from here.
@@ -629,7 +678,7 @@ export default function LocalPassPage() {
           <span className="text-[11px] text-[#9AA49E]">
             © {new Date().getFullYear()} The Shortlist Co
           </span>
-        </div>
+        </Reveal>
       </footer>
 
       {/* ================= FINE PRINT MODAL ================================ */}

@@ -34,6 +34,13 @@ export default function LocalPassLayout({
           `,
         }}
       />
+      {/* If JS never runs, the reveal's hidden state would strand every section
+          at opacity 0. This rule only applies when scripting is off. */}
+      <noscript
+        dangerouslySetInnerHTML={{
+          __html: `<style>[data-reveal]{opacity:1!important;transform:none!important}</style>`,
+        }}
+      />
       {children}
     </div>
   );
