@@ -16,6 +16,11 @@ const nextConfig: NextConfig = {
         destination: "/smartpages",
         permanent: true,
       },
+      {
+        source: "/dining-pass",
+        destination: "/localpass",
+        permanent: true,
+      },
     ];
   },
 };
