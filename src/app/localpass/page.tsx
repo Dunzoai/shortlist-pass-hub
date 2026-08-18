@@ -1,7 +1,15 @@
 "use client";
 
 import { useEffect, useState, useSyncExternalStore } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useAnimate,
+  useInView,
+  useMotionValue,
+  useReducedMotion,
+  useTransform,
+} from "framer-motion";
 
 // ---------------------------------------------------------------------------
 // THE LIST — add and remove names here, nowhere else.
@@ -47,23 +55,6 @@ const PERKS = [
   { name: "Strand Surf Supply", category: "Retail", deal: "10% off everything in the shop" }, // PLACEHOLDER
 ];
 
-const STEPS = [
-  {
-    n: "1",
-    title: "Get on the list",
-    body: "A minute on your phone and the pass is in your Shortlist account. $4.99 a month, starting the day you join.",
-  },
-  {
-    n: "2",
-    title: "Pull it up when you sit down",
-    body: "It lives in your account, not on your phone. New phone, cleared browser, borrowed tablet — sign in and it is there.",
-  },
-  {
-    n: "3",
-    title: "Show your server",
-    body: "Before they ring you up. Half off the second entree comes straight off the check.",
-  },
-];
 
 const INCLUDED = [
   "Half off a second entree everywhere on the list",
@@ -151,72 +142,210 @@ function Reveal({
   );
 }
 
+/**
+ * THE CHECK — the bill arriving, top-down. Vector and type only.
+ * One loop: land, print, halve, stamp, "so bring somebody".
+ * The stamp is the only percussive beat on the page; everything else is quiet.
+ */
+const MONO = {
+  fontFamily: "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace",
+};
+
+function TheCheck({ plain }: { plain: boolean }) {
+  const [scope, animate] = useAnimate();
+  const inView = useInView(scope, { amount: 0.35 });
+  // starts at the settled value so the no-JS and reduced-motion views read as finished
+  const price = useMotionValue(11);
+  const priceText = useTransform(price, (v) => v.toFixed(2));
+
+  useEffect(() => {
+    if (plain || !inView) return;
+    const controls = animate(
+      [
+        // reset
+        ["#chk", { opacity: 0, y: 64, rotate: 0, scale: 0.97, x: 0 }, { duration: 0 }],
+        ["#l1", { opacity: 0 }, { duration: 0, at: 0 }],
+        ["#l2", { opacity: 0 }, { duration: 0, at: 0 }],
+        ["#strike", { scaleX: 0 }, { duration: 0, at: 0 }],
+        ["#stamp", { opacity: 0, scale: 1.7, rotate: -24 }, { duration: 0, at: 0 }],
+        ["#cap", { opacity: 0, y: 10 }, { duration: 0, at: 0 }],
+        ["#shadow", { opacity: 0, scaleY: 1 }, { duration: 0, at: 0 }],
+        [price, 22, { duration: 0, at: 0 }],
+
+        // 1 — it lands, and settles off-square
+        ["#chk", { opacity: 1, y: 0, rotate: -4, scale: 1 }, { duration: 0.9, ease: [0.16, 1, 0.3, 1] }],
+        ["#shadow", { opacity: 0.5 }, { duration: 0.9, at: 0 }],
+
+        // 2 — two plates, printed one after the other
+        ["#l1", { opacity: 1 }, { duration: 0.14, at: 1.05 }],
+        ["#l2", { opacity: 1 }, { duration: 0.14, at: 1.6 }],
+
+        // 3 — the second one halves
+        ["#strike", { scaleX: 1 }, { duration: 0.24, at: 2.5, ease: "easeOut" }],
+        [price, 11, { duration: 0.5, at: 2.62, ease: [0.3, 0, 0.1, 1] }],
+
+        // 4 — THE STAMP. everything reacts to it.
+        ["#stamp", { opacity: 1, scale: 0.93, rotate: -11 }, { duration: 0.11, at: 3.45, ease: [0.4, 0, 0.2, 1] }],
+        ["#stamp", { scale: 1 }, { duration: 0.55, at: 3.56, ease: [0.2, 1.5, 0.35, 1] }],
+        ["#chk", { x: [0, -4, 3, -1.5, 0], rotate: [-4, -3.2, -4.5, -3.9, -4] }, { duration: 0.4, at: 3.45 }],
+        ["#shadow", { scaleY: [1, 0.84, 1.04, 1], opacity: [0.5, 0.72, 0.5] }, { duration: 0.4, at: 3.45 }],
+
+        // 5 — it goes, the line stays
+        ["#chk", { opacity: 0, y: 40 }, { duration: 0.6, at: 4.9, ease: "easeIn" }],
+        ["#shadow", { opacity: 0 }, { duration: 0.5, at: 4.9 }],
+        ["#cap", { opacity: 1, y: 0 }, { duration: 0.55, at: 5.15, ease: "easeOut" }],
+        ["#cap", { opacity: 0 }, { duration: 0.45, at: 6.5 }],
+      ],
+      { repeat: Infinity, repeatDelay: 0.15 }
+    );
+    return () => controls.stop();
+  }, [plain, inView, animate, price]);
+
+  return (
+    <div
+      ref={scope}
+      className="relative mx-auto flex min-h-[380px] w-full max-w-[600px] items-center justify-center sm:min-h-[430px]"
+    >
+      {/* the light on the table */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 70% 55% at 50% 42%, rgba(240,168,104,0.11), transparent 72%)",
+        }}
+      />
+
+      {/* the line it leaves behind */}
+      <p
+        id="cap"
+        data-reveal
+        className="absolute px-8 text-center text-[26px] leading-[1.25] text-[#F2F5F3] sm:text-[32px]"
+        style={{ ...display, opacity: plain ? 1 : 0 }}
+      >
+        So bring somebody.
+      </p>
+
+      {/* cast shadow, separate so it can react to the thump */}
+      <div
+        id="shadow"
+        aria-hidden="true"
+        className="absolute h-[74%] w-[min(300px,74vw)] rounded-[6px] sm:w-[340px]"
+        style={{
+          background: "#0B0F0D",
+          filter: "blur(26px)",
+          transform: "translateY(24px)",
+          opacity: plain ? 0.5 : 0,
+        }}
+      />
+
+      {/* the check */}
+      <div
+        id="chk"
+        data-reveal
+        className="relative w-[min(300px,74vw)] rounded-[4px] px-5 pt-6 pb-16 sm:w-[340px] sm:px-6"
+        style={{
+          background:
+            "linear-gradient(158deg, #F2F5F3 0%, #F2F5F3 62%, rgba(154,164,158,0.28) 100%)",
+          color: "#0B0F0D",
+          opacity: plain ? 1 : 0,
+          transform: plain ? "rotate(-4deg)" : undefined,
+          boxShadow: "0 18px 40px rgba(11,15,13,0.55)",
+        }}
+      >
+        {/* paper grain */}
+        <div
+          className="pointer-events-none absolute inset-0 rounded-[4px]"
+          style={{
+            backgroundImage: "radial-gradient(rgba(11,15,13,0.07) 1px, transparent 1px)",
+            backgroundSize: "4px 4px",
+          }}
+        />
+        {/* fold */}
+        <div
+          className="pointer-events-none absolute inset-x-0 top-1/2"
+          style={{ height: 1, background: "rgba(11,15,13,0.06)" }}
+        />
+
+        <div className="relative">
+          <div
+            className="flex items-baseline justify-between text-[10px] tracking-[0.1em] opacity-55"
+            style={MONO}
+          >
+            <span>TABLE 4</span>
+            <span>2 GUESTS</span>
+          </div>
+
+          <div
+            className="mt-5 border-t border-dashed pt-4"
+            style={{ borderColor: "rgba(11,15,13,0.22)" }}
+          />
+
+          <div
+            id="l1"
+            className="flex items-baseline justify-between text-[13px] sm:text-[14px]"
+            style={{ ...MONO, opacity: plain ? 1 : 0 }}
+          >
+            <span>ENTREE</span>
+            <span>24.00</span>
+          </div>
+
+          <div
+            id="l2"
+            className="mt-2.5 flex items-baseline justify-between text-[13px] sm:text-[14px]"
+            style={{ ...MONO, opacity: plain ? 1 : 0 }}
+          >
+            <span>ENTREE</span>
+            <span className="flex items-baseline gap-2">
+              <span className="relative opacity-40">
+                22.00
+                <span
+                  id="strike"
+                  className="absolute left-0 top-1/2 h-px w-full origin-left"
+                  style={{
+                    background: "#0B0F0D",
+                    transform: plain ? "scaleX(1)" : "scaleX(0)",
+                  }}
+                />
+              </span>
+              <motion.span className="font-bold">{priceText}</motion.span>
+            </span>
+          </div>
+
+          <div
+            className="mt-4 border-t border-dashed pt-3"
+            style={{ borderColor: "rgba(11,15,13,0.22)" }}
+          />
+          <div className="text-[10px] tracking-[0.1em] opacity-55" style={MONO}>
+            THANK YOU
+          </div>
+        </div>
+
+        {/* the stamp — ink, not a sticker */}
+        <span
+          id="stamp"
+          data-reveal
+          className="absolute bottom-4 right-4 rounded-[4px] px-2.5 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.16em] sm:text-[11px]"
+          style={{
+            border: "2px solid #F0A868",
+            color: "#F0A868",
+            mixBlendMode: "multiply",
+            opacity: plain ? 1 : 0,
+            transform: plain ? "rotate(-11deg)" : undefined,
+          }}
+        >
+          Local Pass
+        </span>
+      </div>
+    </div>
+  );
+}
+
 // Halftone wash — the printed-paper texture the consumer system uses.
 const halftone = {
   backgroundImage: "radial-gradient(rgba(242,245,243,0.055) 1px, transparent 1px)",
   backgroundSize: "5px 5px",
 };
 
-/**
- * PLACEHOLDER ARTWORK — a drawn Grand Strand, line art in one accent.
- * Stands in until real Strand illustration or photography exists.
- */
-function StrandScene() {
-  return (
-    <svg
-      viewBox="0 0 600 130"
-      fill="none"
-      stroke="#34D399"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="h-auto w-full"
-      aria-hidden="true"
-    >
-      {/* string lights */}
-      <path d="M0 14q150 20 300 8t300 6" stroke="rgba(242,245,243,0.2)" strokeWidth={1.2} />
-      <circle cx="84" cy="22" r="2.6" stroke="rgba(240,168,104,0.85)" strokeWidth={1.4} />
-      <circle cx="180" cy="25" r="2.6" stroke="rgba(240,168,104,0.85)" strokeWidth={1.4} />
-      <circle cx="276" cy="24" r="2.6" stroke="rgba(240,168,104,0.85)" strokeWidth={1.4} />
-      <circle cx="372" cy="21" r="2.6" stroke="rgba(240,168,104,0.85)" strokeWidth={1.4} />
-      <circle cx="468" cy="23" r="2.6" stroke="rgba(240,168,104,0.85)" strokeWidth={1.4} />
-
-      {/* gulls */}
-      <path d="M120 44q7-7 14 0M134 44q7-7 14 0" stroke="rgba(242,245,243,0.45)" strokeWidth={1.4} />
-      <path d="M436 36q6-6 12 0M448 36q6-6 12 0" stroke="rgba(242,245,243,0.45)" strokeWidth={1.4} />
-
-      {/* water */}
-      <path d="M0 100h600" stroke="rgba(242,245,243,0.14)" strokeWidth={1.2} />
-      <path d="M24 110q14-5 28 0t28 0M120 114q14-5 28 0t28 0M400 112q14-5 28 0t28 0M500 108q14-5 28 0t28 0" stroke="rgba(242,245,243,0.12)" strokeWidth={1.2} />
-
-      {/* pier — deck, planks, railing, pilings into the water */}
-      <path d="M0 74h214" />
-      <path d="M0 68h206" stroke="rgba(52,211,153,0.45)" strokeWidth={1.2} />
-      <path d="M18 68V52M62 68V52M106 68V52M150 68V52M194 68V52" stroke="rgba(52,211,153,0.5)" strokeWidth={1.4} />
-      <path d="M0 52h200" stroke="rgba(52,211,153,0.5)" strokeWidth={1.4} />
-      <path d="M18 74v32M62 74v30M106 74v29M150 74v28M194 74v27" />
-      <path d="M18 90h44M106 89h44" stroke="rgba(52,211,153,0.45)" strokeWidth={1.3} />
-
-      {/* shrimp boat */}
-      <path d="M248 84q66 26 132 0l-10-14H258z" />
-      <path d="M286 70V46h44v24" />
-      <path d="M296 52h12v10h-12" stroke="rgba(242,245,243,0.4)" strokeWidth={1.3} />
-      <path d="M330 46V12" />
-      <path d="M330 20l-58 46M330 20l52 44" stroke="rgba(52,211,153,0.5)" strokeWidth={1.4} />
-      <path d="M330 12h22v9h-22" stroke="rgba(240,168,104,0.8)" strokeWidth={1.5} />
-
-      {/* marsh grass */}
-      <path d="M222 102q3-24 10-32M230 102q1-27 6-34M238 102q4-22 12-28" stroke="rgba(52,211,153,0.8)" strokeWidth={1.6} />
-      <path d="M396 102q3-20 10-27M404 102q1-23 6-29M412 102q4-19 12-24" stroke="rgba(52,211,153,0.8)" strokeWidth={1.6} />
-      <path d="M486 104q3-22 10-30M494 104q1-25 6-32M502 104q4-21 12-26" stroke="rgba(52,211,153,0.8)" strokeWidth={1.6} />
-
-      {/* palmetto */}
-      <path d="M552 106V44" strokeWidth={2.2} />
-      <path d="M552 44q-30-14-42 4M552 44q30-14 42 4M552 44q-12-30 4-36M552 44q18-26 34-16M552 44q-28 6-30 26M552 44q28 6 30 26" stroke="rgba(52,211,153,0.75)" strokeWidth={1.8} />
-      <path d="M545 50q4 8 14 8" stroke="rgba(240,168,104,0.7)" strokeWidth={1.4} />
-    </svg>
-  );
-}
 
 export default function LocalPassPage() {
   const [termsOpen, setTermsOpen] = useState(false);
@@ -392,15 +521,18 @@ export default function LocalPassPage() {
         </div>
       </section>
 
-      {/* ================= THE STRAND — placeholder line art =============== */}
-      <section className="relative overflow-hidden border-y border-dashed border-[#F2F5F3]/20">
+      {/* ================= THE CHECK ======================================= */}
+      <section className="relative overflow-hidden border-y border-dashed border-[#F2F5F3]/20 px-6 pt-8 pb-10">
         <div className="absolute inset-0" style={halftone} />
-        <Reveal plain={plain} className="relative mx-auto max-w-[600px] px-6 pt-5 pb-5">
-          <StrandScene />
-          <p className="mt-4 text-center text-[13px] leading-[1.6] text-[#9AA49E]">
-            Little River, Myrtle Beach, Murrells Inlet, Pawleys. One pass, the whole of it.
-          </p>
-        </Reveal>
+        <div className="relative">
+          <TheCheck plain={plain} />
+          <Reveal plain={plain} className="mx-auto mt-6 max-w-[420px]">
+            <p className="text-center text-[13px] leading-[1.65] text-[#9AA49E]">
+              Show your server before they ring you up. Half comes off the second entree,
+              right there on the check.
+            </p>
+          </Reveal>
+        </div>
       </section>
 
       {/* ================= TRUST STRIP ===================================== */}
@@ -415,35 +547,6 @@ export default function LocalPassPage() {
               </div>
             )
           )}
-        </Reveal>
-      </section>
-
-      {/* ================= HOW IT WORKS ==================================== */}
-      <section className="px-6 pt-12 pb-12">
-        <Reveal plain={plain} className="mx-auto max-w-[600px]">
-          <h2
-            className="mb-1 text-[27px] leading-[1.2] text-[#F2F5F3]"
-            style={display}
-          >
-            Three steps, then dinner.
-          </h2>
-          <p className="mb-6 text-[14px] text-[#9AA49E]">
-            No hardware, no sticker on the door, nothing for the kitchen to learn.
-          </p>
-          {STEPS.map((step) => (
-            <div key={step.n} className="flex gap-[18px] border-t border-[#F2F5F3]/14 py-6">
-              <span
-                className="w-10 shrink-0 text-[40px] leading-[0.85] text-[#34D399]"
-                style={display}
-              >
-                {step.n}
-              </span>
-              <div className="flex flex-col gap-2">
-                <h3 className="text-[18px] font-semibold text-[#F2F5F3]">{step.title}</h3>
-                <p className="text-[14px] leading-[1.65] text-[#9AA49E]">{step.body}</p>
-              </div>
-            </div>
-          ))}
         </Reveal>
       </section>
 
