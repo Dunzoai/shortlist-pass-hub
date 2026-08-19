@@ -533,7 +533,7 @@ export default function LocalPassPage() {
             crowds the CTA. Inverted and screened so the paper drops out. */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute bottom-[1%] -right-[6%] w-[62%] max-w-[320px] sm:bottom-[4%] sm:right-[2%] sm:w-[34%] sm:max-w-[380px]"
+          className="pointer-events-none absolute bottom-[1%] -right-[4%] w-[80%] max-w-[410px] sm:bottom-[4%] sm:right-[2%] sm:w-[34%] sm:max-w-[380px]"
           style={{
             mixBlendMode: "screen",
             opacity: 0.2,
@@ -546,7 +546,7 @@ export default function LocalPassPage() {
             alt=""
             width={714}
             height={760}
-            sizes="(max-width: 640px) 62vw, 380px"
+            sizes="(max-width: 640px) 80vw, 380px"
             className="h-auto w-full"
             style={{ filter: "invert(1) grayscale(1) contrast(1.15)" }}
           />
@@ -561,10 +561,9 @@ export default function LocalPassPage() {
                 the card so it scales with it at every width. */}
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute -left-[3%] -top-[28%] z-0 w-[58%] sm:-left-[20%] sm:-top-[40%] sm:w-[74%]"
+              className="pointer-events-none absolute -left-[15%] -top-[24%] z-0 w-[45%] opacity-45 sm:-left-[20%] sm:-top-[40%] sm:w-[74%] sm:opacity-30"
               style={{
                 mixBlendMode: "screen",
-                opacity: 0.3,
                 maskImage: "linear-gradient(to bottom right, #000 30%, transparent 88%)",
                 WebkitMaskImage: "linear-gradient(to bottom right, #000 30%, transparent 88%)",
               }}
@@ -574,7 +573,7 @@ export default function LocalPassPage() {
                 alt=""
                 width={760}
                 height={760}
-                sizes="(max-width: 640px) 58vw, 320px"
+                sizes="(max-width: 640px) 45vw, 320px"
                 className="h-auto w-full"
                 style={{ filter: "invert(1) grayscale(1) contrast(1.15)" }}
               />
