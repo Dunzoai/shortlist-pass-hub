@@ -53,23 +53,6 @@ const PERKS = [
 ];
 
 
-const STEPS = [
-  {
-    n: "1",
-    title: "Get on the list",
-    body: "A minute on your phone and the pass is in your Shortlist account. $4.99 a month, starting the day you join.",
-  },
-  {
-    n: "2",
-    title: "Pull it up when you sit down",
-    body: "It lives in your account, not on your phone. New phone, cleared browser, borrowed tablet \u2014 sign in and it is there.",
-  },
-  {
-    n: "3",
-    title: "Show your server",
-    body: "Before they ring you up. Half off the second entree comes straight off the check.",
-  },
-];
 
 const INCLUDED = [
   "Half off a second entree everywhere on the list",
@@ -157,313 +140,138 @@ function Reveal({
   );
 }
 
-/* ── Hand-drawn line icons. Single weight, mint with amber accents.
-   Deliberately a little wobbly — the drawing style from the old Strand
-   scene is the one thing worth keeping from it. ── */
-const ICON = {
-  fill: "none" as const,
-  stroke: "#34D399",
-  strokeWidth: 1.7,
-  strokeLinecap: "round" as const,
-  strokeLinejoin: "round" as const,
-};
-const AMBER = "#F0A868";
 
-function IcoPier() {
-  return (
-    <svg viewBox="0 0 40 40" {...ICON} aria-hidden="true">
-      <path d="M2 16.5q9-1 18-.5t18 .5" />
-      <path d="M7 16v15M15 16.5v13.5M24 16v15M33 16.5v13" />
-      <path d="M7 23.5q4 .5 8 0M24 23q4.5.5 9 0" stroke="rgba(52,211,153,0.5)" />
-      <path d="M2 12.5q9-1.5 18-1t18 1" stroke={AMBER} strokeWidth="1.4" />
-    </svg>
-  );
-}
-function IcoPalmetto() {
-  return (
-    <svg viewBox="0 0 40 40" {...ICON} aria-hidden="true">
-      <path d="M20.5 37q-.5-10 0-19" />
-      <path d="M20 18q-9-6-14 .5M20 18q9.5-6 14 .5M20 18q-4.5-10 1.5-13M20 18q6.5-9 11-4.5M20 18q-9 2.5-9.5 9M20 18q9 2.5 9.5 9" />
-      <path d="M17 22.5q2.5 4 6.5 3.5" stroke={AMBER} strokeWidth="1.3" />
-    </svg>
-  );
-}
-function IcoMarsh() {
-  return (
-    <svg viewBox="0 0 40 40" {...ICON} aria-hidden="true">
-      <path d="M6 35q1.5-13 5-17M13 35q-.5-15 2.5-19M20.5 35q2-13 6.5-16M27 35q-.5-14 3-17M34 35q1-11 4.5-14" />
-      <path d="M2 35.5q18-1.5 36 0" stroke="rgba(52,211,153,0.4)" />
-    </svg>
-  );
-}
-function IcoGull() {
-  return (
-    <svg viewBox="0 0 40 40" {...ICON} aria-hidden="true">
-      <path d="M2 22q9.5-11 18-.5" />
-      <path d="M20 21.5q9-10.5 18 .5" />
-      <path d="M18.5 21.5q1.5 2 3 0" stroke={AMBER} strokeWidth="1.3" />
-    </svg>
-  );
-}
-function IcoWave() {
-  return (
-    <svg viewBox="0 0 40 40" {...ICON} aria-hidden="true">
-      <path d="M2 18q6-7 12-.5t12 0 12-2.5" />
-      <path d="M2 26q6-6.5 12 0t12 0 12-2" />
-      <path d="M2 33.5q6-6 12 0t12 0 12-2" stroke={AMBER} strokeWidth="1.3" />
-    </svg>
-  );
-}
-function IcoForkKnife() {
-  return (
-    <svg viewBox="0 0 40 40" {...ICON} aria-hidden="true">
-      <path d="M11.5 4v9M15.5 4v9M13.5 4v9" />
-      <path d="M9 13q4.5.8 9 0v2q0 3.5-3 4.5l.8 16" />
-      <path d="M28.5 4q3.5 5 2.5 12h-5q-.8-7 2.5-12z" />
-      <path d="M28.5 16.5q.4 10 0 19" />
-      <path d="M9 36q10-1 22 0" stroke={AMBER} strokeWidth="1.3" />
-    </svg>
-  );
-}
-function IcoCoffee() {
-  return (
-    <svg viewBox="0 0 40 40" {...ICON} aria-hidden="true">
-      <path d="M6.5 14.5q11-1 21 0v9.5q0 8.5-8 8.5h-5q-8 0-8-8.5z" />
-      <path d="M27.5 17.5q6-.8 6 4t-6 4" />
-      <path d="M4 36q14-1 27 0" stroke="rgba(52,211,153,0.5)" />
-      <path d="M14 10q3-3.5 0-6M21 10q3-3.5 0-6" stroke={AMBER} strokeWidth="1.3" />
-    </svg>
-  );
-}
-function IcoScissors() {
-  return (
-    <svg viewBox="0 0 40 40" {...ICON} aria-hidden="true">
-      <circle cx="11" cy="30.5" r="4.3" />
-      <circle cx="28.5" cy="30.5" r="4.3" />
-      <path d="M14 27.5 30.5 5" />
-      <path d="M25.5 27.5 9 5" />
-      <path d="M19 18.5q1.5 1 2.5 0" stroke={AMBER} strokeWidth="1.3" />
-    </svg>
-  );
-}
-function IcoBag() {
-  return (
-    <svg viewBox="0 0 40 40" {...ICON} aria-hidden="true">
-      <path d="M7.5 13q12.5-1 25 0l-2.5 22q-10 1-20 0z" />
-      <path d="M14 13.5q-.5-8 6-8t6 8" />
-      <path d="M14 21q6 1.5 12 0" stroke={AMBER} strokeWidth="1.3" />
-    </svg>
-  );
-}
-function IcoTicket() {
-  return (
-    <svg viewBox="0 0 40 40" {...ICON} aria-hidden="true">
-      <path d="M3 12.5q17-1 34 0v5.5q-3.5 2-3.5 4t3.5 4V32q-17 1-34 0v-6q3.5-2 3.5-4t-3.5-4z" />
-      <path d="M20 15v2.5M20 21v2.5M20 27v2.5" stroke={AMBER} strokeWidth="1.4" />
-    </svg>
-  );
-}
-function IcoGolf() {
-  return (
-    <svg viewBox="0 0 40 40" {...ICON} aria-hidden="true">
-      <circle cx="20" cy="11" r="6.2" />
-      <path d="M12.5 19.5q7.5 2.5 15 0" />
-      <path d="M15 20 18.5 30M25 20 21.5 30" />
-      <path d="M18.5 30q1.5 2.2 3 0" />
-      <path d="M7 33.5q13 1.5 26 0" stroke="rgba(52,211,153,0.5)" />
-      <path d="M17.5 9.5q1.2 1.6 2.8 1.2" stroke={AMBER} strokeWidth="1.3" />
-    </svg>
-  );
-}
 
-type RingIcon = { C: () => React.ReactElement; x: number; y: number; r: number };
-
-const SLIDE_1: RingIcon[] = [
-  { C: IcoPier, x: 14, y: 20, r: -8 },
-  { C: IcoPalmetto, x: 82, y: 14, r: 7 },
-  { C: IcoGull, x: 90, y: 52, r: -5 },
-  { C: IcoWave, x: 74, y: 86, r: 4 },
-  { C: IcoMarsh, x: 12, y: 76, r: -6 },
+const STRIP = [
+  {
+    n: "01",
+    title: "Claim your pass",
+    body: "A minute on your phone. The Local Pass lands in your Shortlist account and it is yours from that moment on.",
+  },
+  {
+    n: "02",
+    title: "Explore the Strand",
+    body: "Kitchens, coffee, barbers, shops and tee times from Little River to Pawleys — one list that keeps growing.",
+  },
+  {
+    n: "03",
+    title: "Show your digital card",
+    body: "Pull it up at the table before they ring you up. Nothing to scan, and nothing for anyone to install.",
+  },
+  {
+    n: "04",
+    title: "Enjoy the perks",
+    body: "Half off a second entree, plus whatever the shops and studios around town are running that month.",
+  },
 ];
 
-// Six different kinds of business. Generic on purpose — no name, no claim.
-const SLIDE_2: RingIcon[] = [
-  { C: IcoForkKnife, x: 20, y: 12, r: -7 },
-  { C: IcoCoffee, x: 76, y: 10, r: 6 },
-  { C: IcoScissors, x: 90, y: 44, r: -4 },
-  { C: IcoBag, x: 74, y: 86, r: 5 },
-  { C: IcoTicket, x: 24, y: 88, r: -6 },
-  { C: IcoGolf, x: 8, y: 46, r: 7 },
-];
-
-// Same six, drifted inward to make room for the pass.
-const SLIDE_3: RingIcon[] = [
-  { C: IcoForkKnife, x: 16, y: 31, r: -5 },
-  { C: IcoCoffee, x: 84, y: 28, r: 4 },
-  { C: IcoScissors, x: 89, y: 57, r: -3 },
-  { C: IcoBag, x: 78, y: 85, r: 4 },
-  { C: IcoTicket, x: 21, y: 87, r: -4 },
-  { C: IcoGolf, x: 11, y: 57, r: 5 },
-];
-
-const SLIDES = [
-  { line: "You live here.", icons: SLIDE_1, card: false },
-  { line: "You already support local.", icons: SLIDE_2, card: false },
-  { line: "Now it pays you back.", icons: SLIDE_3, card: true },
-];
-
-function Ring({ icons, active, plain, dim }: { icons: RingIcon[]; active: boolean; plain: boolean; dim: boolean }) {
+/** Hollow Fraunces numerals, drawn as stroked SVG text. */
+function Numeral({ n, tilt }: { n: string; tilt: number }) {
   return (
-    <>
-      {icons.map((ic, i) => (
-        <motion.span
-          key={i}
-          data-reveal
-          className="absolute block h-11 w-11 sm:h-14 sm:w-14"
-          style={{ left: `${ic.x}%`, top: `${ic.y}%`, marginLeft: "-1.375rem", marginTop: "-1.375rem" }}
-          initial={plain ? false : { opacity: 0, scale: 0.4, rotate: ic.r - 16 }}
-          animate={
-            plain
-              ? { opacity: dim ? 0.55 : 1, scale: 1, rotate: ic.r }
-              : active
-                ? { opacity: dim ? 0.55 : 1, scale: 1, rotate: ic.r }
-                : { opacity: 0, scale: 0.4, rotate: ic.r - 16 }
-          }
-          transition={{ type: "spring", stiffness: 430, damping: 17, delay: active ? 0.16 + i * 0.09 : 0 }}
-        >
-          <ic.C />
-        </motion.span>
-      ))}
-    </>
-  );
-}
-
-function Slide({ s, active, plain }: { s: (typeof SLIDES)[number]; active: boolean; plain: boolean }) {
-  return (
-    <div className="relative mx-auto aspect-square w-full max-w-[340px] sm:max-w-[420px]">
-      <Ring icons={s.icons} active={active} plain={plain} dim={s.card} />
-      <p
-        data-reveal
-        className={`absolute inset-x-[14%] text-center text-[27px] leading-[1.15] text-[#F2F5F3] sm:text-[34px] ${
-          s.card ? "top-[2%]" : "top-1/2 -translate-y-1/2"
-        }`}
-        style={display}
+    <svg
+      viewBox="0 0 120 72"
+      className="h-[62px] w-[104px] sm:h-[76px] sm:w-[126px]"
+      style={{ transform: `rotate(${tilt}deg)` }}
+      aria-hidden="true"
+    >
+      <text
+        x="60"
+        y="56"
+        textAnchor="middle"
+        fill="none"
+        stroke="#34D399"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+        style={{ fontFamily: "var(--font-fraunces)", fontSize: 64, fontWeight: 500 }}
       >
-        {s.line}
-      </p>
-      {s.card && (
-        <motion.span
-          data-reveal
-          className="absolute left-1/2 top-[49%] block w-[46%] max-w-[172px] rounded-[10px] bg-[#34D399] px-3 py-2.5"
-          style={{ marginLeft: "-23%" }}
-          initial={plain ? false : { opacity: 0, scale: 0.7, y: 18, rotate: 4 }}
-          animate={plain || active ? { opacity: 1, scale: 1, y: 0, rotate: -4 } : { opacity: 0, scale: 0.7, y: 18, rotate: 4 }}
-          transition={{ type: "spring", stiffness: 300, damping: 20, delay: active && !plain ? 0.72 : 0 }}
-        >
-          <span className="block text-[9px] font-bold uppercase tracking-[0.18em] text-[#0B0F0D]/70">
-            The Local Pass
-          </span>
-          <span className="mt-1 block text-[30px] leading-none text-[#0B0F0D]" style={display}>
-            50%
-          </span>
-          <span className="mt-2 block border-t border-dashed border-[#0B0F0D]/30 pt-1.5 text-[8px] font-bold tracking-[0.14em] text-[#0B0F0D]/60">
-            № 001 · GRAND STRAND
-          </span>
-        </motion.span>
-      )}
-    </div>
+        {n}
+      </text>
+    </svg>
   );
 }
 
-function WhyCarousel({ plain }: { plain: boolean }) {
+/** Types itself in once when it comes into view. Full text is always in the DOM. */
+function Typed({ lines, plain, go }: { lines: string[]; plain: boolean; go: boolean }) {
+  let i = 0;
+  return (
+    <h2
+      className="text-center text-[42px] leading-[1.02] tracking-[-0.02em] text-[#F2F5F3] sm:text-[72px] lg:text-[86px]"
+      style={display}
+    >
+      {lines.map((line, li) => (
+        <span key={line} className="block">
+          {Array.from(line).map((ch, ci) => {
+            const d = i++ * 0.035;
+            return (
+              <motion.span
+                key={ci}
+                data-reveal
+                className="inline-block whitespace-pre"
+                initial={plain ? false : { opacity: 0 }}
+                animate={plain || go ? { opacity: 1 } : { opacity: 0 }}
+                transition={{ duration: 0.01, delay: plain ? 0 : d }}
+              >
+                {ch}
+              </motion.span>
+            );
+          })}
+          {li === lines.length - 1 && !plain && (
+            <motion.span
+              aria-hidden="true"
+              className="ml-1.5 inline-block h-[0.72em] w-[0.5em] align-baseline"
+              style={{ background: "#F0A868" }}
+              animate={
+                go
+                  ? {
+                      opacity: [1, 1, 0, 0],
+                      transition: { duration: 0.8, repeat: 3, times: [0, 0.45, 0.5, 1], ease: "linear" },
+                    }
+                  : { opacity: 0 }
+              }
+            />
+          )}
+        </span>
+      ))}
+    </h2>
+  );
+}
+
+function StepsStrip({ plain }: { plain: boolean }) {
   const wrap = useRef<HTMLDivElement>(null);
-  const inView = useInView(wrap, { amount: 0.3 });
-  const [index, setIndex] = useState(0);
-  const [took, setTook] = useState(false);
-
-  // Auto-advance. Stops for good the moment anyone touches it, and rests
-  // whenever the section is off screen.
-  useEffect(() => {
-    if (plain || took || !inView) return;
-    const id = setInterval(() => setIndex((i) => (i + 1) % SLIDES.length), 4600);
-    return () => clearInterval(id);
-  }, [plain, took, inView]);
-
-  const go = (n: number) => {
-    setTook(true);
-    setIndex(((n % SLIDES.length) + SLIDES.length) % SLIDES.length);
-  };
-
-  if (plain) {
-    return (
-      <div className="flex flex-col gap-10">
-        {SLIDES.map((s) => (
-          <Slide key={s.line} s={s} active plain />
-        ))}
-      </div>
-    );
-  }
+  const inView = useInView(wrap, { amount: 0.25, once: false });
 
   return (
     <div ref={wrap}>
-      <div
-        data-carousel-viewport
-        className="overflow-hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#34D399]"
-        tabIndex={0}
-        role="region"
-        aria-roledescription="carousel"
-        aria-label="Why the pass"
-        onKeyDown={(e) => {
-          if (e.key === "ArrowRight") go(index + 1);
-          if (e.key === "ArrowLeft") go(index - 1);
-        }}
-      >
-        <motion.div
-          data-carousel-track
-          className="flex"
-          animate={{ x: `-${index * 100}%` }}
-          transition={{ type: "spring", stiffness: 250, damping: 32 }}
-          drag="x"
-          dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.16}
-          onDragStart={() => setTook(true)}
-          onDragEnd={(_, info) => {
-            if (info.offset.x < -60) go(index + 1);
-            else if (info.offset.x > 60) go(index - 1);
-          }}
-        >
-          {SLIDES.map((s, i) => (
-            <div key={s.line} data-carousel-slide className="w-full shrink-0 px-2">
-              <Slide s={s} active={i === index} plain={false} />
-            </div>
-          ))}
-        </motion.div>
-      </div>
+      <Typed lines={["A better way", "to local"]} plain={plain} go={inView} />
 
-      <div data-carousel-chrome className="mt-6 flex items-center justify-center gap-2.5">
-        {SLIDES.map((s, i) => (
-          <button
-            key={s.line}
-            type="button"
-            onClick={() => go(i)}
-            aria-label={`Slide ${i + 1}: ${s.line}`}
-            aria-current={i === index}
-            className="flex h-11 w-7 items-center justify-center"
-          >
-            <span
-              className="block h-1.5 rounded-full transition-all duration-300"
-              style={{
-                width: i === index ? 22 : 8,
-                background: i === index ? "#34D399" : "rgba(242,245,243,0.28)",
-              }}
-            />
-          </button>
+      <div className="mt-14 grid grid-cols-1 gap-12 sm:mt-16 sm:grid-cols-2 sm:gap-10 lg:grid-cols-4 lg:gap-7">
+        {STRIP.map((s, i) => (
+          <div key={s.n} className="flex flex-col items-center text-center">
+            {/* gentle hover, each on its own clock so they never move together */}
+            <motion.div
+              data-reveal
+              animate={plain || !inView ? { y: 0 } : { y: [0, -9, 0] }}
+              transition={
+                plain || !inView
+                  ? { duration: 0 }
+                  : { duration: 3.1 + i * 0.42, repeat: Infinity, ease: "easeInOut", delay: i * 0.55 }
+              }
+            >
+              <Numeral n={s.n} tilt={[-3, 2, -2, 3][i]} />
+            </motion.div>
+
+            <h3 className="mt-5 flex min-h-[2.4em] max-w-[220px] items-center text-[21px] font-semibold leading-[1.2] text-[#F2F5F3] sm:text-[22px]">
+              {s.title}
+            </h3>
+            <p className="mt-3 max-w-[260px] text-[14px] leading-[1.65] text-[#9AA49E]">
+              {s.body}
+            </p>
+          </div>
         ))}
       </div>
     </div>
   );
 }
-
 
 // Halftone wash — the printed-paper texture the consumer system uses.
 const halftone = {
@@ -646,35 +454,12 @@ export default function LocalPassPage() {
         </div>
       </section>
 
-      {/* ================= WHY — carousel ================================== */}
-      <section className="relative overflow-hidden border-b border-dashed border-[#F2F5F3]/20 px-4 pt-12 pb-12">
+      {/* ================= A BETTER WAY TO LOCAL — steps strip =========== */}
+      <section className="relative overflow-hidden border-y border-dashed border-[#F2F5F3]/20 px-6 pt-16 pb-16 sm:pt-20 sm:pb-20">
         <div className="absolute inset-0" style={halftone} />
-        <div className="relative mx-auto max-w-[600px]">
-          <WhyCarousel plain={plain} />
+        <div className="relative mx-auto max-w-[1100px]">
+          <StepsStrip plain={plain} />
         </div>
-      </section>
-
-      {/* ================= HOW IT WORKS ==================================== */}
-      <section className="px-6 pt-12 pb-12">
-        <Reveal plain={plain} className="mx-auto max-w-[600px]">
-          <h2 className="mb-1 text-[27px] leading-[1.2] text-[#F2F5F3]" style={display}>
-            Three steps, then dinner.
-          </h2>
-          <p className="mb-6 text-[14px] text-[#9AA49E]">
-            No hardware, no sticker on the door, nothing for the kitchen to learn.
-          </p>
-          {STEPS.map((step) => (
-            <div key={step.n} className="flex gap-[18px] border-t border-[#F2F5F3]/14 py-6">
-              <span className="w-10 shrink-0 text-[40px] leading-[0.85] text-[#34D399]" style={display}>
-                {step.n}
-              </span>
-              <div className="flex flex-col gap-2">
-                <h3 className="text-[18px] font-semibold text-[#F2F5F3]">{step.title}</h3>
-                <p className="text-[14px] leading-[1.65] text-[#9AA49E]">{step.body}</p>
-              </div>
-            </div>
-          ))}
-        </Reveal>
       </section>
 
       {/* ================= TRUST STRIP ===================================== */}
