@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import {
-  AnimatePresence,
   motion,
   useInView,
   useReducedMotion,
@@ -35,14 +34,21 @@ const RESTAURANTS = [
 
 const TOWNS = ["Myrtle Beach", "North Myrtle Beach", "Murrells Inlet", "Pawleys Island"];
 
-// PLACEHOLDER VERTICALS — not yet contracted. The card's rotating line only.
-const VERTICALS = [
-  "off a second entree",
-  "off your second round",
-  "off a second ticket",
-  "off your second scoop",
-  "off a second item",
+// PLACEHOLDER DEALS — only the restaurant line is contracted.
+// Every other vertical here is illustrative. Swap or remove before this is
+// promoted anywhere it reads as an offer.
+const DEALS = [
+  { tag: "Restaurants", big: "50%", line: "off a second entree" },
+  { tag: "Ice cream", big: "50%", line: "off your second scoop" },
+  { tag: "Golf", big: "$20", line: "off a 30-minute lesson" },
+  { tag: "Retail", big: "10%", line: "off everything in the shop" },
+  { tag: "Tickets", big: "50%", line: "off a second ticket" },
 ];
+
+// Fractal-noise grain. A real card has irregular tooth; a dot grid reads as a
+// screen pattern, which is what made the old face look printed rather than made.
+const GRAIN =
+  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")";
 
 // Non-restaurant members. ALL PLACEHOLDER — swap before launch.
 const PERKS = [
@@ -273,6 +279,171 @@ function StepsStrip({ plain }: { plain: boolean }) {
   );
 }
 
+/** One face of the card. Same material recipe front and back. */
+function Face({
+  back = false,
+  children,
+}: {
+  back?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <div
+      className="absolute inset-0 overflow-hidden rounded-[18px]"
+      style={{
+        backfaceVisibility: "hidden",
+        WebkitBackfaceVisibility: "hidden",
+        transform: back ? "rotateY(180deg)" : undefined,
+        background: "linear-gradient(152deg, #6EE7B7 0%, #34D399 46%, #34D399 100%)",
+        boxShadow:
+          "inset 0 1px 0 rgba(242,245,243,0.55), inset 0 -1px 0 rgba(11,15,13,0.22), inset 1px 0 0 rgba(242,245,243,0.2), 0 2px 5px rgba(11,15,13,0.45), 0 22px 48px rgba(11,15,13,0.5)",
+      }}
+    >
+      {/* material tooth */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{ backgroundImage: GRAIN, opacity: 0.17, mixBlendMode: "overlay" }}
+      />
+      {/* light across the face */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(118deg, rgba(242,245,243,0.3) 0%, rgba(242,245,243,0.05) 30%, transparent 55%, rgba(11,15,13,0.12) 100%)",
+        }}
+      />
+      {children}
+    </div>
+  );
+}
+
+function PassCard({ plain }: { plain: boolean }) {
+  const wrap = useRef<HTMLDivElement>(null);
+  const inView = useInView(wrap, { amount: 0.4 });
+  const [flips, setFlips] = useState(0);
+
+  useEffect(() => {
+    if (plain || !inView) return;
+    const id = setInterval(() => setFlips((f) => f + 1), 4300);
+    return () => clearInterval(id);
+  }, [plain, inView]);
+
+  // changes only while that face is turned away
+  const deal = DEALS[Math.floor(flips / 2) % DEALS.length];
+
+  return (
+    <div ref={wrap} className="mx-auto w-full max-w-[420px]" style={{ perspective: 1500 }}>
+      <motion.div
+        data-reveal
+        className="relative aspect-[856/540] w-full"
+        style={{ transformStyle: "preserve-3d" }}
+        initial={plain ? false : { opacity: 0, y: 14, rotate: 0 }}
+        animate={{ opacity: 1, y: 0, rotate: -3, rotateY: plain ? 0 : flips * 180 }}
+        transition={{
+          opacity: { duration: 0.8, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] },
+          y: { duration: 0.8, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] },
+          rotate: { duration: 0.8, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] },
+          rotateY: { duration: 1.15, ease: [0.62, 0.04, 0.2, 1] },
+        }}
+      >
+        {/* ── FRONT ── */}
+        <Face>
+          {/* palmetto and crescent, debossed to watermark strength */}
+          <svg viewBox="0 0 420 265" className="absolute inset-0 h-full w-full" aria-hidden="true">
+            <g
+              fill="none"
+              stroke="rgba(11,15,13,0.075)"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M352 246V132" />
+              <path d="M352 132q-38-24-57 3M352 132q38-24 57 3M352 132q-18-40 4-50M352 132q28-36 47-19M352 132q-38 10-39 37M352 132q38 10 39 37" />
+              <path d="M328 70a25 25 0 1 0 25 31 20 20 0 1 1-25-31z" />
+            </g>
+          </svg>
+
+          <div className="absolute inset-0 flex flex-col justify-between px-[5.5%] py-[5%]">
+            <div className="flex items-start justify-between">
+              <div className="flex flex-col gap-1">
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0B0F0D]/75 sm:text-[11px]">
+                  The Local Pass
+                </span>
+                <span className="text-[7px] font-bold uppercase tracking-[0.18em] text-[#0B0F0D]/45 sm:text-[8px]">
+                  {deal.tag}
+                </span>
+              </div>
+              <span className="-rotate-[7deg] rounded-[4px] border-[1.5px] border-[#0B0F0D]/40 px-2 py-1 text-[7px] font-extrabold uppercase tracking-[0.14em] text-[#0B0F0D]/80 sm:text-[8px]">
+                Founding member
+              </span>
+            </div>
+
+            <div className="flex items-end gap-3">
+              <span
+                className="text-[54px] leading-[0.84] text-[#0B0F0D] sm:text-[68px]"
+                style={{ ...display, textShadow: "0 1px 0 rgba(242,245,243,0.45)" }}
+              >
+                {deal.big}
+              </span>
+              <span
+                className="max-w-[42%] pb-1.5 text-[15px] italic leading-[1.2] text-[#0B0F0D]/75 sm:text-[19px]"
+                style={display}
+              >
+                {deal.line}
+              </span>
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <div className="w-full min-w-0 overflow-hidden">
+                <span className="block whitespace-nowrap text-[3.4px] tracking-[0.06em] text-[#0B0F0D]/45 sm:text-[4.2px]">
+                  LITTLE RIVER · MYRTLE BEACH · MURRELLS INLET · PAWLEYS · LITTLE RIVER · MYRTLE
+                  BEACH · MURRELLS INLET · PAWLEYS · LITTLE RIVER · MYRTLE BEACH · MURRELLS INLET
+                </span>
+              </div>
+              <div className="flex justify-between border-t border-dashed border-[#0B0F0D]/30 pt-2 text-[8px] font-bold tracking-[0.16em] text-[#0B0F0D]/60 sm:text-[9px]">
+                <span>№ 001 · GRAND STRAND</span>
+                <span>$4.99/MO</span>
+              </div>
+            </div>
+          </div>
+        </Face>
+
+        {/* ── BACK ── */}
+        <Face back>
+          <div className="absolute inset-0 flex flex-col justify-between px-[5.5%] py-[5%]">
+            <div className="w-full min-w-0 overflow-hidden">
+              <span className="block whitespace-nowrap text-[3.4px] tracking-[0.06em] text-[#0B0F0D]/45 sm:text-[4.2px]">
+                SECOND ITEM OF EQUAL OR LESSER VALUE · ONE PER MEMBERSHIP PER VISIT · DINE IN
+                UNLESS STATED · EXCLUDES ALCOHOL TAX AND GRATUITY · BLACKOUT DATES BY VENUE
+              </span>
+            </div>
+
+            <div className="flex h-[26%] items-center rounded-[3px] bg-[#F2F5F3] px-3">
+              <span className="text-[13px] italic text-[#0B0F0D]/30 sm:text-[16px]" style={display}>
+                Member signature
+              </span>
+            </div>
+
+            <div className="flex items-end justify-between">
+              <div className="flex flex-col gap-0.5">
+                <span className="text-[7px] font-bold uppercase tracking-[0.16em] text-[#0B0F0D]/50">
+                  Member since
+                </span>
+                <span className="text-[10px] font-bold tracking-[0.1em] text-[#0B0F0D]/75 sm:text-[11px]">
+                  2026
+                </span>
+              </div>
+              <span className="text-[7px] font-bold uppercase tracking-[0.12em] text-[#0B0F0D]/60 sm:text-[8px]">
+                The Shortlist Co · Myrtle Beach SC
+              </span>
+            </div>
+          </div>
+        </Face>
+      </motion.div>
+    </div>
+  );
+}
+
 // Halftone wash — the printed-paper texture the consumer system uses.
 const halftone = {
   backgroundImage: "radial-gradient(rgba(242,245,243,0.055) 1px, transparent 1px)",
@@ -282,7 +453,6 @@ const halftone = {
 
 export default function LocalPassPage() {
   const [termsOpen, setTermsOpen] = useState(false);
-  const [vertical, setVertical] = useState(0);
   const prefersReducedMotion = useReducedMotion();
   const still = prefersReducedMotion === true;
 
@@ -296,15 +466,6 @@ export default function LocalPassPage() {
   );
   const plain = still || !canObserve;
 
-  // Rotating category line. Static on reduced motion.
-  useEffect(() => {
-    if (still) return;
-    const id = setInterval(() => {
-      setVertical((v) => (v + 1) % VERTICALS.length);
-    }, 3600);
-    return () => clearInterval(id);
-  }, [still]);
-
   const count = RESTAURANTS.length;
 
   return (
@@ -316,112 +477,7 @@ export default function LocalPassPage() {
             Built on the Grand Strand · by people who live here
           </span>
 
-          {/* The pass. Credit-card proportions at every width. */}
-          <motion.div
-            data-reveal
-            initial={still ? false : { opacity: 0, y: 14, rotate: 0 }}
-            animate={{ opacity: 1, y: 0, rotate: -3 }}
-            transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-            className="relative mx-auto aspect-[856/540] w-full max-w-[420px] overflow-hidden rounded-[18px] bg-[#34D399] shadow-[0_18px_40px_rgba(11,15,13,0.55)]"
-          >
-            <div
-              className="absolute inset-0"
-              style={{
-                backgroundImage:
-                  "radial-gradient(rgba(11,15,13,0.12) 1px, transparent 1px)",
-                backgroundSize: "4px 4px",
-              }}
-            />
-
-            {/* Sheen. Slow enough to read as light, not a glint. */}
-            {!still && (
-              <motion.div
-                className="pointer-events-none absolute inset-y-0 -left-full w-full"
-                style={{
-                  background:
-                    "linear-gradient(105deg, transparent 20%, rgba(242,245,243,0.38) 50%, transparent 80%)",
-                }}
-                animate={{ x: ["0%", "300%"] }}
-                transition={{
-                  duration: 5.5,
-                  repeatDelay: 3.2,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              />
-            )}
-
-            <div className="absolute inset-0 flex flex-col justify-between px-6 py-5">
-              <div className="flex items-start justify-between">
-                <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#0B0F0D]/70">
-                  The Local Pass
-                </span>
-                {/* Rubber stamp — ticket furniture, sits slightly off-square. */}
-                <span className="-rotate-[7deg] rounded-[4px] border-[1.5px] border-[#0B0F0D]/45 px-[7px] py-[4px] text-[9px] font-extrabold uppercase tracking-[0.14em] text-[#0B0F0D]">
-                  Founding member
-                </span>
-                <svg
-                  className="hidden h-6 w-6 text-[#F2F5F3]/75"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={1.8}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  <path d="M4 3v8a3 3 0 0 0 3 3v7" />
-                  <path d="M7 3v6" />
-                  <path d="M10 3v6" />
-                  <path d="M17 3c-1.5 2-2 4-2 7h4V3z" />
-                  <path d="M17 10v11" />
-                </svg>
-              </div>
-
-              <div className="flex items-end gap-3">
-                {/* Fixed. Never rotates. */}
-                <span
-                  className="text-[62px] leading-[0.86] text-[#0B0F0D] sm:text-[74px]"
-                  style={display}
-                >
-                  50%
-                </span>
-                <div className="relative h-[46px] w-[150px] shrink-0 pb-1 sm:h-[56px] sm:w-[180px]">
-                  {still ? (
-                    <span
-                      className="absolute inset-x-0 bottom-0 text-[17px] italic leading-[1.3] text-[#0B0F0D]/75 sm:text-[21px]"
-                      style={display}
-                    >
-                      {VERTICALS[0]}
-                    </span>
-                  ) : (
-                    <AnimatePresence mode="wait">
-                      <motion.span
-                        data-reveal
-                        key={vertical}
-                        initial={{ opacity: 0, y: 6 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -6 }}
-                        transition={{ duration: 0.55, ease: "easeInOut" }}
-                        className="absolute inset-x-0 bottom-0 text-[17px] italic leading-[1.3] text-[#0B0F0D]/75 sm:text-[21px]"
-                        style={display}
-                      >
-                        {VERTICALS[vertical]}
-                      </motion.span>
-                    </AnimatePresence>
-                  )}
-                </div>
-              </div>
-
-              {/* Perforation, then the stub line. */}
-              <div className="border-t border-dashed border-[#0B0F0D]/30 pt-3">
-                <div className="flex items-center justify-between text-[10px] font-bold tracking-[0.16em] text-[#0B0F0D]/60">
-                  <span>№ 001 · GRAND STRAND</span>
-                  <span>$4.99/MO</span>
-                </div>
-              </div>
-            </div>
-          </motion.div>
+          <PassCard plain={plain} />
 
           <h1
             className="text-[32px] leading-[1.18] tracking-[-0.01em] text-[#F2F5F3] text-pretty sm:text-[40px]"
