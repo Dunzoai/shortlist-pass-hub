@@ -533,7 +533,7 @@ export default function LocalPassPage() {
             crowds the CTA. Inverted and screened so the paper drops out. */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute bottom-[1%] -right-[4%] w-[80%] max-w-[410px] sm:bottom-[4%] sm:right-[2%] sm:w-[34%] sm:max-w-[380px]"
+          className="pointer-events-none absolute bottom-[1%] -right-[4%] w-[86%] max-w-[440px] sm:bottom-[3%] sm:right-[1%] sm:w-[48%] sm:max-w-[580px]"
           style={{
             mixBlendMode: "screen",
             opacity: 0.2,
@@ -546,7 +546,7 @@ export default function LocalPassPage() {
             alt=""
             width={714}
             height={760}
-            sizes="(max-width: 640px) 80vw, 380px"
+            sizes="(max-width: 640px) 86vw, 580px"
             className="h-auto w-full"
             style={{ filter: "invert(1) grayscale(1) contrast(1.15)" }}
           />
