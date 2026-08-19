@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import {
   motion,
+  useMotionValue,
+  useSpring,
   useInView,
   useReducedMotion,
 } from "framer-motion";
@@ -48,7 +50,7 @@ const DEALS = [
 // Broadcast static behind the card. Finer and denser than the card's own
 // grain so the two never read as the same surface.
 const STATIC =
-  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.4' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23s)'/%3E%3C/svg%3E\")";
+  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.62' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23s)'/%3E%3C/svg%3E\")";
 
 // Fractal-noise grain. A real card has irregular tooth; a dot grid reads as a
 // screen pattern, which is what made the old face look printed rather than made.
@@ -333,11 +335,44 @@ function PassCard({ plain }: { plain: boolean }) {
     return () => clearInterval(id);
   }, [plain, inView]);
 
+  // Pointer tilt. Mouse tilts on hover; touch tilts while dragging. Springs
+  // back to flat on release so the flip always starts from square.
+  const tiltX = useMotionValue(0);
+  const tiltY = useMotionValue(0);
+  const spring = { stiffness: 210, damping: 20, mass: 0.6 };
+  const rotX = useSpring(tiltX, spring);
+  const rotY = useSpring(tiltY, spring);
+
+  const track = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (plain) return;
+    const r = e.currentTarget.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width - 0.5;
+    const py = (e.clientY - r.top) / r.height - 0.5;
+    tiltY.set(px * 26);
+    tiltX.set(-py * 18);
+  };
+  const flatten = () => {
+    tiltX.set(0);
+    tiltY.set(0);
+  };
+
   // changes only while that face is turned away
   const deal = DEALS[Math.floor(flips / 2) % DEALS.length];
 
   return (
-    <div ref={wrap} className="mx-auto w-full max-w-[420px]" style={{ perspective: 1500 }}>
+    <div
+      ref={wrap}
+      className="mx-auto w-full max-w-[420px]"
+      style={{ perspective: 1500, touchAction: "pan-y", cursor: plain ? "default" : "grab" }}
+      onPointerMove={track}
+      onPointerLeave={flatten}
+      onPointerUp={flatten}
+      onPointerCancel={flatten}
+    >
+      <motion.div
+        className="relative h-full w-full"
+        style={{ rotateX: rotX, rotateY: rotY, transformStyle: "preserve-3d" }}
+      >
       <motion.div
         data-reveal
         className="relative aspect-[856/540] w-full"
@@ -445,6 +480,7 @@ function PassCard({ plain }: { plain: boolean }) {
           </div>
         </Face>
       </motion.div>
+      </motion.div>
     </div>
   );
 }
@@ -481,7 +517,7 @@ export default function LocalPassPage() {
         <div
           aria-hidden="true"
           className="slp-static pointer-events-none absolute inset-0"
-          style={{ backgroundImage: STATIC, opacity: 0.045 }}
+          style={{ backgroundImage: STATIC, backgroundSize: "260px 260px", opacity: 0.17 }}
         />
         {/* let it fall away from the edges so it never reads as a panel */}
         <div
@@ -489,7 +525,7 @@ export default function LocalPassPage() {
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse 78% 62% at 50% 42%, transparent 40%, #0B0F0D 100%)",
+              "radial-gradient(ellipse 92% 78% at 50% 44%, transparent 58%, #0B0F0D 100%)",
           }}
         />
         <div className="relative mx-auto flex max-w-[600px] flex-col gap-7">
