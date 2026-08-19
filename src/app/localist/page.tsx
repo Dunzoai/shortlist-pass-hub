@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import {
   motion,
@@ -528,6 +529,28 @@ export default function LocalPassPage() {
               "radial-gradient(ellipse 92% 78% at 50% 44%, transparent 58%, #0B0F0D 100%)",
           }}
         />
+        {/* palmetto, anchored bottom-right and dissolving inward so it never
+            crowds the CTA. Inverted and screened so the paper drops out. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute bottom-[1%] -right-[6%] w-[62%] max-w-[320px] sm:bottom-[4%] sm:right-[2%] sm:w-[34%] sm:max-w-[380px]"
+          style={{
+            mixBlendMode: "screen",
+            opacity: 0.2,
+            maskImage: "linear-gradient(to top left, #000 18%, transparent 80%)",
+            WebkitMaskImage: "linear-gradient(to top left, #000 18%, transparent 80%)",
+          }}
+        >
+          <Image
+            src="/palmetto.png"
+            alt=""
+            width={714}
+            height={760}
+            sizes="(max-width: 640px) 62vw, 380px"
+            className="h-auto w-full"
+            style={{ filter: "invert(1) grayscale(1) contrast(1.15)" }}
+          />
+        </div>
         <div className="relative mx-auto flex max-w-[600px] flex-col gap-7">
           <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#F0A868]">
             Built on the Grand Strand · by people who live here
