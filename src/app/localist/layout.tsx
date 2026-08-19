@@ -36,6 +36,24 @@ export default function LocalPassLayout({
       />
       {/* If JS never runs, the reveal's hidden state would strand every section
           at opacity 0. This rule only applies when scripting is off. */}
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+            @keyframes slp-static {
+              0%   { background-position: 0 0 }
+              20%  { background-position: -27px 14px }
+              40%  { background-position: 19px -23px }
+              60%  { background-position: -11px 29px }
+              80%  { background-position: 24px 7px }
+              100% { background-position: 0 0 }
+            }
+            .slp-static { animation: slp-static 0.72s steps(1, end) infinite; }
+            @media (prefers-reduced-motion: reduce) {
+              .slp-static { animation: none; }
+            }
+          `,
+        }}
+      />
       <noscript
         dangerouslySetInnerHTML={{
           __html: `<style>
@@ -46,6 +64,7 @@ export default function LocalPassLayout({
             [data-carousel-track]{flex-direction:column!important;gap:40px;transform:none!important}
             [data-carousel-slide]{width:100%!important}
             [data-carousel-chrome]{display:none!important}
+            .slp-static{animation:none!important}
           </style>`,
         }}
       />

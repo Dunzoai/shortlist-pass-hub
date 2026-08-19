@@ -18,7 +18,12 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/dining-pass",
-        destination: "/localpass",
+        destination: "/localist",
+        permanent: true,
+      },
+      {
+        source: "/localpass",
+        destination: "/localist",
         permanent: true,
       },
     ];

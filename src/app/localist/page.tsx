@@ -45,6 +45,11 @@ const DEALS = [
   { tag: "Tickets", big: "50%", line: "off a second ticket" },
 ];
 
+// Broadcast static behind the card. Finer and denser than the card's own
+// grain so the two never read as the same surface.
+const STATIC =
+  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.4' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23s)'/%3E%3C/svg%3E\")";
+
 // Fractal-noise grain. A real card has irregular tooth; a dot grid reads as a
 // screen pattern, which is what made the old face look printed rather than made.
 const GRAIN =
@@ -152,7 +157,7 @@ const STRIP = [
   {
     n: "01",
     title: "Claim your pass",
-    body: "A minute on your phone. The Local Pass lands in your Shortlist account and it is yours from that moment on.",
+    body: "A minute on your phone. Your Localist card lands in your Shortlist account and it is yours from that moment on.",
   },
   {
     n: "02",
@@ -248,7 +253,7 @@ function StepsStrip({ plain }: { plain: boolean }) {
 
   return (
     <div ref={wrap}>
-      <Typed lines={["A better way", "to local"]} plain={plain} go={inView} />
+      <Typed lines={["Claim Your", "Localist Card"]} plain={plain} go={inView} />
 
       <div className="mt-14 grid grid-cols-1 gap-12 sm:mt-16 sm:grid-cols-2 sm:gap-10 lg:grid-cols-4 lg:gap-7">
         {STRIP.map((s, i) => (
@@ -367,7 +372,7 @@ function PassCard({ plain }: { plain: boolean }) {
             <div className="flex items-start justify-between">
               <div className="flex flex-col gap-1">
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0B0F0D]/75 sm:text-[11px]">
-                  The Local Pass
+                  Localist Card
                 </span>
                 <span className="text-[7px] font-bold uppercase tracking-[0.18em] text-[#0B0F0D]/45 sm:text-[8px]">
                   {deal.tag}
@@ -471,8 +476,23 @@ export default function LocalPassPage() {
   return (
     <main className="bg-[#0B0F0D]">
       {/* ================= HERO ============================================ */}
-      <section className="px-6 pt-12 pb-14">
-        <div className="mx-auto flex max-w-[600px] flex-col gap-7">
+      <section className="relative overflow-hidden px-6 pt-12 pb-14">
+        {/* broadcast static — jumps rather than drifts, so it reads as signal */}
+        <div
+          aria-hidden="true"
+          className="slp-static pointer-events-none absolute inset-0"
+          style={{ backgroundImage: STATIC, opacity: 0.045 }}
+        />
+        {/* let it fall away from the edges so it never reads as a panel */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 78% 62% at 50% 42%, transparent 40%, #0B0F0D 100%)",
+          }}
+        />
+        <div className="relative mx-auto flex max-w-[600px] flex-col gap-7">
           <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#F0A868]">
             Built on the Grand Strand · by people who live here
           </span>
