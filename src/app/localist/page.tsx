@@ -287,6 +287,31 @@ function StepsStrip({ plain }: { plain: boolean }) {
   );
 }
 
+/** South Carolina, drawn as one continuous line. Original — the state
+ *  boundary is public geographic data, the lettering is our own Fraunces. */
+function StateMark() {
+  return (
+    <svg viewBox="0 0 200 180" fill="none" aria-hidden="true" className="h-auto w-full">
+      <path
+        d="M14 46C40 42 66 38 88 34L93 29L105 33L188 92C170 105 152 118 134 131C124 139 114 150 105 162C92 142 78 122 64 103C48 84 31 65 14 46"
+        stroke="#F2F5F3"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <text
+        x="100"
+        y="92"
+        textAnchor="middle"
+        fill="#F2F5F3"
+        style={{ fontFamily: "var(--font-fraunces)", fontSize: 25, fontStyle: "italic", fontWeight: 500 }}
+      >
+        South Carolina
+      </text>
+    </svg>
+  );
+}
+
 /** One face of the card. Same material recipe front and back. */
 function Face({
   back = false,
@@ -529,6 +554,18 @@ export default function LocalPassPage() {
               "radial-gradient(ellipse 92% 78% at 50% 44%, transparent 58%, #0B0F0D 100%)",
           }}
         />
+        {/* South Carolina, bottom-left. Desktop only — at phone widths there
+            is no outer margin for it to sit in. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute bottom-[5%] left-[1%] hidden w-[24%] max-w-[300px] opacity-[0.16] sm:block"
+          style={{
+            maskImage: "linear-gradient(to top right, #000 35%, transparent 92%)",
+            WebkitMaskImage: "linear-gradient(to top right, #000 35%, transparent 92%)",
+          }}
+        >
+          <StateMark />
+        </div>
         {/* palmetto, anchored bottom-right and dissolving inward so it never
             crowds the CTA. Inverted and screened so the paper drops out. */}
         <div
