@@ -389,20 +389,20 @@ function PassCard({ plain }: { plain: boolean }) {
       >
         {/* ── FRONT ── */}
         <Face>
-          {/* palmetto and crescent, debossed to watermark strength */}
-          <svg viewBox="0 0 420 265" className="absolute inset-0 h-full w-full" aria-hidden="true">
-            <g
-              fill="none"
-              stroke="rgba(11,15,13,0.075)"
-              strokeWidth="3"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M352 246V132" />
-              <path d="M352 132q-38-24-57 3M352 132q38-24 57 3M352 132q-18-40 4-50M352 132q28-36 47-19M352 132q-38 10-39 37M352 132q38 10 39 37" />
-              <path d="M328 70a25 25 0 1 0 25 31 20 20 0 1 1-25-31z" />
-            </g>
-          </svg>
+          {/* palmetto, debossed. multiply drops the paper and leaves the ink. */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute right-[3%] top-[8%] h-[84%] w-[40%]"
+            style={{ mixBlendMode: "multiply", opacity: 0.17 }}
+          >
+            <Image
+              src="/palmetto.png"
+              alt=""
+              fill
+              sizes="180px"
+              style={{ objectFit: "contain", filter: "grayscale(1) contrast(1.25)" }}
+            />
+          </div>
 
           <div className="absolute inset-0 flex flex-col justify-between px-[5.5%] py-[5%]">
             <div className="flex items-start justify-between">
@@ -556,7 +556,33 @@ export default function LocalPassPage() {
             Built on the Grand Strand · by people who live here
           </span>
 
-          <PassCard plain={plain} />
+          <div className="relative">
+            {/* moon, tucked behind the card's top-left corner. Positioned off
+                the card so it scales with it at every width. */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -left-[3%] -top-[28%] z-0 w-[58%] sm:-left-[20%] sm:-top-[40%] sm:w-[74%]"
+              style={{
+                mixBlendMode: "screen",
+                opacity: 0.3,
+                maskImage: "linear-gradient(to bottom right, #000 30%, transparent 88%)",
+                WebkitMaskImage: "linear-gradient(to bottom right, #000 30%, transparent 88%)",
+              }}
+            >
+              <Image
+                src="/moon.png"
+                alt=""
+                width={760}
+                height={760}
+                sizes="(max-width: 640px) 58vw, 320px"
+                className="h-auto w-full"
+                style={{ filter: "invert(1) grayscale(1) contrast(1.15)" }}
+              />
+            </div>
+            <div className="relative z-10">
+              <PassCard plain={plain} />
+            </div>
+          </div>
 
           <h1
             className="text-[32px] leading-[1.18] tracking-[-0.01em] text-[#F2F5F3] text-pretty sm:text-[40px]"
