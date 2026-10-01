@@ -3,6 +3,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ShortyMascot } from "@/components/shorty/ShortyMascot";
 import type { MascotMood } from "@/lib/shorty/mascot/poses";
+import { ShortyScenes } from "./ShortyScenes";
 
 /* ── One owner at a time texts Shorty; he does it on his phone and answers ────
    Nito's Empanadas is a real client; the other business names are made up. */
@@ -42,8 +43,9 @@ const ICONS = {
 };
 
 const HELLO_MS = 1500;
-/* Per text: 0 quiet · 1 it arrives (he nods) · 2 he works his phone · 3 the card pops out · 4 his reply · 5 card floats off, all clear */
-const STEP_MS = [600, 1400, 1300, 1100, 2400, 1000];
+/* Per text: 0 quiet · 1 it arrives (he nods) · 2 he works his phone · 3 the card pops out · 4 his reply ·
+   5 the card drifts off up and to the right while the texts stay · 6 the texts clear */
+const STEP_MS = [600, 1400, 1300, 1100, 1300, 1500, 450];
 
 /* Printed-paper grain, the same feel as Shorty's ink. */
 const GRAIN =
@@ -89,12 +91,12 @@ function Reply({ on, children }: { on: boolean; children: React.ReactNode }) {
 }
 
 /** What he did: pops out of his phone (anchored at TAP_PHONE_AT on the drawing), sits beside
-    him while he answers, then floats off the right edge of the screen. */
+    him while he answers, then drifts off up and to the right before the texts clear. */
 type CardState = "tucked" | "out" | "away";
 const CARD_MOTION: Record<CardState, string> = {
   tucked: "transition-none -translate-x-6 translate-y-6 scale-[.2] rotate-0 opacity-0",
   out: "duration-[420ms] ease-[cubic-bezier(.2,.9,.3,1.3)] translate-x-3 -translate-y-1 scale-100 rotate-[3deg] opacity-100",
-  away: "duration-[1100ms] ease-[cubic-bezier(.5,0,.75,.4)] translate-x-[110vw] -translate-y-10 scale-100 rotate-[14deg] opacity-100",
+  away: "duration-[1500ms] ease-[cubic-bezier(.45,0,.6,.6)] translate-x-[70vw] -translate-y-[70vh] scale-90 rotate-[10deg] opacity-0",
 };
 
 function ResultCard({ state, ex }: { state: CardState; ex: Exchange }) {
@@ -139,7 +141,7 @@ export function ShortyHero() {
       return () => clearTimeout(id);
     }
     const id = window.setTimeout(() => {
-      if (step < 5) setStep(step + 1);
+      if (step < 6) setStep(step + 1);
       else { setStep(0); setN((k) => k + 1); }
     }, STEP_MS[step]);
     return () => clearTimeout(id);
@@ -152,22 +154,26 @@ export function ShortyHero() {
     : reduce.current ? "pleased"
     : step === 1 ? "nod"
     : step === 2 || step === 3 ? "tapping"
-    : step === 4 ? "pleased"
+    : step === 4 || step === 5 ? "pleased"
     : "wait";
 
   return (
     <section className="relative overflow-x-clip">
       <div className="mx-auto grid max-w-[1180px] grid-cols-1 px-4 pt-3 pb-10 [grid-template-areas:'stage''copy'] sm:px-8 lg:grid-cols-[minmax(0,1fr)_460px] lg:items-center lg:gap-x-12 lg:pt-10 lg:pb-24 lg:[grid-template-areas:'copy_stage']">
         {/* The stage: a text comes in, Shorty works his phone, the result pops out, he answers. */}
-        <div className="mx-auto flex w-full max-w-[400px] flex-col [grid-area:stage] lg:max-w-none" aria-live="polite">
+        <div className="relative mx-auto flex w-full max-w-[400px] flex-col [grid-area:stage] lg:max-w-none" aria-live="polite">
+          {/* Whoever texted, he's standing in their shop: a faint sketch behind him. */}
+          <div className="absolute inset-x-0 bottom-0 h-[230px] lg:h-[360px]">
+            <ShortyScenes biz={ex.biz} show={live && step >= 1 && step <= 5} />
+          </div>
           <div className="mt-4 flex h-[150px] flex-col justify-end gap-2 sm:h-[190px] sm:gap-2.5 lg:mt-0 lg:h-[230px] lg:gap-4">
-            <Incoming on={live && step >= 1 && step <= 4} ex={ex} />
-            <Reply on={live && step === 4}>{ex.reply}</Reply>
+            <Incoming on={live && step >= 1 && step <= 5} ex={ex} />
+            <Reply on={live && (step === 4 || step === 5)}>{ex.reply}</Reply>
           </div>
           {/* Shorty sits a little left of center so the card has room to come out on his right. */}
           <div className="relative -mt-7 w-[var(--w)] -translate-x-[42px] self-center [--w:190px] sm:-mt-9 lg:-translate-x-[70px] lg:[--w:300px]">
             <ShortyMascot mood={mood} size={190} style={{ width: "100%", height: "auto" }} />
-            <ResultCard state={!live || step < 3 ? "tucked" : step === 5 ? "away" : "out"} ex={ex} />
+            <ResultCard state={!live || step < 3 ? "tucked" : step >= 5 ? "away" : "out"} ex={ex} />
           </div>
         </div>
 
