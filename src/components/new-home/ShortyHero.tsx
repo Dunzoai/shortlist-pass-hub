@@ -162,8 +162,8 @@ export function ShortyHero() {
       <div className="mx-auto grid max-w-[1180px] grid-cols-1 px-4 pt-3 pb-10 [grid-template-areas:'stage''copy'] sm:px-8 lg:grid-cols-[minmax(0,1fr)_460px] lg:items-center lg:gap-x-12 lg:pt-10 lg:pb-24 lg:[grid-template-areas:'copy_stage']">
         {/* The stage: a text comes in, Shorty works his phone, the result pops out, he answers. */}
         <div className="relative mx-auto flex w-full max-w-[400px] flex-col [grid-area:stage] lg:max-w-none" aria-live="polite">
-          {/* Whoever texted, he's standing in their shop: a faint sketch behind him. */}
-          <div className="absolute inset-x-0 bottom-0 h-[230px] lg:h-[360px]">
+          {/* Whoever texted, he's standing in their world: a cut-paper scene behind him. */}
+          <div className="absolute inset-x-0 bottom-0 h-[230px] lg:h-[400px]">
             <ShortyScenes biz={ex.biz} show={live && step >= 1 && step <= 5} />
           </div>
           <div className="mt-4 flex h-[150px] flex-col justify-end gap-2 sm:h-[190px] sm:gap-2.5 lg:mt-0 lg:h-[230px] lg:gap-4">
