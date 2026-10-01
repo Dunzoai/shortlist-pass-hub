@@ -22,7 +22,7 @@ export default function NewHomeLayout({
         dangerouslySetInnerHTML={{
           __html: `
             body > nav, body > .nav, body > header { display: none !important; }
-            html, body { background: #f6f0e2 !important; }
+            html, body { background: #ebdcc0 !important; }
             #slp-widget-container, #slp-widget-iframe { display: none !important; }
           `,
         }}
