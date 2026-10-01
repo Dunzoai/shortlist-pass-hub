@@ -64,7 +64,7 @@ function TacoTruck() {
       </g>
       {bulbs.map((x) => (
         <g key={x}>
-          <circle cx={x} cy={lightY(x) + 9} r={9} fill="#ffd27a" opacity={0.45} filter="url(#glow)" />
+          <circle cx={x} cy={lightY(x) + 9} r={11} fill="#ffcf66" opacity={0.7} filter="url(#glow)" />
           <path d={`M${x} ${lightY(x)} v4`} {...INK} strokeWidth={1.2} />
           <ellipse cx={x} cy={lightY(x) + 9} rx={3.4} ry={4.6} fill="#ffe08a" stroke="#2a2219" strokeWidth={1.2} />
         </g>
@@ -119,8 +119,8 @@ function Salon() {
       <g {...INK}>
         <path d="M186 62 q10 -10 22 -8 M190 72 q6 -6 13 -5" stroke="#fbfdff" strokeWidth={2.2} />
         <path d="M34 140 H86 M182 206 H238" />
-        <circle cx={46} cy={56} r={6} /> <circle cx={46} cy={76} r={6} />
-        <path d="M51 59 L84 72 M51 73 L84 60" />
+        <circle cx={82} cy={78} r={6} /> <circle cx={82} cy={98} r={6} />
+        <path d="M87 81 L120 94 M87 95 L120 82" />
       </g>
     </>
   );
@@ -144,7 +144,7 @@ export function ShortyScenes({ biz, show }: { biz: string; show: boolean }) {
             <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves={2} seed={7} result="warp" />
             <feDisplacementMap in="SourceGraphic" in2="warp" scale={3.5} xChannelSelector="R" yChannelSelector="G" result="torn" />
             <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves={2} seed={3} result="fine" />
-            <feColorMatrix in="fine" type="matrix" values="0 0 0 0 0.16  0 0 0 0 0.12  0 0 0 0 0.08  0.55 0 0 0 -0.2" result="specks" />
+            <feColorMatrix in="fine" type="matrix" values="0 0 0 0 0.16  0 0 0 0 0.12  0 0 0 0 0.08  0.32 0 0 0 -0.13" result="specks" />
             <feComposite in="specks" in2="torn" operator="in" result="grain" />
             <feMerge result="sheet"><feMergeNode in="torn" /><feMergeNode in="grain" /></feMerge>
             <feDropShadow in="sheet" dx={1.6} dy={2.6} stdDeviation={1.4} floodColor="#3a2a12" floodOpacity={0.22} />
