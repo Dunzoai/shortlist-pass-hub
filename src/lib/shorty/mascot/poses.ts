@@ -19,7 +19,7 @@
  * Docs: docs/features/admin-dashboard/shorty-mascot.md.
  */
 
-export type MascotMood = 'walk' | 'hello' | 'idle' | 'listening' | 'thinking' | 'working' | 'done' | 'oops';
+export type MascotMood = 'walk' | 'wait' | 'hello' | 'idle' | 'listening' | 'thinking' | 'working' | 'done' | 'oops';
 export type MascotTask = 'menu' | 'event' | 'social' | 'text' | 'none';
 export type Side = 'L' | 'R';
 
@@ -119,6 +119,23 @@ function walk(t: number): Pose {
   p.L = arm(-10 + s * 10, 50 - Math.abs(s) * 4, 14, 0, -6 + s * 8);
   p.R = arm(10 - s * 10, 50 - Math.abs(s) * 4, 14, 0, 6 - s * 8);
   p.face = { ...p.face, mouth: 'grin', bl: -2, br: -2, gx: -2.2, gy: -0.4 };
+  return p;
+}
+/**
+ * WAITING (website hero, 2026-10-01): standing around after the walk-in. A
+ * gentle bob, an easy foot tap, arms swaying, and he looks around — left,
+ * back to you, right, back — with a little brow lift on each look.
+ */
+function wait(t: number): Pose {
+  const p = base(t), w = t * 2.6, tap = Math.max(0, Math.sin(w * 1.5));
+  p.by = 1 + Math.sin(w) * 1.4; p.sy = 1 + Math.sin(w) * 0.006;
+  p.rot = Math.sin(w / 2) * 1.2;
+  p.L = hang('L', 2.5 * Math.sin(w / 2)); p.R = hang('R', 2.5 * Math.sin(w / 2));
+  p.feet.R.tilt = -tap * 14; p.feet.R.lift = tap * 1.5;
+  const c = t % 7, k = (a: number, b: number) => seg(c, a, a + 0.35) * (1 - seg(c, b, b + 0.35));
+  const left = k(1.2, 2.6), right = k(4.2, 5.6);
+  p.face = { ...p.face, mouth: 'none', gx: -2.8 * left + 2.8 * right, gy: -0.4, bl: -1 - left * 1.5, br: -1 - right * 1.5 };
+  p.rot += -1.5 * left + 1.5 * right;
   return p;
 }
 function hello(t: number): Pose {
@@ -310,6 +327,7 @@ function oops(t: number): Pose {
 /** The default library. `still` = the frame shown under reduced motion. */
 export const DEFAULT_POSES: Record<string, PoseEntry> = {
   walk: { pose: walk, still: 0.15 },
+  wait: { pose: wait, still: 0.5 },
   hello: { pose: hello, still: 1.2 },
   idle: { pose: idle, still: 3.0 },
   listening: { pose: listening, still: 0.4 },

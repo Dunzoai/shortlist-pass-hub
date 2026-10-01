@@ -22,13 +22,14 @@ export default function NewHomeLayout({
         dangerouslySetInnerHTML={{
           __html: `
             body > nav, body > .nav, body > header { display: none !important; }
+            html, body { background: #f6f0e2 !important; }
             #slp-widget-container, #slp-widget-iframe { display: none !important; }
           `,
         }}
       />
       <noscript
         dangerouslySetInnerHTML={{
-          __html: `<style>[data-walkin]{opacity:1!important}[data-demo] [data-step]{opacity:1!important;transform:none!important}</style>`,
+          __html: `<style>[data-walkin]{opacity:1!important}</style>`,
         }}
       />
       {children}
