@@ -82,7 +82,7 @@ function TypingDots({ dark = false }: { dark?: boolean }) {
 
 function SettingItUp({ className = "" }: { className?: string }) {
   return (
-    <div className={`inline-flex items-center gap-2 rounded-full border border-[#e4ddcc] bg-white px-3 py-1.5 text-[12px] font-semibold text-[#1d1a16] shadow-sm ${className}`}>
+    <div className={`inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-[#e4ddcc] bg-white px-3 py-1.5 text-[12px] font-semibold text-[#1d1a16] shadow-sm ${className}`}>
       <TypingDots /> Setting it up
     </div>
   );
