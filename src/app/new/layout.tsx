@@ -1,14 +1,8 @@
 import type { Metadata } from "next";
-import { Fraunces } from "next/font/google";
+import { fraunces } from "@/lib/fonts";
 
 // Staging route for the next homepage. Kept out of search until it replaces "/".
 // To promote: move page.tsx over src/app/page.tsx and delete this folder.
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "Meet Shorty | Shortlist Pass",
