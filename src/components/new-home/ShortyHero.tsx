@@ -81,7 +81,7 @@ function Reply({ on, children }: { on: boolean; children: React.ReactNode }) {
       className={`mr-auto max-w-[220px] origin-bottom-left transition-[opacity,translate,scale,rotate] duration-300 ease-[cubic-bezier(.2,.8,.3,1.25)] sm:max-w-[270px] lg:max-w-[300px] ${pop(on)}`}
       style={{ rotate: "-1deg" }}
     >
-      <p className="mb-0.5 ml-3 text-[8.5px] font-semibold uppercase tracking-[0.14em] text-[#7a7266] sm:mb-1 sm:text-[10px]">Shorty</p>
+      <p className="mb-1 ml-2 inline-block rounded-full border border-[#1d1a16] bg-[#fbf6e6] px-1.5 py-px text-[8.5px] font-bold uppercase tracking-[0.14em] text-[#1d1a16] sm:ml-3 sm:px-2 sm:text-[10px]">Shorty</p>
       <div className={`relative rounded-[15px] rounded-bl-[5px] bg-[#8cc3a1] px-3 py-1.5 text-[12.5px] leading-[1.35] font-semibold text-[#12301f] sm:rounded-[20px] sm:px-4 sm:py-2.5 sm:text-[15px] lg:text-[16px] ${PAPER}`}>
         <Grain />
         <span className="relative block text-balance">{children}</span>
