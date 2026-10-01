@@ -43,7 +43,7 @@ function Bubble({ on, side, label, children }: { on: boolean; side: "in" | "out"
         }`}
       >
         <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-[.22] mix-blend-multiply" style={{ backgroundImage: GRAIN }} />
-        <span className="relative">{children}</span>
+        <span className="relative block text-balance">{children}</span>
       </div>
     </div>
   );
