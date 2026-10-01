@@ -19,7 +19,7 @@
  * Docs: docs/features/admin-dashboard/shorty-mascot.md.
  */
 
-export type MascotMood = 'walk' | 'wait' | 'nod' | 'pleased' | 'surprised' | 'hello' | 'idle' | 'listening' | 'thinking' | 'working' | 'done' | 'oops';
+export type MascotMood = 'walk' | 'wait' | 'nod' | 'tapping' | 'pleased' | 'surprised' | 'hello' | 'idle' | 'listening' | 'thinking' | 'working' | 'done' | 'oops';
 export type MascotTask = 'menu' | 'event' | 'social' | 'text' | 'none';
 export type Side = 'L' | 'R';
 
@@ -165,6 +165,19 @@ function pleased(t: number): Pose {
   p.L = hang('L', 2 * Math.sin(w / 2)); p.R = hang('R', 2 * Math.sin(w / 2));
   p.face = { ...p.face, mouth: 'grin', gx: -0.6, gy: 0, bl: -2, br: -2 };
   p.feet.R.tilt = -Math.max(0, Math.sin(w * 1.5)) * 10;
+  return p;
+}
+/** TAPPING (website hero): phone up at his chest in both gloves, thumb tapping, eyes on the screen. */
+export const TAP_PHONE_AT: [number, number] = [84, 132];
+function tapping(t: number): Pose {
+  const p = base(t), up = easeOutBack(seg(t, 0, 0.3), 1.4), tap = Math.max(0, Math.sin(t * 15)) * 2.2;
+  const [px, py] = TAP_PHONE_AT;
+  p.by = 0.5 + Math.sin(t * 2.2) * 0.5; p.rot = 1.5;
+  p.props.phone = hold({ at: [px, py], s: 1.5 * up, rot: -6 });
+  p.R = arm(...to('R', px + 6, py - 4 - tap), 14, 1, -70, 0, 1);
+  p.L = arm(...to('L', px - 14, py - 22), 16, 1, 10, 0, 1);
+  p.fx.text = { on: 1, typing: 1, pop: -1, n: 0 };
+  p.face = { ...p.face, mouth: 'none', gx: 1.6, gy: 2.8, bl: 1, br: 0.5, blr: 6, brr: -4 };
   return p;
 }
 function hello(t: number): Pose {
@@ -358,6 +371,7 @@ export const DEFAULT_POSES: Record<string, PoseEntry> = {
   walk: { pose: walk, still: 0.15 },
   wait: { pose: wait, still: 0.5 },
   nod: { pose: nod, still: 0.4 },
+  tapping: { pose: tapping, still: 0.6 },
   pleased: { pose: pleased, still: 0.6 },
   surprised: { pose: surprised, still: 0.4 },
   hello: { pose: hello, still: 1.2 },
