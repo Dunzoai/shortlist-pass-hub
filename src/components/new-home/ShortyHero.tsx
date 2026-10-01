@@ -157,13 +157,13 @@ const HELLO_MS = 1500;
    0 quiet · 1 owner typing… · 2 their text lands (he nods) · 3 he works his phone ·
    4 the card unfolds out of the phone · 5 Shorty typing… · 6 his reply lands ·
    7 the card drifts off up and to the right · 8 the texts clear */
-const STEP_MS = [450, 700, 1200, 1100, 1000, 650, 1300, 1400, 450];
+const STEP_MS = [500, 1400, 1200, 1100, 1000, 1300, 1400, 1400, 450];
 
 function Dots() {
   return (
     <span className="inline-flex gap-1 py-1" aria-label="typing">
       {[0, 1, 2].map((i) => (
-        <span key={i} className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#1d1a16]/60 sm:h-2 sm:w-2" style={{ animationDelay: `${i * 120}ms`, animationDuration: "900ms" }} />
+        <span key={i} className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#1d1a16]/60 sm:h-2 sm:w-2" style={{ animationDelay: `${i * 160}ms`, animationDuration: "1100ms" }} />
       ))}
     </span>
   );
@@ -176,7 +176,7 @@ function TextBubble({ state, name, tint, mine, children }: { state: BubbleState;
   const on = state !== "hidden";
   return (
     <div
-      className={`max-w-[220px] transition-[opacity,translate,scale] duration-300 ease-[cubic-bezier(.2,.8,.3,1.25)] sm:max-w-[270px] lg:max-w-[300px] ${
+      className={`max-w-[220px] transition-[opacity,translate,scale] duration-500 ease-[cubic-bezier(.25,.8,.35,1.15)] sm:max-w-[270px] lg:max-w-[300px] ${
         mine ? "mr-auto origin-bottom-left" : "ml-auto origin-bottom-right"
       } ${on ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-2 scale-90"}`}
       style={{ rotate: mine ? "-1deg" : "1.2deg" }}
@@ -271,7 +271,7 @@ export function ShortyHero() {
       <style
         dangerouslySetInnerHTML={{
           __html: `@keyframes slp-land{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:none}}
-.slp-land{animation:slp-land .28s cubic-bezier(.2,.9,.3,1.2) both;transform-origin:left center}
+.slp-land{animation:slp-land .4s cubic-bezier(.25,.85,.35,1.15) both;transform-origin:left center}
 @keyframes slp-flash{0%{opacity:0;scale:.2}25%{opacity:1}100%{opacity:0;scale:2.6}}
 .slp-flash{animation:slp-flash .6s ease-out both}
 @media (prefers-reduced-motion: reduce){.slp-land,.slp-flash{animation:none}}`,
