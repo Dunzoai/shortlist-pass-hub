@@ -42,7 +42,7 @@ function AudienceToggle() {
 export function SiteHeader() {
   return (
     <header className="relative z-20">
-      <div className="mx-auto flex max-w-[1120px] items-center justify-between gap-4 px-4 pt-5 sm:px-8 lg:pt-7">
+      <div className="mx-auto flex max-w-[1180px] items-center justify-between gap-4 px-4 pt-5 sm:px-8 lg:pt-7">
         <Link href="/new" className="flex items-center gap-2.5">
           <ShortlistMark className="h-8 w-8" />
           <span className="font-[family-name:var(--font-fraunces)] text-[19px] tracking-[-0.01em] text-[#1d1a16]">

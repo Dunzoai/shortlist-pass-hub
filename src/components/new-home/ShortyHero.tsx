@@ -227,10 +227,10 @@ export function ShortyHero() {
 
   return (
     <section className="relative overflow-x-clip">
-      <div className="mx-auto grid max-w-[1120px] grid-cols-[minmax(0,1fr)_120px] gap-x-3 px-4 pt-8 pb-16 [grid-template-areas:'head_shorty''copy_copy''demo_demo'] sm:grid-cols-[minmax(0,1fr)_170px] sm:px-8 lg:grid-cols-[minmax(0,1fr)_200px_330px] lg:gap-x-6 lg:pt-20 lg:pb-24 lg:[grid-template-areas:'head_shorty_demo''copy_shorty_demo']">
+      <div className="mx-auto grid max-w-[1180px] grid-cols-[minmax(0,1fr)_120px] gap-x-3 px-4 pt-8 pb-16 [grid-template-areas:'head_shorty''copy_copy''demo_demo'] sm:grid-cols-[minmax(0,1fr)_170px] sm:px-8 lg:grid-cols-[minmax(0,1fr)_180px_330px] lg:gap-x-6 lg:pt-20 lg:pb-24 lg:[grid-template-areas:'head_shorty_demo''copy_shorty_demo']">
         <div className="self-end [grid-area:head]">
           <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#2f7a50] sm:text-[12px]">Your newest hire</p>
-          <h1 className="mt-3 font-[family-name:var(--font-fraunces)] text-[clamp(52px,7.4vw,92px)] leading-[0.95] font-normal tracking-[-0.03em] text-[#1d1a16]">
+          <h1 className="mt-3 font-[family-name:var(--font-fraunces)] text-[clamp(52px,6.4vw,84px)] lg:whitespace-nowrap leading-[0.95] font-normal tracking-[-0.03em] text-[#1d1a16]">
             Meet Shorty.
           </h1>
         </div>
@@ -241,16 +241,16 @@ export function ShortyHero() {
             money for you, and I handle the busywork so you can focus on what you do best.
           </p>
           <p className="mt-4 text-[15px] font-semibold text-[#2f7a50]">Just text me what you need. You say yes, I get it done.</p>
-          <div className="mt-7 flex flex-wrap items-center gap-3">
+          <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
             <a
               href={APP_SIGNUP_URL}
-              className="rounded-full bg-[#1d1a16] px-6 py-3.5 text-[15px] font-semibold text-[#fbf6e6] transition-transform hover:-translate-y-px"
+              className="rounded-full bg-[#1d1a16] px-6 py-3.5 text-center text-[15px] font-semibold text-[#fbf6e6] transition-transform hover:-translate-y-px"
             >
               Hire Shorty for $50 a month
             </a>
             <a
               href={APP_SIGNUP_URL}
-              className="rounded-full border border-[#1d1a16]/80 px-6 py-3.5 text-[15px] font-semibold text-[#1d1a16] transition-colors hover:bg-[#1d1a16]/5"
+              className="rounded-full border border-[#1d1a16]/80 px-6 py-3.5 text-center text-[15px] font-semibold text-[#1d1a16] transition-colors hover:bg-[#1d1a16]/5"
             >
               Claim free
             </a>
