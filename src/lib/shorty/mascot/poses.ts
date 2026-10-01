@@ -19,7 +19,7 @@
  * Docs: docs/features/admin-dashboard/shorty-mascot.md.
  */
 
-export type MascotMood = 'walk' | 'wait' | 'hello' | 'idle' | 'listening' | 'thinking' | 'working' | 'done' | 'oops';
+export type MascotMood = 'walk' | 'wait' | 'surprised' | 'hello' | 'idle' | 'listening' | 'thinking' | 'working' | 'done' | 'oops';
 export type MascotTask = 'menu' | 'event' | 'social' | 'text' | 'none';
 export type Side = 'L' | 'R';
 
@@ -136,6 +136,16 @@ function wait(t: number): Pose {
   const left = k(1.2, 2.6), right = k(4.2, 5.6);
   p.face = { ...p.face, mouth: 'none', gx: -2.8 * left + 2.8 * right, gy: -0.4, bl: -1 - left * 1.5, br: -1 - right * 1.5 };
   p.rot += -1.5 * left + 1.5 * right;
+  return p;
+}
+/** SURPRISED (website hero): something's coming from the right. Eyes wide, a little hop, gloves up. */
+function surprised(t: number): Pose {
+  const p = base(t), k = easeOutBack(seg(t, 0, 0.25)), hop = Math.sin(Math.PI * seg(t, 0, 0.3));
+  p.by = hop * 6; p.sy = 1 + hop * 0.03; p.rot = 3 * k;
+  p.L = arm(-26 * k - 10 * (1 - k), 52 - 34 * k, 12, 0, -50 * k);
+  p.R = arm(26 * k + 10 * (1 - k), 52 - 34 * k, 12, 0, 50 * k);
+  p.face = { ...p.face, mouth: 'o', eo: 1 + 0.4 * k, gx: 3 * k, gy: -0.8, bl: -4.5 * k, br: -4.5 * k };
+  p.feet.L.lift = hop * 3; p.feet.R.lift = hop * 3;
   return p;
 }
 function hello(t: number): Pose {
@@ -328,6 +338,7 @@ function oops(t: number): Pose {
 export const DEFAULT_POSES: Record<string, PoseEntry> = {
   walk: { pose: walk, still: 0.15 },
   wait: { pose: wait, still: 0.5 },
+  surprised: { pose: surprised, still: 0.4 },
   hello: { pose: hello, still: 1.2 },
   idle: { pose: idle, still: 3.0 },
   listening: { pose: listening, still: 0.4 },
