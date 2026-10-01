@@ -19,7 +19,7 @@
  * Docs: docs/features/admin-dashboard/shorty-mascot.md.
  */
 
-export type MascotMood = 'walk' | 'wait' | 'surprised' | 'hello' | 'idle' | 'listening' | 'thinking' | 'working' | 'done' | 'oops';
+export type MascotMood = 'walk' | 'wait' | 'nod' | 'pleased' | 'surprised' | 'hello' | 'idle' | 'listening' | 'thinking' | 'working' | 'done' | 'oops';
 export type MascotTask = 'menu' | 'event' | 'social' | 'text' | 'none';
 export type Side = 'L' | 'R';
 
@@ -146,6 +146,25 @@ function surprised(t: number): Pose {
   p.R = arm(26 * k + 10 * (1 - k), 52 - 34 * k, 12, 0, 50 * k);
   p.face = { ...p.face, mouth: 'o', eo: 1 + 0.4 * k, gx: 3 * k, gy: -0.8, bl: -4.5 * k, br: -4.5 * k };
   p.feet.L.lift = hop * 3; p.feet.R.lift = hop * 3;
+  return p;
+}
+/** NOD (website hero): a text just came in up and to his right. He glances up at it, then two easy nods. */
+function nod(t: number): Pose {
+  const p = base(t), look = easeOutBack(seg(t, 0, 0.3), 1.2);
+  const n = t > 0.55 ? Math.max(0, Math.sin((t - 0.55) * Math.PI * 2.6)) * (1 - seg(t, 1.3, 1.6)) : 0;
+  p.by = 0.6 + Math.sin(t * 2.4) * 0.6 - n * 1.5; p.rot = 1.5 * look + n * 2;
+  p.L = hang('L', Math.sin(t * 2) * 1.5); p.R = hang('R', Math.sin(t * 2) * 1.5);
+  p.face = { ...p.face, mouth: n > 0.2 ? 'grin' : 'none', gx: 2.4 * look, gy: -2.2 * look + n * 2.5, bl: -1.5 * look, br: -2.5 * look };
+  return p;
+}
+/** PLEASED (website hero): reply sent. A small smile, a gentle bob, eyes back on you. */
+function pleased(t: number): Pose {
+  const p = base(t), w = t * 2.4, k = Math.sin(Math.PI * seg(t, 0, 0.35));
+  p.by = k * 2.5 + Math.abs(Math.sin(w)) * 0.8; p.sy = 1 + k * 0.012;
+  p.rot = Math.sin(w / 2) * 1;
+  p.L = hang('L', 2 * Math.sin(w / 2)); p.R = hang('R', 2 * Math.sin(w / 2));
+  p.face = { ...p.face, mouth: 'grin', gx: -0.6, gy: 0, bl: -2, br: -2 };
+  p.feet.R.tilt = -Math.max(0, Math.sin(w * 1.5)) * 10;
   return p;
 }
 function hello(t: number): Pose {
@@ -338,6 +357,8 @@ function oops(t: number): Pose {
 export const DEFAULT_POSES: Record<string, PoseEntry> = {
   walk: { pose: walk, still: 0.15 },
   wait: { pose: wait, still: 0.5 },
+  nod: { pose: nod, still: 0.4 },
+  pleased: { pose: pleased, still: 0.6 },
   surprised: { pose: surprised, still: 0.4 },
   hello: { pose: hello, still: 1.2 },
   idle: { pose: idle, still: 3.0 },

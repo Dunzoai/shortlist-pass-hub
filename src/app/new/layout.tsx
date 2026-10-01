@@ -27,11 +27,6 @@ export default function NewHomeLayout({
           `,
         }}
       />
-      <noscript
-        dangerouslySetInnerHTML={{
-          __html: `<style>[data-phone]{opacity:1!important}</style>`,
-        }}
-      />
       {children}
     </div>
   );
