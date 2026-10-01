@@ -1,36 +1,18 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { ShortyMascot } from "@/components/shorty/ShortyMascot";
 import type { MascotMood } from "@/lib/shorty/mascot/poses";
 import { ShortyScenes } from "./ShortyScenes";
 
-/* ── One owner at a time texts Shorty; he does it on his phone and answers ────
-   Nito's Empanadas is a real client; the other business names are made up. */
-type Icon = keyof typeof ICONS;
-type Exchange = {
-  biz: string; tint: string; ask: string; reply: string;
-  card: { icon: Icon; label: string; value: string };
-};
-
-const EXCHANGES: Exchange[] = [
-  { biz: "Nito's Empanadas", tint: "#f2c94c", ask: "Add the Meatball Parm Empanada to the menu. $6.", reply: "On the menu. Smells great from here.",
-    card: { icon: "menu", label: "Menu item added", value: "Meatball Parm Empanada · $6" } },
-  { biz: "Coastal Plumbing", tint: "#8fb8e0", ask: "Move my 2pm to Thursday and let her know.", reply: "Moved. She's got the new time.",
-    card: { icon: "clock", label: "Rescheduled", value: "2:00 PM → Thursday" } },
-  { biz: "Salt & Shear Salon", tint: "#f0a3b4", ask: "Post to social media: walk-ins welcome today.", reply: "Posted. Clear your chairs.",
-    card: { icon: "megaphone", label: "Posted to social", value: "Walk-ins welcome today" } },
-  { biz: "Low Tide Tacos", tint: "#f5a46a", ask: "We're at Clear Pond Friday, 1 to 5.", reply: "It's on the calendar. Clear Pond won't know what hit it.",
-    card: { icon: "calendar", label: "Event scheduled", value: "Fri · Clear Pond · 1–5 PM" } },
-  { biz: "Rise Bakery", tint: "#d9b58c", ask: "Sold out of croissants. Take them off.", reply: "Gone. Tomorrow's batch better hurry.",
-    card: { icon: "minus", label: "Removed from menu", value: "Croissants · sold out" } },
-  { biz: "Anchor Taproom", tint: "#b7a3e0", ask: "Text everyone trivia starts at 7.", reply: "Texted 348 regulars. Brains warming up.",
-    card: { icon: "message", label: "Text sent", value: "348 regulars · Trivia at 7" } },
-  { biz: "Greenline Landscaping", tint: "#a8d08d", ask: "Send the Hendersons the backyard quote.", reply: "Sent. Fingers crossed, gloves on.",
-    card: { icon: "send", label: "Quote sent", value: "The Hendersons · Backyard" } },
-  { biz: "Shine Mobile Detailing", tint: "#7fd0d6", ask: "Post to social media: Saturday's wide open.", reply: "Posted. Saturday won't stay open long.",
-    card: { icon: "megaphone", label: "Posted to social", value: "Saturday's wide open" } },
-];
+/* ── Paper, the same feel as Shorty's ink ──────────────────────────────────── */
+const GRAIN =
+  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .11 0 0 0 0 .1 0 0 0 0 .08 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")";
+const Grain = () => (
+  <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-[.22] mix-blend-multiply" style={{ backgroundImage: GRAIN }} />
+);
+const PAPER = "border-[1.5px] border-[#1d1a16] shadow-[2px_2px_0_#1d1a16] sm:border-2 sm:shadow-[3px_3px_0_#1d1a16]";
+const MINT = "#8cc3a1";
 
 const ICONS = {
   menu: "M6 7h12M6 12h12M6 17h8",
@@ -41,85 +23,209 @@ const ICONS = {
   message: "M5 6.5A2.5 2.5 0 0 1 7.5 4h9A2.5 2.5 0 0 1 19 6.5v6a2.5 2.5 0 0 1-2.5 2.5H11l-4 3.5V15h.5A2.5 2.5 0 0 1 5 12.5z",
   send: "M4 12 20 4l-6 16-3-7-7-1z",
 };
+type Icon = keyof typeof ICONS;
+
+/* ── What goes on each card: a little picture of the thing he did ─────────── */
+const Chip = ({ children, bg = "#fbf6e6", className = "" }: { children: ReactNode; bg?: string; className?: string }) => (
+  <span className={`inline-flex items-center rounded-full border border-[#1d1a16] px-1.5 py-px text-[8.5px] font-bold uppercase tracking-[0.08em] sm:text-[10px] ${className}`} style={{ background: bg }}>
+    {children}
+  </span>
+);
+
+function PriceTagArt({ name, price, tint }: { name: string; price: string; tint: string }) {
+  return (
+    <div className="flex items-center gap-2">
+      <svg viewBox="0 0 40 26" className="h-6 w-9 shrink-0 sm:h-7 sm:w-11" aria-hidden="true">
+        <path d="M3 22 Q4 6 20 5 Q36 6 37 22 Z" fill="#e8b25a" stroke="#1d1a16" strokeWidth={1.6} />
+        <path d="M7 21 l3 -3 l3 3 l3 -3 l3 3 l3 -3 l3 3 l3 -3 l3 3 l3 -3" fill="none" stroke="#1d1a16" strokeWidth={1.2} />
+      </svg>
+      <p className="min-w-0 flex-1 text-[11px] leading-[1.25] font-semibold sm:text-[13.5px]">{name}</p>
+      <span className="relative -rotate-6 rounded-[4px] border-[1.5px] border-[#1d1a16] px-1.5 py-0.5 text-[11px] font-extrabold sm:text-[13px]" style={{ background: tint }}>
+        {price}
+      </span>
+    </div>
+  );
+}
+
+function CalendarArt({ day, date, where, when, tint }: { day: string; date: string; where: string; when: string; tint: string }) {
+  return (
+    <div className="flex items-center gap-2.5">
+      <div className="w-10 shrink-0 overflow-hidden rounded-[6px] border-[1.5px] border-[#1d1a16] bg-[#fffdf6] text-center sm:w-12">
+        <p className="border-b-[1.5px] border-[#1d1a16] text-[8px] font-extrabold tracking-[0.1em] sm:text-[9.5px]" style={{ background: tint }}>{day}</p>
+        <p className="font-[family-name:var(--font-fraunces)] text-[15px] leading-[1.5] sm:text-[18px]">{date}</p>
+      </div>
+      <div className="min-w-0 text-[11px] leading-[1.3] sm:text-[13.5px]">
+        <p className="font-semibold">📍 {where}</p>
+        <p className="text-[#5d564b]">{when}</p>
+      </div>
+    </div>
+  );
+}
+
+function RescheduleArt({ from, to, tint }: { from: string; to: string; tint: string }) {
+  return (
+    <div className="flex items-center gap-1.5">
+      <Chip className="line-through decoration-[1.5px] opacity-60">{from}</Chip>
+      <svg viewBox="0 0 24 12" className="h-3 w-6" aria-hidden="true"><path d="M1 6 H21 M16 1 L22 6 L16 11" fill="none" stroke="#1d1a16" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" /></svg>
+      <Chip bg={tint}>{to}</Chip>
+    </div>
+  );
+}
+
+function PostArt({ caption, tint, likes, emoji }: { caption: string; tint: string; likes: number; emoji: string }) {
+  return (
+    <div className="flex gap-2">
+      <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-[6px] border-[1.5px] border-[#1d1a16] sm:h-12 sm:w-12" style={{ background: `linear-gradient(135deg, ${tint}, #fbf6e6)` }}>
+        <span className="absolute top-1 right-1.5 text-[10px]">✦</span>
+        <span className="absolute bottom-0.5 left-1 text-[13px] sm:text-[15px]">{emoji}</span>
+      </div>
+      <div className="min-w-0">
+        <p className="text-[11px] leading-[1.25] font-semibold sm:text-[13px]">“{caption}”</p>
+        <p className="mt-1 flex items-center gap-1.5 text-[9.5px] font-bold text-[#5d564b] sm:text-[11px]">
+          <span className="text-[#d6463f]">♥ {likes}</span> <span>💬 {Math.round(likes / 6)}</span>
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function RemovedArt({ item }: { item: string }) {
+  return (
+    <div className="relative flex items-center gap-2">
+      <span className="text-[16px] sm:text-[18px]">🥐</span>
+      <p className="text-[12px] font-semibold line-through decoration-[#c8473d] decoration-2 sm:text-[14px]">{item}</p>
+      <span className="absolute -top-1 right-0 -rotate-12 rounded-[3px] border-[1.5px] border-[#c8473d] px-1 text-[8.5px] font-extrabold tracking-[0.1em] text-[#c8473d] sm:text-[10px]">SOLD OUT</span>
+    </div>
+  );
+}
+
+function TextBlastArt({ count, note }: { count: number; note: string }) {
+  const faces = ["#f2c94c", "#8fb8e0", "#f0a3b4", "#a8d08d", "#b7a3e0"];
+  return (
+    <div>
+      <div className="flex items-center">
+        {faces.map((c, i) => (
+          <span key={c} className="-ml-1.5 h-5 w-5 rounded-full border-[1.5px] border-[#1d1a16] first:ml-0 sm:h-6 sm:w-6" style={{ background: c, zIndex: 5 - i }} />
+        ))}
+        <span className="ml-1.5 text-[11px] font-extrabold sm:text-[13px]">+{count - faces.length}</span>
+      </div>
+      <p className="mt-1 text-[10.5px] font-semibold text-[#5d564b] sm:text-[12.5px]">{note} · <span className="text-[#2f7a50]">{count} delivered</span></p>
+    </div>
+  );
+}
+
+function QuoteArt({ who, total }: { who: string; total: string }) {
+  return (
+    <div className="flex items-center gap-2">
+      <svg viewBox="0 0 22 28" className="h-7 w-6 shrink-0 sm:h-8 sm:w-7" aria-hidden="true">
+        <path d="M2 2 H15 L20 7 V26 H2 Z" fill="#fffdf6" stroke="#1d1a16" strokeWidth={1.6} />
+        <path d="M6 11 H16 M6 15 H16 M6 19 H12" stroke="#1d1a16" strokeWidth={1.2} />
+      </svg>
+      <div className="text-[11px] leading-[1.25] sm:text-[13px]">
+        <p className="font-semibold">{who}</p>
+        <p className="font-extrabold text-[#2f7a50]">{total}</p>
+      </div>
+    </div>
+  );
+}
+
+/* ── One owner at a time texts Shorty; he does it on his phone and answers ────
+   Nito's Empanadas is a real client; the other business names are made up. */
+type Exchange = { biz: string; tint: string; ask: string; reply: string; card: { icon: Icon; label: string; art: ReactNode } };
+
+const EXCHANGES: Exchange[] = [
+  { biz: "Nito's Empanadas", tint: "#f2c94c", ask: "Add the Meatball Parm Empanada to the menu. $6.", reply: "On the menu. Smells great from here.",
+    card: { icon: "menu", label: "Menu item added", art: <PriceTagArt name="Meatball Parm Empanada" price="$6" tint="#f2c94c" /> } },
+  { biz: "Coastal Plumbing", tint: "#8fb8e0", ask: "Move my 2pm to Thursday and let her know.", reply: "Moved. She's got the new time.",
+    card: { icon: "clock", label: "Rescheduled", art: <RescheduleArt from="Tue 2:00" to="Thu 2:00" tint="#8fb8e0" /> } },
+  { biz: "Salt & Shear Salon", tint: "#f0a3b4", ask: "Post to social media: walk-ins welcome today.", reply: "Posted. Clear your chairs.",
+    card: { icon: "megaphone", label: "Posted to social", art: <PostArt caption="Walk-ins welcome today" tint="#f0a3b4" likes={24} emoji="✂️" /> } },
+  { biz: "Low Tide Tacos", tint: "#f5a46a", ask: "We're at Clear Pond Friday, 1 to 5.", reply: "It's on the calendar. Clear Pond won't know what hit it.",
+    card: { icon: "calendar", label: "Event scheduled", art: <CalendarArt day="FRI" date="1–5" where="Clear Pond" when="Food truck stop · 1–5 PM" tint="#f5a46a" /> } },
+  { biz: "Rise Bakery", tint: "#d9b58c", ask: "Sold out of croissants. Take them off.", reply: "Gone. Tomorrow's batch better hurry.",
+    card: { icon: "minus", label: "Removed from menu", art: <RemovedArt item="Butter croissant" /> } },
+  { biz: "Anchor Taproom", tint: "#b7a3e0", ask: "Text everyone trivia starts at 7.", reply: "Texted 348 regulars. Brains warming up.",
+    card: { icon: "message", label: "Text sent", art: <TextBlastArt count={348} note="Trivia at 7" /> } },
+  { biz: "Greenline Landscaping", tint: "#a8d08d", ask: "Send the Hendersons the backyard quote.", reply: "Sent. Fingers crossed, gloves on.",
+    card: { icon: "send", label: "Quote sent", art: <QuoteArt who="The Hendersons · Backyard" total="$2,450" /> } },
+  { biz: "Shine Mobile Detailing", tint: "#7fd0d6", ask: "Post to social media: Saturday's wide open.", reply: "Posted. Saturday won't stay open long.",
+    card: { icon: "megaphone", label: "Posted to social", art: <PostArt caption="Saturday's wide open" tint="#7fd0d6" likes={31} emoji="🚗" /> } },
+];
 
 const HELLO_MS = 1500;
-/* Per text: 0 quiet · 1 it arrives (he nods) · 2 he works his phone · 3 the card pops out · 4 his reply ·
-   5 the card drifts off up and to the right while the texts stay · 6 the texts clear */
-const STEP_MS = [600, 1400, 1300, 1100, 1300, 1500, 450];
+/* Per text:
+   0 quiet · 1 owner typing… · 2 their text lands (he nods) · 3 he works his phone ·
+   4 the card unfolds out of the phone · 5 Shorty typing… · 6 his reply lands ·
+   7 the card drifts off up and to the right · 8 the texts clear */
+const STEP_MS = [450, 700, 1200, 1100, 1000, 650, 1300, 1400, 450];
 
-/* Printed-paper grain, the same feel as Shorty's ink. */
-const GRAIN =
-  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .11 0 0 0 0 .1 0 0 0 0 .08 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")";
-const Grain = () => (
-  <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-[.22] mix-blend-multiply" style={{ backgroundImage: GRAIN }} />
-);
-const PAPER = "border-[1.5px] border-[#1d1a16] shadow-[2px_2px_0_#1d1a16] sm:border-2 sm:shadow-[3px_3px_0_#1d1a16]";
-const pop = (on: boolean) => (on ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-2 scale-90");
+function Dots() {
+  return (
+    <span className="inline-flex gap-1 py-1" aria-label="typing">
+      {[0, 1, 2].map((i) => (
+        <span key={i} className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#1d1a16]/60 sm:h-2 sm:w-2" style={{ animationDelay: `${i * 120}ms`, animationDuration: "900ms" }} />
+      ))}
+    </span>
+  );
+}
 
-/** The owner's text: a colored strip with the business name, then the message. */
-function Incoming({ on, ex }: { on: boolean; ex: Exchange }) {
+type BubbleState = "hidden" | "typing" | "text";
+
+/** A text, owner's or Shorty's: a colored strip with the name, then "…", then the words. */
+function TextBubble({ state, name, tint, mine, children }: { state: BubbleState; name: string; tint: string; mine?: boolean; children: ReactNode }) {
+  const on = state !== "hidden";
   return (
     <div
-      className={`ml-auto max-w-[220px] origin-bottom-right transition-[opacity,translate,scale,rotate] duration-300 ease-[cubic-bezier(.2,.8,.3,1.25)] sm:max-w-[270px] lg:max-w-[300px] ${pop(on)}`}
-      style={{ rotate: "1.2deg" }}
+      className={`max-w-[220px] transition-[opacity,translate,scale] duration-300 ease-[cubic-bezier(.2,.8,.3,1.25)] sm:max-w-[270px] lg:max-w-[300px] ${
+        mine ? "mr-auto origin-bottom-left" : "ml-auto origin-bottom-right"
+      } ${on ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-2 scale-90"}`}
+      style={{ rotate: mine ? "-1deg" : "1.2deg" }}
     >
-      <div className={`relative overflow-hidden rounded-[15px] rounded-br-[5px] bg-[#fbf6e6] sm:rounded-[20px] ${PAPER}`}>
+      <div className={`relative overflow-hidden rounded-[15px] bg-[#fbf6e6] sm:rounded-[20px] ${mine ? "rounded-bl-[5px] sm:rounded-bl-[6px]" : "rounded-br-[5px] sm:rounded-br-[6px]"} ${PAPER}`}>
         <Grain />
-        <p className="relative border-b-[1.5px] border-[#1d1a16] px-3 py-1 text-[9.5px] font-extrabold uppercase tracking-[0.14em] text-[#1d1a16] sm:border-b-2 sm:px-4 sm:py-1.5 sm:text-[11px]" style={{ background: ex.tint }}>
-          {ex.biz}
+        <p className="relative border-b-[1.5px] border-[#1d1a16] px-3 py-1 text-[9.5px] font-extrabold uppercase tracking-[0.14em] text-[#1d1a16] sm:border-b-2 sm:px-4 sm:py-1.5 sm:text-[11px]" style={{ background: tint }}>
+          {name}
         </p>
-        <p className="relative px-3 py-1.5 text-[12.5px] leading-[1.35] font-medium text-balance text-[#1d1a16] sm:px-4 sm:py-2.5 sm:text-[15px] lg:text-[16px]">{ex.ask}</p>
+        <div key={state} className="slp-land relative px-3 py-1.5 text-[12.5px] leading-[1.35] font-medium text-balance text-[#1d1a16] sm:px-4 sm:py-2.5 sm:text-[15px] lg:text-[16px]">
+          {state === "typing" ? <Dots /> : children}
+        </div>
       </div>
     </div>
   );
 }
 
-/** Shorty's answer. */
-function Reply({ on, children }: { on: boolean; children: React.ReactNode }) {
-  return (
-    <div
-      className={`mr-auto max-w-[220px] origin-bottom-left transition-[opacity,translate,scale,rotate] duration-300 ease-[cubic-bezier(.2,.8,.3,1.25)] sm:max-w-[270px] lg:max-w-[300px] ${pop(on)}`}
-      style={{ rotate: "-1deg" }}
-    >
-      <p className="mb-1 ml-2 inline-block rounded-full border border-[#1d1a16] bg-[#fbf6e6] px-1.5 py-px text-[8.5px] font-bold uppercase tracking-[0.14em] text-[#1d1a16] sm:ml-3 sm:px-2 sm:text-[10px]">Shorty</p>
-      <div className={`relative rounded-[15px] rounded-bl-[5px] bg-[#8cc3a1] px-3 py-1.5 text-[12.5px] leading-[1.35] font-semibold text-[#12301f] sm:rounded-[20px] sm:px-4 sm:py-2.5 sm:text-[15px] lg:text-[16px] ${PAPER}`}>
-        <Grain />
-        <span className="relative block text-balance">{children}</span>
-      </div>
-    </div>
-  );
-}
-
-/** What he did: pops out of his phone (anchored at TAP_PHONE_AT on the drawing), sits beside
-    him while he answers, then drifts off up and to the right before the texts clear. */
+/** What he did: unfolds out of the back of his phone with a flash, sits beside him while he
+    answers, then drifts off up and to the right before the texts clear. */
 type CardState = "tucked" | "out" | "away";
-const CARD_MOTION: Record<CardState, string> = {
-  tucked: "transition-none -translate-x-6 translate-y-6 scale-[.2] rotate-0 opacity-0",
-  out: "duration-[420ms] ease-[cubic-bezier(.2,.9,.3,1.3)] translate-x-3 -translate-y-1 scale-100 rotate-[3deg] opacity-100",
-  away: "duration-[1500ms] ease-[cubic-bezier(.45,0,.6,.6)] translate-x-[70vw] -translate-y-[70vh] scale-90 rotate-[10deg] opacity-0",
+const CARD_STYLE: Record<CardState, React.CSSProperties> = {
+  tucked: { opacity: 0, transform: "perspective(700px) translate(-46px, 34px) rotateY(-88deg) scale(.18)", transition: "none" },
+  out: { opacity: 1, transform: "perspective(700px) translate(10px, -4px) rotateY(0deg) rotate(3deg) scale(1)", transition: "transform 620ms cubic-bezier(.2,1.1,.3,1.15), opacity 200ms ease-out" },
+  away: { opacity: 0, transform: "perspective(700px) translate(70vw, -70vh) rotate(10deg) scale(.9)", transition: "transform 1400ms cubic-bezier(.45,0,.6,.6), opacity 1400ms cubic-bezier(.7,0,.9,.5)" },
 };
 
 function ResultCard({ state, ex }: { state: CardState; ex: Exchange }) {
   return (
-    <div
-      className={`absolute top-[33%] left-[60%] z-10 w-[150px] origin-[0%_80%] transition-[opacity,translate,scale,rotate] sm:w-[200px] lg:w-[215px] ${CARD_MOTION[state]}`}
-    >
-      <div className={`relative rounded-[12px] bg-[#fbf6e6] px-2.5 py-2 sm:rounded-[14px] sm:px-3 sm:py-2.5 ${PAPER}`}>
-        <Grain />
-        <div className="relative flex items-center gap-1.5 sm:gap-2">
-          <span className="grid h-5 w-5 shrink-0 place-items-center rounded-md border-[1.5px] border-[#1d1a16] sm:h-6 sm:w-6" style={{ background: ex.tint }}>
-            <svg viewBox="0 0 24 24" className="h-3 w-3 sm:h-3.5 sm:w-3.5" fill="none" stroke="#1d1a16" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d={ICONS[ex.card.icon]} />
-            </svg>
-          </span>
-          <span className="text-[8.5px] font-extrabold uppercase tracking-[0.12em] text-[#1d1a16] sm:text-[10px]">{ex.card.label}</span>
+    <>
+      {/* the flash at the back of the phone as it comes out */}
+      {state === "out" && <span aria-hidden="true" className="slp-flash pointer-events-none absolute top-[44%] left-[56%] z-10 h-16 w-16 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,#f2fff8,rgba(191,240,212,.6)_45%,rgba(191,240,212,0))]" />}
+      <div className="absolute top-[30%] left-[58%] z-10 w-[160px] origin-[0%_75%] sm:w-[205px] lg:w-[225px]" style={CARD_STYLE[state]}>
+        <div className={`relative rounded-[12px] bg-[#fbf6e6] px-2.5 py-2 text-[#1d1a16] sm:rounded-[14px] sm:px-3 sm:py-2.5 ${PAPER}`}>
+          <Grain />
+          <div className="relative flex items-center gap-1.5 sm:gap-2">
+            <span className="grid h-5 w-5 shrink-0 place-items-center rounded-md border-[1.5px] border-[#1d1a16] sm:h-6 sm:w-6" style={{ background: ex.tint }}>
+              <svg viewBox="0 0 24 24" className="h-3 w-3 sm:h-3.5 sm:w-3.5" fill="none" stroke="#1d1a16" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d={ICONS[ex.card.icon]} />
+              </svg>
+            </span>
+            <span className="text-[8.5px] font-extrabold uppercase tracking-[0.12em] sm:text-[10px]">{ex.card.label}</span>
+          </div>
+          <div className="relative mt-1.5 sm:mt-2">{ex.card.art}</div>
+          <p className="relative mt-1.5 inline-flex items-center gap-1 rounded-full bg-[#2f7a50] px-1.5 py-px text-[8.5px] font-bold uppercase tracking-[0.1em] text-[#fbf6e6] sm:mt-2 sm:px-2 sm:text-[10px]">
+            ✓ Done
+          </p>
         </div>
-        <p className="relative mt-1 text-[11.5px] leading-[1.3] font-semibold text-[#1d1a16] sm:mt-1.5 sm:text-[14px]">{ex.card.value}</p>
-        <p className="relative mt-1 inline-flex items-center gap-1 rounded-full bg-[#2f7a50] px-1.5 py-px text-[8.5px] font-bold uppercase tracking-[0.1em] text-[#fbf6e6] sm:mt-1.5 sm:px-2 sm:text-[10px]">
-          ✓ Done
-        </p>
       </div>
-    </div>
+    </>
   );
 }
 
@@ -131,7 +237,7 @@ export function ShortyHero() {
 
   useLayoutEffect(() => {
     reduce.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce.current) { setPhase("texts"); setStep(4); }
+    if (reduce.current) { setPhase("texts"); setStep(6); }
   }, []);
 
   useEffect(() => {
@@ -141,7 +247,7 @@ export function ShortyHero() {
       return () => clearTimeout(id);
     }
     const id = window.setTimeout(() => {
-      if (step < 6) setStep(step + 1);
+      if (step < 8) setStep(step + 1);
       else { setStep(0); setN((k) => k + 1); }
     }, STEP_MS[step]);
     return () => clearTimeout(id);
@@ -152,28 +258,40 @@ export function ShortyHero() {
   const mood: MascotMood =
     phase === "hello" ? "hello"
     : reduce.current ? "pleased"
-    : step === 1 ? "nod"
-    : step === 2 || step === 3 ? "tapping"
-    : step === 4 || step === 5 ? "pleased"
+    : step === 2 ? "nod"
+    : step >= 3 && step <= 5 ? "tapping"
+    : step === 6 || step === 7 ? "pleased"
     : "wait";
+  const owner: BubbleState = !live || step < 1 || step > 7 ? "hidden" : step === 1 ? "typing" : "text";
+  const shorty: BubbleState = !live || step < 5 || step > 7 ? "hidden" : step === 5 ? "typing" : "text";
+  const card: CardState = !live || step < 4 ? "tucked" : step >= 7 ? "away" : "out";
 
   return (
     <section className="relative overflow-x-clip">
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `@keyframes slp-land{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:none}}
+.slp-land{animation:slp-land .28s cubic-bezier(.2,.9,.3,1.2) both;transform-origin:left center}
+@keyframes slp-flash{0%{opacity:0;scale:.2}25%{opacity:1}100%{opacity:0;scale:2.6}}
+.slp-flash{animation:slp-flash .6s ease-out both}
+@media (prefers-reduced-motion: reduce){.slp-land,.slp-flash{animation:none}}`,
+        }}
+      />
       <div className="mx-auto grid max-w-[1180px] grid-cols-1 px-4 pt-3 pb-10 [grid-template-areas:'stage''copy'] sm:px-8 lg:grid-cols-[minmax(0,1fr)_460px] lg:items-center lg:gap-x-12 lg:pt-10 lg:pb-24 lg:[grid-template-areas:'copy_stage']">
-        {/* The stage: a text comes in, Shorty works his phone, the result pops out, he answers. */}
+        {/* The stage: a text comes in, Shorty works his phone, the result unfolds out of it, he answers. */}
         <div className="relative mx-auto flex w-full max-w-[400px] flex-col [grid-area:stage] lg:max-w-none" aria-live="polite">
-          {/* Whoever texted, he's standing in their world: a cut-paper scene behind him. */}
+          {/* Whoever texted, he's standing in their world; scenes crossfade, never empty. */}
           <div className="absolute inset-x-0 bottom-0 h-[230px] lg:h-[400px]">
-            <ShortyScenes biz={ex.biz} show={live && step >= 1 && step <= 5} />
+            <ShortyScenes biz={ex.biz} show />
           </div>
           <div className="mt-4 flex h-[150px] flex-col justify-end gap-2 sm:h-[190px] sm:gap-2.5 lg:mt-0 lg:h-[230px] lg:gap-4">
-            <Incoming on={live && step >= 1 && step <= 5} ex={ex} />
-            <Reply on={live && (step === 4 || step === 5)}>{ex.reply}</Reply>
+            <TextBubble state={owner} name={ex.biz} tint={ex.tint}>{ex.ask}</TextBubble>
+            <TextBubble state={shorty} name="Shorty" tint={MINT} mine>{ex.reply}</TextBubble>
           </div>
           {/* Shorty sits a little left of center so the card has room to come out on his right. */}
           <div className="relative -mt-7 w-[var(--w)] -translate-x-[42px] self-center [--w:190px] sm:-mt-9 lg:-translate-x-[70px] lg:[--w:300px]">
             <ShortyMascot mood={mood} size={190} style={{ width: "100%", height: "auto" }} />
-            <ResultCard state={!live || step < 3 ? "tucked" : step >= 5 ? "away" : "out"} ex={ex} />
+            <ResultCard state={card} ex={ex} />
           </div>
         </div>
 

@@ -23,7 +23,7 @@ export type MascotMood = 'walk' | 'wait' | 'nod' | 'tapping' | 'pleased' | 'surp
 export type MascotTask = 'menu' | 'event' | 'social' | 'text' | 'none';
 export type Side = 'L' | 'R';
 
-export const PROP_NAMES = ['whisk', 'spatula', 'bowl', 'pad', 'pencil', 'phone', 'megaphone', 'hammer', 'stamp'] as const;
+export const PROP_NAMES = ['whisk', 'spatula', 'bowl', 'pad', 'pencil', 'phone', 'phoneBack', 'megaphone', 'hammer', 'stamp'] as const;
 export type PropName = typeof PROP_NAMES[number];
 
 export type Arm = { hx: number; hy: number; bend: number; fist: number; rot: number; bump: number; front: number };
@@ -167,16 +167,16 @@ function pleased(t: number): Pose {
   p.feet.R.tilt = -Math.max(0, Math.sin(w * 1.5)) * 10;
   return p;
 }
-/** TAPPING (website hero): phone up at his chest in both gloves, thumb tapping, eyes on the screen. */
+/** TAPPING (website hero): phone up at his chest in both gloves, screen toward him (we see the back),
+    thumb tapping, eyes on the screen; the rig lights his face with its glow. */
 export const TAP_PHONE_AT: [number, number] = [84, 132];
 function tapping(t: number): Pose {
   const p = base(t), up = easeOutBack(seg(t, 0, 0.3), 1.4), tap = Math.max(0, Math.sin(t * 15)) * 2.2;
   const [px, py] = TAP_PHONE_AT;
   p.by = 0.5 + Math.sin(t * 2.2) * 0.5; p.rot = 1.5;
-  p.props.phone = hold({ at: [px, py], s: 1.5 * up, rot: -6 });
+  p.props.phoneBack = hold({ at: [px, py], s: 1.5 * up, rot: -6 });
   p.R = arm(...to('R', px + 6, py - 4 - tap), 14, 1, -70, 0, 1);
   p.L = arm(...to('L', px - 14, py - 22), 16, 1, 10, 0, 1);
-  p.fx.text = { on: 1, typing: 1, pop: -1, n: 0 };
   p.face = { ...p.face, mouth: 'none', gx: 1.6, gy: 2.8, bl: 1, br: 0.5, blr: 6, brr: -4 };
   return p;
 }

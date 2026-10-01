@@ -121,6 +121,16 @@ const PROPS: Record<PropName, (p: Element, phone: Partial<PhoneParts>) => SVGGEl
     el('rect', { x: -2, y: -20, width: 8.5, height: 5.5, rx: 2.7, fill: '#fbf6e6', stroke: '#2e5b46', 'stroke-width': 0.8 }, typing);
     phone.dots = [0, 1, 2].map(i => el('circle', { cx: 0.2 + i * 2.1, cy: -17.2, r: 0.75, fill: '#2e5b46' }, typing));
     phone.typing = typing; return g; },
+  /* The phone from behind (website hero): screen faces Shorty, its light spills over the top edge. */
+  phoneBack(p) { const g = el('g', {}, p);
+    el('ellipse', { cx: 0, cy: -41, rx: 13, ry: 6, fill: '#dffbea', opacity: 0.55 }, g);
+    el('rect', { x: -9, y: -40, width: 18, height: 40, rx: 3.5, fill: '#2b2a26', ...ink(2) }, g);
+    el('path', { d: 'M-9 -36 Q-9 -40 -5 -40 H5 Q9 -40 9 -36', fill: 'none', stroke: '#bff0d4', 'stroke-width': 1.4, 'stroke-linecap': 'round' }, g);
+    el('rect', { x: -6.5, y: -36.5, width: 8, height: 9.5, rx: 2.2, fill: '#3d3b36', stroke: '#1d1a16', 'stroke-width': 1 }, g);
+    el('circle', { cx: -4, cy: -34, r: 1.6, fill: '#1d1a16' }, g);
+    el('circle', { cx: -0.5, cy: -30.5, r: 1.6, fill: '#1d1a16' }, g);
+    el('rect', { x: -3.2, y: -19, width: 6.4, height: 6.4, rx: 1.6, fill: C.green }, g);
+    return g; },
   megaphone(p) { const g = el('g', {}, p);
     el('rect', { x: -5, y: -3.4, width: 6, height: 6.8, rx: 1.5, fill: '#333', ...ink(1.8) }, g);
     el('path', { d: 'M0 -3.8 L34 -15 Q40 0 34 15 L0 3.8 Z', fill: C.white, ...ink(2.4) }, g);
@@ -178,6 +188,11 @@ export function makeRig(svg: SVGSVGElement, opts: { small?: boolean; boil?: bool
   el('path', { d: 'M82 104 V150 H42 V90 A20 20 0 0 1 81 85', fill: 'none', stroke: C.white, 'stroke-width': 5.2 * bw, 'stroke-linejoin': 'miter' }, body);
   el('path', { d: 'M50 113 L59.5 123.5 L84 93', fill: 'none', stroke: C.white, 'stroke-width': 5.4 * bw, 'stroke-linejoin': 'miter', 'stroke-linecap': 'square' }, body);
 
+  /* The phone's light on his face while he works it (phoneBack). */
+  const sg = el('radialGradient', { id: `sg${id}` }, defs);
+  el('stop', { offset: '0%', 'stop-color': '#f2fff8', 'stop-opacity': 0.75 }, sg);
+  el('stop', { offset: '100%', 'stop-color': '#f2fff8', 'stop-opacity': 0 }, sg);
+  const screenGlow = el('ellipse', { cx: 66, cy: 64, rx: 40, ry: 32, fill: `url(#sg${id})` }, body);
   const face = el('g', {}, body);
   const brows = {} as Record<Side, SVGPathElement>, eyes = {} as Record<Side, SVGGElement>;
   for (const s of ['L', 'R'] as Side[]) {
@@ -320,6 +335,9 @@ export function makeRig(svg: SVGSVGElement, opts: { small?: boolean; boil?: bool
         b.setAttribute('opacity', fade.toFixed(2));
       });
     } else { bubbles.forEach(b => show(b, false)); if (phone.typing) show(phone.typing, false); }
+    const glowOn = p.props.phoneBack?.v ?? 0;
+    show(screenGlow, glowOn > 0.02);
+    screenGlow.setAttribute('opacity', (glowOn * (0.85 + 0.15 * Math.sin(p.t * 9))).toFixed(2));
     show(hat, p.hat > 0.02);
     hat.setAttribute('transform', `translate(63 4) scale(${Math.max(0.001, p.hat).toFixed(3)}) translate(-63 -4)`);
 
