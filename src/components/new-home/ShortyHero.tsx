@@ -42,8 +42,8 @@ const ICONS = {
 };
 
 const HELLO_MS = 1500;
-/* Per text: 0 quiet · 1 it arrives (he nods) · 2 he works his phone · 3 the card pops out · 4 his reply · 5 all clear */
-const STEP_MS = [600, 1400, 1300, 1100, 2700, 450];
+/* Per text: 0 quiet · 1 it arrives (he nods) · 2 he works his phone · 3 the card pops out · 4 his reply · 5 card floats off, all clear */
+const STEP_MS = [600, 1400, 1300, 1100, 2400, 1000];
 
 /* Printed-paper grain, the same feel as Shorty's ink. */
 const GRAIN =
@@ -88,13 +88,19 @@ function Reply({ on, children }: { on: boolean; children: React.ReactNode }) {
   );
 }
 
-/** What he did, popping out of his phone. Anchored at the phone's spot on the drawing (TAP_PHONE_AT). */
-function ResultCard({ on, ex }: { on: boolean; ex: Exchange }) {
+/** What he did: pops out of his phone (anchored at TAP_PHONE_AT on the drawing), sits beside
+    him while he answers, then floats off the right edge of the screen. */
+type CardState = "tucked" | "out" | "away";
+const CARD_MOTION: Record<CardState, string> = {
+  tucked: "transition-none -translate-x-6 translate-y-6 scale-[.2] rotate-0 opacity-0",
+  out: "duration-[420ms] ease-[cubic-bezier(.2,.9,.3,1.3)] translate-x-3 -translate-y-1 scale-100 rotate-[3deg] opacity-100",
+  away: "duration-[1100ms] ease-[cubic-bezier(.5,0,.75,.4)] translate-x-[110vw] -translate-y-10 scale-100 rotate-[14deg] opacity-100",
+};
+
+function ResultCard({ state, ex }: { state: CardState; ex: Exchange }) {
   return (
     <div
-      className={`absolute top-[33%] left-[60%] z-10 w-[150px] origin-[0%_80%] transition-[opacity,translate,scale,rotate] duration-[420ms] ease-[cubic-bezier(.2,.9,.3,1.3)] sm:w-[200px] lg:w-[215px] ${
-        on ? "translate-x-3 -translate-y-1 scale-100 rotate-[3deg] opacity-100" : "-translate-x-6 translate-y-6 scale-[.2] rotate-0 opacity-0"
-      }`}
+      className={`absolute top-[33%] left-[60%] z-10 w-[150px] origin-[0%_80%] transition-[opacity,translate,scale,rotate] sm:w-[200px] lg:w-[215px] ${CARD_MOTION[state]}`}
     >
       <div className={`relative rounded-[12px] bg-[#fbf6e6] px-2.5 py-2 sm:rounded-[14px] sm:px-3 sm:py-2.5 ${PAPER}`}>
         <Grain />
@@ -161,7 +167,7 @@ export function ShortyHero() {
           {/* Shorty sits a little left of center so the card has room to come out on his right. */}
           <div className="relative -mt-7 w-[var(--w)] -translate-x-[42px] self-center [--w:190px] sm:-mt-9 lg:-translate-x-[70px] lg:[--w:300px]">
             <ShortyMascot mood={mood} size={190} style={{ width: "100%", height: "auto" }} />
-            <ResultCard on={live && step >= 3 && step <= 4} ex={ex} />
+            <ResultCard state={!live || step < 3 ? "tucked" : step === 5 ? "away" : "out"} ex={ex} />
           </div>
         </div>
 
