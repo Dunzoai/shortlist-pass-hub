@@ -161,7 +161,7 @@ function NitosKitchen() {
       </Paper>
       <circle cx={110} cy={52} r={22} fill="#ffd27a" opacity={0.5} filter="url(#glow)" />
       <g {...INK}>
-        <path d="M14 100 H140 M14 130 H140 M40 100 V130 M90 100 V130 M65 130 V160 M115 130 V160 M14 160 H140" strokeWidth={1.1} opacity={0.5} />
+        <path d="M40 100 H150 M36 130 H150 M70 100 V130 M120 100 V130 M95 130 V160 M145 130 V160 M34 160 H150" strokeWidth={1.1} opacity={0.5} />
         <path d="M164 66 h10 M164 72 h8 M196 66 h8 M226 66 h12 M226 72 h8" strokeWidth={1.1} />
         <path d="M282 160 l3 -3 l3 3 l3 -3 l3 3 M306 158 l3 -3 l3 3 l3 -3 l3 3 M328 161 l3 -3 l3 3 l3 -3 l3 3" strokeWidth={1.1} />
       </g>
@@ -194,8 +194,8 @@ function CoastalPlumbing() {
         <circle cx={358} cy={214} r={17} fill="#2b2620" /> <circle cx={358} cy={214} r={6} fill="#e9dcc4" />
       </Paper>
       <Paper rot={1.5} at={[60, 190]}>
-        <path d="M20 240 V176 Q20 160 36 160 H86 Q102 160 102 144 V120 H118 V146 Q118 176 88 176 H38 V240 Z" fill="#d08a52" />
-        <path d="M14 150 H40 V162 H14 Z" fill="#b8733f" />
+        <path d="M34 242 V182 Q34 168 48 168 H96 Q110 168 110 154 V118" fill="none" stroke="#d08a52" strokeWidth={14} strokeLinecap="butt" />
+        <path d="M25 196 H43 V206 H25 Z M101 130 H119 V140 H101 Z M60 161 H70 V175 H60 Z" fill="#b8733f" />
       </Paper>
       <Paper rot={-2} at={[160, 210]}>
         <path d="M134 206 H190 V236 H134 Z" fill="#d9534f" />
