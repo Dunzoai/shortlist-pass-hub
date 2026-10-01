@@ -114,7 +114,7 @@ export function ShortyHero() {
           <div
             ref={walker}
             data-walkin
-            className="relative -mt-2 w-[var(--w)] ml-[calc(50%-var(--w)/2)] opacity-0 [--w:270px] sm:[--w:300px] lg:[--w:350px]"
+            className="relative -mt-10 w-[var(--w)] lg:-mt-12 ml-[calc(50%-var(--w)/2)] opacity-0 [--w:270px] sm:[--w:300px] lg:[--w:350px]"
           >
             <ShortyMascot mood={mood} task={task} size={190} style={{ width: "100%", height: "auto" }} />
           </div>
