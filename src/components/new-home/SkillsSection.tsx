@@ -198,9 +198,14 @@ function RestGlove() {
 function Shorty() {
   const w = { fill: G.white, ...ink(2.3) };
   return (
-    <svg viewBox="0 0 260 276" aria-hidden="true" focusable="false" className="relative block h-auto w-full overflow-visible">
+    <svg viewBox="0 0 260 296" aria-hidden="true" focusable="false" className="relative block h-auto w-full overflow-visible">
       {/* the short ground line, and his shadow */}
-      <path d="M14 257H214" stroke={CREAM} strokeWidth="3" strokeLinecap="round" opacity="0.8" />
+      {/* the chat bar he stands on: an input with its placeholder and a send button */}
+      <rect x="7" y="258" width="246" height="34" rx="17" fill={G.side} stroke={INK} strokeWidth="3" />
+      <rect x="4" y="254" width="246" height="34" rx="17" fill={CREAM} stroke={INK} strokeWidth="3" />
+      <text x="22" y="275.500" fontSize="12.500" fontFamily={BODY} fill={INK} fillOpacity="0.62">Ask Shorty to do anything...</text>
+      <circle cx="231" cy="271" r="12" fill={MINT} stroke={INK} strokeWidth="2.600" />
+      <path d="M225.500 271H236 M231.500 266 L236.500 271 L231.500 276" fill="none" {...ink(2.600)} />
 
       <g>
       <ellipse cx="104" cy="253" rx="46" ry="5" fill="#000" opacity="0.3" />
