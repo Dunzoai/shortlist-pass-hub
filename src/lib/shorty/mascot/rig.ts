@@ -235,6 +235,17 @@ export function makeRig(svg: SVGSVGElement, opts: { small?: boolean; boil?: bool
   }
   const phone: Partial<PhoneParts> = {};
   const held = Object.fromEntries(PROP_NAMES.map(k => [k, PROPS[k](propLayer, phone)])) as Record<PropName, SVGGElement>;
+  /* The held pipe is cut paper, like the website's scenes: torn edge, grain, a hard offset shadow. */
+  const pf = el('filter', { id: `pipe${id}`, x: '-15%', y: '-45%', width: '130%', height: '200%', 'color-interpolation-filters': 'sRGB' }, defs);
+  el('feTurbulence', { type: 'fractalNoise', baseFrequency: 0.06, numOctaves: 1, seed: 5, result: 'warp' }, pf);
+  el('feDisplacementMap', { in: 'SourceGraphic', in2: 'warp', scale: 2.6, xChannelSelector: 'R', yChannelSelector: 'G', result: 'torn' }, pf);
+  el('feTurbulence', { type: 'fractalNoise', baseFrequency: 1.4, numOctaves: 2, seed: 3, result: 'fine' }, pf);
+  el('feColorMatrix', { in: 'fine', type: 'matrix', values: '0 0 0 0 0.08  0 0 0 0 0.07  0 0 0 0 0.05  0.5 0 0 0 -0.18', result: 'specks' }, pf);
+  el('feComposite', { in: 'specks', in2: 'torn', operator: 'in', result: 'grain' }, pf);
+  const pm = el('feMerge', { result: 'sheet' }, pf);
+  el('feMergeNode', { in: 'torn' }, pm); el('feMergeNode', { in: 'grain' }, pm);
+  el('feDropShadow', { in: 'sheet', dx: 3, dy: 4, stdDeviation: 0, 'flood-color': '#000', 'flood-opacity': 0.38 }, pf);
+  held.pipe.setAttribute('filter', `url(#pipe${id})`);
   const bubbleLayer = el('g', {}, body);
   const bubbles = [0, 1].map(i => { const g = el('g', {}, bubbleLayer);
     el('path', { d: 'M-12 -7 H12 Q16 -7 16 -3 V3 Q16 7 12 7 H-4 L-9 11 L-8 7 H-12 Q-16 7 -16 3 V-3 Q-16 -7 -12 -7 Z', fill: i ? '#fbf6e6' : C.green, ...ink(1.8) }, g);

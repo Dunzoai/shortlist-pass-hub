@@ -410,7 +410,7 @@ export function ShortyHero() {
   const card: CardState = !live || step < 4 ? "tucked" : step >= 7 ? "away" : "out";
 
   return (
-    <section className="relative overflow-x-clip">
+    <section className="relative flex min-h-[calc(100svh-60px)] items-center overflow-x-clip lg:min-h-[calc(100svh-76px)]">
       <style
         dangerouslySetInnerHTML={{
           __html: `@keyframes slp-land{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:none}}
@@ -420,7 +420,7 @@ export function ShortyHero() {
 @media (prefers-reduced-motion: reduce){.slp-land,.slp-flash{animation:none}}`,
         }}
       />
-      <div className="mx-auto grid max-w-[1180px] grid-cols-1 px-4 pt-3 pb-10 [grid-template-areas:'stage''copy'] sm:px-8 lg:grid-cols-[minmax(0,1fr)_460px] lg:items-center lg:gap-x-12 lg:pt-10 lg:pb-24 lg:[grid-template-areas:'copy_stage']">
+      <div className="mx-auto grid w-full max-w-[1180px] grid-cols-1 px-4 pt-3 pb-10 [grid-template-areas:'stage''copy'] sm:px-8 lg:grid-cols-[minmax(0,1fr)_460px] lg:items-center lg:gap-x-12 lg:pt-10 lg:pb-24 lg:[grid-template-areas:'copy_stage']">
         {/* The stage: a text comes in, Shorty works his phone, the result unfolds out of it, he answers. */}
         <div className="relative mx-auto flex w-full max-w-[400px] flex-col [grid-area:stage] lg:max-w-none" aria-live="polite">
           {/* Whoever texted, he's standing in their world; scenes crossfade, never empty. */}

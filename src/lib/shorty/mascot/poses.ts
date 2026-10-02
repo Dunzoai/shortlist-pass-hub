@@ -124,13 +124,15 @@ function walk(t: number): Pose {
   return p;
 }
 /** CARRY (pipes section): a length of pipe held low in both gloves, eyes on where it's going (right). */
+export const CARRY_TILT = -14;      // degrees: the right end of the pipe is raised, pointing up toward where it's going
 function carry(t: number): Pose {
-  const p = base(t), at: [number, number] = [63, 156];
+  const th = CARRY_TILT * Math.PI / 180, c = Math.cos(th), s = Math.sin(th), h = 74;
+  const p = base(t), at: [number, number] = [63, 150];
   p.by = 0.5 + Math.sin(t * 2.2) * 0.4; p.rot = -1.2;
-  p.props.pipe = hold({ at });
-  p.L = arm(...to('L', at[0] - 74, at[1] + 2), 16, 1, 0, 0, 1);
-  p.R = arm(...to('R', at[0] + 74, at[1] + 2), 16, 1, 0, 0, 1);
-  p.face = { ...p.face, mouth: 'none', gx: 2.8, gy: 0.4, bl: -1.5, br: -2.8, blr: 0, brr: 6 };
+  p.props.pipe = hold({ at, rot: CARRY_TILT });
+  p.L = arm(...to('L', at[0] - h * c, at[1] - h * s + 2), 16, 1, 0, 0, 1);
+  p.R = arm(...to('R', at[0] + h * c, at[1] + h * s + 2), 16, 1, 0, 0, 1);
+  p.face = { ...p.face, mouth: 'none', gx: 2.8, gy: -1, bl: -1.5, br: -2.8, blr: 0, brr: 6 };
   return p;
 }
 /** WALK, facing right (pipes section): the same stride as `walk`, mirrored so he heads toward +x. */

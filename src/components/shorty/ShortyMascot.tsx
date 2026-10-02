@@ -47,7 +47,7 @@ export function ShortyMascot({ mood, task = "none", size = 160, holdPhone = fals
     const svg = svgRef.current;
     if (!svg) return;
     const reduce = still || (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false);
-    /* Phones: skip the line-boil filter (it regenerates noise 10x a second) and draw at 30fps. */
+    /* Phones: skip the line-boil filter (it regenerates noise 10x a second). Full frame rate everywhere. */
     const narrow = window.matchMedia?.("(max-width: 899px)").matches ?? false;
     const now = performance.now() / 1000;
     const st = {
@@ -76,12 +76,11 @@ export function ShortyMascot({ mood, task = "none", size = 160, holdPhone = fals
     };
     state.current = st;
     /* Only run while he's on screen. */
-    let visible = true, lastDraw = 0;
+    let visible = true;
     const loop = () => {
       st.raf = 0;
       if (!visible) return;
-      const now = performance.now();
-      if (!narrow || now - lastDraw >= 33) { lastDraw = now; st.draw(); }
+      st.draw();
       st.raf = requestAnimationFrame(loop);
     };
     let io: IntersectionObserver | null = null;

@@ -714,8 +714,14 @@ export function ShortyScenes({ scene, group, show }: { scene: string; group: "bu
             key={name}
             viewBox="0 0 420 260"
             preserveAspectRatio="xMidYMax meet"
-            className="absolute inset-0 h-full w-full transition-opacity duration-700"
-            style={{ opacity: show && name === scene ? 1 : 0, willChange: "opacity" }}
+            className="absolute inset-0 h-full w-full"
+            style={{
+              opacity: show && name === scene ? 1 : 0,
+              /* hidden once faded out, so only the showing scene holds a layer */
+              visibility: show && name === scene ? "visible" : "hidden",
+              transition: `opacity 700ms ease, visibility 0s linear ${show && name === scene ? "0s" : "700ms"}`,
+              willChange: show && name === scene ? "opacity" : "auto",
+            }}
           >
             <Scene />
           </svg>
