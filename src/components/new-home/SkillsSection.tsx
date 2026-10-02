@@ -67,51 +67,39 @@ const kf = (name: string, stops: Stop[]) =>
 const tf = (v: string) => `transform:${v}`;
 const rot = (d: number) => tf(`rotate(${d}deg)`);
 const NONE = tf("none");
-/* The loop: sip 1.2-3.2, a long stretch of small human movements, glasses and a wink 7.2-10, a groove 10.4-13.1, chill. */
-const ARM = 85, ARM_GLASSES = -100;
-const BEAT = 0.45, DANCE0 = 10.4, BEATS = 5;
-const beat = (k: number) => +(DANCE0 + k * BEAT).toFixed(3);
-const byTime = (a: Stop[]) => a.sort((x, y) => x[0] - y[0]).filter((s, i, l) => i === 0 || s[0] > l[i - 1][0]);
+/* The loop: sip 1.2-3.2, a calm stretch, glasses and a wink 7.2-10, another calm stretch, then he checks his phone
+   (out 12.4, texts pop 14.3-15.7, away 17), chill. */
+const ARM = 85, ARM_GLASSES = -100, ARM_PHONE = -35;
+const PHONE_IN = 12.4, PHONE_UP = 13.2, PHONE_DOWN = 16.2, PHONE_AWAY = 17;
 
-/** The cup arm swings the cup up to his mouth for the sip, drifts a little between, and pumps on the groove. */
+/** The cup arm swings the cup up to his mouth for the sip and otherwise drifts a little. */
 const CUP_ARM: [number, number][] = [
   [0, 0], [1.2, 0], [1.8, -132], [2.6, -132], [3.2, 0], [4.4, 4], [5.6, -3], [6.8, 2], [7.6, 0],
-  [10.4, 0], [10.85, 16], [11.3, 2], [11.75, 16], [12.2, 2], [12.65, 16], [13.1, 0], [14.6, 3], [16.2, -2], [LOOP, 0],
+  [10, 0], [11.4, 3], [12.6, -2], [14, 2], [15.5, -2], [17, 0], [LOOP, 0],
 ];
-/** The free arm: a small drift at his side, a shrug, up to his glasses, and a swing on the groove. */
+/** The free arm: a small drift at his side, a shrug, up to his glasses, a calm stretch, then up with the phone. */
 const FREE_ARM: [number, number][] = [
   [0, ARM], [1.5, ARM + 2], [3, ARM - 2], [4.6, ARM - 7], [5.5, ARM - 7], [6.4, ARM], [7.2, ARM], [7.8, ARM_GLASSES], [9.2, ARM_GLASSES], [10, ARM],
-  [10.4, ARM], [10.85, ARM + 14], [11.3, ARM - 13], [11.75, ARM + 14], [12.2, ARM - 13], [12.65, ARM + 14], [13.1, ARM], [14.6, ARM - 2], [16.2, ARM + 2], [LOOP, ARM],
+  [11.2, ARM + 2], [PHONE_IN, ARM], [PHONE_UP, ARM_PHONE], [14.7, ARM_PHONE - 3], [15.6, ARM_PHONE + 2], [PHONE_DOWN, ARM_PHONE], [PHONE_AWAY, ARM], [LOOP, ARM],
 ];
-/** A rocking groove: the body leans left and right and drops into its knees on each beat, one foot taps. */
-function swayStops(): Stop[] {
-  const out: Stop[] = [[0, NONE], [DANCE0, NONE]];
-  for (let k = 0; k <= BEATS; k++) {
-    const lean = k % 2 === 0 ? -3 : 3;
-    out.push([beat(k) + 0.0, tf(`rotate(${lean}deg) translateY(-3px) scaleY(1)`)]);
-    if (k < BEATS) out.push([+(beat(k) + BEAT / 2).toFixed(3), tf("rotate(0deg) translateY(1.5px) scaleY(.99)")]);
-  }
-  out.push([+(beat(BEATS) + 0.5).toFixed(3), NONE], [LOOP, NONE]);
-  return byTime(out);
-}
-function legStops(phase: 0 | 1): Stop[] {
-  const out: Stop[] = [[0, NONE]];
-  for (let k = 0; k <= BEATS; k++) {
-    if (k % 2 !== phase) continue;
-    out.push([+(beat(k) - 0.12).toFixed(3), NONE], [beat(k), tf("translateY(-4px)")], [+(beat(k) + 0.14).toFixed(3), NONE]);
-  }
-  out.push([LOOP, NONE]);
-  return byTime(out);
-}
+/** A text bubble pops out at `t`, floats up a touch, and fades as he puts the phone away. */
+const pop = (t: number): Stop[] => [
+  [0, "opacity:0;transform:translateY(0) scale(.2)"], [t, "opacity:0;transform:translateY(0) scale(.2)"],
+  [t + 0.22, "opacity:1;transform:translateY(-2px) scale(1.12)"], [t + 0.38, "opacity:1;transform:translateY(-2px) scale(1)"],
+  [16.2, "opacity:1;transform:translateY(-6px) scale(1)"], [16.7, "opacity:0;transform:translateY(-10px) scale(.9)"], [LOOP, "opacity:0;transform:translateY(-10px) scale(.9)"],
+];
 const KEYFRAMES = [
   kf("sk-sip", CUP_ARM.map(([t, a]) => [t, rot(a)] as Stop)),
   kf("sk-sipc", CUP_ARM.map(([t, a]) => [t, rot(-a)] as Stop)),
   kf("sk-armloop", FREE_ARM.map(([t, a]) => [t, rot(a)] as Stop)),
   kf("sk-lower", [[0, NONE], [7.8, NONE], [8.1, tf("translateY(15px)")], [9.2, tf("translateY(15px)")], [9.5, NONE], [LOOP, NONE]]),
   kf("sk-wink", [[0, NONE], [8.3, NONE], [8.4, tf("scaleY(.1)")], [8.75, tf("scaleY(.1)")], [8.9, NONE], [LOOP, NONE]]),
-  kf("sk-sway", swayStops()),
-  kf("sk-legl", legStops(0)),
-  kf("sk-legr", legStops(1)),
+  kf("sk-sway", [[0, rot(0)], [13, rot(0)], [13.8, rot(2.5)], [16, rot(2.5)], [16.8, rot(0)], [LOOP, rot(0)]]),
+  kf("sk-phone", [
+    [0, "opacity:0;transform:scale(.6)"], [PHONE_IN + 0.2, "opacity:0;transform:scale(.6)"], [PHONE_IN + 0.7, "opacity:1;transform:scale(1)"],
+    [16.4, "opacity:1;transform:scale(1)"], [PHONE_AWAY, "opacity:0;transform:scale(.6)"], [LOOP, "opacity:0;transform:scale(.6)"],
+  ]),
+  kf("sk-b1", pop(14.3)), kf("sk-b2", pop(14.9)), kf("sk-b3", pop(15.5)),
 ].join("\n");
 
 /** The CSS for the section: card paper, the pin-in, Shorty's entrance and idle loop, hover, and reduced motion. */
@@ -131,29 +119,36 @@ const CSS = `
 .sk-cuparm{transform-origin:55px 124px}
 .sk-cup{transform-origin:26px 162px}
 .sk-sway,.sk-idle,.sk-bob{transform-origin:104px 250px}
-.sk-wink{transform-box:fill-box;transform-origin:center}
+.sk-wink,.sk-phone{transform-box:fill-box;transform-origin:center}
+.sk-phone,.sk-b1,.sk-b2,.sk-b3{opacity:0}
+.sk-b1,.sk-b2,.sk-b3{transform-box:view-box}
+.sk-b1{transform-origin:204px 62px}
+.sk-b2{transform-origin:213px 35px}
+.sk-b3{transform-origin:190px 54px}
 /* always breathing: a slow rise and fall, and his weight drifting from foot to foot */
 .sk-bob{animation:sk-breathe 3.6s ease-in-out 0.4s infinite}
 @keyframes sk-breathe{0%,100%{transform:translateY(0) scale(1,1)}50%{transform:translateY(-1.6px) scale(1.006,1.013)}}
 .sk-idle{animation:sk-weight 8.4s ease-in-out infinite}
 @keyframes sk-weight{0%,100%{transform:rotate(0deg) translateX(0)}28%{transform:rotate(-.9deg) translateX(-1.6px)}64%{transform:rotate(.8deg) translateX(1.6px)}}
-/* one ${LOOP}s routine, after the entrance: sip, small human movements, glasses and a wink, a groove, chill */
+/* one ${LOOP}s routine, after the entrance: sip, small human movements, glasses and a wink, a calm stretch, checking his phone, chill */
 .sk-cuparm{animation:sk-sip ${LOOP}s ease-in-out 1.2s infinite}
 .sk-cup{animation:sk-sipc ${LOOP}s ease-in-out 1.2s infinite}
 .sk-arm{animation:sk-armloop ${LOOP}s ease-in-out 1.2s infinite}
 .sk-lower{animation:sk-lower ${LOOP}s ease-in-out 1.2s infinite}
 .sk-wink{animation:sk-wink ${LOOP}s ease-in-out 1.2s infinite}
 .sk-sway{animation:sk-sway ${LOOP}s ease-in-out 1.2s infinite}
-.sk-legl{animation:sk-legl ${LOOP}s ease-in-out 1.2s infinite}
-.sk-legr{animation:sk-legr ${LOOP}s ease-in-out 1.2s infinite}
+.sk-phone{animation:sk-phone ${LOOP}s ease-in-out 1.2s infinite}
+.sk-b1{animation:sk-b1 ${LOOP}s ease-out 1.2s infinite}
+.sk-b2{animation:sk-b2 ${LOOP}s ease-out 1.2s infinite}
+.sk-b3{animation:sk-b3 ${LOOP}s ease-out 1.2s infinite}
 ${KEYFRAMES}
-.sk-bob,.sk-idle,.sk-cuparm,.sk-cup,.sk-arm,.sk-lower,.sk-wink,.sk-sway,.sk-legl,.sk-legr{animation-play-state:paused}
-[data-live] .sk-bob,[data-live] .sk-idle,[data-live] .sk-cuparm,[data-live] .sk-cup,[data-live] .sk-arm,[data-live] .sk-lower,[data-live] .sk-wink,[data-live] .sk-sway,[data-live] .sk-legl,[data-live] .sk-legr{animation-play-state:running}
+.sk-bob,.sk-idle,.sk-cuparm,.sk-cup,.sk-arm,.sk-lower,.sk-wink,.sk-sway,.sk-phone,.sk-b1,.sk-b2,.sk-b3{animation-play-state:paused}
+[data-live] .sk-bob,[data-live] .sk-idle,[data-live] .sk-cuparm,[data-live] .sk-cup,[data-live] .sk-arm,[data-live] .sk-lower,[data-live] .sk-wink,[data-live] .sk-sway,[data-live] .sk-phone,[data-live] .sk-b1,[data-live] .sk-b2,[data-live] .sk-b3{animation-play-state:running}
 @media (prefers-reduced-motion: reduce){
   .sk-card{opacity:1 !important;transform:none !important;animation:none !important;transition:none !important}
   .sk-glasses{opacity:1 !important;transform:none !important;animation:none !important}
   .sk-arm{transform:rotate(85deg) !important;animation:none !important}
-  .sk-bob,.sk-idle,.sk-cuparm,.sk-cup,.sk-lower,.sk-wink,.sk-sway,.sk-legl,.sk-legr{animation:none !important}
+  .sk-bob,.sk-idle,.sk-cuparm,.sk-cup,.sk-lower,.sk-wink,.sk-sway,.sk-phone,.sk-b1,.sk-b2,.sk-b3{animation:none !important}
 }
 `;
 
@@ -273,8 +268,33 @@ function Shorty() {
         <g className="sk-arm">
           <g transform={OFFSET}>
             <path d="M111 100 Q136 86 160 88" fill="none" stroke={G.ink} strokeWidth="6" strokeLinecap="round" />
+            {/* the phone he pulls out (upright when the arm is raised), behind the fingers */}
+            <g transform="translate(160 88) rotate(26)">
+              <g className="sk-phone">
+                <rect x="-2" y="-18" width="21" height="36" rx="4.500" fill={INK} stroke={INK} strokeWidth="2" />
+                <rect x="0" y="-14.500" width="17" height="29" rx="2" fill={MINT} />
+                <path d="M3.500 -9H13.500M3.500 -4.500H11" fill="none" stroke={CREAM} strokeWidth="2" strokeLinecap="round" />
+              </g>
+            </g>
             <g transform="translate(160 88) rotate(9)"><RestGlove /></g>
           </g>
+        </g>
+
+        {/* text messages popping out of the phone */}
+        <g className="sk-b1">
+          <path d="M209 60 L203 67 L216 60 Z" fill={CREAM} {...ink(2.2)} />
+          <rect x="203" y="43" width="32" height="18" rx="8" fill={CREAM} {...ink(2.4)} />
+          <circle cx="212" cy="52" r="1.700" fill={INK} /><circle cx="219" cy="52" r="1.700" fill={INK} /><circle cx="226" cy="52" r="1.700" fill={INK} />
+        </g>
+        <g className="sk-b2">
+          <path d="M217 35 L211 42 L224 35 Z" fill={MINT} {...ink(2.2)} />
+          <rect x="209" y="16" width="38" height="20" rx="8" fill={MINT} {...ink(2.4)} />
+          <path d="M215 25H238M215 30H230" fill="none" {...ink(2.2)} />
+        </g>
+        <g className="sk-b3">
+          <path d="M186 53 L190 62 L194 53 Z" fill={CREAM} {...ink(2.2)} />
+          <rect x="170" y="35" width="32" height="19" rx="8" fill={CREAM} {...ink(2.4)} />
+          <path d="M180 44.500 L185 49 L194 40" fill="none" stroke={INK} strokeWidth="2.600" strokeLinecap="round" strokeLinejoin="round" />
         </g>
       </g>
       </g>
