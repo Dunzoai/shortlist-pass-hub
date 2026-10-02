@@ -160,7 +160,7 @@ export function ShortyReel() {
         >
           <Scene />
           {/* Shorty, standing easy in the middle with his coffee, taking it all in */}
-          <span aria-hidden="true" className="absolute bottom-[4%] left-1/2 block h-[46%] w-[24%] -translate-x-1/2 md:bottom-[3%] md:h-[52%] md:w-[18%]">
+          <span aria-hidden="true" className="absolute bottom-[4%] left-1/2 block h-[50%] w-[26%] -translate-x-1/2 md:bottom-[3%] md:h-[62%] md:w-[20%]">
             <span className="absolute inset-x-0 bottom-0 flex justify-center">
               <ShortyMascot mood="coffee" size={170} style={{ height: "100%", width: "auto" }} />
             </span>
