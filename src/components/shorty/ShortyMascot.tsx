@@ -21,13 +21,15 @@ type Props = {
   size?: number;
   /** Keep his phone in his right glove in every pose (website hero). */
   holdPhone?: boolean;
+  /** Draw one frame and stop (a still picture), whatever the reduced-motion setting. */
+  still?: boolean;
   style?: CSSProperties;
 };
 
 const BLEND_S = 0.6;
 const SEEDS = [3, 7, 11];
 
-export function ShortyMascot({ mood, task = "none", size = 160, holdPhone = false, style }: Props) {
+export function ShortyMascot({ mood, task = "none", size = 160, holdPhone = false, still = false, style }: Props) {
   const svgRef = useRef<SVGSVGElement | null>(null);
   const small = size < 100;
   const resolved = useMemo(() => resolvePose(mood, task), [mood, task]);
@@ -44,7 +46,7 @@ export function ShortyMascot({ mood, task = "none", size = 160, holdPhone = fals
   useEffect(() => {
     const svg = svgRef.current;
     if (!svg) return;
-    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+    const reduce = still || (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false);
     /* Phones: skip the line-boil filter (it regenerates noise 10x a second) and draw at 30fps. */
     const narrow = window.matchMedia?.("(max-width: 899px)").matches ?? false;
     const now = performance.now() / 1000;
