@@ -194,8 +194,8 @@ export function ShortyReel() {
             </span>
           </span>
           </span>
-          {/* the tease: a pulsing play button, with a cut-paper label. On phones it tucks into the top-right corner, tilted, spilling a little past the card */}
-          <span className="absolute -right-3 top-[5%] flex rotate-[7deg] flex-col items-end gap-2 md:left-1/2 md:right-auto md:top-[27%] md:-translate-x-1/2 md:-translate-y-1/2 md:rotate-0 md:items-center md:gap-3">
+          {/* the tease: a pulsing play button, with a cut-paper label. The label: under the button on desktop; on phones it sits tilted in the top-right corner, spilling past the card into the page */}
+          <span className="absolute left-1/2 top-[27%] -translate-x-1/2 -translate-y-1/2">
             <span className="relative grid h-[84px] w-[84px] place-items-center md:h-[96px] md:w-[96px]">
               <span className="reel-pulse absolute inset-0 rounded-full" style={{ border: `4px solid ${MINT}` }} />
               <span className="reel-pulse reel-pulse-2 absolute inset-0 rounded-full" style={{ border: `4px solid ${MINT}` }} />
@@ -203,10 +203,10 @@ export function ShortyReel() {
                 <svg viewBox="0 0 24 24" className="h-9 w-9 translate-x-[2px] md:h-11 md:w-11" fill={INK} stroke={INK} strokeWidth={1.5} strokeLinejoin="round"><path d="M7 4.5v15l13-7.5z" /></svg>
               </span>
             </span>
-            <span className="relative max-w-[150px] rounded-xl px-3 py-2 text-center text-[15px] md:max-w-none md:px-4 font-bold leading-tight sm:text-[17px]" style={{ background: CREAM, border: `2.5px solid ${INK}`, boxShadow: `3px 4px 0 ${INK}`, fontFamily: SERIF, color: INK }}>
+          </span>
+          <span className="absolute -right-3 -top-3 z-10 max-w-[150px] rotate-[7deg] rounded-xl px-3 py-2 text-center text-[15px] md:left-1/2 md:right-auto md:top-[calc(27%+60px)] md:max-w-none md:-translate-x-1/2 md:rotate-0 md:px-4 font-bold leading-tight sm:text-[17px]" style={{ background: CREAM, border: `2.5px solid ${INK}`, boxShadow: `3px 4px 0 ${INK}`, fontFamily: SERIF, color: INK }}>
               Play to see Shorty in action
               <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-[.2] mix-blend-multiply" style={{ backgroundImage: `url("${GRAIN_URL}")` }} />
-            </span>
           </span>
           <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-[28px] opacity-[.12] mix-blend-multiply" style={{ backgroundImage: `url("${GRAIN_URL}")` }} />
         </button>
