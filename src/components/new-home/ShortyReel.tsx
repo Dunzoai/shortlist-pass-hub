@@ -134,34 +134,41 @@ function Scene() {
           <path d="M-2 8 V13 M4 8 V13" stroke="#14161A" strokeWidth={1.6} />
         </g>
       </g>
-      {/* a delivery cyclist with a Shortlist Pass bag in the back basket, rolling by every so often */}
-      <g className="reel-anim reel-bike" style={{ transform: "translate(-260px, 492px)" }}>
-        <ellipse cx="0" cy="2" rx="62" ry="5" fill={SHADOW} />
-        {[-34, 34].map((cx) => (
-          <g key={cx} transform={`translate(${cx} -26)`}>
-            <circle r="26" fill={SHADOW} transform="translate(3 4)" />
-            <circle r="26" fill="#3B3A38" />
-            <circle r="19" fill="#E6DFC9" />
-            <g className="reel-wheel"><path d="M-19 0 H19 M0 -19 V19 M-13 -13 L13 13 M13 -13 L-13 13" stroke="#3B3A38" strokeWidth={1.6} /></g>
-            <circle r="4" fill="#3B3A38" />
-          </g>
-        ))}
-        <path d="M-34 -26 L-6 -26 L10 -62 L-14 -62 Z M10 -62 L34 -26 M10 -62 L22 -80 M16 -80 H30" fill="none" stroke="#C8624A" strokeWidth={5} strokeLinejoin="round" strokeLinecap="round" />
-        <g className="reel-leg" style={{ transformOrigin: "-6px -62px" }}><path d="M-6 -62 L6 -38 L-2 -14" fill="none" stroke="#2F4A62" strokeWidth={8} strokeLinecap="round" strokeLinejoin="round" /></g>
-        <Paper d="M-16 -58 L-12 -94 L6 -96 L22 -80 L16 -70 L4 -80 L2 -58 Z" fill="#F2B84B" dx={2} dy={3} />
-        <path d="M6 -92 L24 -78" stroke="#F2B84B" strokeWidth={7} strokeLinecap="round" />
-        <circle cx="12" cy="-106" r="10" fill="#EBC9A0" />
-        <path d="M2 -108 A10 10 0 0 1 22 -108 L22 -104 L2 -106 Z" fill="#5FDDAE" />
-        <Paper d="M-58 -64 H-22 L-26 -34 H-54 Z" fill="#B58A5A" dx={2} dy={3} />
-        <Paper d="M-56 -66 Q-56 -96 -40 -96 Q-24 -96 -24 -66 Z" fill="#5FDDAE" dx={2} dy={3} />
-        <path d="M-52 -92 H-28" stroke="#14161A" strokeWidth={2} opacity={0.5} />
-        <path d="M-47 -78 Q-47 -90 -40 -90 Q-33 -90 -33 -78 V-72 H-47 Z" fill="#FBF6E6" />
-        <path d="M-44 -80 L-41 -76 L-35 -85" fill="none" stroke="#14161A" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-      </g>
       {/* the street: a strip of grey paper, a pavement edge, and cut-paper dashes */}
       <Paper d={cut(-30, 410, 1260, 140, 5, 3)} fill="#9A9486" dx={0} dy={-4} />
       <Paper d={cut(-30, 410, 1260, 20, 6, 2)} fill="#C4BDAA" dx={0} dy={3} />
       {Array.from({ length: 12 }, (_, i) => <Paper key={i} d={cut(14 + i * 104, 478, 56, 9, 90 + i, 1.4)} fill="#F2DC96" dx={2} dy={2} />)}
+      {/* a delivery cyclist with a Shortlist Pass bag on the back rack, riding past in front of the street every so often */}
+      <g className="reel-anim reel-bike" style={{ transform: "translate(-300px, 508px) scale(1.3)" }}>
+        <ellipse cx="0" cy="2" rx="80" ry="5" fill={SHADOW} />
+        {[-44, 44].map((cx) => (
+          <g key={cx} transform={`translate(${cx} -28)`}>
+            <circle r="28" fill="#3B3A38" />
+            <circle r="22" fill="#E6DFC9" />
+            <g className="reel-wheel"><path d="M-22 0 H22 M0 -22 V22 M-15 -15 L15 15 M15 -15 L-15 15" stroke="#3B3A38" strokeWidth={1.8} /></g>
+            <circle r="4.5" fill="#3B3A38" />
+          </g>
+        ))}
+        {/* frame, fork, handlebar, seat */}
+        <path d="M-44 -28 L0 -28 L-10 -74 M0 -28 L30 -66 M-10 -74 L30 -66 M30 -66 L44 -28 M30 -66 L26 -86 M20 -87 H36" fill="none" stroke="#C8624A" strokeWidth={5} strokeLinejoin="round" strokeLinecap="round" />
+        <path d="M-20 -77 H-2" stroke="#14161A" strokeWidth={6} strokeLinecap="round" />
+        {/* rear rack and the bag */}
+        <path d="M-84 -64 H-30 M-74 -64 L-44 -28" stroke="#14161A" strokeWidth={3} strokeLinecap="round" />
+        <Paper d={cut(-86, -132, 58, 66, 61, 1.5)} fill="#5FDDAE" dx={3} dy={4} />
+        <Paper d={cut(-86, -132, 58, 14, 62, 1)} fill="#3FBF92" dx={0} dy={2} />
+        <path d="M-86 -100 H-28" stroke="#2E9C75" strokeWidth={3} />
+        <Paper d="M-70 -108 H-46 V-98 Q-43 -96 -46 -94 V-76 H-70 V-94 Q-73 -96 -70 -98 Z" fill="#FBF6E6" dx={1.5} dy={2} />
+        <path d="M-65 -92 L-60 -86 L-51 -100" fill="none" stroke="#14161A" strokeWidth={3.4} strokeLinecap="round" strokeLinejoin="round" />
+        {/* rider: far leg, torso, head and helmet, arm, near leg */}
+        <path d="M-10 -78 L10 -58 L2 -32" fill="none" stroke="#25384B" strokeWidth={9} strokeLinecap="round" strokeLinejoin="round" opacity={0.7} className="reel-leg2" />
+        <Paper d="M-22 -80 Q-24 -102 -6 -122 L16 -126 Q28 -120 22 -108 L8 -84 Z" fill="#F2B84B" dx={2} dy={3} />
+        <circle cx="18" cy="-140" r="12" fill="#EBC9A0" />
+        <path d="M5 -141 A13 13 0 0 1 31 -141 L31 -136 L5 -138 Z" fill="#5FDDAE" />
+        <circle cx="25" cy="-138" r="1.6" fill="#14161A" />
+        <path d="M10 -118 L34 -88" stroke="#F2B84B" strokeWidth={8} strokeLinecap="round" />
+        <circle cx="35" cy="-87" r="4.5" fill="#FBF6E6" />
+        <g className="reel-leg" style={{ transformOrigin: "-10px -78px" }}><path d="M-10 -78 L12 -56 L4 -30" fill="none" stroke="#2F4A62" strokeWidth={9} strokeLinecap="round" strokeLinejoin="round" /><path d="M0 -30 H12" stroke="#14161A" strokeWidth={5} strokeLinecap="round" /></g>
+      </g>
     </svg>
   );
 }
@@ -222,12 +229,13 @@ export function ShortyReel() {
         .reel-cloud-c { --y: 20px; --s: .7; animation: cloudDrift 130s linear infinite; animation-delay: -10s }
         @keyframes planeFly { 0%, 70% { transform: translate(-200px, 92px) } 100% { transform: translate(1400px, 52px) } }
         .reel-plane { animation: planeFly 40s linear infinite }
-        @keyframes bikeRide { 0%, 30% { transform: translate(-260px, 492px) } 62%, 100% { transform: translate(1460px, 492px) } }
+        @keyframes bikeRide { 0%, 30% { transform: translate(-300px, 508px) scale(1.3) } 62%, 100% { transform: translate(1500px, 508px) scale(1.3) } }
         .reel-bike { animation: bikeRide 38s linear infinite; animation-delay: -4s }
         @keyframes wheelSpin { to { transform: rotate(360deg) } }
         .reel-wheel { animation: wheelSpin .7s linear infinite }
         @keyframes legPedal { 0%, 100% { transform: rotate(-24deg) } 50% { transform: rotate(24deg) } }
         .reel-leg { animation: legPedal .7s ease-in-out infinite }
+        .reel-leg2 { transform-origin: -10px -78px; animation: legPedal .7s ease-in-out infinite reverse }
         @keyframes birdTrip {
           0%, 6% { transform: translate(1320px, 20px) }
           16% { transform: translate(980px, 60px) }
@@ -246,7 +254,7 @@ export function ShortyReel() {
         .reel-wing { transform-box: fill-box; transform-origin: 50% 100%; animation: wingFlap .28s ease-in-out infinite }
         @keyframes birdHead { 0%, 38%, 100% { transform: rotate(0deg) } 42% { transform: rotate(-9deg) } 48% { transform: rotate(7deg) } 54% { transform: rotate(0deg) } }
         .reel-bird-head { transform-box: fill-box; transform-origin: 50% 100%; animation: birdHead 28s ease-in-out infinite }
-        @media (prefers-reduced-motion: reduce) { .reel-pulse { animation: none; opacity: 0 } .reel-anim, .reel-wheel, .reel-leg, .reel-wing, .reel-bird-head, .reel-bird-fly, .reel-bird-sit { animation: none } .reel-bird { opacity: 0 } }
+        @media (prefers-reduced-motion: reduce) { .reel-pulse { animation: none; opacity: 0 } .reel-anim, .reel-wheel, .reel-leg, .reel-leg2, .reel-wing, .reel-bird-head, .reel-bird-fly, .reel-bird-sit { animation: none } .reel-bird { opacity: 0 } }
       `}</style>
     </section>
   );
