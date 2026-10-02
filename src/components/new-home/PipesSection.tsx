@@ -11,7 +11,8 @@
  */
 import { useEffect, useRef, useSyncExternalStore } from "react";
 import { ShortyMascot } from "@/components/shorty/ShortyMascot";
-import { CARRY_TILT } from "@/lib/shorty/mascot/poses";
+import { CARRY_TILT, carryPose } from "@/lib/shorty/mascot/poses";
+import { pipeEnds } from "@/lib/shorty/mascot/rig";
 import { AI_LOGOS } from "./aiLogos";
 import { useAudience, type Audience } from "./audience";
 
@@ -68,7 +69,6 @@ type Geo = {
   phone: boolean;
   vb: [number, number, number, number];
   arrow: { start: number; len: number; sw: number };
-  rightArrow?: { base: [number, number]; deg: number; len: number };   // phones: straight up to the card
   shop: { bodyW: number; bodyH: number; signW: number; signH: number; signFont: number; flaps: number; awn: number; post: number };
   card: { w: number; pad: number; head: number; headFont: number; cols: number; tile: [number, number]; gap: number; logo: number; name: number; lift: number; center?: [number, number]; tilt: number };
   bubble: { font: number; charW: number; agent: { x: number; y: number; tail: "up" | "down" } };
@@ -87,10 +87,9 @@ const MOBILE: Geo = {
   phone: true,
   vb: [-150, -202, 466, 474],
   arrow: { start: 14, len: 24, sw: 5 },
-  rightArrow: { base: [150, 112], deg: -78, len: 151 },
   shop: { bodyW: 62, bodyH: 56, signW: 84, signH: 38, signFont: 12, flaps: 3, awn: 15, post: 9 },
   card: { w: 472, pad: 12, head: 26, headFont: 15, cols: 4, tile: [106, 100], gap: 8, logo: 48, name: 14, lift: 0, center: [83, -202 + 4 + 150 / 2], tilt: 1 },
-  bubble: { font: 9.4, charW: 5.5, agent: { x: 247, y: -20, tail: "up" } },
+  bubble: { font: 11.2, charW: 6.7, agent: { x: 246, y: -2, tail: "up" } },
 };
 
 const DESK = {
@@ -98,16 +97,22 @@ const DESK = {
   get: () => window.matchMedia("(min-width: 900px)").matches,
 };
 
-/** A chunky ink arrow, drawn along the pipe: `base` is where it starts, `deg` the way it points. */
-function Arrow({ base, deg, len, sw }: { base: [number, number]; deg: number; len: number; sw: number }) {
-  const head = sw * 2.2;
-  const d = `M0 0 H${len} M${len - head} ${-head} L${len} 0 L${len - head} ${head}`;
-  return (
-    <g transform={`translate(${base[0]} ${base[1]}) rotate(${deg})`} fill="none" strokeLinecap="round" strokeLinejoin="round">
-      <path d={d} stroke={INK} strokeOpacity={0.3} strokeWidth={sw} transform={`translate(${sw * 0.35} ${sw * 0.5})`} />
-      <path d={d} stroke={INK} strokeWidth={sw} />
-    </g>
-  );
+/* ── The two lines to the pipe. Their tails are fixed (at the shop, at the AI agents card); their heads ride
+      the pipe's ends, so they sway with it. Both read the same sway the mascot does (carryPose). ───────── */
+const STILL_T = 0.4;   // the moment drawn when motion is reduced (the carry pose's still frame)
+type Pt = [number, number];
+const unit = (a: Pt, b: Pt): Pt => { const dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy) || 1; return [dx / l, dy / l]; };
+/** Pipe → shop: an arrow pointing out to the bakery. Its head is fixed at the shop; its tail sits a small gap off the pipe's left end. */
+function shopArrowD(tip: Pt, t: number, sw: number, gap: number): string {
+  const L = pipeEnds(carryPose(t)).L, u = unit(L, tip), tail: Pt = [L[0] + u[0] * gap, L[1] + u[1] * gap], head = sw * 2.4;
+  const wing = (a: number): Pt => [tip[0] - (u[0] * Math.cos(a) - u[1] * Math.sin(a)) * head, tip[1] - (u[0] * Math.sin(a) + u[1] * Math.cos(a)) * head];
+  const w1 = wing(0.62), w2 = wing(-0.62);
+  return `M${tail[0].toFixed(1)} ${tail[1].toFixed(1)} L${tip[0].toFixed(1)} ${tip[1].toFixed(1)} M${w1[0].toFixed(1)} ${w1[1].toFixed(1)} L${tip[0].toFixed(1)} ${tip[1].toFixed(1)} L${w2[0].toFixed(1)} ${w2[1].toFixed(1)}`;
+}
+/** AI agents → pipe: a plain line that comes almost to the pipe's right end and stops short, a small break on purpose. */
+function agentLineD(tail: Pt, t: number, gap: number): string {
+  const R = pipeEnds(carryPose(t)).R, u = unit(R, tail);
+  return `M${tail[0].toFixed(1)} ${tail[1].toFixed(1)} L${(R[0] + u[0] * gap).toFixed(1)} ${(R[1] + u[1] * gap).toFixed(1)}`;
 }
 
 /** A cut-paper sheet: torn-edge cream with a hard shadow, then whatever's drawn on it. */
@@ -210,9 +215,11 @@ function SmallShop({ cx, g, sign }: { cx: number; g: Geo; sign: [string, string]
 
 function Scene({ g, mode }: { g: Geo; mode: Audience }) {
   const [vx, vy, vw, vh] = g.vb;
+  const box = useRef<HTMLDivElement | null>(null);
+  const clock = useRef(0);                                     // set by Shorty when his animation begins
+  const lines = useRef<Array<SVGPathElement | null>>([]);     // [shop shadow, shop ink, agent shadow, agent ink]
   const M = MODES[mode], li = g.phone ? 1 : 0;
   const dirL: [number, number] = [-COS, -SIN], dirR: [number, number] = [COS, SIN];
-  const aL = (Math.atan2(dirL[1], dirL[0]) * 180) / Math.PI, aR = CARRY_TILT;
   const { arrow: A, shop: S, card: K, bubble: B } = g;
 
   const baseL: [number, number] = [END_L[0] + dirL[0] * A.start, END_L[1] + dirL[1] * A.start];
@@ -225,10 +232,39 @@ function Scene({ g, mode }: { g: Geo; mode: Audience }) {
   const rows = Math.ceil(AGENTS.length / K.cols), cardH = K.pad * 2 + K.head + rows * K.tile[1] + (rows - 1) * K.gap;
   const cardC: [number, number] = K.center ?? [tipR[0] + dirR[0] * (8 + K.w / 2), tipR[1] + dirR[1] * (8 + K.w / 2) - K.lift];
 
+  /* fixed tails: the shop's arrow starts at the shop; the agents' line starts just inside the card's edge */
+  const shopTip: Pt = tipL, GAP = g.phone ? 13 : 15, agentTail: Pt = g.phone ? [181, -40] : [tipR[0] + dirR[0] * 20, tipR[1] + dirR[1] * 20];
+  const dShop0 = shopArrowD(shopTip, STILL_T, A.sw, GAP), dAgent0 = agentLineD(agentTail, STILL_T, GAP);
+
+  useEffect(() => {
+    const el = box.current;
+    if (!el) return;
+    const draw = (t: number) => {
+      const a = shopArrowD(shopTip, t, A.sw, GAP), b = agentLineD(agentTail, t, GAP);
+      lines.current[0]?.setAttribute("d", a); lines.current[1]?.setAttribute("d", a);
+      lines.current[2]?.setAttribute("d", b); lines.current[3]?.setAttribute("d", b);
+    };
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { draw(STILL_T); return; }
+    let raf = 0, visible = true;
+    const tick = () => {
+      raf = 0;
+      if (!visible) return;
+      const now = performance.now() / 1000;
+      draw(now - (clock.current || now));
+      raf = requestAnimationFrame(tick);
+    };
+    const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible && !raf) raf = requestAnimationFrame(tick); }, { rootMargin: "200px" });
+    io.observe(el);
+    raf = requestAnimationFrame(tick);
+    return () => { io.disconnect(); cancelAnimationFrame(raf); };
+    // the tails are fixed for this scene (it remounts when the geometry changes)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const pct = (n: number, total: number) => `${(n / total) * 100}%`;
   const view = `${vx} ${vy} ${vw} ${vh}`;
   return (
-    <div className="relative mx-auto w-full" style={{ aspectRatio: `${vw} / ${vh}` }}>
+    <div ref={box} className="relative mx-auto w-full" style={{ aspectRatio: `${vw} / ${vh}` }}>
       {/* back layer: the shop (further back than Shorty) and the shared paper filters */}
       <svg viewBox={view} className="absolute inset-0 h-full w-full overflow-visible" role="img"
         aria-label="Shorty holds a pipe that connects a small business, on the left, to the AI agents (Dots, Muse, Grok and Claude), on the right.">
@@ -266,16 +302,21 @@ function Scene({ g, mode }: { g: Geo; mode: Audience }) {
         style={{ left: pct(BOX.x - vx, vw), top: pct(BOX.y - vy, vh), width: pct(BOX.w, vw), height: pct(BOX.h, vh) }}
       >
         <div className="pointer-events-none absolute" style={{ left: "2%", top: "6%", width: "96%", height: "94%", background: "radial-gradient(ellipse closest-side at 50% 55%, rgba(251,246,230,.95), rgba(251,246,230,.6) 55%, rgba(251,246,230,0))" }} />
-        <ShortyMascot mood="carry" still size={190} style={{ width: "100%", height: "auto", position: "relative" }} />
+        <ShortyMascot mood="carry" onStart={(t) => { clock.current = t; }} size={190} style={{ width: "100%", height: "auto", position: "relative" }} />
       </div>
 
       {/* front layer: the arrows, the two question bubbles and the AI agents card */}
       <svg viewBox={view} aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full overflow-visible">
-        <Arrow base={baseL} deg={aL} len={A.len} sw={A.sw} />
-        {g.rightArrow ? <Arrow base={g.rightArrow.base} deg={g.rightArrow.deg} len={g.rightArrow.len} sw={A.sw} /> : <Arrow base={baseR} deg={aR} len={A.len} sw={A.sw} />}
+        {/* an arrow out to the bakery, and a plain line from the AI agents that stops just short of the pipe: both sway with it */}
+        <g fill="none" strokeLinecap="round" strokeLinejoin="round" data-agents="lines">
+          <path ref={(el) => { lines.current[0] = el; }} d={dShop0} stroke={INK} strokeOpacity={0.3} strokeWidth={A.sw} transform={`translate(${A.sw * 0.35} ${A.sw * 0.5})`} />
+          <path ref={(el) => { lines.current[1] = el; }} d={dShop0} stroke={INK} strokeWidth={A.sw} />
+          <path ref={(el) => { lines.current[2] = el; }} d={dAgent0} stroke={INK} strokeOpacity={0.3} strokeWidth={A.sw} transform={`translate(${A.sw * 0.35} ${A.sw * 0.5})`} />
+          <path ref={(el) => { lines.current[3] = el; }} d={dAgent0} stroke={INK} strokeWidth={A.sw} />
+        </g>
 
         {/* the question above the shop */}
-        <Bubble mark="ticket" x={shopCx} y={signTop - (g.phone ? 20 : 25)} lines={M.shopBubble[li]} font={B.font} charW={B.charW} tail="down" tilt={-2} tailLen={g.phone ? 18 : 23} note={{ kind: "match", text: "matched!" }} />
+        <Bubble mark="ticket" x={shopCx} y={signTop - (g.phone ? 27 : 25)} lines={M.shopBubble[li]} font={B.font} charW={B.charW} tail="down" tilt={-2} tailLen={g.phone ? 20 : 23} note={{ kind: "match", text: "matched!" }} />
         {/* the question by the AI agents */}
         <Bubble mark="ticket" x={B.agent.x} y={B.agent.y} lines={M.agentBubble[li]} font={B.font} charW={B.charW} tail={B.agent.tail} tilt={g.phone ? -3 : 2} tailLen={g.phone ? 12 : 16} note={{ kind: "search", text: "searching…" }} />
 
@@ -315,6 +356,13 @@ function Scene({ g, mode }: { g: Geo; mode: Audience }) {
 /* Phones: each line of the paragraph slides in from alternating sides as it scrolls into view. */
 const REVEAL_CSS = `
 @media (max-width: 899px){
+  /* each line sits on a paper pill, so it feels grounded as it slides in */
+  .pp-pill{position:relative;padding:14px 18px;border:2px solid #14161A;border-radius:22px;background:#FBF6E6;box-shadow:3px 4px 0 #14161A}
+  .pp-pill::before{content:"";position:absolute;inset:0;border-radius:inherit;background-image:url("${GRAIN_URL}");opacity:.2;mix-blend-mode:multiply;pointer-events:none}
+  .pp-pill-ink{background:#14161A;color:#F6F1E4;box-shadow:3px 4px 0 rgba(10,42,29,.55)}
+  .pp-pill-ink::before{opacity:.1;mix-blend-mode:screen}
+  [data-rv="l"]{rotate:-1deg}
+  [data-rv="r"]{rotate:1deg}
   [data-armed] [data-rv]{opacity:0;transition:opacity .7s ease,transform .8s cubic-bezier(.2,.8,.25,1)}
   [data-armed] [data-rv="l"]{transform:translateX(-48px)}
   [data-armed] [data-rv="r"]{transform:translateX(48px)}
@@ -366,23 +414,23 @@ export function PipesSection() {
           <div className="relative z-10 -mt-[28px] min-[900px]:mt-0">
             <Scene key={`${desk ? "d" : "m"}-${audience}`} g={desk ? DESKTOP : MOBILE} mode={audience} />
           </div>
-          {/* One paragraph on desktop; on phones each idea gets its own line so the emphasis is easy to scan. */}
+          {/* One paragraph on desktop; on phones each idea sits on its own paper pill and slides in from alternating sides. */}
           <p
             data-agents="para"
             className="mx-auto mt-7 max-w-[1000px] text-center leading-[1.2] [text-wrap:balance] min-[900px]:mt-8 min-[900px]:leading-[1.22]"
             style={{ fontFamily: SERIF, fontSize: "clamp(26px, 3vw, 42px)", fontWeight: 400 }}
           >
-            <span data-rv="l" className="block text-[30px] leading-[1.15] min-[900px]:inline min-[900px]:text-[length:inherit]">
+            <span data-rv="l" className="pp-pill block text-[27px] leading-[1.15] min-[900px]:inline min-[900px]:text-[length:inherit] min-[900px]:leading-[inherit]">
               Right now your website and socials are <em className="italic">a billboard.</em>
             </span>{" "}
-            <span data-rv="r" className="mt-4 block text-[#0D2B20]/80 min-[900px]:mt-0 min-[900px]:inline min-[900px]:text-[#0D2B20]">
+            <span data-rv="r" className="pp-pill mt-3.5 block text-[22px] leading-[1.2] min-[900px]:mt-0 min-[900px]:inline min-[900px]:text-[length:inherit]">
               They get read by agents, but can’t do anything.
             </span>{" "}
-            <span data-rv="l" className="mt-5 block min-[900px]:mt-0 min-[900px]:inline">
-              Shorty builds the pipes that let your customers’ AI agents{" "}
-              <span data-rv="r" className="mt-2 block text-[30px] leading-[1.1] min-[900px]:mt-0 min-[900px]:inline min-[900px]:text-[length:inherit]">
-                <strong className="font-bold">transact</strong>, <strong className="font-bold">book</strong>, and <strong className="font-bold">interact</strong>.
-              </span>
+            <span data-rv="l" className="pp-pill mt-3.5 block text-[22px] leading-[1.2] min-[900px]:mt-0 min-[900px]:inline min-[900px]:text-[length:inherit]">
+              Shorty builds the pipes that let your customers’ AI agents
+            </span>{" "}
+            <span data-rv="r" className="pp-pill pp-pill-ink mt-3.5 block text-[27px] leading-[1.15] min-[900px]:mt-0 min-[900px]:inline min-[900px]:text-[length:inherit] min-[900px]:leading-[inherit]">
+              <strong className="font-bold">transact</strong>, <strong className="font-bold">book</strong>, and <strong className="font-bold">interact</strong>.
             </span>
           </p>
         </div>
