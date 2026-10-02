@@ -119,6 +119,13 @@ const PROPS: Record<PropName, (p: Element, phone: Partial<PhoneParts>) => SVGGEl
     el('path', { d: 'M15 -2.5 L21 0 L15 2.5 Z', fill: '#efd2a2', ...ink(1.8) }, g);
     el('path', { d: 'M19 -0.8 L21 0 L19 0.8 Z', fill: C.ink }, g);
     el('rect', { x: -8, y: -2.5, width: 4, height: 5, fill: C.pink, ...ink(1.8) }, g); return g; },
+  /* A mug of coffee, handle toward us on the right (the "Play to see Shorty in action" band). Origin = where the glove grips. */
+  cup(p) { const g = el('g', {}, p);
+    el('path', { d: 'M9 -4 Q18 -4 18 2.5 Q18 9 8.5 8', fill: 'none', ...ink(2.2) }, g);
+    el('path', { d: 'M-9 -9 H9 L8 8 Q7.5 11 5 11 H-5 Q-7.5 11 -8 8 Z', fill: '#fbf6e6', ...ink(2.2) }, g);
+    el('path', { d: 'M-8.6 -1 H8.6 L8.3 3 H-8.3 Z', fill: '#8cc3a1', stroke: 'none' }, g);
+    el('ellipse', { cx: 0, cy: -9, rx: 9, ry: 2.4, fill: '#6b4428', ...ink(1.8) }, g);
+    return g; },
   phone(p, phone) { const g = el('g', {}, p);
     el('rect', { x: -9, y: -40, width: 18, height: 40, rx: 3.5, fill: C.ink, ...ink(2) }, g);
     el('rect', { x: -6.5, y: -35.5, width: 13, height: 28, rx: 1.6, fill: '#bfe0cb' }, g);

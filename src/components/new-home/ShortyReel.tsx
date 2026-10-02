@@ -6,13 +6,12 @@
  * while a play button pulses; tapping anywhere opens the vertical film in a modal with chapters you can jump to.
  * The film only loads when the modal opens. Cut paper like the rest of the page: flat shapes, hard offset shadow, grain, no SVG filters.
  */
-import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ShortyMascot } from "@/components/shorty/ShortyMascot";
 
 const INK = "#14161A";
 const CREAM = "#FBF6E6";
 const MINT = "#5FDDAE";
-const AMBER = "#E2A43C";
 const SANS = "var(--font-sora), system-ui, sans-serif";
 const SERIF = "var(--font-fraunces), Georgia, serif";
 const GRAIN_URL =
@@ -35,80 +34,117 @@ const CHAPTERS = [
 
 const fmt = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
 
-/* ── The street scene (SVG, 1200x520; phones crop the middle of it) ───────── */
-const WIN = (x: number, y: number, cols: number, rows: number, w = 16, h = 22, gap = 14) =>
-  Array.from({ length: cols * rows }, (_, i) => (
-    <rect key={`${x}${y}${i}`} x={x + (i % cols) * (w + gap)} y={y + Math.floor(i / cols) * (h + gap)} width={w} height={h} rx={2} fill={i % 5 === 2 ? AMBER : "#FBF6E6"} stroke={INK} strokeWidth={2} />
-  ));
-function Building({ x, w, h, fill, cols, rows, awning }: { x: number; w: number; h: number; fill: string; cols: number; rows: number; awning?: string }) {
-  const y = 400 - h;
+/* ── The scene (SVG, 1200x520; phones crop the middle of it) ──────────────────
+   Cut paper: every shape is a hand-cut polygon with a hard offset shadow and grain over it, no outlines.
+   Slow, quiet life: clouds drift, a plane crosses now and then, a bird lands on a roof and flies off. */
+const rnd = (seed: number) => () => ((seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296);
+/** A rectangle whose corners and edges are a little off, like it was cut with scissors. */
+function cut(x: number, y: number, w: number, h: number, seed: number, j = 2.4) {
+  const r = rnd(seed), pts: [number, number][] = [];
+  const side = (x0: number, y0: number, x1: number, y1: number) => {
+    const n = Math.max(2, Math.round(Math.hypot(x1 - x0, y1 - y0) / 70));
+    for (let i = 0; i < n; i++) pts.push([x0 + ((x1 - x0) * i) / n + (r() - 0.5) * j, y0 + ((y1 - y0) * i) / n + (r() - 0.5) * j]);
+  };
+  side(x, y, x + w, y); side(x + w, y, x + w, y + h); side(x + w, y + h, x, y + h); side(x, y + h, x, y);
+  return "M" + pts.map(([a, b]) => `${a.toFixed(1)} ${b.toFixed(1)}`).join(" L") + " Z";
+}
+const SHADOW = "rgba(60,40,20,.28)";
+function Paper({ d, fill, seed, dx = 6, dy = 7 }: { d: string; fill: string; seed?: number; dx?: number; dy?: number }) {
+  void seed;
   return (
     <g>
-      <rect x={x + 6} y={y + 6} width={w} height={h} fill={INK} opacity={0.3} />
-      <rect x={x} y={y} width={w} height={h} fill={fill} stroke={INK} strokeWidth={3} strokeLinejoin="round" />
-      {WIN(x + 20, y + 26, cols, rows)}
-      {awning && (
-        <g>
-          <path d={`M${x + 8} ${390 - 54} h${w - 16} l8 24 h-${w} z`} fill={awning} stroke={INK} strokeWidth={3} strokeLinejoin="round" />
-          <rect x={x + w / 2 - 15} y={352} width={30} height={48} rx={3} fill="#FBF6E6" stroke={INK} strokeWidth={3} />
-        </g>
-      )}
+      <path d={d} fill={SHADOW} transform={`translate(${dx} ${dy})`} />
+      <path d={d} fill={fill} />
+      <path d={d} fill="url(#reelGrain)" opacity={0.2} style={{ mixBlendMode: "multiply" }} />
+      <path d={d} fill="url(#reelWash)" />
+    </g>
+  );
+}
+function Building({ x, w, h, fill, cols, rows, seed, door, awning }: { x: number; w: number; h: number; fill: string; cols: number; rows: number; seed: number; door?: boolean; awning?: string }) {
+  const y = 410 - h, gx = (w - 36) / cols, gy = Math.min(46, (h - 70) / rows);
+  return (
+    <g>
+      <Paper d={cut(x, y, w, h, seed)} fill={fill} />
+      {Array.from({ length: cols * rows }, (_, i) => {
+        const wx = x + 18 + (i % cols) * gx + 4, wy = y + 24 + Math.floor(i / cols) * gy, ww = gx - 12, wh = gy - 14, lit = (i * 7 + seed) % 6 === 0;
+        return <Paper key={i} d={cut(wx, wy, ww, wh, seed + i, 1.2)} fill={lit ? "#F2C45C" : "#FBF2DA"} dx={2} dy={2.5} />;
+      })}
+      {awning && <Paper d={`M${x + 10} 372 H${x + w - 10} l10 22 H${x} z`} fill={awning} dx={3} dy={4} />}
+      {door && <Paper d={cut(x + w / 2 - 17, 364, 34, 46, seed + 99, 1.2)} fill="#8A5A3A" dx={3} dy={3} />}
     </g>
   );
 }
 function Tree({ x, s = 1 }: { x: number; s?: number }) {
   return (
-    <g transform={`translate(${x} 400) scale(${s})`}>
-      <rect x={-6} y={-70} width={12} height={70} fill="#A9744A" stroke={INK} strokeWidth={3} />
-      <circle cx={0} cy={-92} r={38} fill="#8DB89A" stroke={INK} strokeWidth={3} />
-      <circle cx={-22} cy={-72} r={24} fill="#8DB89A" stroke={INK} strokeWidth={3} />
-      <circle cx={22} cy={-74} r={22} fill="#7CAA8A" stroke={INK} strokeWidth={3} />
+    <g transform={`translate(${x} 412) scale(${s})`}>
+      <Paper d="M-6 0 V-72 H6 V0 Z" fill="#9C6A42" dx={3} dy={3} />
+      <Paper d="M-44 -90 Q-44 -140 0 -140 Q44 -140 44 -90 Q44 -60 0 -58 Q-44 -60 -44 -90 Z" fill="#7FB08E" dx={5} dy={6} />
+      <Paper d="M-34 -70 Q-34 -100 -8 -102 Q18 -102 26 -80 Q22 -58 -6 -58 Q-30 -58 -34 -70 Z" fill="#9CC5A4" dx={0} dy={0} />
+    </g>
+  );
+}
+function Cloud({ y, s, className }: { y: number; s: number; className: string }) {
+  return (
+    <g className={`reel-anim ${className}`} style={{ transform: `translate(0px, ${y}px) scale(${s})` }}>
+      <Paper d="M0 40 Q-6 14 22 14 Q30 -8 58 4 Q82 -10 98 14 Q128 12 126 40 Z" fill="#FFFAEC" dx={4} dy={5} />
     </g>
   );
 }
 function Scene() {
   return (
     <svg viewBox="0 0 1200 520" preserveAspectRatio="xMidYMax slice" className="absolute inset-0 h-full w-full" aria-hidden="true">
-      <rect width="1200" height="520" fill="#F7E3A6" />
-      <circle cx="880" cy="170" r="120" fill="#F2B84B" stroke={INK} strokeWidth={3} />
-      <circle cx="200" cy="120" r="44" fill="#FBF6E6" opacity={0.8} />
-      <circle cx="244" cy="132" r="32" fill="#FBF6E6" opacity={0.8} />
-      <circle cx="1040" cy="70" r="30" fill="#FBF6E6" opacity={0.8} />
-      <Building x={20} w={190} h={250} fill="#8FB6C9" cols={4} rows={4} />
-      <Building x={230} w={170} h={310} fill="#D9946A" cols={3} rows={5} awning="#C8624A" />
-      <Building x={420} w={200} h={220} fill="#8DB89A" cols={4} rows={3} awning="#E2A43C" />
-      <Building x={640} w={170} h={290} fill="#C8624A" cols={3} rows={5} />
-      <Building x={830} w={200} h={240} fill="#B6A5C9" cols={4} rows={3} awning="#8FB6C9" />
-      <Building x={1050} w={150} h={300} fill="#F0D98C" cols={3} rows={5} />
-      <Tree x={410} s={0.9} />
-      <Tree x={825} s={1} />
-      <rect x={-40} y={400} width={1280} height={130} fill="#8A8478" stroke={INK} strokeWidth={3} />
-      <rect x={-40} y={400} width={1280} height={18} fill="#B8B1A2" stroke={INK} strokeWidth={3} />
-      <path d="M-20 470 H1220" stroke="#F0D98C" strokeWidth={8} strokeDasharray="60 40" />
+      <defs>
+        <pattern id="reelGrain" width="160" height="160" patternUnits="userSpaceOnUse"><image href={GRAIN_URL} width="160" height="160" /></pattern>
+        <linearGradient id="reelWash" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#fff" stopOpacity=".16" /><stop offset=".55" stopColor="#fff" stopOpacity="0" /><stop offset="1" stopColor="#3a2410" stopOpacity=".14" /></linearGradient>
+        <linearGradient id="reelSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#CFE6E1" /><stop offset=".55" stopColor="#F4E7B9" /><stop offset="1" stopColor="#F6D9A8" /></linearGradient>
+      </defs>
+      <rect width="1200" height="520" fill="url(#reelSky)" />
+      <circle cx="930" cy="150" r="82" fill="#F2B84B" opacity={0.9} />
+      <circle cx="930" cy="150" r="82" fill="url(#reelGrain)" opacity={0.2} style={{ mixBlendMode: "multiply" }} />
+      <Cloud y={40} s={1.1} className="reel-cloud-a" />
+      <Cloud y={110} s={0.8} className="reel-cloud-b" />
+      <Cloud y={20} s={0.7} className="reel-cloud-c" />
+      {/* the plane: a small cut-paper plane with a dotted trail, crossing every half minute */}
+      <g className="reel-anim reel-plane" style={{ transform: "translate(-200px, 78px)" }}>
+        <path d="M-70 4 H-6" stroke="#fff" strokeWidth={3} strokeDasharray="2 9" strokeLinecap="round" opacity={0.85} />
+        <Paper d="M0 0 L30 -4 L42 -16 L48 -16 L44 -3 L60 0 L44 4 L48 17 L42 17 L30 5 L0 3 Z" fill="#FBF6E6" dx={3} dy={4} />
+      </g>
+      <Building x={14} w={196} h={262} fill="#9DBFCE" cols={4} rows={4} seed={11} />
+      <Building x={226} w={170} h={318} fill="#DDA07A" cols={3} rows={5} seed={23} door awning="#C8624A" />
+      <Building x={414} w={206} h={226} fill="#9EC3A8" cols={4} rows={3} seed={37} door awning="#E2A43C" />
+      <Building x={640} w={176} h={298} fill="#CC6E56" cols={3} rows={5} seed={51} />
+      <Building x={834} w={206} h={246} fill="#BDAED0" cols={4} rows={3} seed={67} door awning="#8FB6C9" />
+      <Building x={1058} w={150} h={306} fill="#F2DC96" cols={3} rows={5} seed={83} />
+      <Tree x={408} s={0.85} />
+      <Tree x={826} s={0.95} />
+      {/* the bird: flies in, lands on the roof of the red building, looks about, flies off */}
+      <g className="reel-anim reel-bird" style={{ transform: "translate(1320px, 20px)" }}>
+        <g className="reel-bird-fly">
+          <Paper d="M-10 0 Q-4 -6 4 -4 Q12 -4 15 2 Q8 8 -4 6 Z" fill="#3E5C76" dx={2} dy={3} />
+          <g className="reel-wing"><Paper d="M-2 -3 L-14 -16 L6 -8 Z" fill="#587C9A" dx={1} dy={2} /></g>
+        </g>
+        <g className="reel-bird-sit">
+          <g className="reel-bird-head">
+            <Paper d="M-12 0 Q-10 -12 2 -12 Q12 -12 13 -2 Q16 0 20 1 Q14 4 10 6 Q-6 8 -12 0 Z" fill="#3E5C76" dx={2} dy={2.5} />
+            <path d="M13 -2 L21 1 L13 3 Z" fill="#E2A43C" />
+            <circle cx="7" cy="-5" r="1.6" fill="#14161A" />
+          </g>
+          <path d="M-12 2 L-24 7 L-12 8 Z" fill="#2F4A62" />
+          <path d="M-2 8 V13 M4 8 V13" stroke="#14161A" strokeWidth={1.6} />
+        </g>
+      </g>
+      {/* the street: a strip of grey paper, a pavement edge, and cut-paper dashes */}
+      <Paper d={cut(-30, 410, 1260, 140, 5, 3)} fill="#9A9486" dx={0} dy={-4} />
+      <Paper d={cut(-30, 410, 1260, 20, 6, 2)} fill="#C4BDAA" dx={0} dy={3} />
+      {Array.from({ length: 12 }, (_, i) => <Paper key={i} d={cut(14 + i * 104, 478, 56, 9, 90 + i, 1.4)} fill="#F2DC96" dx={2} dy={2} />)}
     </svg>
   );
-}
-
-function subscribeReduce(cb: () => void) {
-  const m = window.matchMedia("(prefers-reduced-motion: reduce)");
-  m.addEventListener("change", cb);
-  return () => m.removeEventListener("change", cb);
 }
 
 /* ── The teaser ───────────────────────────────────────────────────────────── */
 export function ShortyReel() {
   const [open, setOpen] = useState(false);
-  const [dir, setDir] = useState<"R" | "L">("R");
-  const reduce = useSyncExternalStore(subscribeReduce, () => window.matchMedia("(prefers-reduced-motion: reduce)").matches, () => false);
   const opener = useRef<HTMLButtonElement | null>(null);
-
-  /* Shorty strolls across, turns, strolls back (one leg = 9s, matches the CSS transition). */
-  useEffect(() => {
-    if (reduce) return;
-    const id = setInterval(() => setDir((d) => (d === "R" ? "L" : "R")), 9000);
-    return () => clearInterval(id);
-  }, [reduce]);
-
   const close = useCallback(() => { setOpen(false); setTimeout(() => opener.current?.focus(), 0); }, []);
 
   return (
@@ -119,27 +155,23 @@ export function ShortyReel() {
           type="button"
           onClick={() => setOpen(true)}
           aria-label="Play the film: Shorty in action"
-          className="group relative block aspect-square w-full cursor-pointer overflow-hidden rounded-[28px] border-[3px] text-left md:aspect-[16/6.2]"
-          style={{ borderColor: INK, boxShadow: `6px 7px 0 ${INK}`, background: "#F7E3A6" }}
+          className="group relative block aspect-square w-full cursor-pointer overflow-hidden rounded-[28px] text-left md:aspect-[16/6.2]"
+          style={{ boxShadow: `6px 7px 0 rgba(20,22,26,.9)`, background: "#F4E7B9" }}
         >
           <Scene />
-          {/* Shorty, strolling along the street */}
-          <span
-            aria-hidden="true"
-            className="absolute bottom-[3%] block h-[44%] w-[22%] md:bottom-[2%] md:h-[52%] md:w-[16%]"
-            style={{ left: dir === "R" ? "74%" : "6%", transition: reduce ? "none" : "left 9s linear" }}
-          >
+          {/* Shorty, standing easy in the middle with his coffee, taking it all in */}
+          <span aria-hidden="true" className="absolute bottom-[4%] left-1/2 block h-[46%] w-[24%] -translate-x-1/2 md:bottom-[3%] md:h-[52%] md:w-[18%]">
             <span className="absolute inset-x-0 bottom-0 flex justify-center">
-              <ShortyMascot mood={dir === "R" ? "walk" : "walkR"} size={170} still={reduce} style={{ height: "100%", width: "auto" }} />
+              <ShortyMascot mood="coffee" size={170} style={{ height: "100%", width: "auto" }} />
             </span>
           </span>
           {/* the tease: a pulsing play button, with a cut-paper label */}
-          <span className="absolute left-1/2 top-[34%] flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-3 md:top-[32%]">
-            <span className="relative grid h-[88px] w-[88px] place-items-center md:h-[104px] md:w-[104px]">
+          <span className="absolute left-1/2 top-[31%] flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-3 md:top-[27%]">
+            <span className="relative grid h-[84px] w-[84px] place-items-center md:h-[96px] md:w-[96px]">
               <span className="reel-pulse absolute inset-0 rounded-full" style={{ border: `4px solid ${MINT}` }} />
               <span className="reel-pulse reel-pulse-2 absolute inset-0 rounded-full" style={{ border: `4px solid ${MINT}` }} />
               <span className="relative grid h-full w-full place-items-center rounded-full transition-transform duration-150 group-hover:scale-105 group-active:scale-95" style={{ background: MINT, border: `3px solid ${INK}`, boxShadow: `4px 5px 0 ${INK}` }}>
-                <svg viewBox="0 0 24 24" className="h-10 w-10 translate-x-[2px] md:h-12 md:w-12" fill={INK} stroke={INK} strokeWidth={1.5} strokeLinejoin="round"><path d="M7 4.5v15l13-7.5z" /></svg>
+                <svg viewBox="0 0 24 24" className="h-9 w-9 translate-x-[2px] md:h-11 md:w-11" fill={INK} stroke={INK} strokeWidth={1.5} strokeLinejoin="round"><path d="M7 4.5v15l13-7.5z" /></svg>
               </span>
             </span>
             <span className="relative rounded-xl px-4 py-2 text-center text-[15px] font-bold leading-tight sm:text-[17px]" style={{ background: CREAM, border: `2.5px solid ${INK}`, boxShadow: `3px 4px 0 ${INK}`, fontFamily: SERIF, color: INK }}>
@@ -147,7 +179,7 @@ export function ShortyReel() {
               <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-[.2] mix-blend-multiply" style={{ backgroundImage: `url("${GRAIN_URL}")` }} />
             </span>
           </span>
-          <span aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-[.16] mix-blend-multiply" style={{ backgroundImage: `url("${GRAIN_URL}")` }} />
+          <span aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-[.12] mix-blend-multiply" style={{ backgroundImage: `url("${GRAIN_URL}")` }} />
         </button>
       </div>
       {open && <ReelModal onClose={close} />}
@@ -155,7 +187,31 @@ export function ShortyReel() {
         @keyframes reelPulse { 0% { transform: scale(1); opacity: .9 } 100% { transform: scale(1.7); opacity: 0 } }
         .reel-pulse { animation: reelPulse 2.2s ease-out infinite }
         .reel-pulse-2 { animation-delay: 1.1s }
-        @media (prefers-reduced-motion: reduce) { .reel-pulse { animation: none; opacity: 0 } }
+        @keyframes cloudDrift { from { transform: translate(-260px, var(--y)) scale(var(--s)) } to { transform: translate(1360px, var(--y)) scale(var(--s)) } }
+        .reel-cloud-a { --y: 40px; --s: 1.1; animation: cloudDrift 110s linear infinite; animation-delay: -30s }
+        .reel-cloud-b { --y: 110px; --s: .8; animation: cloudDrift 150s linear infinite; animation-delay: -95s }
+        .reel-cloud-c { --y: 20px; --s: .7; animation: cloudDrift 130s linear infinite; animation-delay: -10s }
+        @keyframes planeFly { 0%, 70% { transform: translate(-200px, 92px) } 100% { transform: translate(1400px, 52px) } }
+        .reel-plane { animation: planeFly 40s linear infinite }
+        @keyframes birdTrip {
+          0%, 6% { transform: translate(1320px, 20px) }
+          16% { transform: translate(980px, 60px) }
+          22% { transform: translate(738px, 114px) }
+          24%, 60% { transform: translate(738px, 114px) }
+          62% { transform: translate(738px, 108px) }
+          72% { transform: translate(300px, 20px) }
+          76%, 100% { transform: translate(-200px, 0px) }
+        }
+        .reel-bird { animation: birdTrip 28s ease-in-out infinite }
+        @keyframes birdShowFly { 0%, 21% { opacity: 1 } 22%, 61% { opacity: 0 } 62%, 100% { opacity: 1 } }
+        @keyframes birdShowSit { 0%, 21% { opacity: 0 } 22%, 61% { opacity: 1 } 62%, 100% { opacity: 0 } }
+        .reel-bird-fly { animation: birdShowFly 28s step-end infinite }
+        .reel-bird-sit { animation: birdShowSit 28s step-end infinite }
+        @keyframes wingFlap { 0%, 100% { transform: scaleY(1) } 50% { transform: scaleY(-.5) } }
+        .reel-wing { transform-box: fill-box; transform-origin: 50% 100%; animation: wingFlap .28s ease-in-out infinite }
+        @keyframes birdHead { 0%, 38%, 100% { transform: rotate(0deg) } 42% { transform: rotate(-9deg) } 48% { transform: rotate(7deg) } 54% { transform: rotate(0deg) } }
+        .reel-bird-head { transform-box: fill-box; transform-origin: 50% 100%; animation: birdHead 28s ease-in-out infinite }
+        @media (prefers-reduced-motion: reduce) { .reel-pulse { animation: none; opacity: 0 } .reel-anim, .reel-wing, .reel-bird-head, .reel-bird-fly, .reel-bird-sit { animation: none } .reel-bird { opacity: 0 } }
       `}</style>
     </section>
   );

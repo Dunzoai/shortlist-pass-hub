@@ -19,11 +19,11 @@
  * Docs: docs/features/admin-dashboard/shorty-mascot.md.
  */
 
-export type MascotMood = 'carry' | 'walk' | 'walkR' | 'wait' | 'nod' | 'pocket' | 'tapping' | 'pleased' | 'content' | 'whistle' | 'proud' | 'surprised' | 'hello' | 'idle' | 'listening' | 'thinking' | 'working' | 'done' | 'oops';
+export type MascotMood = 'carry' | 'walk' | 'walkR' | 'wait' | 'nod' | 'pocket' | 'tapping' | 'pleased' | 'content' | 'whistle' | 'proud' | 'surprised' | 'hello' | 'idle' | 'listening' | 'thinking' | 'working' | 'done' | 'oops' | 'coffee';
 export type MascotTask = 'menu' | 'event' | 'social' | 'text' | 'none';
 export type Side = 'L' | 'R';
 
-export const PROP_NAMES = ['whisk', 'spatula', 'bowl', 'pad', 'pencil', 'phone', 'phoneBack', 'megaphone', 'hammer', 'stamp', 'pipe'] as const;
+export const PROP_NAMES = ['whisk', 'spatula', 'bowl', 'pad', 'pencil', 'phone', 'phoneBack', 'megaphone', 'hammer', 'stamp', 'pipe', 'cup'] as const;
 export type PropName = typeof PROP_NAMES[number];
 
 export type Arm = { hx: number; hy: number; bend: number; fist: number; rot: number; bump: number; front: number };
@@ -304,6 +304,25 @@ function idle(t: number): Pose {
   p.fx.notes = whistling ? 1 : 0;
   return p;
 }
+/**
+ * COFFEE (website "Play to see Shorty in action" band): standing easy with a mug in his right glove, a hand on his hip, eyes
+ * wandering (clouds, the street, a bird) and now and then lifting the mug for a sip, eyes half shut. One 11 s loop.
+ */
+const LOOKS: [number, number][] = [[-2.4, -1.8], [0.4, -0.4], [2.4, -2.2], [1.2, 0.8], [-1.4, 0.2], [2, -1], [-2.2, -0.6]];
+function coffee(t: number): Pose {
+  const p = base(t), T = 11, u = t % T;
+  const sip = (a: number, b: number) => easeInOutSoft(seg(u, a, a + 0.9)) * (1 - easeInOutSoft(seg(u, b - 0.9, b)));
+  const k = Math.max(sip(3.2, 5.6), sip(7.6, 9.6));
+  const mix = (a: number, b: number, f: number) => a + (b - a) * f;
+  p.by = 0.5 + Math.sin(t * 1.3) * 0.5; p.rot = Math.sin(t * 0.45) * 1.2 - k * 2.5;
+  p.L = hip('L');
+  p.R = arm(...to('R', mix(94, 84, k), mix(134, 80, k)), 14, 1, 0, 0, 1);
+  p.props.cup = hold({ hand: 'R', rot: mix(0, -16, k), s: 1.5 });
+  const i = Math.floor(t / 2.4), f = easeInOutSoft(seg(t - i * 2.4, 0, 0.5));
+  const a = LOOKS[((i - 1) % LOOKS.length + LOOKS.length) % LOOKS.length], b = LOOKS[i % LOOKS.length];
+  p.face = { ...p.face, mouth: 'none', bl: -1, br: -1, eo: 1 - 0.5 * k, gx: mix(a[0], b[0], f), gy: mix(a[1], b[1], f) };
+  return p;
+}
 function listening(t: number): Pose {
   const p = base(t), nod = Math.sin(t * 2.2);
   p.rot = -2 + nod * 0.9; p.by = 0.5 + Math.abs(nod) * 0.5;
@@ -483,6 +502,7 @@ export const DEFAULT_POSES: Record<string, PoseEntry> = {
   surprised: { pose: surprised, still: 0.4 },
   hello: { pose: hello, still: 1.2 },
   idle: { pose: idle, still: 3.0 },
+  coffee: { pose: coffee, still: 1.0 },
   listening: { pose: listening, still: 0.4 },
   thinking: { pose: thinking, still: 2.6 },
   working: { pose: working, still: 0.5 },
