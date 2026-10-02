@@ -19,11 +19,11 @@
  * Docs: docs/features/admin-dashboard/shorty-mascot.md.
  */
 
-export type MascotMood = 'walk' | 'walkR' | 'wait' | 'nod' | 'pocket' | 'tapping' | 'pleased' | 'content' | 'whistle' | 'proud' | 'surprised' | 'hello' | 'idle' | 'listening' | 'thinking' | 'working' | 'done' | 'oops';
+export type MascotMood = 'carry' | 'walk' | 'walkR' | 'wait' | 'nod' | 'pocket' | 'tapping' | 'pleased' | 'content' | 'whistle' | 'proud' | 'surprised' | 'hello' | 'idle' | 'listening' | 'thinking' | 'working' | 'done' | 'oops';
 export type MascotTask = 'menu' | 'event' | 'social' | 'text' | 'none';
 export type Side = 'L' | 'R';
 
-export const PROP_NAMES = ['whisk', 'spatula', 'bowl', 'pad', 'pencil', 'phone', 'phoneBack', 'megaphone', 'hammer', 'stamp'] as const;
+export const PROP_NAMES = ['whisk', 'spatula', 'bowl', 'pad', 'pencil', 'phone', 'phoneBack', 'megaphone', 'hammer', 'stamp', 'pipe'] as const;
 export type PropName = typeof PROP_NAMES[number];
 
 export type Arm = { hx: number; hy: number; bend: number; fist: number; rot: number; bump: number; front: number };
@@ -121,6 +121,16 @@ function walk(t: number): Pose {
   p.L = arm(-10 + s * 10, 50 - Math.abs(s) * 4, 14, 0, -6 + s * 8);
   p.R = arm(10 - s * 10, 50 - Math.abs(s) * 4, 14, 0, 6 - s * 8);
   p.face = { ...p.face, mouth: 'grin', bl: -2, br: -2, gx: -2.2, gy: -0.4 };
+  return p;
+}
+/** CARRY (pipes section): a length of pipe held low in both gloves, eyes on where it's going (right). */
+function carry(t: number): Pose {
+  const p = base(t), at: [number, number] = [63, 156];
+  p.by = 0.5 + Math.sin(t * 2.2) * 0.4; p.rot = -1.2;
+  p.props.pipe = hold({ at });
+  p.L = arm(...to('L', at[0] - 74, at[1] + 2), 16, 1, 0, 0, 1);
+  p.R = arm(...to('R', at[0] + 74, at[1] + 2), 16, 1, 0, 0, 1);
+  p.face = { ...p.face, mouth: 'none', gx: 2.8, gy: 0.4, bl: -1.5, br: -2.8, blr: 0, brr: 6 };
   return p;
 }
 /** WALK, facing right (pipes section): the same stride as `walk`, mirrored so he heads toward +x. */
@@ -430,6 +440,7 @@ function oops(t: number): Pose {
 export const DEFAULT_POSES: Record<string, PoseEntry> = {
   walk: { pose: walk, still: 0.15 },
   walkR: { pose: walkR, still: 0.15 },
+  carry: { pose: carry, still: 0.4 },
   wait: { pose: wait, still: 0.5 },
   nod: { pose: nod, still: 0.4 },
   pocket: { pose: pocket, still: 1 },

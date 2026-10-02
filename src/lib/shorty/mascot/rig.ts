@@ -131,6 +131,12 @@ const PROPS: Record<PropName, (p: Element, phone: Partial<PhoneParts>) => SVGGEl
     el('circle', { cx: -0.5, cy: -30.5, r: 1.6, fill: '#1d1a16' }, g);
     el('rect', { x: -3.2, y: -19, width: 6.4, height: 6.4, rx: 1.6, fill: C.green }, g);
     return g; },
+  /* A length of pipe for the website's pipes picture: mint body, darker flanges, the rig's black ink. */
+  pipe(p) { const g = el('g', {}, p);
+    el('rect', { x: -85, y: -14, width: 170, height: 28, rx: 3, fill: '#34d399', ...ink(2.4) }, g);
+    el('path', { d: 'M-82 -8 H82', stroke: '#9df0cc', 'stroke-width': 4, 'stroke-linecap': 'round', opacity: 0.8 }, g);
+    for (const x of [-80, 0, 80]) el('rect', { x: x - 7, y: -20, width: 14, height: 40, rx: 2.5, fill: '#1f9e73', ...ink(2.2) }, g);
+    return g; },
   megaphone(p) { const g = el('g', {}, p);
     el('rect', { x: -5, y: -3.4, width: 6, height: 6.8, rx: 1.5, fill: '#333', ...ink(1.8) }, g);
     el('path', { d: 'M0 -3.8 L34 -15 Q40 0 34 15 L0 3.8 Z', fill: C.white, ...ink(2.4) }, g);
