@@ -8,6 +8,7 @@
  */
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ShortyMascot } from "@/components/shorty/ShortyMascot";
+import { useAudience } from "./audience";
 
 const INK = "#14161A";
 const CREAM = "#FBF6E6";
@@ -170,6 +171,8 @@ export function ShortyReel() {
   const [open, setOpen] = useState(false);
   const opener = useRef<HTMLButtonElement | null>(null);
   const close = useCallback(() => { setOpen(false); setTimeout(() => opener.current?.focus(), 0); }, []);
+  const { audience } = useAudience();
+  if (audience === "hoa") return null;   // the film is the business version; an HOA cut would be its own video
 
   return (
     <section aria-label="Watch Shorty in action" className="bg-[#f5eddc] px-4 pb-14 pt-2 sm:px-6 md:pb-20">
