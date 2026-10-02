@@ -2,7 +2,8 @@
 
 /**
  * "Shorty Connects": a mint chapter below the hero on /new. Shorty (the hero's own ShortyMascot,
- * `carry` pose, drawn once) holds a pipe at an angle. At its two ends: a "Your Business" card and an
+ * `carry` pose, drawn once) holds a pipe at an angle. At its two ends: a small shop with "Your Business" on its
+ * sign (set further back) and an
  * "AI Agents" card carrying the assistants' logos, with arrows along the pipe. Everything that isn't
  * Shorty is one SVG laid over his drawing in the SAME units, so the cards track the pipe ends exactly;
  * the cards, tiles and pipe are cut paper (torn edge, grain, hard offset shadow) like the hero scenes.
@@ -43,21 +44,25 @@ const END_R: [number, number] = [63 + 85 * COS, 150 + 85 * SIN];   // raised end
 type Geo = {
   vb: [number, number, number, number];
   arrow: { start: number; len: number; sw: number };
-  tag: { w: number; h: number; font: number };
-  card: { w: number; pad: number; head: number; headFont: number; tile: [number, number]; gap: number; logo: number; name: number };
+  shop: { bodyW: number; bodyH: number; signW: number; signH: number; signFont: number; flaps: number; awn: number; post: number };
+  card: { w: number; pad: number; head: number; headFont: number; tile: [number, number]; gap: number; logo: number; name: number; lift: number };
 };
 const DESKTOP: Geo = {
-  vb: [-255, -62, 640, 318],
+  vb: [-215, -62, 600, 318],
   arrow: { start: 22, len: 46, sw: 7 },
-  tag: { w: 150, h: 70, font: 18 },
-  card: { w: 154, pad: 13, head: 26, headFont: 14, tile: [57, 70], gap: 8, logo: 32, name: 12 },
+  shop: { bodyW: 84, bodyH: 80, signW: 104, signH: 44, signFont: 14, flaps: 4, awn: 20, post: 12 },
+  card: { w: 154, pad: 13, head: 26, headFont: 14, tile: [57, 70], gap: 8, logo: 32, name: 12, lift: 0 },
 };
+/* Phones: the agents card is bigger and sits higher. */
 const MOBILE: Geo = {
-  vb: [-162, -62, 464, 318],
+  vb: [-150, -62, 466, 318],
   arrow: { start: 14, len: 24, sw: 5 },
-  tag: { w: 82, h: 48, font: 11.5 },
-  card: { w: 98, pad: 8, head: 16, headFont: 10, tile: [39, 39], gap: 4, logo: 22, name: 0 },
+  shop: { bodyW: 62, bodyH: 56, signW: 84, signH: 38, signFont: 12, flaps: 3, awn: 15, post: 9 },
+  card: { w: 118, pad: 8, head: 18, headFont: 11, tile: [47, 47], gap: 5, logo: 28, name: 0, lift: 16 },
 };
+
+/** Where the small shop's ground is: higher than Shorty's feet (y 231), so it reads as further back. */
+const SHOP_GROUND = 216;
 
 const DESK = {
   subscribe: (cb: () => void) => { const m = window.matchMedia("(min-width: 900px)"); m.addEventListener("change", cb); return () => m.removeEventListener("change", cb); },
@@ -89,40 +94,68 @@ function PaperCard({ x, y, w, h, tilt, children }: { x: number; y: number; w: nu
   );
 }
 
+/** A small shop with the business's name on its sign: paler, smaller and higher than Shorty, so it sits further back. */
+function SmallShop({ cx, g }: { cx: number; g: Geo }) {
+  const { bodyW: w, bodyH: h, signW, signH, signFont, flaps, awn, post } = g.shop;
+  const x0 = cx - w / 2, top = SHOP_GROUND - h, seg = w / (flaps * 2);
+  const boardBottom = top - 6 - post, boardTop = boardBottom - signH, bx = cx - signW / 2;
+  const flap = (x: number) => `M${x} ${top + 2} H${x + seg} V${top + awn - seg / 2} A${seg / 2} ${seg / 2} 0 0 1 ${x} ${top + awn - seg / 2} Z`;
+  const dw = w * 0.26, dh = h * 0.5, wx = x0 + w * 0.12, ww = w * 0.34, wy = top + awn + 6, wh = h * 0.32;
+  return (
+    <g>
+      <ellipse cx={cx} cy={SHOP_GROUND + 1.5} rx={w * 0.62} ry={3} fill="#0A2A1D" fillOpacity={0.14} />
+      <g filter="url(#mc-paper-far)">
+        <rect x={cx - w * 0.3} y={boardBottom} width={3.4} height={post + 8} fill="#7E9C8E" />
+        <rect x={cx + w * 0.3 - 3.4} y={boardBottom} width={3.4} height={post + 8} fill="#7E9C8E" />
+        <rect x={bx} y={boardTop} width={signW} height={signH} rx={5} fill="#F1F7EE" />
+        <rect x={bx + 4} y={boardTop + 4} width={signW - 8} height={signH - 8} rx={3} fill="none" stroke="#3FBF93" strokeWidth={2} />
+        <rect x={x0 - 4} y={top - 6} width={w + 8} height={8} fill="#3C5B4E" />
+        <rect x={x0} y={top} width={w} height={h} fill="#EAF3EA" />
+        <rect x={x0} y={SHOP_GROUND - h * 0.28} width={w} height={h * 0.28} fill="#D6E7DB" />
+        {Array.from({ length: flaps * 2 }, (_, i) => <path key={i} d={flap(x0 + i * seg)} fill={i % 2 === 0 ? "#43C79B" : "#D6E7DB"} />)}
+        <rect x={wx} y={wy} width={ww} height={wh} fill="#8CCBB2" stroke="#2F5144" strokeWidth={2} />
+        <rect x={x0 + w * 0.6} y={SHOP_GROUND - dh} width={dw} height={dh} rx={2} fill="#5E9C84" />
+      </g>
+      {/* ink: window bars, door knob, a bit of sign text */}
+      <g fill="none" stroke="#2F5144" strokeWidth={1.8} strokeLinecap="round">
+        <path d={`M${wx + ww / 2} ${wy} V${wy + wh} M${wx} ${wy + wh / 2} H${wx + ww}`} />
+        <circle cx={x0 + w * 0.6 + dw - 5} cy={SHOP_GROUND - dh * 0.45} r={1.3} fill="#2F5144" />
+      </g>
+      <text textAnchor="middle" fontSize={signFont} fontWeight={800} letterSpacing="0.05em" fill={INK} style={{ fontFamily: SANS }}>
+        <tspan x={cx} y={boardTop + signH * 0.46}>YOUR</tspan>
+        <tspan x={cx} y={boardTop + signH * 0.84}>BUSINESS</tspan>
+      </text>
+    </g>
+  );
+}
+
 function Scene({ g }: { g: Geo }) {
   const [vx, vy, vw, vh] = g.vb;
   const dirL: [number, number] = [-COS, -SIN], dirR: [number, number] = [COS, SIN];
   const aL = (Math.atan2(dirL[1], dirL[0]) * 180) / Math.PI, aR = CARRY_TILT;
-  const { arrow: A, tag: T, card: K } = g;
+  const { arrow: A, shop: S, card: K } = g;
 
   const baseL: [number, number] = [END_L[0] + dirL[0] * A.start, END_L[1] + dirL[1] * A.start];
   const tipL: [number, number] = [baseL[0] + dirL[0] * A.len, baseL[1] + dirL[1] * A.len];
-  const tagC: [number, number] = [tipL[0] + dirL[0] * (8 + T.w / 2), tipL[1] + dirL[1] * (8 + T.w / 2)];
+  const shopCx = tipL[0] - 6 - S.bodyW / 2;   // the arrow points at its door side
 
   const baseR: [number, number] = [END_R[0] + dirR[0] * A.start, END_R[1] + dirR[1] * A.start];
   const tipR: [number, number] = [baseR[0] + dirR[0] * A.len, baseR[1] + dirR[1] * A.len];
   const rows = 2, cardH = K.pad * 2 + K.head + rows * K.tile[1] + (rows - 1) * K.gap;
-  const cardC: [number, number] = [tipR[0] + dirR[0] * (8 + K.w / 2), tipR[1] + dirR[1] * (8 + K.w / 2)];
+  const cardC: [number, number] = [tipR[0] + dirR[0] * (8 + K.w / 2), tipR[1] + dirR[1] * (8 + K.w / 2) - K.lift];
 
   const pct = (n: number, total: number) => `${(n / total) * 100}%`;
+  const view = `${vx} ${vy} ${vw} ${vh}`;
   return (
     <div className="relative mx-auto w-full" style={{ aspectRatio: `${vw} / ${vh}` }}>
-      {/* the cream glow, and Shorty (the shared rig, drawn once) */}
-      <div
-        aria-hidden="true" className="pointer-events-none absolute"
-        style={{ left: pct(BOX.x - vx, vw), top: pct(BOX.y - vy, vh), width: pct(BOX.w, vw), height: pct(BOX.h, vh) }}
-      >
-        <div className="pointer-events-none absolute" style={{ left: "2%", top: "6%", width: "96%", height: "94%", background: "radial-gradient(ellipse closest-side at 50% 55%, rgba(251,246,230,.95), rgba(251,246,230,.6) 55%, rgba(251,246,230,0))" }} />
-        <ShortyMascot mood="carry" still size={190} style={{ width: "100%", height: "auto", position: "relative" }} />
-      </div>
-
-      {/* the cards and arrows, in Shorty's units */}
-      <svg viewBox={`${vx} ${vy} ${vw} ${vh}`} className="absolute inset-0 h-full w-full overflow-visible" role="img"
-        aria-label="Shorty holds a pipe that connects Your Business, on the left, to the AI agents (Dots, Muse, Grok and Claude), on the right.">
+      {/* back layer: the shop (further back than Shorty) and the shared paper filters */}
+      <svg viewBox={view} className="absolute inset-0 h-full w-full overflow-visible" role="img"
+        aria-label="Shorty holds a pipe that connects a small business, on the left, to the AI agents (Dots, Muse, Grok and Claude), on the right.">
         <defs>
           <pattern id="mc-grain" patternUnits="userSpaceOnUse" width={80} height={80}>
             <image href={GRAIN_URL} width={80} height={80} />
           </pattern>
+          {/* Cut paper: torn edge + grain + a hard offset shadow (the hero scenes' technique). */}
           <filter id="mc-paper" x="-10%" y="-10%" width="125%" height="130%" colorInterpolationFilters="sRGB">
             <feTurbulence type="fractalNoise" baseFrequency="0.07" numOctaves={2} seed={7} result="warp" />
             <feDisplacementMap in="SourceGraphic" in2="warp" scale={3.4} xChannelSelector="R" yChannelSelector="G" result="torn" />
@@ -132,18 +165,33 @@ function Scene({ g }: { g: Geo }) {
             <feMerge result="sheet"><feMergeNode in="torn" /><feMergeNode in="grain" /></feMerge>
             <feDropShadow in="sheet" dx="3.4" dy="4.6" stdDeviation="0" floodColor="#0A2A1D" floodOpacity="0.5" />
           </filter>
+          {/* The same paper, for things further back: a smaller, fainter shadow. */}
+          <filter id="mc-paper-far" x="-10%" y="-10%" width="125%" height="130%" colorInterpolationFilters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.07" numOctaves={2} seed={11} result="warp" />
+            <feDisplacementMap in="SourceGraphic" in2="warp" scale={2.6} xChannelSelector="R" yChannelSelector="G" result="torn" />
+            <feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves={2} seed={3} result="fine" />
+            <feColorMatrix in="fine" type="matrix" values="0 0 0 0 0.08  0 0 0 0 0.07  0 0 0 0 0.05  0.3 0 0 0 -0.11" result="specks" />
+            <feComposite in="specks" in2="torn" operator="in" result="grain" />
+            <feMerge result="sheet"><feMergeNode in="torn" /><feMergeNode in="grain" /></feMerge>
+            <feDropShadow in="sheet" dx="2" dy="2.8" stdDeviation="0" floodColor="#0A2A1D" floodOpacity="0.3" />
+          </filter>
         </defs>
+        <SmallShop cx={shopCx} g={g} />
+      </svg>
 
+      {/* the cream glow, and Shorty (the shared rig, drawn once) */}
+      <div
+        aria-hidden="true" className="pointer-events-none absolute"
+        style={{ left: pct(BOX.x - vx, vw), top: pct(BOX.y - vy, vh), width: pct(BOX.w, vw), height: pct(BOX.h, vh) }}
+      >
+        <div className="pointer-events-none absolute" style={{ left: "2%", top: "6%", width: "96%", height: "94%", background: "radial-gradient(ellipse closest-side at 50% 55%, rgba(251,246,230,.95), rgba(251,246,230,.6) 55%, rgba(251,246,230,0))" }} />
+        <ShortyMascot mood="carry" still size={190} style={{ width: "100%", height: "auto", position: "relative" }} />
+      </div>
+
+      {/* front layer: the arrows and the AI agents card */}
+      <svg viewBox={view} aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full overflow-visible">
         <Arrow base={baseL} deg={aL} len={A.len} sw={A.sw} />
         <Arrow base={baseR} deg={aR} len={A.len} sw={A.sw} />
-
-        {/* Your Business */}
-        <PaperCard x={tagC[0]} y={tagC[1]} w={T.w} h={T.h} tilt={-3}>
-          <text textAnchor="middle" fontSize={T.font} fontWeight={800} letterSpacing="0.06em" fill={INK} style={{ fontFamily: SANS }}>
-            <tspan x={0} y={-T.font * 0.15}>YOUR</tspan>
-            <tspan x={0} y={T.font * 1.05}>BUSINESS</tspan>
-          </text>
-        </PaperCard>
 
         {/* AI Agents, with the four logos */}
         <PaperCard x={cardC[0]} y={cardC[1]} w={K.w} h={cardH} tilt={2}>
