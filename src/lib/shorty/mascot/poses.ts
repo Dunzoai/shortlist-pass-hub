@@ -305,22 +305,30 @@ function idle(t: number): Pose {
   return p;
 }
 /**
- * COFFEE (website "Play to see Shorty in action" band): standing easy with a mug in his right glove, a hand on his hip, eyes
- * wandering (clouds, the street, a bird) and now and then lifting the mug for a sip, eyes half shut. One 11 s loop.
+ * COFFEE (website "Play to see Shorty in action" band): standing easy with a mug in his right glove, eyes wandering. One 24 s loop:
+ * a single sip, a stretch of checking the phone in his left glove (eyes down, thumb scrolling), a stretch of whistling with a foot tap,
+ * and easy standing in between.
  */
 const LOOKS: [number, number][] = [[-2.4, -1.8], [0.4, -0.4], [2.4, -2.2], [1.2, 0.8], [-1.4, 0.2], [2, -1], [-2.2, -0.6]];
 function coffee(t: number): Pose {
-  const p = base(t), T = 11, u = t % T;
-  const sip = (a: number, b: number) => easeInOutSoft(seg(u, a, a + 0.9)) * (1 - easeInOutSoft(seg(u, b - 0.9, b)));
-  const k = Math.max(sip(3.2, 5.6), sip(7.6, 9.6));
+  const p = base(t), T = 24, u = t % T;
+  const bump = (a: number, b: number, r = 0.8) => easeInOutSoft(seg(u, a, a + r)) * (1 - easeInOutSoft(seg(u, b - r, b)));
+  const k = bump(3, 5.6), ph = bump(8.5, 15.5), wh = bump(17.5, 22.5, 0.4);
   const mix = (a: number, b: number, f: number) => a + (b - a) * f;
-  p.by = 0.5 + Math.sin(t * 1.3) * 0.5; p.rot = Math.sin(t * 0.45) * 1.2 - k * 2.5;
-  p.L = hip('L');
+  const w = t * 3.2, tap = Math.max(0, Math.sin(w)) * wh;
+  p.by = 0.5 + Math.sin(t * 1.3) * 0.5 + Math.abs(Math.sin(w)) * 0.8 * wh; p.rot = Math.sin(t * 0.45) * 1.2 - k * 2.5 + Math.sin(w / 2) * 0.9 * wh;
+  p.feet.R.tilt = -tap * 12; p.feet.R.lift = tap * 1.2;
+  p.L = arm(...to('L', mix(22, 40, ph), mix(146, 112, ph)), mix(46, 16, ph), 1, mix(150, 0, ph), 0, ph);
+  p.props.phone = hold({ hand: 'L', rot: 0, s: 1.1, oy: Math.sin(t * 2.6) * 1.2 * ph });
+  p.props.phone.v = ph;
   p.R = arm(...to('R', mix(94, 84, k), mix(134, 80, k)), 14, 1, 0, 0, 1);
   p.props.cup = hold({ hand: 'R', rot: mix(0, -16, k), s: 1.5 });
   const i = Math.floor(t / 2.4), f = easeInOutSoft(seg(t - i * 2.4, 0, 0.5));
   const a = LOOKS[((i - 1) % LOOKS.length + LOOKS.length) % LOOKS.length], b = LOOKS[i % LOOKS.length];
-  p.face = { ...p.face, mouth: 'none', bl: -1, br: -1, eo: 1 - 0.5 * k, gx: mix(a[0], b[0], f), gy: mix(a[1], b[1], f) };
+  const glance = (u > 11.5 && u < 12.3) ? 1 : 0;   // a quick look up from the phone
+  p.face = { ...p.face, mouth: wh > 0.5 ? 'o' : 'none', bl: -1, br: -1, eo: 1 - 0.5 * k,
+    gx: mix(mix(a[0], b[0], f), -1.2, ph * (1 - glance)), gy: mix(mix(a[1], b[1], f), 2.8, ph * (1 - glance)) };
+  p.fx.notes = wh > 0.5 ? 1 : 0;
   return p;
 }
 function listening(t: number): Pose {

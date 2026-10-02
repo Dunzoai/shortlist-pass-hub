@@ -106,8 +106,8 @@ function Scene() {
       <Cloud y={20} s={0.7} className="reel-cloud-c" />
       {/* the plane: a small cut-paper plane with a dotted trail, crossing every half minute */}
       <g className="reel-anim reel-plane" style={{ transform: "translate(-200px, 78px)" }}>
-        <path d="M-70 4 H-6" stroke="#fff" strokeWidth={3} strokeDasharray="2 9" strokeLinecap="round" opacity={0.85} />
-        <Paper d="M0 0 L30 -4 L42 -16 L48 -16 L44 -3 L60 0 L44 4 L48 17 L42 17 L30 5 L0 3 Z" fill="#FBF6E6" dx={3} dy={4} />
+        <path d="M-130 4 H-68" stroke="#fff" strokeWidth={3} strokeDasharray="2 9" strokeLinecap="round" opacity={0.85} />
+        <Paper d="M0 0 L-30 -4 L-42 -16 L-48 -16 L-44 -3 L-60 0 L-44 4 L-48 17 L-42 17 L-30 5 L0 3 Z" fill="#FBF6E6" dx={-3} dy={4} />
       </g>
       <Building x={14} w={196} h={262} fill="#9DBFCE" cols={4} rows={4} seed={11} />
       <Building x={226} w={170} h={318} fill="#DDA07A" cols={3} rows={5} seed={23} door awning="#C8624A" />
@@ -133,6 +133,30 @@ function Scene() {
           <path d="M-2 8 V13 M4 8 V13" stroke="#14161A" strokeWidth={1.6} />
         </g>
       </g>
+      {/* a delivery cyclist with a Shortlist Pass bag in the back basket, rolling by every so often */}
+      <g className="reel-anim reel-bike" style={{ transform: "translate(-260px, 492px)" }}>
+        <ellipse cx="0" cy="2" rx="62" ry="5" fill={SHADOW} />
+        {[-34, 34].map((cx) => (
+          <g key={cx} transform={`translate(${cx} -26)`}>
+            <circle r="26" fill={SHADOW} transform="translate(3 4)" />
+            <circle r="26" fill="#3B3A38" />
+            <circle r="19" fill="#E6DFC9" />
+            <g className="reel-wheel"><path d="M-19 0 H19 M0 -19 V19 M-13 -13 L13 13 M13 -13 L-13 13" stroke="#3B3A38" strokeWidth={1.6} /></g>
+            <circle r="4" fill="#3B3A38" />
+          </g>
+        ))}
+        <path d="M-34 -26 L-6 -26 L10 -62 L-14 -62 Z M10 -62 L34 -26 M10 -62 L22 -80 M16 -80 H30" fill="none" stroke="#C8624A" strokeWidth={5} strokeLinejoin="round" strokeLinecap="round" />
+        <g className="reel-leg" style={{ transformOrigin: "-6px -62px" }}><path d="M-6 -62 L6 -38 L-2 -14" fill="none" stroke="#2F4A62" strokeWidth={8} strokeLinecap="round" strokeLinejoin="round" /></g>
+        <Paper d="M-16 -58 L-12 -94 L6 -96 L22 -80 L16 -70 L4 -80 L2 -58 Z" fill="#F2B84B" dx={2} dy={3} />
+        <path d="M6 -92 L24 -78" stroke="#F2B84B" strokeWidth={7} strokeLinecap="round" />
+        <circle cx="12" cy="-106" r="10" fill="#EBC9A0" />
+        <path d="M2 -108 A10 10 0 0 1 22 -108 L22 -104 L2 -106 Z" fill="#5FDDAE" />
+        <Paper d="M-58 -64 H-22 L-26 -34 H-54 Z" fill="#B58A5A" dx={2} dy={3} />
+        <Paper d="M-56 -66 Q-56 -96 -40 -96 Q-24 -96 -24 -66 Z" fill="#5FDDAE" dx={2} dy={3} />
+        <path d="M-52 -92 H-28" stroke="#14161A" strokeWidth={2} opacity={0.5} />
+        <path d="M-47 -78 Q-47 -90 -40 -90 Q-33 -90 -33 -78 V-72 H-47 Z" fill="#FBF6E6" />
+        <path d="M-44 -80 L-41 -76 L-35 -85" fill="none" stroke="#14161A" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+      </g>
       {/* the street: a strip of grey paper, a pavement edge, and cut-paper dashes */}
       <Paper d={cut(-30, 410, 1260, 140, 5, 3)} fill="#9A9486" dx={0} dy={-4} />
       <Paper d={cut(-30, 410, 1260, 20, 6, 2)} fill="#C4BDAA" dx={0} dy={3} />
@@ -155,9 +179,10 @@ export function ShortyReel() {
           type="button"
           onClick={() => setOpen(true)}
           aria-label="Play the film: Shorty in action"
-          className="group relative block aspect-square w-full cursor-pointer overflow-hidden rounded-[28px] text-left md:aspect-[16/6.2]"
+          className="group relative block aspect-square w-full cursor-pointer rounded-[28px] text-left md:aspect-[16/6.2]"
           style={{ boxShadow: `6px 7px 0 rgba(20,22,26,.9)`, background: "#F4E7B9" }}
         >
+          <span className="absolute inset-0 overflow-hidden rounded-[28px]">
           <Scene />
           {/* Shorty, standing easy in the middle with his coffee, taking it all in */}
           <span aria-hidden="true" className="absolute bottom-[4%] left-1/2 block h-[50%] w-[26%] -translate-x-1/2 md:bottom-[3%] md:h-[62%] md:w-[20%]">
@@ -165,8 +190,9 @@ export function ShortyReel() {
               <ShortyMascot mood="coffee" size={170} style={{ height: "100%", width: "auto" }} />
             </span>
           </span>
-          {/* the tease: a pulsing play button, with a cut-paper label */}
-          <span className="absolute left-1/2 top-[31%] flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-3 md:top-[27%]">
+          </span>
+          {/* the tease: a pulsing play button, with a cut-paper label. On phones it tucks into the top-right corner, tilted, spilling a little past the card */}
+          <span className="absolute -right-3 top-[5%] flex rotate-[7deg] flex-col items-end gap-2 md:left-1/2 md:right-auto md:top-[27%] md:-translate-x-1/2 md:-translate-y-1/2 md:rotate-0 md:items-center md:gap-3">
             <span className="relative grid h-[84px] w-[84px] place-items-center md:h-[96px] md:w-[96px]">
               <span className="reel-pulse absolute inset-0 rounded-full" style={{ border: `4px solid ${MINT}` }} />
               <span className="reel-pulse reel-pulse-2 absolute inset-0 rounded-full" style={{ border: `4px solid ${MINT}` }} />
@@ -174,12 +200,12 @@ export function ShortyReel() {
                 <svg viewBox="0 0 24 24" className="h-9 w-9 translate-x-[2px] md:h-11 md:w-11" fill={INK} stroke={INK} strokeWidth={1.5} strokeLinejoin="round"><path d="M7 4.5v15l13-7.5z" /></svg>
               </span>
             </span>
-            <span className="relative rounded-xl px-4 py-2 text-center text-[15px] font-bold leading-tight sm:text-[17px]" style={{ background: CREAM, border: `2.5px solid ${INK}`, boxShadow: `3px 4px 0 ${INK}`, fontFamily: SERIF, color: INK }}>
+            <span className="relative max-w-[150px] rounded-xl px-3 py-2 text-center text-[15px] md:max-w-none md:px-4 font-bold leading-tight sm:text-[17px]" style={{ background: CREAM, border: `2.5px solid ${INK}`, boxShadow: `3px 4px 0 ${INK}`, fontFamily: SERIF, color: INK }}>
               Play to see Shorty in action
               <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-[.2] mix-blend-multiply" style={{ backgroundImage: `url("${GRAIN_URL}")` }} />
             </span>
           </span>
-          <span aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-[.12] mix-blend-multiply" style={{ backgroundImage: `url("${GRAIN_URL}")` }} />
+          <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-[28px] opacity-[.12] mix-blend-multiply" style={{ backgroundImage: `url("${GRAIN_URL}")` }} />
         </button>
       </div>
       {open && <ReelModal onClose={close} />}
@@ -193,6 +219,12 @@ export function ShortyReel() {
         .reel-cloud-c { --y: 20px; --s: .7; animation: cloudDrift 130s linear infinite; animation-delay: -10s }
         @keyframes planeFly { 0%, 70% { transform: translate(-200px, 92px) } 100% { transform: translate(1400px, 52px) } }
         .reel-plane { animation: planeFly 40s linear infinite }
+        @keyframes bikeRide { 0%, 30% { transform: translate(-260px, 492px) } 62%, 100% { transform: translate(1460px, 492px) } }
+        .reel-bike { animation: bikeRide 38s linear infinite; animation-delay: -4s }
+        @keyframes wheelSpin { to { transform: rotate(360deg) } }
+        .reel-wheel { animation: wheelSpin .7s linear infinite }
+        @keyframes legPedal { 0%, 100% { transform: rotate(-24deg) } 50% { transform: rotate(24deg) } }
+        .reel-leg { animation: legPedal .7s ease-in-out infinite }
         @keyframes birdTrip {
           0%, 6% { transform: translate(1320px, 20px) }
           16% { transform: translate(980px, 60px) }
@@ -211,7 +243,7 @@ export function ShortyReel() {
         .reel-wing { transform-box: fill-box; transform-origin: 50% 100%; animation: wingFlap .28s ease-in-out infinite }
         @keyframes birdHead { 0%, 38%, 100% { transform: rotate(0deg) } 42% { transform: rotate(-9deg) } 48% { transform: rotate(7deg) } 54% { transform: rotate(0deg) } }
         .reel-bird-head { transform-box: fill-box; transform-origin: 50% 100%; animation: birdHead 28s ease-in-out infinite }
-        @media (prefers-reduced-motion: reduce) { .reel-pulse { animation: none; opacity: 0 } .reel-anim, .reel-wing, .reel-bird-head, .reel-bird-fly, .reel-bird-sit { animation: none } .reel-bird { opacity: 0 } }
+        @media (prefers-reduced-motion: reduce) { .reel-pulse { animation: none; opacity: 0 } .reel-anim, .reel-wheel, .reel-leg, .reel-wing, .reel-bird-head, .reel-bird-fly, .reel-bird-sit { animation: none } .reel-bird { opacity: 0 } }
       `}</style>
     </section>
   );
