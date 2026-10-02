@@ -60,53 +60,55 @@ const TILTS = [-2.4, 1.6, -0.8, 2.6, -1.8, 0.9, -2.9, 2.1, -1.1, 1.3, -2.2, 2.8,
 const PINS = [AMBER, MINT, CREAM];
 
 /* Shorty's routine: every moment is a time in seconds on one loop, turned into keyframe percentages. */
-const LOOP = 16;
+const LOOP = 18;
 type Stop = [number, string];
 const kf = (name: string, stops: Stop[]) =>
   `@keyframes ${name}{${stops.map(([t, v]) => `${((t / LOOP) * 100).toFixed(2)}%{${v}}`).join("")}}`;
 const tf = (v: string) => `transform:${v}`;
+const rot = (d: number) => tf(`rotate(${d}deg)`);
 const NONE = tf("none");
-/* beats: sip 1.2-3.2, glasses and wink 3.4-6.2, moonwalk 6.6-8.6, dance 8.6-10.6, moonwalk back 10.6-12.2, thumbs up 12.4-14.7 */
-const ARM_REST = 85, ARM_GLASSES = -100, ARM_THUMB = -40;
-const DANCE0 = 8.6, DANCE1 = 10.6;
-/** Two moonwalk windows and the dance in between, as foot positions: x slides, y lifts. */
-function legStops(phase: 0 | 1): Stop[] {
-  const pat = phase === 0 ? [[-5, 0], [0, 0], [5, 0], [0, -4]] : [[5, 0], [0, -4], [-5, 0], [0, 0]];
-  const out: Stop[] = [[0, NONE]];
-  for (const [t0, t1] of [[6.6, 8.6], [10.6, 12.2]]) {
-    out.push([t0, NONE]);
-    for (let k = 1; t0 + k * 0.125 < t1 - 0.01; k++) out.push([+(t0 + k * 0.125).toFixed(3), tf(`translate(${pat[k % 4][0]}px,${pat[k % 4][1]}px)`)]);
-    out.push([t1, NONE]);
-    if (t0 === 6.6) {
-      out.push([DANCE0, NONE]);
-      for (let j = 1; DANCE0 + j * 0.15 < DANCE1 - 0.01; j += 2) {
-        const mine = ((j - 1) / 2) % 2 === phase;
-        out.push([+(DANCE0 + (j - 1) * 0.15 + 0.05).toFixed(3), NONE], [+(DANCE0 + j * 0.15).toFixed(3), tf(mine ? "translateY(-4px)" : "none")], [+(DANCE0 + (j + 1) * 0.15 - 0.05).toFixed(3), NONE]);
-      }
-      out.push([DANCE1, NONE]);
-    }
-  }
-  out.push([LOOP, NONE]);
-  return out.sort((a, b) => a[0] - b[0]).filter((s, i, a) => i === 0 || s[0] > a[i - 1][0]);
-}
+/* The loop: sip 1.2-3.2, a long stretch of small human movements, glasses and a wink 7.2-10, a groove 10.4-13.1, chill. */
+const ARM = 85, ARM_GLASSES = -100;
+const BEAT = 0.45, DANCE0 = 10.4, BEATS = 5;
+const beat = (k: number) => +(DANCE0 + k * BEAT).toFixed(3);
+const byTime = (a: Stop[]) => a.sort((x, y) => x[0] - y[0]).filter((s, i, l) => i === 0 || s[0] > l[i - 1][0]);
+
+/** The cup arm swings the cup up to his mouth for the sip, drifts a little between, and pumps on the groove. */
+const CUP_ARM: [number, number][] = [
+  [0, 0], [1.2, 0], [1.8, -132], [2.6, -132], [3.2, 0], [4.4, 4], [5.6, -3], [6.8, 2], [7.6, 0],
+  [10.4, 0], [10.85, 16], [11.3, 2], [11.75, 16], [12.2, 2], [12.65, 16], [13.1, 0], [14.6, 3], [16.2, -2], [LOOP, 0],
+];
+/** The free arm: a small drift at his side, a shrug, up to his glasses, and a swing on the groove. */
+const FREE_ARM: [number, number][] = [
+  [0, ARM], [1.5, ARM + 2], [3, ARM - 2], [4.6, ARM - 7], [5.5, ARM - 7], [6.4, ARM], [7.2, ARM], [7.8, ARM_GLASSES], [9.2, ARM_GLASSES], [10, ARM],
+  [10.4, ARM], [10.85, ARM + 14], [11.3, ARM - 13], [11.75, ARM + 14], [12.2, ARM - 13], [12.65, ARM + 14], [13.1, ARM], [14.6, ARM - 2], [16.2, ARM + 2], [LOOP, ARM],
+];
+/** A rocking groove: the body leans left and right and drops into its knees on each beat, one foot taps. */
 function swayStops(): Stop[] {
   const out: Stop[] = [[0, NONE], [DANCE0, NONE]];
-  for (let j = 1; DANCE0 + j * 0.15 < DANCE1 - 0.01; j++) {
-    const peak = j % 2 === 1, tilt = ((j - 1) / 2) % 2 === 0 ? -5 : 5;
-    out.push([+(DANCE0 + j * 0.15).toFixed(3), peak ? tf(`rotate(${tilt}deg) translateY(-4px)`) : tf(`rotate(${-tilt / 2.5}deg)`)]);
+  for (let k = 0; k <= BEATS; k++) {
+    const lean = k % 2 === 0 ? -3 : 3;
+    out.push([beat(k) + 0.0, tf(`rotate(${lean}deg) translateY(-3px) scaleY(1)`)]);
+    if (k < BEATS) out.push([+(beat(k) + BEAT / 2).toFixed(3), tf("rotate(0deg) translateY(1.5px) scaleY(.99)")]);
   }
-  out.push([DANCE1, NONE], [LOOP, NONE]);
-  return out;
+  out.push([+(beat(BEATS) + 0.5).toFixed(3), NONE], [LOOP, NONE]);
+  return byTime(out);
+}
+function legStops(phase: 0 | 1): Stop[] {
+  const out: Stop[] = [[0, NONE]];
+  for (let k = 0; k <= BEATS; k++) {
+    if (k % 2 !== phase) continue;
+    out.push([+(beat(k) - 0.12).toFixed(3), NONE], [beat(k), tf("translateY(-4px)")], [+(beat(k) + 0.14).toFixed(3), NONE]);
+  }
+  out.push([LOOP, NONE]);
+  return byTime(out);
 }
 const KEYFRAMES = [
-  kf("sk-sip", [[0, tf("rotate(0)")], [1.2, tf("rotate(0)")], [1.8, tf("rotate(-132deg)")], [2.6, tf("rotate(-132deg)")], [3.2, tf("rotate(0)")], [LOOP, tf("rotate(0)")]]),
-  kf("sk-sipc", [[0, tf("rotate(0)")], [1.2, tf("rotate(0)")], [1.8, tf("rotate(132deg)")], [2.6, tf("rotate(132deg)")], [3.2, tf("rotate(0)")], [LOOP, tf("rotate(0)")]]),
-  kf("sk-armloop", [[0, tf(`rotate(${ARM_REST}deg)`)], [3.4, tf(`rotate(${ARM_REST}deg)`)], [4, tf(`rotate(${ARM_GLASSES}deg)`)], [5.4, tf(`rotate(${ARM_GLASSES}deg)`)], [6.2, tf(`rotate(${ARM_REST}deg)`)], [12.4, tf(`rotate(${ARM_REST}deg)`)], [12.9, tf(`rotate(${ARM_THUMB}deg)`)], [14, tf(`rotate(${ARM_THUMB}deg)`)], [14.7, tf(`rotate(${ARM_REST}deg)`)], [LOOP, tf(`rotate(${ARM_REST}deg)`)]]),
-  kf("sk-handup", [[0, "opacity:0"], [12.8, "opacity:0"], [12.9, "opacity:1"], [14.1, "opacity:1"], [14.2, "opacity:0"], [LOOP, "opacity:0"]]),
-  kf("sk-handrest", [[0, "opacity:1"], [12.8, "opacity:1"], [12.9, "opacity:0"], [14.1, "opacity:0"], [14.2, "opacity:1"], [LOOP, "opacity:1"]]),
-  kf("sk-lower", [[0, NONE], [4, NONE], [4.3, tf("translateY(15px)")], [5.4, tf("translateY(15px)")], [5.7, NONE], [LOOP, NONE]]),
-  kf("sk-wink", [[0, NONE], [4.5, NONE], [4.6, tf("scaleY(.1)")], [4.95, tf("scaleY(.1)")], [5.1, NONE], [LOOP, NONE]]),
-  kf("sk-slide", [[0, NONE], [6.6, NONE], [8.6, tf("translateX(-14px)")], [10.6, tf("translateX(-14px)")], [12.2, NONE], [LOOP, NONE]]),
+  kf("sk-sip", CUP_ARM.map(([t, a]) => [t, rot(a)] as Stop)),
+  kf("sk-sipc", CUP_ARM.map(([t, a]) => [t, rot(-a)] as Stop)),
+  kf("sk-armloop", FREE_ARM.map(([t, a]) => [t, rot(a)] as Stop)),
+  kf("sk-lower", [[0, NONE], [7.8, NONE], [8.1, tf("translateY(15px)")], [9.2, tf("translateY(15px)")], [9.5, NONE], [LOOP, NONE]]),
+  kf("sk-wink", [[0, NONE], [8.3, NONE], [8.4, tf("scaleY(.1)")], [8.75, tf("scaleY(.1)")], [8.9, NONE], [LOOP, NONE]]),
   kf("sk-sway", swayStops()),
   kf("sk-legl", legStops(0)),
   kf("sk-legr", legStops(1)),
@@ -121,39 +123,37 @@ const CSS = `
 .sk-paper{position:absolute;inset:0;border-radius:14px;background:${CREAM};border:3px solid ${INK};filter:url(#sk-tear);pointer-events:none}
 .sk-paper::after{content:"";position:absolute;inset:0;border-radius:inherit;background-image:url("${GRAIN_URL}");opacity:.16;mix-blend-mode:multiply}
 .sk-pin{position:absolute;top:-7px;left:50%;width:14px;height:14px;margin-left:-7px;border-radius:50%;border:2px solid ${INK};box-shadow:1px 2px 0 rgba(0,0,0,.4);pointer-events:none}
-.sk-glasses,.sk-arm,.sk-cuparm,.sk-cup,.sk-sway{transform-box:view-box}
+.sk-glasses,.sk-arm,.sk-cuparm,.sk-cup,.sk-sway,.sk-idle,.sk-bob{transform-box:view-box}
 .sk-glasses{transform-origin:102px 69.5px;opacity:0;transform:translateY(-26px)}
 [data-in] .sk-glasses{animation:sk-drop .5s ease-out .2s both}
 @keyframes sk-drop{0%{opacity:0;transform:translateY(-26px)}55%{opacity:1;transform:translateY(2.5px)}78%{opacity:1;transform:translateY(-1.5px)}100%{opacity:1;transform:none}}
 .sk-arm{transform-origin:151px 124px;transform:rotate(85deg)}
 .sk-cuparm{transform-origin:55px 124px}
 .sk-cup{transform-origin:26px 162px}
-.sk-sway{transform-origin:104px 250px}
+.sk-sway,.sk-idle,.sk-bob{transform-origin:104px 250px}
 .sk-wink{transform-box:fill-box;transform-origin:center}
-.sk-hand-up{opacity:0}
-.sk-bob{animation:sk-bob 3.2s ease-in-out 1.1s infinite}
-@keyframes sk-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
-/* one ${LOOP}s routine, after the entrance: sip, lower the glasses and wink, moonwalk and dance, thumbs up, chill */
+/* always breathing: a slow rise and fall, and his weight drifting from foot to foot */
+.sk-bob{animation:sk-breathe 3.6s ease-in-out 0.4s infinite}
+@keyframes sk-breathe{0%,100%{transform:translateY(0) scale(1,1)}50%{transform:translateY(-1.6px) scale(1.006,1.013)}}
+.sk-idle{animation:sk-weight 8.4s ease-in-out infinite}
+@keyframes sk-weight{0%,100%{transform:rotate(0deg) translateX(0)}28%{transform:rotate(-.9deg) translateX(-1.6px)}64%{transform:rotate(.8deg) translateX(1.6px)}}
+/* one ${LOOP}s routine, after the entrance: sip, small human movements, glasses and a wink, a groove, chill */
 .sk-cuparm{animation:sk-sip ${LOOP}s ease-in-out 1.2s infinite}
 .sk-cup{animation:sk-sipc ${LOOP}s ease-in-out 1.2s infinite}
 .sk-arm{animation:sk-armloop ${LOOP}s ease-in-out 1.2s infinite}
-.sk-hand-up{animation:sk-handup ${LOOP}s linear 1.2s infinite}
-.sk-hand-rest{animation:sk-handrest ${LOOP}s linear 1.2s infinite}
 .sk-lower{animation:sk-lower ${LOOP}s ease-in-out 1.2s infinite}
 .sk-wink{animation:sk-wink ${LOOP}s ease-in-out 1.2s infinite}
-.sk-slide{animation:sk-slide ${LOOP}s ease-in-out 1.2s infinite}
 .sk-sway{animation:sk-sway ${LOOP}s ease-in-out 1.2s infinite}
 .sk-legl{animation:sk-legl ${LOOP}s ease-in-out 1.2s infinite}
 .sk-legr{animation:sk-legr ${LOOP}s ease-in-out 1.2s infinite}
 ${KEYFRAMES}
-.sk-bob,.sk-cuparm,.sk-cup,.sk-arm,.sk-hand-up,.sk-hand-rest,.sk-lower,.sk-wink,.sk-slide,.sk-sway,.sk-legl,.sk-legr{animation-play-state:paused}
-[data-live] .sk-bob,[data-live] .sk-cuparm,[data-live] .sk-cup,[data-live] .sk-arm,[data-live] .sk-hand-up,[data-live] .sk-hand-rest,[data-live] .sk-lower,[data-live] .sk-wink,[data-live] .sk-slide,[data-live] .sk-sway,[data-live] .sk-legl,[data-live] .sk-legr{animation-play-state:running}
+.sk-bob,.sk-idle,.sk-cuparm,.sk-cup,.sk-arm,.sk-lower,.sk-wink,.sk-sway,.sk-legl,.sk-legr{animation-play-state:paused}
+[data-live] .sk-bob,[data-live] .sk-idle,[data-live] .sk-cuparm,[data-live] .sk-cup,[data-live] .sk-arm,[data-live] .sk-lower,[data-live] .sk-wink,[data-live] .sk-sway,[data-live] .sk-legl,[data-live] .sk-legr{animation-play-state:running}
 @media (prefers-reduced-motion: reduce){
   .sk-card{opacity:1 !important;transform:none !important;animation:none !important;transition:none !important}
   .sk-glasses{opacity:1 !important;transform:none !important;animation:none !important}
   .sk-arm{transform:rotate(85deg) !important;animation:none !important}
-  .sk-hand-up{opacity:0 !important}
-  .sk-bob,.sk-cuparm,.sk-cup,.sk-hand-up,.sk-hand-rest,.sk-lower,.sk-wink,.sk-slide,.sk-sway,.sk-legl,.sk-legr{animation:none !important}
+  .sk-bob,.sk-idle,.sk-cuparm,.sk-cup,.sk-lower,.sk-wink,.sk-sway,.sk-legl,.sk-legr{animation:none !important}
 }
 `;
 
@@ -195,20 +195,6 @@ function RestGlove() {
   );
 }
 
-/** The same glove with the thumb up: the thumb points along local -y. */
-function ThumbGlove() {
-  const w = { fill: G.white, ...ink(2.3) };
-  return (
-    <>
-      <circle cx="8.500" cy="2" r="8.600" {...w} />
-      <rect x="4.600" y="-17" width="7.600" height="17" rx="3.800" transform="rotate(-6 8 -8)" {...w} />
-      <path d="M13 -1 Q16.500 3 13 7.500 M9 -1 Q12.500 3 9 8" fill="none" {...ink(1.2)} />
-      <path d="M-7.500 -6.400 Q-3.400 -7.400 0.400 -5.400 V9.400 Q-3.400 11.400 -7.500 10.400 Q-9 2 -7.500 -6.400 Z" {...w} />
-      <path d="M-3.600 -6.200 Q-5 2 -3.600 10.200" fill="none" {...ink(1.3)} />
-    </>
-  );
-}
-
 function Shorty() {
   const w = { fill: G.white, ...ink(2.3) };
   return (
@@ -216,9 +202,10 @@ function Shorty() {
       {/* the short ground line, and his shadow */}
       <path d="M14 257H214" stroke={CREAM} strokeWidth="3" strokeLinecap="round" opacity="0.8" />
 
-      <g className="sk-slide">
+      <g>
       <ellipse cx="104" cy="253" rx="46" ry="5" fill="#000" opacity="0.3" />
       <g className="sk-sway">
+      <g className="sk-idle">
       <g className="sk-bob">
         {/* legs, white sneakers, the ticket body, his face */}
         <g transform={OFFSET}>
@@ -277,14 +264,14 @@ function Shorty() {
           </g>
         </g>
 
-        {/* the free arm (origin: his right shoulder): hangs at his side, goes up to his glasses, then up for a thumbs up */}
+        {/* the free arm (origin: his right shoulder): drifts at his side, shrugs, goes up to his glasses, swings on the groove */}
         <g className="sk-arm">
           <g transform={OFFSET}>
             <path d="M111 100 Q136 86 160 88" fill="none" stroke={G.ink} strokeWidth="6" strokeLinecap="round" />
-            <g className="sk-hand-rest" transform="translate(160 88) rotate(9)"><RestGlove /></g>
-            <g className="sk-hand-up" transform="translate(160 88) rotate(40)"><ThumbGlove /></g>
+            <g transform="translate(160 88) rotate(9)"><RestGlove /></g>
           </g>
         </g>
+      </g>
       </g>
       </g>
       </g>
