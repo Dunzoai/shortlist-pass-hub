@@ -4,6 +4,7 @@ import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "re
 import { ShortyMascot } from "@/components/shorty/ShortyMascot";
 import type { MascotMood } from "@/lib/shorty/mascot/poses";
 import { ShortyScenes } from "./ShortyScenes";
+import { useAudience } from "./audience";
 
 /* ── Paper, the same feel as Shorty's ink ──────────────────────────────────── */
 const GRAIN =
@@ -22,12 +23,16 @@ const ICONS = {
   minus: "M6 12h12",
   message: "M5 6.5A2.5 2.5 0 0 1 7.5 4h9A2.5 2.5 0 0 1 19 6.5v6a2.5 2.5 0 0 1-2.5 2.5H11l-4 3.5V15h.5A2.5 2.5 0 0 1 5 12.5z",
   send: "M4 12 20 4l-6 16-3-7-7-1z",
+  file: "M7 3h7l4 4v14H7zM14 3v4h4M10 12h5M10 16h5",
+  target: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z",
+  clipboard: "M9 4h6v3H9zM6 6h12v15H6zM9 12h6M9 16h4",
+  trophy: "M8 4h8v5a4 4 0 0 1-8 0zM8 6H5v2a3 3 0 0 0 3 3M16 6h3v2a3 3 0 0 1-3 3M12 13v4M9 20h6",
 };
 type Icon = keyof typeof ICONS;
 
 /* ── What goes on each card: a little picture of the thing he did ─────────── */
-const Chip = ({ children, bg = "#fbf6e6", className = "" }: { children: ReactNode; bg?: string; className?: string }) => (
-  <span className={`inline-flex items-center rounded-full border border-[#1d1a16] px-1.5 py-px text-[8.5px] font-bold uppercase tracking-[0.08em] sm:text-[10px] ${className}`} style={{ background: bg }}>
+const Chip = ({ children, bg = "#fbf6e6", className = "", pill = true }: { children: ReactNode; bg?: string; className?: string; pill?: boolean }) => (
+  <span className={`inline-flex items-center ${pill ? "rounded-full" : "rounded-md"} border border-[#1d1a16] px-1.5 py-px text-[8.5px] font-bold uppercase tracking-[0.08em] sm:text-[10px] ${className}`} style={{ background: bg }}>
     {children}
   </span>
 );
@@ -47,7 +52,7 @@ function PriceTagArt({ name, price, tint }: { name: string; price: string; tint:
   );
 }
 
-function CalendarArt({ day, date, where, when, tint }: { day: string; date: string; where: string; when: string; tint: string }) {
+function CalendarArt({ day, date, where, when, tint, pin = true }: { day: string; date: string; where: string; when: string; tint: string; pin?: boolean }) {
   return (
     <div className="flex items-center gap-2.5">
       <div className="w-10 shrink-0 overflow-hidden rounded-[6px] border-[1.5px] border-[#1d1a16] bg-[#fffdf6] text-center sm:w-12">
@@ -55,7 +60,7 @@ function CalendarArt({ day, date, where, when, tint }: { day: string; date: stri
         <p className="font-[family-name:var(--font-fraunces)] text-[15px] leading-[1.5] sm:text-[18px]">{date}</p>
       </div>
       <div className="min-w-0 text-[11px] leading-[1.3] sm:text-[13.5px]">
-        <p className="font-semibold">📍 {where}</p>
+        <p className="font-semibold">{pin ? "📍 " : ""}{where}</p>
         <p className="text-[#5d564b]">{when}</p>
       </div>
     </div>
@@ -129,9 +134,95 @@ function QuoteArt({ who, total }: { who: string; total: string }) {
   );
 }
 
+/* ── HOA cards ───────────────────────────────────────────────────────────── */
+function RulesArt() {
+  return (
+    <div>
+      <div className="flex items-center gap-2">
+        <span className="relative grid h-8 w-7 shrink-0 place-items-center rounded-[3px] border-[1.5px] border-[#1d1a16] bg-[#fffdf6] sm:h-9 sm:w-8">
+          <span className="absolute -bottom-1 -left-1 rounded-[2px] bg-[#c8473d] px-0.5 text-[7px] font-extrabold tracking-wide text-[#fbf6e6] sm:text-[8px]">PDF</span>
+          <span className="h-px w-3 bg-[#1d1a16]/50 shadow-[0_3px_0_rgba(29,26,22,.5),0_-3px_0_rgba(29,26,22,.5)]" />
+        </span>
+        <p className="text-[11px] leading-[1.25] font-semibold sm:text-[13.5px]">Covenants.pdf</p>
+      </div>
+      <div className="mt-1.5 flex flex-wrap gap-1">
+        <Chip bg="#cfe5f1">Fences</Chip><Chip bg="#f6e3a8">Parking</Chip><Chip bg="#f4c0cc">Pets</Chip><Chip bg="#d6e0b8">Paint colors</Chip>
+      </div>
+    </div>
+  );
+}
+
+function StreetArt() {
+  return (
+    <div className="flex items-center gap-2">
+      <svg viewBox="0 0 54 34" className="h-8 w-12 shrink-0 sm:h-9 sm:w-14" aria-hidden="true">
+        <rect x="1" y="1" width="52" height="32" rx="4" fill="#fffdf6" stroke="#1d1a16" strokeWidth="1.4" />
+        <path d="M6 9 H48 M6 25 H48 M10 9 V25" stroke="#cfc6b3" strokeWidth="3.5" strokeLinecap="round" fill="none" />
+        <path d="M10 17 H48" stroke="#f08a3c" strokeWidth="4.5" strokeLinecap="round" />
+        {[16, 23, 30, 37, 44].map((x) => <circle key={x} cx={x} cy={12.2} r={1.5} fill="#1d1a16" />)}
+        {[16, 23, 30, 37, 44].map((x) => <circle key={`b${x}`} cx={x} cy={21.8} r={1.5} fill="#1d1a16" />)}
+      </svg>
+      <div className="min-w-0 text-[11px] leading-[1.3] sm:text-[13.5px]">
+        <p className="font-semibold"><span className="line-through opacity-50">All streets</span> → <span className="font-extrabold">Maple Court</span></p>
+        <p className="font-extrabold text-[#2f7a50]">18 homes</p>
+      </div>
+    </div>
+  );
+}
+
+function BingoEventArt() {
+  return (
+    <div>
+      <CalendarArt day="THU" date="7 PM" where="Clubhouse" when="Bingo Night" tint="#a8d08d" pin />
+      <div className="mt-1.5"><Chip bg="#a8d08d">RSVPs open</Chip></div>
+    </div>
+  );
+}
+
+function PoolNoticeArt() {
+  const roofs = ["#b9523b", "#6f7f99", "#d9b58c", "#b9523b", "#6f7f99"];
+  return (
+    <div>
+      <div className="-rotate-1 rounded-[5px] border-[1.5px] border-[#1d1a16] bg-[#fffdf6] px-2 py-1 text-[10.5px] leading-[1.3] font-semibold sm:text-[12.5px]">
+        “Pool closes 6 PM tonight”
+      </div>
+      <div className="mt-1.5 flex items-center gap-1.5">
+        <svg viewBox="0 0 24 12" className="h-3 w-5 shrink-0" aria-hidden="true"><path d="M1 6 H21 M16 1 L22 6 L16 11" fill="none" stroke="#1d1a16" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" /></svg>
+        <span className="text-[10.5px] font-extrabold sm:text-[12.5px]">Every home</span>
+        <span className="flex">
+          {roofs.map((c, i) => (
+            <svg key={i} viewBox="0 0 12 11" className="-ml-px h-3 w-3 sm:h-3.5 sm:w-3.5" aria-hidden="true"><path d="M1 5 L6 1 L11 5 V10 H1 Z" fill={c} stroke="#1d1a16" strokeWidth={1} strokeLinejoin="round" /></svg>
+          ))}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function YardSaleArt() {
+  return (
+    <div>
+      <CalendarArt day="SAT" date="8–12" where="Yard sale" when="8 AM to noon" tint="#f0b45a" pin={false} />
+      <div className="mt-1.5"><Chip bg="#f4c0cc" pill={false} className="whitespace-normal leading-[1.25]">♥ Neighbors can favorite sales</Chip></div>
+    </div>
+  );
+}
+
+function ContestArt() {
+  return (
+    <div className="flex items-center gap-2">
+      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-md border-[1.5px] border-[#1d1a16] bg-[#f5a46a] text-[19px] sm:h-10 sm:w-10 sm:text-[22px]">🎃</span>
+      <div className="min-w-0 text-[11px] leading-[1.3] sm:text-[13.5px]">
+        <p className="font-semibold">Best Halloween House</p>
+        <p className="text-[#5d564b]">Voting closes <span className="font-bold text-[#c8473d]">Oct 31</span></p>
+      </div>
+    </div>
+  );
+}
+
 /* ── One owner at a time texts Shorty; he does it on his phone and answers ────
    Nito's Empanadas is a real client; the other business names are made up. */
-type Exchange = { biz: string; tint: string; ask: string; reply: string; card: { icon: Icon; label: string; art: ReactNode } };
+type Exchange = { biz: string; scene?: string; tint: string; ask: string; reply: string; card: { icon: Icon; label: string; art: ReactNode } };
 
 const EXCHANGES: Exchange[] = [
   { biz: "Nito's Empanadas", tint: "#f2c94c", ask: "Add the Meatball Parm Empanada to the menu. $6.", reply: "On the menu. Smells great from here.",
@@ -151,6 +242,35 @@ const EXCHANGES: Exchange[] = [
   { biz: "Shine Mobile Detailing", tint: "#7fd0d6", ask: "Post to social media: Saturday's wide open.", reply: "Posted. Saturday won't stay open long.",
     card: { icon: "megaphone", label: "Posted to social", art: <PostArt caption="Saturday's wide open" tint="#7fd0d6" likes={31} emoji="🚗" /> } },
 ];
+
+/* The HOA version. Names are made up (like Rise Bakery) so no real community is on the homepage;
+   "48 pages" and "18 homes" are illustration numbers. Order is on purpose: the two things a
+   Facebook group can't do (learn the documents, text just one street) come first. */
+const HOA_EXCHANGES: Exchange[] = [
+  { scene: "hoa-covenants", biz: "Heron Point HOA", tint: "#8fb8e0", ask: "Here's our covenants. Answer residents' questions from it.", reply: "Read all 48 pages. Go ahead, ask me about fences.",
+    card: { icon: "file", label: "Rules learned", art: <RulesArt /> } },
+  { scene: "hoa-street", biz: "Oak Hollow HOA", tint: "#f0b45a", ask: "Message the residents on Maple Court: the street gets paved Monday. Cars off the road by 8.", reply: "Just Maple Court. Everyone else gets to sleep in.",
+    card: { icon: "target", label: "Targeted", art: <StreetArt /> } },
+  { scene: "hoa-bingo", biz: "Palmetto Pines HOA", tint: "#a8d08d", ask: "Bingo Thursday at 7 in the clubhouse. Open RSVPs.", reply: "Posted. Dust off the daubers.",
+    card: { icon: "calendar", label: "Event posted", art: <BingoEventArt /> } },
+  { scene: "hoa-pool", biz: "Willow Creek HOA", tint: "#7fd0d6", ask: "Pool closes at 6 tonight for cleaning. Tell everyone.", reply: "Sent. Nobody's showing up in a swimsuit at 7.",
+    card: { icon: "message", label: "Notice sent", art: <PoolNoticeArt /> } },
+  { scene: "hoa-yardsale", biz: "Oak Hollow HOA", tint: "#f0b45a", ask: "Open yard sale sign-ups for Saturday.", reply: "Open. Somebody's finally selling that treadmill.",
+    card: { icon: "clipboard", label: "Sign-ups open", art: <YardSaleArt /> } },
+  { scene: "hoa-halloween", biz: "Willow Creek HOA", tint: "#7fd0d6", ask: "Start the Halloween decorating contest. Voting closes the 31st.", reply: "Live. My money's on the house with the 12-foot skeleton.",
+    card: { icon: "trophy", label: "Contest live", art: <ContestArt /> } },
+];
+
+const COPY = {
+  business: {
+    eyebrow: "Your newest hire",
+    blurb: "He's the coworker who never clocks out. He knows everything you sell, talks to your customers, takes their money for you, and handles the busywork so you can focus on what you do best.",
+  },
+  hoa: {
+    eyebrow: "Your newest board member",
+    blurb: "He's the board member who never sleeps. He knows every rule in your documents, answers residents at midnight, runs your events, and gets the word to exactly the right neighbors, so your board can get its evenings back.",
+  },
+};
 
 const HELLO_MS = 1500;
 /* then he pulls his phone out of his pocket and keeps it in hand from there on */
@@ -243,6 +363,7 @@ function ResultCard({ state, ex }: { state: CardState; ex: Exchange }) {
 }
 
 export function ShortyHero() {
+  const { audience } = useAudience();
   const [phase, setPhase] = useState<"hello" | "pocket" | "texts">("hello");
   const [n, setN] = useState(0);
   const [step, setStep] = useState(0);
@@ -252,6 +373,12 @@ export function ShortyHero() {
     reduce.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce.current) { setPhase("texts"); setStep(6); }
   }, []);
+
+  /* Switching to the other version starts its texts from the top. */
+  useEffect(() => {
+    setN(0);
+    setStep(reduce.current ? 6 : 0);
+  }, [audience]);
 
   useEffect(() => {
     if (reduce.current) return;
@@ -266,7 +393,9 @@ export function ShortyHero() {
     return () => clearTimeout(id);
   }, [phase, step]);
 
-  const ex = EXCHANGES[n % EXCHANGES.length];
+  const list = audience === "hoa" ? HOA_EXCHANGES : EXCHANGES;
+  const ex = list[n % list.length];
+  const copy = COPY[audience];
   const live = phase === "texts";
   const mood: MascotMood =
     phase === "hello" ? "hello"
@@ -296,7 +425,7 @@ export function ShortyHero() {
         <div className="relative mx-auto flex w-full max-w-[400px] flex-col [grid-area:stage] lg:max-w-none" aria-live="polite">
           {/* Whoever texted, he's standing in their world; scenes crossfade, never empty. */}
           <div className="absolute inset-x-0 bottom-0 h-[230px] lg:h-[400px]">
-            <ShortyScenes biz={ex.biz} show />
+            <ShortyScenes scene={ex.scene ?? ex.biz} group={audience} show />
           </div>
           {/* Each bubble has its own fixed spot, so nothing shifts when the other lands: the owner's
               grows down from the top right, Shorty's grows up from just over his head. */}
@@ -316,13 +445,12 @@ export function ShortyHero() {
         </div>
 
         <div className="mt-4 max-w-[480px] [grid-area:copy] lg:mt-0">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#2f7a50] sm:text-[12px]">Your newest hire</p>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#2f7a50] sm:text-[12px]">{copy.eyebrow}</p>
           <h1 className="mt-2 font-[family-name:var(--font-fraunces)] text-[clamp(44px,6.4vw,84px)] leading-[0.95] font-normal tracking-[-0.03em] text-[#1d1a16] lg:mt-3 lg:whitespace-nowrap">
             Meet Shorty.
           </h1>
           <p className="mt-3 text-[15.5px] leading-[1.5] text-[#3a352d] sm:text-[18px] sm:leading-[1.6] lg:mt-6">
-            He&apos;s the coworker who never clocks out. He knows everything you sell, talks to your customers, takes their
-            money for you, and handles the busywork so you can focus on what you do best.
+            {copy.blurb}
           </p>
           <p className="mt-2.5 text-[14.5px] font-semibold text-[#2f7a50] sm:text-[15px] lg:mt-4">
             Just text Shorty what you need. You say yes, he gets it done.

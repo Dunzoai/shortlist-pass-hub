@@ -3,7 +3,7 @@
  * world. Each layer is a piece of colored paper (torn edge, grain, a soft
  * shadow under it), stacked back to front, with a little ink on top. Each
  * scene has a mood (the taco truck at golden hour, the taproom on trivia
- * night...). A business without a scene shows the plain cream.
+ * night...). Scenes are keyed by id: a business name, or hoa-* for the HOA version.
  */
 import type { ReactNode } from "react";
 
@@ -387,6 +387,277 @@ function ShineDetailing() {
   );
 }
 
+/* ───────────────────────── HOA scenes ───────────────────────── */
+const ARCH = "M22 232 C6 140 34 30 160 22 C292 14 410 50 400 156 C396 204 386 232 386 232 Z";
+
+function HoaCovenants() {
+  /* x, y, w, h, fill, tilt */
+  const papers: Array<[number, number, number, number, string, number]> = [
+    [116, 46, 48, 52, "#fbf6e6", -4], [176, 42, 50, 46, "#f6e3a8", 3], [238, 48, 52, 58, "#f4c0cc", -2],
+    [126, 104, 52, 34, "#cfe5f1", 4], [194, 100, 54, 38, "#fbf6e6", -3], [262, 114, 50, 26, "#fde2a3", 2],
+  ];
+  const boxes = [18, 52, 86, 302, 336, 370];
+  const boxFill = ["#8fb8e0", "#f0a3b4", "#f2c94c", "#a8d08d", "#d6463f", "#b7a3e0"];
+  return (
+    <>
+      <Paper rot={-1}><path d={ARCH} fill="#d6e0b8" /></Paper>
+      <Paper rot={0.6} at={[210, 90]}>
+        <path d="M98 30 H326 V152 H98 Z" fill="#8a5a3b" />
+        <path d="M106 38 H318 V144 H106 Z" fill="#cf9e68" />
+      </Paper>
+      {papers.map(([x, y, w, h, fill, rot], i) => (
+        <Paper key={i} rot={rot} at={[x + w / 2, y + h / 2]}>
+          <path d={`M${x} ${y} H${x + w} V${y + h} H${x} Z`} fill={fill} />
+        </Paper>
+      ))}
+      <g>
+        {papers.map(([x, y, w], i) => (
+          <circle key={i} cx={x + w / 2} cy={y + 4} r={2.6} fill="#d6463f" stroke="#2a2219" strokeWidth={1} />
+        ))}
+      </g>
+      <g {...INK} strokeWidth={1.1}>
+        {papers.map(([x, y, w, h], i) => (
+          <path key={i} d={`M${x + 6} ${y + 14} h${w - 14} M${x + 6} ${y + 22} h${w - 22}${h > 40 ? ` M${x + 6} ${y + 30} h${w - 16}` : ""}`} />
+        ))}
+      </g>
+      <Paper rot={0.4}><path d="M8 206 H412 V246 H8 Z" fill="#d9c7a1" /></Paper>
+      <Paper rot={-0.4}><path d="M6 198 H414 V206 H6 Z" fill="#8a5a3b" /></Paper>
+      {boxes.map((x, i) => (
+        <Paper key={x} rot={i % 2 ? 1.5 : -1.5} at={[x + 12, 182]}>
+          <path d={`M${x} 198 V178 Q${x} 164 ${x + 12} 164 Q${x + 24} 164 ${x + 24} 178 V198 Z`} fill={boxFill[i]} />
+          <path d={`M${x + 22} 176 h9 v-9 h-9 Z`} fill="#d6463f" />
+        </Paper>
+      ))}
+      <g {...INK} strokeWidth={1.2}>
+        {boxes.map((x) => <path key={x} d={`M${x + 5} 182 h14`} />)}
+      </g>
+    </>
+  );
+}
+
+function HoaStreet() {
+  const cone = (x: number) => (
+    <Paper key={x} rot={x % 2 ? 2 : -2} at={[x, 204]}>
+      <path d={`M${x - 9} 214 L${x - 3} 188 H${x + 3} L${x + 9} 214 Z`} fill="#f08a3c" />
+      <path d={`M${x - 6.5} 200 H${x + 6.5} L${x + 5.4} 205 H${x - 5.4} Z`} fill="#fbf6e6" />
+      <path d={`M${x - 13} 214 H${x + 13} V219 H${x - 13} Z`} fill="#2b2620" />
+    </Paper>
+  );
+  return (
+    <>
+      <Paper rot={1}><path d={ARCH} fill="#f6d3b3" /></Paper>
+      <Paper rot={-1} at={[300, 112]}><circle cx={300} cy={112} r={46} fill="#f4a261" /></Paper>
+      <Paper rot={0.8} at={[70, 150]}>
+        <path d="M24 152 H122 V196 H24 Z" fill="#e8c7a2" />
+        <path d="M14 154 L73 112 L132 154 Z" fill="#b9523b" />
+        <path d="M40 166 H62 V184 H40 Z M84 166 H106 V184 H84 Z" fill="#fde7a6" />
+      </Paper>
+      <Paper rot={-0.8} at={[343, 150]}>
+        <path d="M288 146 H398 V196 H288 Z" fill="#9fbccb" />
+        <path d="M278 148 L343 104 L408 148 Z" fill="#6f7f99" />
+        <path d="M304 160 H328 V180 H304 Z M356 160 H380 V180 H356 Z" fill="#fde7a6" />
+      </Paper>
+      <Paper rot={0.6} at={[8, 222]}>
+        <path d="M8 194 H412 V246 H8 Z" fill="#6f6a65" />
+        <path d="M150 204 H412 V246 H150 Z" fill="#4a4642" />
+      </Paper>
+      {[40, 72, 104].map(cone)}
+      <Paper rot={-1} at={[151, 114]}>
+        <path d="M148 120 H154 V198 H148 Z" fill="#8f8a83" />
+        <path d="M116 102 H186 V124 H116 Z" fill="#3f8f64" />
+        <text x={151} y={117} textAnchor="middle" fontSize={11} fontWeight={800} fill="#fbf6e6" fontFamily="Inter, system-ui, sans-serif">MAPLE CT</text>
+      </Paper>
+      <Paper rot={1} at={[340, 205]}>
+        <circle cx={318} cy={218} r={22} fill="#8f8a83" />
+        <path d="M336 192 H394 V218 H336 Z" fill="#f2c94c" />
+        <path d="M340 172 H390 V178 H340 Z M344 178 H350 V192 H344 Z M380 178 H386 V192 H380 Z" fill="#2b2620" />
+        <circle cx={382} cy={222} r={16} fill="#2b2620" /> <circle cx={382} cy={222} r={6} fill="#e9dcc4" />
+      </Paper>
+      <g {...INK} strokeWidth={1.4}>
+        <path d="M14 226 h26 M56 226 h26 M98 226 h26" stroke="#fbf6e6" opacity={0.7} />
+        <path d="M318 218 m-9 0 a9 9 0 1 0 18 0 a9 9 0 1 0 -18 0" opacity={0.5} />
+      </g>
+    </>
+  );
+}
+
+function HoaBingo() {
+  const q = (a: number, c: number, b: number, t: number) => (1 - t) ** 2 * a + 2 * t * (1 - t) * c + t * t * b;
+  const lightY = (x: number) => (x < 210 ? q(26, 58, 32, x / 210) : q(32, 58, 26, (x - 210) / 210));
+  const bulbs = [28, 66, 104, 142, 180, 218, 256, 294, 332, 370, 400];
+  const letters = ["B", "I", "N", "G", "O"];
+  const head = ["#e8747a", "#f2c94c", "#a8d08d", "#8fb8e0", "#b7a3e0"];
+  const daubs: Array<[number, number]> = [[0, 1], [2, 0], [1, 3], [3, 2], [4, 4], [2, 2]];
+  return (
+    <>
+      <Paper rot={-1}><path d={ARCH} fill="#6b78b3" /></Paper>
+      <g fill="#fbf6e6" opacity={0.7}>
+        {[[60, 56], [118, 40], [300, 44], [350, 70], [388, 36]].map(([x, y]) => <circle key={`${x}${y}`} cx={x} cy={y} r={1.8} />)}
+      </g>
+      <Paper rot={0.4} at={[210, 150]}>
+        <path d="M40 124 H380 V198 H40 Z" fill="#e6d2b0" />
+        <path d="M26 128 L210 72 L394 128 Z" fill="#b9523b" />
+      </Paper>
+      <Paper rot={-0.6} at={[210, 160]}>
+        <path d="M150 140 H270 V198 H150 Z" fill="#5d4637" />
+        <path d="M178 150 H242 V198 H178 Z" fill="#ffd27a" />
+        {[[188, 142], [248, 142], [298, 142], [338, 142]].map(([x, y]) => <path key={x} d={`M${x} ${y} h26 v22 h-26 Z`} fill="#ffd27a" />)}
+      </Paper>
+      <Paper rot={0.4}><path d="M8 198 H412 V246 H8 Z" fill="#5a4f73" /></Paper>
+      <path d="M0 26 Q105 58 210 32 Q315 58 420 26" {...INK} />
+      {bulbs.map((x) => (
+        <g key={x}>
+          <circle cx={x} cy={lightY(x) + 9} r={11} fill="#ffcf66" opacity={0.7} filter="url(#glow)" />
+          <path d={`M${x} ${lightY(x)} v4`} {...INK} strokeWidth={1.2} />
+          <ellipse cx={x} cy={lightY(x) + 9} rx={3.4} ry={4.6} fill="#ffe08a" stroke="#2a2219" strokeWidth={1.2} />
+        </g>
+      ))}
+      <Paper rot={-3} at={[78, 156]}>
+        <path d="M28 94 H122 V212 H28 Z" fill="#fbf6e6" />
+        {letters.map((l, i) => <path key={l} d={`M${34 + i * 17} 100 h17 v17 h-17 Z`} fill={head[i]} />)}
+        {letters.map((l, i) => (
+          <text key={`t${l}`} x={42.5 + i * 17} y={113} textAnchor="middle" fontSize={11} fontWeight={800} fill="#2a2219" fontFamily="Inter, system-ui, sans-serif">{l}</text>
+        ))}
+      </Paper>
+      <g {...INK} strokeWidth={1.1}>
+        {[0, 1, 2, 3, 4, 5].map((i) => <path key={`h${i}`} d={`M34 ${117 + i * 17} h85`} />)}
+        {[0, 1, 2, 3, 4, 5].map((i) => <path key={`v${i}`} d={`M${34 + i * 17} 100 v102`} />)}
+        {daubs.map(([c, r]) => <circle key={`${c}${r}`} cx={42.5 + c * 17} cy={125.5 + r * 17} r={5.5} fill="#d6463f" fillOpacity={0.8} stroke="none" />)}
+      </g>
+    </>
+  );
+}
+
+function HoaPool() {
+  return (
+    <>
+      <Paper rot={1}><path d={ARCH} fill="#cfe5f1" /></Paper>
+      <Paper rot={-1} at={[340, 70]}><circle cx={340} cy={70} r={26} fill="#f6d35e" /></Paper>
+      <Paper rot={1.5} at={[84, 66]}><circle cx={84} cy={66} r={24} fill="#fbf6e6" /></Paper>
+      <g {...INK} strokeWidth={1.8}>
+        <path d="M84 66 V48 M84 66 V82" />
+        <path d="M64 66 h4 M100 66 h4 M84 46 v4 M84 82 v4" strokeWidth={1.4} />
+      </g>
+      <Paper rot={0.4}><path d="M8 148 H412 V158 H8 Z" fill="#efe7d4" /></Paper>
+      <Paper rot={-0.5}><path d="M8 158 H412 V214 H8 Z" fill="#62bfd4" /></Paper>
+      <Paper rot={0.5}><path d="M8 212 H412 V246 H8 Z" fill="#e8d9b8" /></Paper>
+      <g fill="none" stroke="#fbfdff" strokeWidth={2} strokeLinecap="round" opacity={0.65}>
+        <path d="M30 172 q10 -6 20 0 t20 0 M150 186 q10 -6 20 0 t20 0 M290 170 q10 -6 20 0 t20 0 M70 198 q10 -6 20 0 t20 0 M240 200 q10 -6 20 0 t20 0" />
+      </g>
+      {[20, 304].map((x, i) => (
+        <Paper key={x} rot={i ? 1 : -1} at={[x + 50, 214]}>
+          <path d={`M${x + 8} 222 H${x + 76} L${x + 82} 230 H${x + 2} Z`} fill="#fbf6e6" />
+          <path d={`M${x + 8} 222 L${x + 32} 190 L${x + 42} 196 L${x + 22} 224 Z`} fill="#f5a46a" />
+          <path d={`M${x + 36} 222 H${x + 54} L${x + 58} 230 H${x + 32} Z`} fill="#f5a46a" />
+        </Paper>
+      ))}
+      <Paper rot={1} at={[370, 130]}>
+        <path d="M344 64 L350 60 L404 204 L398 208 Z" fill="#8a5a3b" />
+        <ellipse cx={346} cy={64} rx={22} ry={15} fill="#bfe3ea" />
+      </Paper>
+      <g {...INK} strokeWidth={1.1}>
+        <path d="M326 64 h40 M346 49 v30 M332 55 l28 18 M360 55 l-28 18" opacity={0.7} />
+        <ellipse cx={346} cy={64} rx={22} ry={15} />
+      </g>
+    </>
+  );
+}
+
+function HoaYardSale() {
+  return (
+    <>
+      <Paper rot={-1}><path d={ARCH} fill="#fde2a3" /></Paper>
+      <Paper rot={1} at={[92, 62]}><circle cx={92} cy={62} r={24} fill="#f6b85e" /></Paper>
+      <Paper rot={0.5} at={[160, 130]}>
+        <path d="M20 88 H300 V196 H20 Z" fill="#b9c9d9" />
+        <path d="M10 92 L160 38 L310 92 Z" fill="#9a5a44" />
+        <path d="M56 108 H210 V196 H56 Z" fill="#f6efe0" />
+        <path d="M236 112 H282 V152 H236 Z" fill="#fde7a6" />
+      </Paper>
+      <Paper rot={0.4}><path d="M8 196 H412 V246 H8 Z" fill="#cdc6ba" /></Paper>
+      <Paper rot={-1.5} at={[66, 184]}>
+        <path d="M26 198 H104 L108 206 H30 Z" fill="#4a4642" />
+        <path d="M30 192 H100 V198 H30 Z" fill="#6f6a65" />
+        <path d="M90 156 H96 V194 H90 Z" fill="#3a3733" />
+        <path d="M78 148 H110 V164 H78 Z" fill="#3a3733" />
+        <path d="M82 152 H106 V160 H82 Z" fill="#9fe0b8" />
+      </Paper>
+      <Paper rot={0.8} at={[320, 176]}>
+        <path d="M244 168 H402 V176 H244 Z" fill="#e8d6b0" />
+        <path d="M262 176 L288 214 L295 214 L269 176 Z M384 176 L358 214 L351 214 L377 176 Z" fill="#8f8a83" />
+        <path d="M284 144 L314 144 L322 168 L276 168 Z" fill="#f6d35e" />
+        <path d="M296 168 H302 V176 H296 Z" fill="#8f8a83" />
+        <path d="M334 158 H378 V168 H334 Z" fill="#8fb8e0" />
+        <path d="M338 150 H374 V158 H338 Z" fill="#f0a3b4" />
+      </Paper>
+      <Paper rot={-4} at={[300, 130]}>
+        <path d="M290 122 H314 V136 H290 Z" fill="#fbf6e6" />
+        <text x={302} y={132} textAnchor="middle" fontSize={8} fontWeight={800} fill="#2a2219" fontFamily="Inter, system-ui, sans-serif">$5</text>
+      </Paper>
+      <Paper rot={4} at={[116, 170]}>
+        <path d="M104 174 H128 V188 H104 Z" fill="#fbf6e6" />
+        <text x={116} y={184} textAnchor="middle" fontSize={8} fontWeight={800} fill="#2a2219" fontFamily="Inter, system-ui, sans-serif">$40</text>
+      </Paper>
+      <Paper rot={2} at={[382, 118]}>
+        <path d="M380 130 H384 V168 H380 Z" fill="#8a5a3b" />
+        <path d="M354 96 H410 V130 H354 Z" fill="#d9b58c" />
+        <text x={382} y={118} textAnchor="middle" fontSize={13} fontWeight={800} fill="#2a2219" fontFamily="Inter, system-ui, sans-serif">SALE</text>
+      </Paper>
+      <g {...INK} strokeWidth={1.1}>
+        <path d="M56 134 H210 M56 160 H210 M56 178 H210" opacity={0.5} />
+        <path d="M304 138 V148 M120 188 V176" opacity={0.6} />
+      </g>
+    </>
+  );
+}
+
+function HoaHalloween() {
+  return (
+    <>
+      <Paper rot={1}><path d={ARCH} fill="#3d3262" /></Paper>
+      <circle cx={96} cy={70} r={38} fill="#ffe9a8" opacity={0.35} filter="url(#glow)" />
+      <Paper rot={-1} at={[96, 70]}><circle cx={96} cy={70} r={28} fill="#f6e3a8" /></Paper>
+      <g fill="#fbf6e6" opacity={0.75}>
+        {[[150, 36], [210, 52], [250, 30], [40, 40], [392, 60]].map(([x, y]) => <circle key={`${x}${y}`} cx={x} cy={y} r={1.8} />)}
+      </g>
+      <Paper rot={0.5}><path d="M8 204 H412 V246 H8 Z" fill="#4a3a62" /></Paper>
+      <Paper rot={-0.6} at={[84, 150]}>
+        <path d="M18 112 H150 V204 H18 Z" fill="#7d5a8c" />
+        <path d="M8 116 L84 70 L160 116 Z" fill="#2f2447" />
+        <path d="M98 132 H134 V164 H98 Z" fill="#ffb347" />
+        <path d="M18 186 H150 V196 H18 Z" fill="#5c4a78" />
+      </Paper>
+      <rect x={98} y={132} width={36} height={32} fill="#ffb347" opacity={0.35} filter="url(#glow)" />
+      <Paper rot={0.8} at={[336, 150]}>
+        <path d="M270 128 H404 V204 H270 Z" fill="#8a5f86" />
+        <path d="M260 132 L337 92 L414 132 Z" fill="#2f2447" />
+        <path d="M282 150 H306 V176 H282 Z" fill="#ffb347" />
+      </Paper>
+      <Paper rot={-1.2} at={[332, 118]}>
+        <path d="M332 76 V98 M332 98 L314 106 L302 80 M332 98 L352 106 L364 82 M332 98 V152 M332 152 L324 204 M332 152 L342 204" fill="none" stroke="#f6efe0" strokeWidth={6} strokeLinecap="round" strokeLinejoin="round" />
+        <circle cx={332} cy={58} r={17} fill="#f6efe0" />
+        <ellipse cx={332} cy={118} rx={22} ry={24} fill="#f6efe0" />
+        <ellipse cx={332} cy={152} rx={17} ry={8} fill="#f6efe0" />
+      </Paper>
+      <g {...INK} strokeWidth={1.3}>
+        <circle cx={325} cy={56} r={4} fill="#2a2219" /> <circle cx={339} cy={56} r={4} fill="#2a2219" />
+        <path d="M332 62 l-2 5 h4 Z M322 70 h20 M326 70 v4 M332 70 v4 M338 70 v4" />
+        <path d="M313 108 Q332 114 351 108 M312 118 Q332 124 352 118 M313 128 Q332 134 351 128 M332 100 V142" />
+      </g>
+      {[[44, 200, 16], [82, 205, 12], [250, 206, 13]].map(([x, y, r], i) => (
+        <Paper key={x} rot={i * 3 - 3} at={[x, y]}>
+          <ellipse cx={x} cy={y} rx={r} ry={r * 0.82} fill="#f08a3c" />
+          <path d={`M${x} ${y - r * 0.82} v-5`} stroke="#4a6a3a" strokeWidth={3} strokeLinecap="round" fill="none" />
+        </Paper>
+      ))}
+      <g fill="#2a2219">
+        <path d="M36 196 l4 -6 l4 6 Z M48 196 l4 -6 l4 6 Z M38 206 q6 5 14 0 q-7 2 -14 0 Z" />
+        <path d="M176 44 q6 -9 11 0 q5 -9 11 0 q-11 4 -11 11 q0 -7 -11 -11 Z M232 66 q5 -8 10 0 q4 -8 10 0 q-10 3 -10 10 q0 -7 -10 -10 Z" />
+      </g>
+    </>
+  );
+}
+
 export const SCENES: Record<string, () => React.JSX.Element> = {
   "Nito's Empanadas": NitosKitchen,
   "Coastal Plumbing": CoastalPlumbing,
@@ -396,10 +667,22 @@ export const SCENES: Record<string, () => React.JSX.Element> = {
   "Anchor Taproom": AnchorTaproom,
   "Greenline Landscaping": GreenlineYard,
   "Shine Mobile Detailing": ShineDetailing,
+  "hoa-covenants": HoaCovenants,
+  "hoa-street": HoaStreet,
+  "hoa-bingo": HoaBingo,
+  "hoa-pool": HoaPool,
+  "hoa-yardsale": HoaYardSale,
+  "hoa-halloween": HoaHalloween,
 };
 
-/** All scenes stacked; the current business's fades in, the rest fade out. */
-export function ShortyScenes({ biz, show }: { biz: string; show: boolean }) {
+/** Which scenes belong to which version of the page; only the current version's are drawn. */
+const GROUPS = {
+  business: ["Nito's Empanadas", "Coastal Plumbing", "Salt & Shear Salon", "Low Tide Tacos", "Rise Bakery", "Anchor Taproom", "Greenline Landscaping", "Shine Mobile Detailing"],
+  hoa: ["hoa-covenants", "hoa-street", "hoa-bingo", "hoa-pool", "hoa-yardsale", "hoa-halloween"],
+};
+
+/** The current version's scenes stacked; the one for this text fades in, the rest fade out. */
+export function ShortyScenes({ scene, group, show }: { scene: string; group: "business" | "hoa"; show: boolean }) {
   return (
     <div
       aria-hidden="true"
@@ -420,11 +703,14 @@ export function ShortyScenes({ biz, show }: { biz: string; show: boolean }) {
             <feGaussianBlur stdDeviation={4} />
           </filter>
         </defs>
-        {Object.entries(SCENES).map(([name, Scene]) => (
-          <g key={name} className="transition-opacity duration-700" style={{ opacity: show && name === biz ? 1 : 0 }}>
-            <Scene />
-          </g>
-        ))}
+        {GROUPS[group].map((name) => {
+          const Scene = SCENES[name];
+          return (
+            <g key={name} className="transition-opacity duration-700" style={{ opacity: show && name === scene ? 1 : 0 }}>
+              <Scene />
+            </g>
+          );
+        })}
       </svg>
     </div>
   );

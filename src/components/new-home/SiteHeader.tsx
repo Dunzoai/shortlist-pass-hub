@@ -3,13 +3,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useAudience, type Audience } from "./audience";
 
 export const APP_SIGNUP_URL = "https://app.shortlistpass.com/signup";
 const APP_LOGIN_URL = "https://app.shortlistpass.com/login";
 
 function AudienceToggle() {
-  const [audience, setAudience] = useState<"business" | "hoa">("business");
-  const item = (key: typeof audience, label: string, short: string) => (
+  const { audience, setAudience } = useAudience();
+  const item = (key: Audience, label: string, short: string) => (
     <button
       type="button"
       onClick={() => setAudience(key)}
