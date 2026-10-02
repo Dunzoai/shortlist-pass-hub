@@ -153,6 +153,8 @@ const EXCHANGES: Exchange[] = [
 ];
 
 const HELLO_MS = 1500;
+/* How he takes a finished job: a different look each round, the big grin only now and then. */
+const REACTIONS: MascotMood[] = ["content", "whistle", "pleased", "proud"];
 /* Per text:
    0 quiet · 1 owner typing… · 2 their text lands (he nods) · 3 he works his phone ·
    4 the card grows out of his phone · 5 Shorty typing… · 6 his reply lands ·
@@ -267,7 +269,7 @@ export function ShortyHero() {
     : reduce.current ? "pleased"
     : step === 2 ? "nod"
     : step >= 3 && step <= 5 ? "tapping"
-    : step === 6 || step === 7 ? "pleased"
+    : step === 6 || step === 7 ? REACTIONS[n % REACTIONS.length]
     : "wait";
   const owner: BubbleState = !live || step < 1 || step > 7 ? "hidden" : step === 1 ? "typing" : "text";
   const shorty: BubbleState = !live || step < 5 || step > 7 ? "hidden" : step === 5 ? "typing" : "text";
@@ -291,9 +293,15 @@ export function ShortyHero() {
           <div className="absolute inset-x-0 bottom-0 h-[230px] lg:h-[400px]">
             <ShortyScenes biz={ex.biz} show />
           </div>
-          <div className="mt-4 flex h-[150px] flex-col justify-end gap-2 sm:h-[190px] sm:gap-2.5 lg:mt-0 lg:h-[230px] lg:gap-4">
-            <TextBubble state={owner} name={ex.biz} tint={ex.tint}>{ex.ask}</TextBubble>
-            <TextBubble state={shorty} name="Shorty" tint={MINT} mine>{ex.reply}</TextBubble>
+          {/* Each bubble has its own fixed spot, so nothing shifts when the other lands: the owner's
+              grows down from the top right, Shorty's grows up from just over his head. */}
+          <div className="relative mt-4 h-[150px] sm:h-[190px] lg:mt-0 lg:h-[230px]">
+            <div className="absolute top-0 right-0">
+              <TextBubble state={owner} name={ex.biz} tint={ex.tint}>{ex.ask}</TextBubble>
+            </div>
+            <div className="absolute bottom-0 left-0">
+              <TextBubble state={shorty} name="Shorty" tint={MINT} mine>{ex.reply}</TextBubble>
+            </div>
           </div>
           {/* Shorty sits a little left of center so the card has room to come out on his right. */}
           <div className="relative -mt-7 w-[var(--w)] -translate-x-[42px] self-center [--w:190px] sm:-mt-9 lg:-translate-x-[70px] lg:[--w:300px]">

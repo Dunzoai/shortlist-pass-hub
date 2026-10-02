@@ -19,7 +19,7 @@
  * Docs: docs/features/admin-dashboard/shorty-mascot.md.
  */
 
-export type MascotMood = 'walk' | 'wait' | 'nod' | 'tapping' | 'pleased' | 'surprised' | 'hello' | 'idle' | 'listening' | 'thinking' | 'working' | 'done' | 'oops';
+export type MascotMood = 'walk' | 'wait' | 'nod' | 'tapping' | 'pleased' | 'content' | 'whistle' | 'proud' | 'surprised' | 'hello' | 'idle' | 'listening' | 'thinking' | 'working' | 'done' | 'oops';
 export type MascotTask = 'menu' | 'event' | 'social' | 'text' | 'none';
 export type Side = 'L' | 'R';
 
@@ -154,7 +154,7 @@ function nod(t: number): Pose {
   const n = t > 0.55 ? Math.max(0, Math.sin((t - 0.55) * Math.PI * 2.6)) * (1 - seg(t, 1.3, 1.6)) : 0;
   p.by = 0.6 + Math.sin(t * 2.4) * 0.6 - n * 1.5; p.rot = 1.5 * look + n * 2;
   p.L = hang('L', Math.sin(t * 2) * 1.5); p.R = hang('R', Math.sin(t * 2) * 1.5);
-  p.face = { ...p.face, mouth: n > 0.2 ? 'grin' : 'none', gx: 2.4 * look, gy: -2.2 * look + n * 2.5, bl: -1.5 * look, br: -2.5 * look };
+  p.face = { ...p.face, mouth: 'none', gx: 2.4 * look, gy: -2.2 * look + n * 2.5, bl: -1.5 * look, br: -2.5 * look };
   return p;
 }
 /** PLEASED (website hero): reply sent. A small smile, a gentle bob, eyes back on you. */
@@ -171,13 +171,41 @@ function pleased(t: number): Pose {
     thumb tapping, eyes on the screen; the rig lights his face with its glow. */
 export const TAP_PHONE_AT: [number, number] = [84, 132];
 function tapping(t: number): Pose {
-  const p = base(t), up = easeOutBack(seg(t, 0, 0.3), 1.4), tap = Math.max(0, Math.sin(t * 15)) * 2.2;
+  const p = base(t), up = easeOutBack(seg(t, 0, 0.3), 1.4), tap = Math.max(0, Math.sin(t * 13)) * 0.9;
   const [px, py] = TAP_PHONE_AT;
   p.by = 0.5 + Math.sin(t * 2.2) * 0.5; p.rot = 1.5;
-  p.props.phoneBack = hold({ at: [px, py], s: 1.5 * up, rot: -6 });
-  p.R = arm(...to('R', px + 6, py - 4 - tap), 14, 1, -70, 0, 1);
-  p.L = arm(...to('L', px - 14, py - 22), 16, 1, 10, 0, 1);
+  /* both gloves wrap the phone's lower edges; the thumbs are on the screen side, out of sight,
+     so all we see is the phone give a tiny bob with each tap */
+  p.props.phoneBack = hold({ at: [px, py - tap], s: 1.5 * up, rot: -6 });
+  p.R = arm(...to('R', px + 15, py - 14 - tap), 14, 1, 160, 0, 1);
+  p.L = arm(...to('L', px - 16, py - 12 - tap), 16, 1, 20, 0, 1);
   p.face = { ...p.face, mouth: 'none', gx: 1.6, gy: 2.8, bl: 1, br: 0.5, blr: 6, brr: -4 };
+  return p;
+}
+/** CONTENT (website hero): job done, mouth closed, eyes squinting happy, a slow satisfied nod. */
+function content(t: number): Pose {
+  const p = base(t), w = t * 2.2, k = Math.sin(Math.PI * seg(t, 0, 0.4));
+  p.by = k * 1.5 + Math.sin(w) * 0.5; p.rot = -1 + Math.sin(w / 2) * 0.8;
+  p.L = hang('L', 1.5 * Math.sin(w / 2)); p.R = hang('R', 1.5 * Math.sin(w / 2));
+  p.face = { ...p.face, mouth: 'none', eo: 0.55, gx: 0, gy: 0.6, bl: -2.5, br: -2.5 };
+  return p;
+}
+/** WHISTLE (website hero): a little tune while he waits for the next one, notes floating up. */
+function whistle(t: number): Pose {
+  const p = base(t), w = t * 3;
+  p.by = Math.abs(Math.sin(w)) * 0.8; p.rot = Math.sin(w / 2) * 1.4;
+  p.L = hang('L', 3 * Math.sin(w / 2)); p.R = hang('R', 3 * Math.sin(w / 2));
+  p.feet.L.tilt = -Math.max(0, Math.sin(w)) * 12; p.feet.L.lift = Math.max(0, Math.sin(w)) * 1.2;
+  p.face = { ...p.face, mouth: 'o', gx: 1.2, gy: -1.2, bl: -2, br: -1 };
+  p.fx.notes = 1;
+  return p;
+}
+/** PROUD (website hero): glove on his hip, chin up, eyebrows doing the talking. */
+function proud(t: number): Pose {
+  const p = base(t), k = easeOutBack(seg(t, 0, 0.35), 1.3);
+  p.L = hip('L'); p.R = hang('R', Math.sin(t * 2) * 1.5);
+  p.rot = -2.5 * k; p.sy = 1 + 0.02 * k; p.by = 0.6 + Math.sin(t * 2.2) * 0.4;
+  p.face = { ...p.face, mouth: 'none', gx: -0.4, gy: -1, bl: -3.5 * k, br: -1 * k, brr: 8 * k };
   return p;
 }
 function hello(t: number): Pose {
@@ -373,6 +401,9 @@ export const DEFAULT_POSES: Record<string, PoseEntry> = {
   nod: { pose: nod, still: 0.4 },
   tapping: { pose: tapping, still: 0.6 },
   pleased: { pose: pleased, still: 0.6 },
+  content: { pose: content, still: 0.8 },
+  whistle: { pose: whistle, still: 0.8 },
+  proud: { pose: proud, still: 0.8 },
   surprised: { pose: surprised, still: 0.4 },
   hello: { pose: hello, still: 1.2 },
   idle: { pose: idle, still: 3.0 },
