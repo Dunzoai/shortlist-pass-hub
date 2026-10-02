@@ -153,18 +153,18 @@ ${KEYFRAMES}
 `;
 
 /** The rig's ticket body outline (same as the hero Shorty), `i` insets it for the stitching. */
-function ticketPath(i = 0) {
+export function ticketPath(i = 0) {
   const x0 = 14, x1 = 112, y0 = 3, y1 = 172, r = 11, ny = 77, nr = 5.5;
   const a = x0 + i, b = x1 - i, t = y0 + i, u = y1 - i, rr = Math.max(2, r - i), n = nr + i;
   return `M${a + rr} ${t} H${b - rr} Q${b} ${t} ${b} ${t + rr} V${ny - n} A${n} ${n} 0 0 0 ${b} ${ny + n} V${u - rr} Q${b} ${u} ${b - rr} ${u} H${a + rr} Q${a} ${u} ${a} ${u - rr} V${ny + n} A${n} ${n} 0 0 0 ${a} ${ny - n} V${t + rr} Q${a} ${t} ${a + rr} ${t} Z`;
 }
 
 /* Shorty's own palette, from the rig. */
-const G = { green: "#8cc3a1", side: "#5f9677", stitch: "#3e6c56", ink: "#1d1a16", white: "#fbf6e6" };
-const ink = (w: number) => ({ stroke: G.ink, strokeWidth: w, strokeLinejoin: "round" as const, strokeLinecap: "round" as const });
+export const G = { green: "#8cc3a1", side: "#5f9677", stitch: "#3e6c56", ink: "#1d1a16", white: "#fbf6e6" };
+export const ink = (w: number) => ({ stroke: G.ink, strokeWidth: w, strokeLinejoin: "round" as const, strokeLinecap: "round" as const });
 const OFFSET = "translate(40 24)";   // rig space (x 0..126, y 0..240) → this SVG's 260 x 276 view box
 
-function Sneaker({ side, x, y }: { side: number; x: number; y: number }) {
+export function Sneaker({ side, x, y }: { side: number; x: number; y: number }) {
   const s = side;
   return (
     <g transform={`translate(${x} ${y})`}>
@@ -177,7 +177,7 @@ function Sneaker({ side, x, y }: { side: number; x: number; y: number }) {
 }
 
 /** A relaxed glove with its wrist at 0,0, arm along +x: a soft fist, thumb tucked. */
-function RestGlove() {
+export function RestGlove() {
   const w = { fill: G.white, ...ink(2.3) };
   return (
     <>
