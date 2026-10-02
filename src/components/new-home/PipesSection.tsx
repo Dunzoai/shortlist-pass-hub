@@ -89,7 +89,7 @@ const MOBILE: Geo = {
   arrow: { start: 14, len: 24, sw: 5 },
   shop: { bodyW: 62, bodyH: 56, signW: 84, signH: 38, signFont: 12, flaps: 3, awn: 15, post: 9 },
   card: { w: 472, pad: 12, head: 26, headFont: 15, cols: 4, tile: [106, 100], gap: 8, logo: 48, name: 14, lift: 0, center: [83, -202 + 4 + 150 / 2], tilt: 1 },
-  bubble: { font: 11.2, charW: 6.7, agent: { x: 246, y: -2, tail: "up" } },
+  bubble: { font: 11.2, charW: 6.7, agent: { x: 248, y: 22, tail: "up" } },
 };
 
 const DESK = {
@@ -109,10 +109,18 @@ function shopArrowD(tip: Pt, t: number, sw: number, gap: number): string {
   const w1 = wing(0.62), w2 = wing(-0.62);
   return `M${tail[0].toFixed(1)} ${tail[1].toFixed(1)} L${tip[0].toFixed(1)} ${tip[1].toFixed(1)} M${w1[0].toFixed(1)} ${w1[1].toFixed(1)} L${tip[0].toFixed(1)} ${tip[1].toFixed(1)} L${w2[0].toFixed(1)} ${w2[1].toFixed(1)}`;
 }
-/** AI agents → pipe: a plain line that comes almost to the pipe's right end and stops short, a small break on purpose. */
-function agentLineD(tail: Pt, t: number, gap: number): string {
-  const R = pipeEnds(carryPose(t)).R, u = unit(R, tail);
-  return `M${tail[0].toFixed(1)} ${tail[1].toFixed(1)} L${(R[0] + u[0] * gap).toFixed(1)} ${(R[1] + u[1] * gap).toFixed(1)}`;
+/**
+ * AI agents → pipe: a plain, softly curved line. It stops short of the card AND short of the pipe's right end (a small
+ * break at each, on purpose), and eases into the pipe's end along the pipe's own angle. On phones it hangs down from
+ * under the card and curls in; on desktop it's a gentle S.
+ */
+function agentCurveD(tail: Pt, t: number, gap: number, phone: boolean): string {
+  const { L, R } = pipeEnds(carryPose(t)), axis = unit(L, R), perp: Pt = [-axis[1], axis[0]];
+  const E: Pt = [R[0] + axis[0] * gap, R[1] + axis[1] * gap];
+  const c1: Pt = phone ? [tail[0], tail[1] + 52] : [tail[0] - axis[0] * 14 + perp[0] * 11, tail[1] - axis[1] * 14 + perp[1] * 11];
+  const k = phone ? 30 : 14, c2: Pt = phone ? [E[0] + axis[0] * k, E[1] + axis[1] * k] : [E[0] + axis[0] * k + perp[0] * 11, E[1] + axis[1] * k + perp[1] * 11];
+  const f = (v: Pt) => `${v[0].toFixed(1)} ${v[1].toFixed(1)}`;
+  return `M${f(tail)} C${f(c1)} ${f(c2)} ${f(E)}`;
 }
 
 /** A cut-paper sheet: torn-edge cream with a hard shadow, then whatever's drawn on it. */
@@ -232,15 +240,16 @@ function Scene({ g, mode }: { g: Geo; mode: Audience }) {
   const rows = Math.ceil(AGENTS.length / K.cols), cardH = K.pad * 2 + K.head + rows * K.tile[1] + (rows - 1) * K.gap;
   const cardC: [number, number] = K.center ?? [tipR[0] + dirR[0] * (8 + K.w / 2), tipR[1] + dirR[1] * (8 + K.w / 2) - K.lift];
 
-  /* fixed tails: the shop's arrow starts at the shop; the agents' line starts just inside the card's edge */
-  const shopTip: Pt = tipL, GAP = g.phone ? 13 : 15, agentTail: Pt = g.phone ? [181, -40] : [tipR[0] + dirR[0] * 20, tipR[1] + dirR[1] * 20];
-  const dShop0 = shopArrowD(shopTip, STILL_T, A.sw, GAP), dAgent0 = agentLineD(agentTail, STILL_T, GAP);
+  /* fixed ends: the arrow's head at the shop; the agents' line starts a little way off the card (breathing room), on the pipe's axis */
+  const edgeX = cardC[0] - K.w / 2 - 14, cardLeftGap: Pt = [edgeX, END_R[1] + (edgeX - END_R[0]) * (SIN / COS)];
+  const shopTip: Pt = tipL, GAP = g.phone ? 13 : 15, agentTail: Pt = g.phone ? [128, -34] : cardLeftGap;
+  const dShop0 = shopArrowD(shopTip, STILL_T, A.sw, GAP), dAgent0 = agentCurveD(agentTail, STILL_T, GAP, g.phone);
 
   useEffect(() => {
     const el = box.current;
     if (!el) return;
     const draw = (t: number) => {
-      const a = shopArrowD(shopTip, t, A.sw, GAP), b = agentLineD(agentTail, t, GAP);
+      const a = shopArrowD(shopTip, t, A.sw, GAP), b = agentCurveD(agentTail, t, GAP, g.phone);
       lines.current[0]?.setAttribute("d", a); lines.current[1]?.setAttribute("d", a);
       lines.current[2]?.setAttribute("d", b); lines.current[3]?.setAttribute("d", b);
     };
@@ -307,7 +316,7 @@ function Scene({ g, mode }: { g: Geo; mode: Audience }) {
 
       {/* front layer: the arrows, the two question bubbles and the AI agents card */}
       <svg viewBox={view} aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full overflow-visible">
-        {/* an arrow out to the bakery, and a plain line from the AI agents that stops just short of the pipe: both sway with it */}
+        {/* an arrow out to the bakery, and a soft curved line from the AI agents that stops short of both the card and the pipe: both sway with it */}
         <g fill="none" strokeLinecap="round" strokeLinejoin="round" data-agents="lines">
           <path ref={(el) => { lines.current[0] = el; }} d={dShop0} stroke={INK} strokeOpacity={0.3} strokeWidth={A.sw} transform={`translate(${A.sw * 0.35} ${A.sw * 0.5})`} />
           <path ref={(el) => { lines.current[1] = el; }} d={dShop0} stroke={INK} strokeWidth={A.sw} />
@@ -318,7 +327,7 @@ function Scene({ g, mode }: { g: Geo; mode: Audience }) {
         {/* the question above the shop */}
         <Bubble mark="ticket" x={shopCx} y={signTop - (g.phone ? 27 : 25)} lines={M.shopBubble[li]} font={B.font} charW={B.charW} tail="down" tilt={-2} tailLen={g.phone ? 20 : 23} note={{ kind: "match", text: "matched!" }} />
         {/* the question by the AI agents */}
-        <Bubble mark="ticket" x={B.agent.x} y={B.agent.y} lines={M.agentBubble[li]} font={B.font} charW={B.charW} tail={B.agent.tail} tilt={g.phone ? -3 : 2} tailLen={g.phone ? 12 : 16} note={{ kind: "search", text: "searching…" }} />
+        <Bubble mark="ticket" x={B.agent.x} y={B.agent.y} lines={M.agentBubble[li]} font={B.font} charW={B.charW} tail={B.agent.tail} tilt={g.phone ? -3 : 2} tailLen={g.phone ? 30 : 16} note={{ kind: "search", text: "searching…" }} />
 
         {/* AI Agents, with the four logos */}
         <PaperCard mark="card" x={cardC[0]} y={cardC[1]} w={K.w} h={cardH} tilt={K.tilt}>
@@ -359,8 +368,6 @@ const REVEAL_CSS = `
   /* each line sits on a paper pill, so it feels grounded as it slides in */
   .pp-pill{position:relative;padding:14px 18px;border:2px solid #14161A;border-radius:22px;background:#FBF6E6;box-shadow:3px 4px 0 #14161A}
   .pp-pill::before{content:"";position:absolute;inset:0;border-radius:inherit;background-image:url("${GRAIN_URL}");opacity:.2;mix-blend-mode:multiply;pointer-events:none}
-  .pp-pill-ink{background:#14161A;color:#F6F1E4;box-shadow:3px 4px 0 rgba(10,42,29,.55)}
-  .pp-pill-ink::before{opacity:.1;mix-blend-mode:screen}
   [data-rv="l"]{rotate:-1deg}
   [data-rv="r"]{rotate:1deg}
   [data-armed] [data-rv]{opacity:0;transition:opacity .7s ease,transform .8s cubic-bezier(.2,.8,.25,1)}
@@ -427,10 +434,10 @@ export function PipesSection() {
               They get read by agents, but can’t do anything.
             </span>{" "}
             <span data-rv="l" className="pp-pill mt-3.5 block text-[22px] leading-[1.2] min-[900px]:mt-0 min-[900px]:inline min-[900px]:text-[length:inherit]">
-              Shorty builds the pipes that let your customers’ AI agents
-            </span>{" "}
-            <span data-rv="r" className="pp-pill pp-pill-ink mt-3.5 block text-[27px] leading-[1.15] min-[900px]:mt-0 min-[900px]:inline min-[900px]:text-[length:inherit] min-[900px]:leading-[inherit]">
-              <strong className="font-bold">transact</strong>, <strong className="font-bold">book</strong>, and <strong className="font-bold">interact</strong>.
+              Shorty builds the pipes that let your customers’ AI agents{" "}
+              <span className="mt-2.5 block text-[27px] leading-[1.15] min-[900px]:mt-0 min-[900px]:inline min-[900px]:text-[length:inherit]">
+                <strong className="font-bold">transact</strong>, <strong className="font-bold">book</strong>, and <strong className="font-bold">interact</strong>.
+              </span>
             </span>
           </p>
         </div>
