@@ -9,7 +9,7 @@
  * pipe ends exactly. The cards, bubbles, tiles and pipe are cut paper (torn edge, grain, hard offset
  * shadow) like the hero scenes. No animation.
  */
-import { useSyncExternalStore } from "react";
+import { useEffect, useRef, useSyncExternalStore } from "react";
 import { ShortyMascot } from "@/components/shorty/ShortyMascot";
 import { CARRY_TILT } from "@/lib/shorty/mascot/poses";
 import { AI_LOGOS } from "./aiLogos";
@@ -80,7 +80,7 @@ const DESKTOP: Geo = {
   arrow: { start: 22, len: 46, sw: 7 },
   shop: { bodyW: 84, bodyH: 80, signW: 104, signH: 44, signFont: 14, flaps: 4, awn: 20, post: 12 },
   card: { w: 154, pad: 13, head: 26, headFont: 14, cols: 2, tile: [57, 70], gap: 8, logo: 32, name: 12, lift: 14, tilt: 2 },
-  bubble: { font: 10.6, charW: 6.1, agent: { x: 303, y: -48, tail: "down" } },
+  bubble: { font: 10.6, charW: 6.1, agent: { x: 303, y: -70, tail: "down" } },
 };
 /* Phones: the agents card spans the screen under the headline; Shorty and the shop sit below it. */
 const MOBILE: Geo = {
@@ -124,11 +124,33 @@ function PaperCard({ x, y, w, h, tilt, mark, children }: { x: number; y: number;
   );
 }
 
+/** "searching…" with a magnifier, or "matched!" with a check: the little status line under a bubble. */
+function StatusNote({ note, font, x, y }: { note: { kind: "search" | "match"; text: string }; font: number; x: number; y: number }) {
+  const icon = font * 1.15, gap = font * 0.45, textW = note.text.length * font * 0.56, total = icon + gap + textW, x0 = -total / 2;
+  const match = note.kind === "match", col = match ? "#0F5F43" : "#0A2A1D";
+  return (
+    <g data-agents="note" transform={`translate(${x} ${y})`}>
+      {match ? (
+        <>
+          <circle cx={x0 + icon / 2} cy={-font * 0.34} r={icon / 2} fill="#0F5F43" />
+          <path d={`M${x0 + icon * 0.27} ${-font * 0.34} l${icon * 0.17} ${icon * 0.19} l${icon * 0.32} ${-icon * 0.36}`} fill="none" stroke={CREAM} strokeWidth={font * 0.17} strokeLinecap="round" strokeLinejoin="round" />
+        </>
+      ) : (
+        <g fill="none" stroke={col} strokeWidth={font * 0.17} strokeLinecap="round">
+          <circle cx={x0 + icon * 0.42} cy={-font * 0.46} r={icon * 0.33} />
+          <path d={`M${x0 + icon * 0.66} ${-font * 0.22} l${icon * 0.3} ${icon * 0.3}`} />
+        </g>
+      )}
+      <text x={x0 + icon + gap} y={0} fontSize={font} fontWeight={match ? 800 : 700} fontStyle={match ? "normal" : "italic"} fill={col} fillOpacity={match ? 1 : 0.8} style={{ fontFamily: SANS }}>{note.text}</text>
+    </g>
+  );
+}
+
 /**
  * A paper text-message bubble: cream, torn edge, grain, hard shadow, and a tail toward what it's asking about.
  * (x, y) is where the tail leaves the bubble: its bottom edge for a down tail, its top edge for an up tail.
  */
-function Bubble({ x, y, lines, font, charW, tail, tilt, mark }: { x: number; y: number; lines: string[]; font: number; charW: number; tail: "up" | "down"; tilt: number; mark: string }) {
+function Bubble({ x, y, lines, font, charW, tail, tilt, mark, tailLen = 12, note }: { x: number; y: number; lines: string[]; font: number; charW: number; tail: "up" | "down"; tilt: number; mark: string; tailLen?: number; note?: { kind: "search" | "match"; text: string } }) {
   const w = Math.round(Math.max(...lines.map((l) => l.length)) * charW + 26), h = Math.round(lines.length * font * 1.3 + 20);
   const cy = tail === "down" ? y - h / 2 : y + h / 2;
   const edge = tail === "down" ? h / 2 : -h / 2, dir = tail === "down" ? 1 : -1;
@@ -137,12 +159,13 @@ function Bubble({ x, y, lines, font, charW, tail, tilt, mark }: { x: number; y: 
     <g transform={`translate(${x} ${cy}) rotate(${tilt})`} data-agents={mark}>
       <g filter="url(#mc-paper)">
         <rect x={-w / 2} y={-h / 2} width={w} height={h} rx={rx} fill={CREAM} />
-        <path d={`M${tx - 8} ${edge - dir} L${tx + 9} ${edge - dir} L${tx - 3} ${edge + dir * 12} Z`} fill={CREAM} />
+        <path d={`M${tx - 8} ${edge - dir} L${tx + 9} ${edge - dir} L${tx - 3} ${edge + dir * tailLen} Z`} fill={CREAM} />
       </g>
       <rect x={-w / 2} y={-h / 2} width={w} height={h} rx={rx} fill="url(#mc-grain)" fillOpacity={0.14} />
       <text textAnchor="middle" fontSize={font} fontWeight={700} fill={INK} style={{ fontFamily: SANS }}>
         {lines.map((l, i) => <tspan key={l} x={0} y={-h / 2 + 10 + font * 1.3 * (i + 0.78)}>{l}</tspan>)}
       </text>
+      {note && <StatusNote note={note} font={font * 0.84} x={tail === "down" ? w * 0.2 : 0} y={h / 2 + font * 0.84 + 4} />}
     </g>
   );
 }
@@ -252,9 +275,9 @@ function Scene({ g, mode }: { g: Geo; mode: Audience }) {
         {g.rightArrow ? <Arrow base={g.rightArrow.base} deg={g.rightArrow.deg} len={g.rightArrow.len} sw={A.sw} /> : <Arrow base={baseR} deg={aR} len={A.len} sw={A.sw} />}
 
         {/* the question above the shop */}
-        <Bubble mark="ticket" x={shopCx} y={signTop - 12} lines={M.shopBubble[li]} font={B.font} charW={B.charW} tail="down" tilt={-2} />
+        <Bubble mark="ticket" x={shopCx} y={signTop - (g.phone ? 20 : 25)} lines={M.shopBubble[li]} font={B.font} charW={B.charW} tail="down" tilt={-2} tailLen={g.phone ? 18 : 23} note={{ kind: "match", text: "matched!" }} />
         {/* the question by the AI agents */}
-        <Bubble mark="ticket" x={B.agent.x} y={B.agent.y} lines={M.agentBubble[li]} font={B.font} charW={B.charW} tail={B.agent.tail} tilt={g.phone ? -3 : 2} />
+        <Bubble mark="ticket" x={B.agent.x} y={B.agent.y} lines={M.agentBubble[li]} font={B.font} charW={B.charW} tail={B.agent.tail} tilt={g.phone ? -3 : 2} tailLen={g.phone ? 12 : 16} note={{ kind: "search", text: "searching…" }} />
 
         {/* AI Agents, with the four logos */}
         <PaperCard mark="card" x={cardC[0]} y={cardC[1]} w={K.w} h={cardH} tilt={K.tilt}>
@@ -289,14 +312,37 @@ function Scene({ g, mode }: { g: Geo; mode: Audience }) {
   );
 }
 
+/* Phones: each line of the paragraph slides in from alternating sides as it scrolls into view. */
+const REVEAL_CSS = `
+@media (max-width: 899px){
+  [data-armed] [data-rv]{opacity:0;transition:opacity .7s ease,transform .8s cubic-bezier(.2,.8,.25,1)}
+  [data-armed] [data-rv="l"]{transform:translateX(-48px)}
+  [data-armed] [data-rv="r"]{transform:translateX(48px)}
+  [data-armed] [data-rv][data-in]{opacity:1;transform:none}
+}
+@media (prefers-reduced-motion: reduce){[data-armed] [data-rv]{opacity:1 !important;transform:none !important;transition:none !important}}
+`;
+
 export function PipesSection() {
   const desk = useSyncExternalStore(DESK.subscribe, DESK.get, () => true);
+  const root = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    const el = root.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    el.setAttribute("data-armed", "");
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) { e.target.setAttribute("data-in", ""); io.unobserve(e.target); } });
+    }, { threshold: 0.2, rootMargin: "0px 0px -6% 0px" });
+    el.querySelectorAll("[data-rv]").forEach((n) => io.observe(n));
+    return () => io.disconnect();
+  }, []);
   const { audience } = useAudience();
   const M = MODES[audience];
   return (
-    <section aria-labelledby="pipes-h">
+    <section ref={root} aria-labelledby="pipes-h">
+      <style dangerouslySetInnerHTML={{ __html: REVEAL_CSS }} />
       {/* The headline: its own black strip, the lead-in to the scene below. */}
-      <div className="overflow-x-clip bg-[#14161A] px-5 pt-12 pb-7 min-[900px]:px-10 min-[900px]:pt-20 min-[900px]:pb-14">
+      <div className="overflow-x-clip bg-[#14161A] px-5 pt-7 pb-9 min-[900px]:px-10 min-[900px]:pt-20 min-[900px]:pb-14">
         <div className="mx-auto max-w-[1180px]">
           <div data-agents="head" className="relative z-10 text-center">
             <h2
@@ -314,10 +360,10 @@ export function PipesSection() {
       </div>
 
       {/* The scene, on mint. On phones the agents card tucks up over the strip's edge, so it reads as part of the headline group. */}
-      <div className="relative overflow-x-clip px-5 pb-16 text-[#0D2B20] min-[900px]:px-10 min-[900px]:pt-16 min-[900px]:pb-24" style={{ background: MINT_BG }}>
+      <div className="relative flow-root overflow-x-clip px-5 pb-16 text-[#0D2B20] min-[900px]:px-10 min-[900px]:pt-16 min-[900px]:pb-24" style={{ background: MINT_BG }}>
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-[.4] mix-blend-multiply" style={{ backgroundImage: `url("${GRAIN_URL}")` }} />
         <div className="relative mx-auto max-w-[1180px]">
-          <div className="relative z-10 -mt-[18px] min-[900px]:mt-0">
+          <div className="relative z-10 -mt-[28px] min-[900px]:mt-0">
             <Scene key={`${desk ? "d" : "m"}-${audience}`} g={desk ? DESKTOP : MOBILE} mode={audience} />
           </div>
           {/* One paragraph on desktop; on phones each idea gets its own line so the emphasis is easy to scan. */}
@@ -326,15 +372,15 @@ export function PipesSection() {
             className="mx-auto mt-7 max-w-[1000px] text-center leading-[1.2] [text-wrap:balance] min-[900px]:mt-8 min-[900px]:leading-[1.22]"
             style={{ fontFamily: SERIF, fontSize: "clamp(26px, 3vw, 42px)", fontWeight: 400 }}
           >
-            <span className="block text-[30px] leading-[1.15] min-[900px]:inline min-[900px]:text-[length:inherit]">
+            <span data-rv="l" className="block text-[30px] leading-[1.15] min-[900px]:inline min-[900px]:text-[length:inherit]">
               Right now your website and socials are <em className="italic">a billboard.</em>
             </span>{" "}
-            <span className="mt-4 block text-[#0D2B20]/80 min-[900px]:mt-0 min-[900px]:inline min-[900px]:text-[#0D2B20]">
+            <span data-rv="r" className="mt-4 block text-[#0D2B20]/80 min-[900px]:mt-0 min-[900px]:inline min-[900px]:text-[#0D2B20]">
               They get read by agents, but can’t do anything.
             </span>{" "}
-            <span className="mt-5 block min-[900px]:mt-0 min-[900px]:inline">
+            <span data-rv="l" className="mt-5 block min-[900px]:mt-0 min-[900px]:inline">
               Shorty builds the pipes that let your customers’ AI agents{" "}
-              <span className="mt-2 block text-[30px] leading-[1.1] min-[900px]:mt-0 min-[900px]:inline min-[900px]:text-[length:inherit]">
+              <span data-rv="r" className="mt-2 block text-[30px] leading-[1.1] min-[900px]:mt-0 min-[900px]:inline min-[900px]:text-[length:inherit]">
                 <strong className="font-bold">transact</strong>, <strong className="font-bold">book</strong>, and <strong className="font-bold">interact</strong>.
               </span>
             </span>

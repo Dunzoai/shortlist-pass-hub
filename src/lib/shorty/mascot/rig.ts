@@ -222,6 +222,12 @@ export function makeRig(svg: SVGSVGElement, opts: { small?: boolean; boil?: bool
   el('rect', { x: 42, y: -8, width: 42, height: 12, rx: 2, fill: C.white, ...ink(2.4 * W) }, hat);
   el('path', { d: 'M54 -6 V2 M63 -6 V2 M72 -6 V2', fill: 'none', ...ink(LW.inner), opacity: 0.6 }, hat);
 
+  /* A hard hat, for when he's building pipes: yellow dome, centre rib, wide brim, the rig's black ink. */
+  const hardhat = el('g', {}, body);
+  el('path', { d: 'M28 5 Q28 -25 63 -25 Q98 -25 98 5 Z', fill: '#f2c94c', ...ink(2.4 * W) }, hardhat);
+  el('rect', { x: 56, y: -26, width: 14, height: 31, rx: 3, fill: '#e5b02e', ...ink(1.8 * W) }, hardhat);
+  el('rect', { x: 20, y: 2, width: 86, height: 10, rx: 5, fill: '#f2c94c', ...ink(2.4 * W) }, hardhat);
+  el('path', { d: 'M36 -4 Q40 -16 50 -19', fill: 'none', stroke: '#fff7d6', 'stroke-width': 3, 'stroke-linecap': 'round', opacity: 0.85 }, hardhat);
   const frontArms = el('g', {}, body), propLayer = el('g', {}, body), gloveLayer = el('g', {}, body);
   const arms = {} as Record<Side, { back: SVGPathElement; front: SVGPathElement }>;
   const bumps = {} as Record<Side, SVGGElement>, gloves = {} as Record<Side, ReturnType<typeof glove>>;
@@ -357,6 +363,7 @@ export function makeRig(svg: SVGSVGElement, opts: { small?: boolean; boil?: bool
     (held.phoneBack.firstChild as SVGElement | null)?.setAttribute('opacity', (0.55 * glowOn).toFixed(2));
     show(screenGlow, glowOn > 0.02);
     screenGlow.setAttribute('opacity', (glowOn * (0.85 + 0.15 * Math.sin(p.t * 9))).toFixed(2));
+    show(hardhat, (p.hardhat ?? 0) > 0.5);
     show(hat, p.hat > 0.02);
     hat.setAttribute('transform', `translate(63 4) scale(${Math.max(0.001, p.hat).toFixed(3)}) translate(-63 -4)`);
 

@@ -33,6 +33,8 @@ export type Foot = { x: number; lift: number; tilt: number };
 export type Paper = { x: number; y: number; r: number; v: number };
 export type Pose = {
   t: number; by: number; dx: number; rot: number; sx: number; sy: number; hat: number;
+  /** A yellow hard hat (the pipes section), 0–1. */
+  hardhat?: number;
   L: Arm; R: Arm;
   feet: { L: Foot; R: Foot; bow: number };
   face: { bl: number; blr: number; br: number; brr: number; gx: number; gy: number; eo: number; mouth: MouthShape };
@@ -130,6 +132,7 @@ function carry(t: number): Pose {
   const p = base(t), at: [number, number] = [63, 150];
   p.by = 0.5 + Math.sin(t * 2.2) * 0.4; p.rot = -1.2;
   p.props.pipe = hold({ at, rot: CARRY_TILT });
+  p.hardhat = 1;
   p.L = arm(...to('L', at[0] - h * c, at[1] - h * s + 2), 16, 1, 0, 0, 1);
   p.R = arm(...to('R', at[0] + h * c, at[1] + h * s + 2), 16, 1, 0, 0, 1);
   p.face = { ...p.face, mouth: 'none', gx: 2.8, gy: -1, bl: -1.5, br: -2.8, blr: 0, brr: 6 };
