@@ -2,6 +2,7 @@ import { SiteHeader } from "@/components/new-home/SiteHeader";
 import { ShortyHero } from "@/components/new-home/ShortyHero";
 import { PipesSection } from "@/components/new-home/PipesSection";
 import { SkillsSection } from "@/components/new-home/SkillsSection";
+import { PricingSection } from "@/components/new-home/PricingSection";
 import { AudienceProvider } from "@/components/new-home/audience";
 
 export default function NewHomePage() {
@@ -13,6 +14,7 @@ export default function NewHomePage() {
         {/* HOA version plugs in here: read useAudience() and pass HOA copy/scene. For now both views show the same section. */}
         <PipesSection />
         <SkillsSection />
+        <PricingSection />
       </AudienceProvider>
     </main>
   );
