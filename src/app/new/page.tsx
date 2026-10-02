@@ -5,7 +5,7 @@ import { AudienceProvider } from "@/components/new-home/audience";
 
 export default function NewHomePage() {
   return (
-    <main className="min-h-screen bg-[#f0e5cf] font-[family-name:var(--font-sans-inter)] text-[#1d1a16]">
+    <main className="min-h-screen bg-[#f5eddc] font-[family-name:var(--font-sans-inter)] text-[#1d1a16]">
       <AudienceProvider>
         <SiteHeader />
         <ShortyHero />

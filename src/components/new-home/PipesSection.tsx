@@ -32,18 +32,20 @@ const MINT_BG =
 
 /* ── Words, by mode. Bubble lines are [desktop, phone]. ───────────────────── */
 type Lines = [string[], string[]];
-const MODES: Record<Audience, { headline: [string, string]; sign: [string, string]; agentBubble: Lines; shopBubble: Lines }> = {
+const MODES: Record<Audience, { headline: [string, string]; sign: [string, string]; agentBubble: Lines; shopBubble: Lines; socialBubble: string[] }> = {
   business: {
     headline: ["AI agents are here.", "Your business can’t reach them."],
     sign: ["RISE", "BAKERY"],
     agentBubble: [["Can you find me a plumber", "for Saturday at 7pm?"], ["Can you find me", "a plumber for", "Saturday at 7pm?"]],
     shopBubble: [["Can you order me a dozen", "bagels for pickup?"], ["Can you order me", "a dozen bagels", "for pickup?"]],
+    socialBubble: ["Which brewery", "has music bingo", "this week?"],   // phones only: there's room bottom right of Shorty
   },
   hoa: {
     headline: ["Your residents are about to ask an AI.", "Does it know your rules?"],
     sign: ["HERON", "POINT HOA"],
     agentBubble: [["Can you RSVP me", "for bingo?"], ["Can you RSVP me", "for bingo?"]],
     shopBubble: [["Can I put up", "a shed?"], ["Can I put up", "a shed?"]],
+    socialBubble: ["Who’s hosting", "the block party", "this weekend?"],
   },
 };
 
@@ -71,7 +73,7 @@ type Geo = {
   arrow: { start: number; len: number; sw: number };
   shop: { bodyW: number; bodyH: number; signW: number; signH: number; signFont: number; flaps: number; awn: number; post: number };
   card: { w: number; pad: number; head: number; headFont: number; cols: number; tile: [number, number]; gap: number; logo: number; name: number; lift: number; center?: [number, number]; tilt: number };
-  bubble: { font: number; charW: number; agent: { x: number; y: number; tail: "up" | "down" } };
+  bubble: { font: number; charW: number; agent: { x: number; y: number; tail: "up" | "down" }; social?: { x: number; y: number } };
 };
 
 const DESKTOP: Geo = {
@@ -89,7 +91,7 @@ const MOBILE: Geo = {
   arrow: { start: 14, len: 24, sw: 5 },
   shop: { bodyW: 62, bodyH: 56, signW: 84, signH: 38, signFont: 12, flaps: 3, awn: 15, post: 9 },
   card: { w: 472, pad: 12, head: 26, headFont: 15, cols: 4, tile: [106, 100], gap: 8, logo: 48, name: 14, lift: 0, center: [83, -202 + 4 + 150 / 2], tilt: 1 },
-  bubble: { font: 11.2, charW: 6.7, agent: { x: 248, y: 22, tail: "up" } },
+  bubble: { font: 11.2, charW: 6.7, agent: { x: 248, y: 22, tail: "up" }, social: { x: 250, y: 168 } },
 };
 
 const DESK = {
@@ -328,6 +330,9 @@ function Scene({ g, mode }: { g: Geo; mode: Audience }) {
         <Bubble mark="ticket" x={shopCx} y={signTop - (g.phone ? 27 : 25)} lines={M.shopBubble[li]} font={B.font} charW={B.charW} tail="down" tilt={-2} tailLen={g.phone ? 20 : 23} note={{ kind: "match", text: "matched!" }} />
         {/* the question by the AI agents */}
         <Bubble mark="ticket" x={B.agent.x} y={B.agent.y} lines={M.agentBubble[li]} font={B.font} charW={B.charW} tail={B.agent.tail} tilt={g.phone ? -3 : 2} tailLen={g.phone ? 30 : 16} note={{ kind: "search", text: "searching…" }} />
+
+        {/* phones: a third, social question in the room bottom right of Shorty */}
+        {B.social && <Bubble mark="ticket" x={B.social.x} y={B.social.y} lines={M.socialBubble} font={B.font} charW={B.charW} tail="up" tilt={2} tailLen={16} />}
 
         {/* AI Agents, with the four logos */}
         <PaperCard mark="card" x={cardC[0]} y={cardC[1]} w={K.w} h={cardH} tilt={K.tilt}>
