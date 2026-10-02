@@ -23,13 +23,15 @@ type Props = {
   holdPhone?: boolean;
   /** Draw one frame and stop (a still picture), whatever the reduced-motion setting. */
   still?: boolean;
+  /** Called once, when his animation begins, with that moment (seconds, performance.now()/1000), so an overlay can run on the same clock. */
+  onStart?: (t: number) => void;
   style?: CSSProperties;
 };
 
 const BLEND_S = 0.6;
 const SEEDS = [3, 7, 11];
 
-export function ShortyMascot({ mood, task = "none", size = 160, holdPhone = false, still = false, style }: Props) {
+export function ShortyMascot({ mood, task = "none", size = 160, holdPhone = false, still = false, onStart, style }: Props) {
   const svgRef = useRef<SVGSVGElement | null>(null);
   const small = size < 100;
   const resolved = useMemo(() => resolvePose(mood, task), [mood, task]);
@@ -50,6 +52,7 @@ export function ShortyMascot({ mood, task = "none", size = 160, holdPhone = fals
     /* Phones: skip the line-boil filter (it regenerates noise 10x a second). Full frame rate everywhere. */
     const narrow = window.matchMedia?.("(max-width: 899px)").matches ?? false;
     const now = performance.now() / 1000;
+    onStart?.(now);
     const st = {
       update: makeRig(svg, { small, reduce, boil: !small && !narrow }), reduce, current: resolved, start: now,
       from: null as Pose | null, blendAt: 0, last: null as Pose | null,

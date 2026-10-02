@@ -51,6 +51,12 @@ export function bodyMatrix(p: Pose): number[] {
   return [a, b, cc, d, px - (a * px + cc * py) + p.dx, py - (b * px + d * py) - p.by];
 }
 const apply = (m: number[], [x, y]: [number, number]): [number, number] => [m[0] * x + m[2] * y + m[4], m[1] * x + m[3] * y + m[5]];
+/** Where the two ends of the carried pipe are, in the rig's own units (props ride in the body group, so the body's move counts). */
+export function pipeEnds(p: Pose): { L: [number, number]; R: [number, number] } {
+  const pr = p.props.pipe, m = bodyMatrix(p), a = (pr.rot * Math.PI) / 180, [cx, cy] = pr.at ?? [63, 150], half = 87;
+  const end = (sgn: number): [number, number] => apply(m, [cx + pr.ox + sgn * half * Math.cos(a), cy + pr.oy + sgn * half * Math.sin(a)]);
+  return { L: end(-1), R: end(1) };
+}
 
 /* ── Parts ──────────────────────────────────────────────────────────────── */
 function glove(parent: Element) {                                 // fingers along +x, wrist at 0,0
@@ -252,6 +258,7 @@ export function makeRig(svg: SVGSVGElement, opts: { small?: boolean; boil?: bool
   el('feMergeNode', { in: 'torn' }, pm); el('feMergeNode', { in: 'grain' }, pm);
   el('feDropShadow', { in: 'sheet', dx: 3, dy: 4, stdDeviation: 0, 'flood-color': '#000', 'flood-opacity': 0.38 }, pf);
   held.pipe.setAttribute('filter', `url(#pipe${id})`);
+  hardhat.setAttribute('filter', `url(#pipe${id})`);   // the hard hat is cut paper too
   const bubbleLayer = el('g', {}, body);
   const bubbles = [0, 1].map(i => { const g = el('g', {}, bubbleLayer);
     el('path', { d: 'M-12 -7 H12 Q16 -7 16 -3 V3 Q16 7 12 7 H-4 L-9 11 L-8 7 H-12 Q-16 7 -16 3 V-3 Q-16 -7 -12 -7 Z', fill: i ? '#fbf6e6' : C.green, ...ink(1.8) }, g);

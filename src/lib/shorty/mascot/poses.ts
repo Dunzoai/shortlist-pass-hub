@@ -125,17 +125,43 @@ function walk(t: number): Pose {
   p.face = { ...p.face, mouth: 'grin', bl: -2, br: -2, gx: -2.2, gy: -0.4 };
   return p;
 }
-/** CARRY (pipes section): a length of pipe held low in both gloves, eyes on where it's going (right). */
+/** CARRY (pipes section): a length of pipe held low in both gloves, swaying gently while his eyes wander. */
 export const CARRY_TILT = -14;      // degrees: the right end of the pipe is raised, pointing up toward where it's going
+/** How the pipe sways: a slow tilt and a little lift. The section's lines read this too, so they move with it. */
+export function carrySway(t: number) {
+  const w = t * 1.15;
+  return { tilt: CARRY_TILT + 2.4 * Math.sin(w), lift: 1.7 * Math.sin(w + 0.9), rock: 0.7 * Math.sin(w + 0.5) };
+}
+/** Eyes and brows: looks where the pipe's going, glances at the shop, studies the pipe, checks on you, squints with effort. */
+const CARRY_LOOKS: Array<{ at: number; gx: number; gy: number; bl: number; br: number; blr: number; brr: number; eo: number; mouth: MouthShape }> = [
+  { at: 0,    gx: 2.8,  gy: -1.2, bl: -1.5, br: -2.8, blr: 0,   brr: 6,  eo: 1,    mouth: 'none' },
+  { at: 3,    gx: -2.8, gy: 0.4,  bl: -2.8, br: -1.5, blr: -6,  brr: 0,  eo: 1,    mouth: 'none' },
+  { at: 5.5,  gx: 0.4,  gy: 3.2,  bl: 1.5,  br: 1.5,  blr: 10,  brr: 10, eo: 0.92, mouth: 'squiggle' },
+  { at: 8.5,  gx: 0,    gy: -0.2, bl: -3.5, br: -3.5, blr: -4,  brr: 4,  eo: 1.15, mouth: 'grin' },
+  { at: 10,   gx: 1,    gy: 0.5,  bl: 1,    br: 1,    blr: 8,   brr: 8,  eo: 0.62, mouth: 'none' },
+  { at: 12,   gx: 2.8,  gy: -1.2, bl: -1.5, br: -2.8, blr: 0,   brr: 6,  eo: 1,    mouth: 'none' },
+];
+const CARRY_LOOP = 15;
+function carryFace(t: number): Pose['face'] {
+  const u = t % CARRY_LOOP;
+  let i = CARRY_LOOKS.length - 1;
+  while (i > 0 && CARRY_LOOKS[i].at > u) i--;
+  const a = CARRY_LOOKS[i], b = i + 1 < CARRY_LOOKS.length ? CARRY_LOOKS[i + 1] : { ...CARRY_LOOKS[0], at: CARRY_LOOP };
+  const k = easeInOutSoft(seg(u, a.at, b.at - 0.01) * 1);
+  const m = (x: number, y: number) => x + (y - x) * k;
+  return { gx: m(a.gx, b.gx), gy: m(a.gy, b.gy), bl: m(a.bl, b.bl), br: m(a.br, b.br), blr: m(a.blr, b.blr), brr: m(a.brr, b.brr), eo: m(a.eo, b.eo), mouth: a.mouth };
+}
+export function carryPose(t: number): Pose { return carry(t); }
 function carry(t: number): Pose {
-  const th = CARRY_TILT * Math.PI / 180, c = Math.cos(th), s = Math.sin(th), h = 74;
-  const p = base(t), at: [number, number] = [63, 150];
-  p.by = 0.5 + Math.sin(t * 2.2) * 0.4; p.rot = -1.2;
-  p.props.pipe = hold({ at, rot: CARRY_TILT });
+  const { tilt, lift, rock } = carrySway(t);
+  const th = tilt * Math.PI / 180, c = Math.cos(th), s = Math.sin(th), h = 74;
+  const p = base(t), at: [number, number] = [63, 150 + lift];
+  p.by = 0.6 + 0.5 * Math.sin(t * 1.15 + 0.4); p.rot = -1.2 + rock;
+  p.props.pipe = hold({ at, rot: tilt });
   p.hardhat = 1;
-  p.L = arm(...to('L', at[0] - h * c, at[1] - h * s + 2), 16, 1, 0, 0, 1);
-  p.R = arm(...to('R', at[0] + h * c, at[1] + h * s + 2), 16, 1, 0, 0, 1);
-  p.face = { ...p.face, mouth: 'none', gx: 2.8, gy: -1, bl: -1.5, br: -2.8, blr: 0, brr: 6 };
+  p.L = arm(...to('L', at[0] - h * c, at[1] - h * s + 2), 16 + Math.sin(t * 1.15 + 2) * 1.5, 1, 0, 0, 1);
+  p.R = arm(...to('R', at[0] + h * c, at[1] + h * s + 2), 16 + Math.sin(t * 1.15 + 1) * 1.5, 1, 0, 0, 1);
+  p.face = carryFace(t);
   return p;
 }
 /** WALK, facing right (pipes section): the same stride as `walk`, mirrored so he heads toward +x. */
