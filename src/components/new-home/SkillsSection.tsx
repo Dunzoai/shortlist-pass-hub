@@ -10,7 +10,8 @@
  * transform-origin: the sunglasses, the free arm, the cup + arm, the feet and the body. Motion is CSS transform/opacity only,
  * triggered once by a single IntersectionObserver; the idle loop only runs while the section is on screen.
  */
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useAudience, type Audience } from "./audience";
 import { SkillIcon } from "./skillIcons";
 
@@ -23,35 +24,35 @@ const BODY = "var(--font-sans-inter), system-ui, sans-serif";
 const GRAIN_URL =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .11 0 0 0 0 .1 0 0 0 0 .08 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E";
 
-type Card = { icon: string; title: string; line: string };
+type Card = { icon: string; title: string; line: string; how: string };
 
 const BUSINESS: Card[] = [
-  { icon: "app", title: "Your own app", line: "Customers download an app with your name on it." },
-  { icon: "answers", title: "Answers 24/7", line: "Knows what you sell and answers at 11pm." },
-  { icon: "book", title: "Learns your business", line: "Upload a menu or just chat with him. He learns it." },
-  { icon: "events", title: "Events", line: "Tell him where you'll be. He posts it." },
-  { icon: "menu", title: "Menus and offerings", line: "Add or change an item with a text." },
-  { icon: "bag", title: "Checkout", line: "Takes the order and the payment. The money goes to your Stripe or Square, never through us." },
-  { icon: "bookings", title: "Bookings", line: "Customers pick a time and it lands on your calendar." },
-  { icon: "chart", title: "Reports", line: "Ask how the week went and he tells you." },
-  { icon: "mail", title: "Emails and newsletters", line: "Tell him what's new and he writes it." },
-  { icon: "bell", title: "Push notifications", line: "Reach everyone who has your app." },
-  { icon: "loyalty", title: "Loyalty rewards", line: "Reward the people who keep coming back." },
-  { icon: "post", title: "Social posting", line: "Say 'post this' and it's posted." },
-  { icon: "sms", title: "Text messages", line: "Deals and updates to customers who said yes." },
+  { icon: "app", title: "Your own app", line: "Customers download an app with your name on it.", how: "Your customers can download an app with your name on it. Once it's on their phone, you can send them push notifications: a new offer, a change in hours, a big announcement." },
+  { icon: "answers", title: "Answers 24/7", line: "Knows what you sell and answers at 11pm.", how: "Shorty knows what you sell or offer in detail, plus your hours and location. He answers customers at any hour the way you would, and points them to the right thing to buy or book." },
+  { icon: "book", title: "Learns your business", line: "Upload a menu or just chat with him. He learns it.", how: "Upload your menu, price list or catalog and he pulls out the items and details for you. Or just chat with him and tell him about your business. You can add to what he knows any time." },
+  { icon: "events", title: "Events", line: "Tell him the when and where. He posts it.", how: "Tell him the when and where of a sale, a pop-up, a class, a grand opening, anything. He posts the event and lets your customers know." },
+  { icon: "menu", title: "Menus and offerings", line: "Add or change an item with a text.", how: "Add a new item or service, change a price, or take something off with a text. Sold out or booked up? Tell him and he stops offering it." },
+  { icon: "bag", title: "Checkout", line: "Takes the order and the payment. The money goes to your Stripe or Square, never through us.", how: "Customers build their cart in the chat and pay through your Stripe or Square. The money lands in your bank, and we never touch it. If you use Clover, open a free Stripe or Square account to take orders through Shorty." },
+  { icon: "bookings", title: "Bookings", line: "Customers pick a time and it lands on your calendar.", how: "Customers pick an open time and it lands on your calendar. No phone tag." },
+  { icon: "chart", title: "Reports", line: "Ask how the week went and he tells you.", how: "Ask how the week went and he tells you in plain words. You also get a sales report every month." },
+  { icon: "mail", title: "Emails and newsletters", line: "Tell him what's new and he writes it.", how: "Tell him what's new and he writes the email or the weekly newsletter. You say yes and he sends it to your customers." },
+  { icon: "bell", title: "Push notifications", line: "Reach everyone who has your app.", how: "Send a message straight to the phones of customers who have your app: an offer, a change of plans, news about an event." },
+  { icon: "loyalty", title: "Loyalty rewards", line: "Punch cards, discounts, and games with prizes.", how: "Give customers digital punch cards and discounts that bring them back. You can also put a game in their hands, like golf, where they compete for prizes you set up at your place." },
+  { icon: "post", title: "Social posting", line: "Say 'post this' and it's posted.", how: "Say 'post this to Instagram' and he writes the post and lines it up. You say yes before it goes out." },
+  { icon: "sms", title: "Text messages", line: "Deals and updates to customers who said yes.", how: "Offers, updates and changes of plans. He texts the customers who said yes to hearing from you." },
 ];
 
 const HOA: Card[] = [
-  { icon: "voice", title: "Your community's voice", line: "The board runs the conversation. No more arguing in a Facebook group." },
-  { icon: "appHome", title: "Your community's app", line: "One place for every neighbor." },
-  { icon: "ask", title: "Answers rule questions 24/7", line: "From your own documents, not a guess." },
-  { icon: "book", title: "Learns your rules", line: "Upload your documents and he pulls the rules out." },
-  { icon: "events", title: "Events and RSVPs", line: "Bingo night, pool party, board meeting." },
-  { icon: "bellTarget", title: "Targeted push notifications", line: "One person, one street, the whole neighborhood, or just the bingo RSVPs." },
-  { icon: "tag", title: "Yard sale sign-ups", line: "Neighbors favorite the sales they don't want to miss." },
-  { icon: "trophy", title: "Holiday contests", line: "Residents enter, the neighborhood votes." },
-  { icon: "report", title: "Resident reports", line: "Broken gate or dead streetlight, all in one place for the board." },
-  { icon: "mail", title: "Newsletters", line: "Tell him what happened and he writes it." },
+  { icon: "voice", title: "Your community's voice", line: "The board runs the conversation. No more arguing in a Facebook group.", how: "Your board runs the conversation in one official place, not a Facebook group. News, events and reminders come from the board, so everyone hears the same thing." },
+  { icon: "appHome", title: "Your community's app", line: "One place for every neighbor.", how: "Residents download your community's app. It lives on their phone, so they see events, notices and answers without digging through a group feed." },
+  { icon: "ask", title: "Answers rule questions 24/7", line: "From your own documents, not a guess.", how: "Residents ask Shorty anything about your rules, at any hour. He answers from your own documents, so the answer matches what the board adopted." },
+  { icon: "book", title: "Learns your rules", line: "Upload your documents and he pulls the rules out.", how: "Upload your documents and Shorty pulls the rules out. You can also chat with him to teach him more." },
+  { icon: "events", title: "Events and RSVPs", line: "Bingo night, pool party, board meeting.", how: "Post an event and residents RSVP in a tap. You see who is coming before you set up the chairs." },
+  { icon: "bellTarget", title: "Targeted push notifications", line: "One person, one street, the whole neighborhood, or just the bingo RSVPs.", how: "Send a notice to one person, one street, the whole neighborhood, or only the people who RSVP'd to an event. Maple Court gets the repaving notice and nobody else does." },
+  { icon: "tag", title: "Yard sale sign-ups", line: "Neighbors favorite the sales they don't want to miss.", how: "Residents sign up and show what they're selling. Neighbors favorite the sales they want to hit so they don't miss them." },
+  { icon: "trophy", title: "Holiday contests", line: "Residents enter, the neighborhood votes.", how: "Residents enter, and neighbors vote on the best one, like a Halloween decorating contest." },
+  { icon: "report", title: "Resident reports", line: "Broken gate or dead streetlight, all in one place for the board.", how: "Residents report problems like a broken gate or a streetlight that is out, and the board sees every report in one place." },
+  { icon: "mail", title: "Newsletters", line: "Tell him what happened and he writes it.", how: "Tell him what happened this month and he writes the newsletter for every resident. You say yes and he sends it." },
 ];
 
 const SETS: Record<Audience, Card[]> = { business: BUSINESS, hoa: HOA };
@@ -144,6 +145,22 @@ const CSS = `
 ${KEYFRAMES}
 .sk-bob,.sk-idle,.sk-cuparm,.sk-cup,.sk-arm,.sk-lower,.sk-wink,.sk-sway,.sk-phone,.sk-b1,.sk-b2,.sk-b3{animation-play-state:paused}
 [data-live] .sk-bob,[data-live] .sk-idle,[data-live] .sk-cuparm,[data-live] .sk-cup,[data-live] .sk-arm,[data-live] .sk-lower,[data-live] .sk-wink,[data-live] .sk-sway,[data-live] .sk-phone,[data-live] .sk-b1,[data-live] .sk-b2,[data-live] .sk-b3{animation-play-state:running}
+.sk-hit{display:block;width:100%;height:100%;padding:0;margin:0;border:0;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;border-radius:14px;-webkit-tap-highlight-color:transparent}
+.sk-hit:focus-visible{outline:3px solid ${MINT};outline-offset:4px}
+.sk-plus{position:absolute;right:7px;bottom:6px;width:20px;height:20px;border-radius:50%;background:${CREAM};border:2.5px solid ${INK};box-shadow:1px 2px 0 rgba(0,0,0,.4);pointer-events:none}
+.sk-ov{position:fixed;inset:0;z-index:70;display:flex;align-items:center;justify-content:center;padding:24px}
+.sk-bd{position:absolute;inset:0;background:rgba(10,12,15,.74);touch-action:none}
+.sk-dlg{position:relative;width:100%;max-width:560px;transform-origin:50% 50%}
+.sk-dlg .sk-paper{border-radius:18px}
+.sk-dlg-body{position:relative;max-height:calc(100vh - 48px);max-height:calc(100dvh - 48px);overflow-y:auto;overscroll-behavior:contain;padding:34px 34px 32px}
+.sk-x{position:absolute;top:10px;right:10px;z-index:2;width:46px;height:46px;border-radius:50%;background:${CREAM};border:3px solid ${INK};box-shadow:2px 3px 0 rgba(0,0,0,.45);cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center}
+.sk-x:focus-visible{outline:3px solid ${MINT};outline-offset:3px}
+@media (max-width:899px){
+  .sk-ov{align-items:flex-end;padding:0}
+  .sk-dlg{max-width:none}
+  .sk-dlg .sk-paper{border-radius:22px 22px 0 0;bottom:-10px}
+  .sk-dlg-body{max-height:86vh;max-height:86dvh;padding:30px 22px 34px}
+}
 @media (prefers-reduced-motion: reduce){
   .sk-card{opacity:1 !important;transform:none !important;animation:none !important;transition:none !important}
   .sk-glasses{opacity:1 !important;transform:none !important;animation:none !important}
@@ -304,22 +321,108 @@ function Shorty() {
   );
 }
 
-/** One pinned card. Everything but the paper layer is crisp text, so nothing is distorted. */
-function SkillCard({ card, i, last, odd }: { card: Card; i: number; last: boolean; odd: boolean }) {
+/** One pinned card. Everything but the paper layer is crisp text, so nothing is distorted. The whole card is one button
+    that opens its "How it works" card. */
+function SkillCard({ card, i, last, odd, open, onOpen }: { card: Card; i: number; last: boolean; odd: boolean; open: boolean; onOpen: (i: number, li: HTMLElement, btn: HTMLButtonElement) => void }) {
   const place = last ? `min-[900px]:col-start-3 ${odd ? "max-[899px]:col-start-2" : ""}` : "";
+  const li = useRef<HTMLLIElement | null>(null);
   return (
     <li
+      ref={li}
       className={`sk-card col-span-2 ${place}`}
-      style={{ ["--i" as string]: i, ["--r" as string]: `${TILTS[i % TILTS.length]}deg` }}
+      style={{ ["--i" as string]: i, ["--r" as string]: `${TILTS[i % TILTS.length]}deg`, visibility: open ? "hidden" : undefined }}
     >
       <span className="sk-paper" aria-hidden="true" />
       <span className="sk-pin" aria-hidden="true" style={{ background: PINS[i % PINS.length] }} />
-      <div className="relative flex h-full flex-col gap-1.5 px-3 pt-4 pb-3.5 min-[900px]:gap-2 min-[900px]:px-[18px] min-[900px]:pt-[22px] min-[900px]:pb-[18px]">
-        <div className="h-9 w-9 min-[900px]:h-11 min-[900px]:w-11"><SkillIcon id={card.icon} /></div>
-        <strong className="block text-[14.5px] leading-[1.15] font-extrabold tracking-[-0.01em] text-[#14161A] min-[900px]:text-[18px]" style={{ fontFamily: SANS }}>{card.title}</strong>
-        <p className="text-[12.5px] leading-[1.38] font-medium text-[#2b2620] min-[900px]:text-[14.5px] min-[900px]:leading-[1.42]" style={{ fontFamily: BODY }}>{card.line}</p>
-      </div>
+      <button type="button" className="sk-hit" aria-haspopup="dialog" aria-expanded={open} onClick={(e) => li.current && onOpen(i, li.current, e.currentTarget)}>
+        <span className="relative flex h-full flex-col gap-1.5 px-3 pt-4 pb-[28px] min-[900px]:gap-2 min-[900px]:px-[18px] min-[900px]:pt-[22px] min-[900px]:pb-[30px]">
+          <span className="block h-9 w-9 min-[900px]:h-11 min-[900px]:w-11"><SkillIcon id={card.icon} /></span>
+          <strong className="block text-[14.5px] leading-[1.15] font-extrabold tracking-[-0.01em] text-[#14161A] min-[900px]:text-[18px]" style={{ fontFamily: SANS }}>{card.title}</strong>
+          <span className="block text-[12.5px] leading-[1.38] font-medium text-[#2b2620] min-[900px]:text-[14.5px] min-[900px]:leading-[1.42]" style={{ fontFamily: BODY }}>{card.line}</span>
+        </span>
+        <span className="sk-plus" aria-hidden="true">
+          <svg viewBox="0 0 16 16" className="block h-full w-full"><path d="M8 4.200V11.800M4.200 8H11.800" fill="none" stroke={INK} strokeWidth="2" strokeLinecap="round" /></svg>
+        </span>
+      </button>
     </li>
+  );
+}
+
+/** The expanded card: grows from the tapped card (a FLIP: transform + opacity only), centered on desktop and a bottom
+    sheet on a phone. It owns the dialog mechanics: scroll lock, Escape, backdrop tap, focus trap, and closing back. */
+function CardDialog({ card, from, tilt, pin, onClosed }: { card: Card; from: DOMRect; tilt: number; pin: string; onClosed: () => void }) {
+  const dlg = useRef<HTMLDivElement>(null);
+  const bd = useRef<HTMLDivElement>(null);
+  const x = useRef<HTMLButtonElement>(null);
+  const closing = useRef(false);
+  const reduced = () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* where the card sits relative to the expanded card, as a transform */
+  const fromT = useCallback(() => {
+    const el = dlg.current;
+    if (!el) return "none";
+    const to = el.getBoundingClientRect();
+    const sx = from.width / to.width, sy = from.height / to.height;
+    const dx = from.left + from.width / 2 - (to.left + to.width / 2), dy = from.top + from.height / 2 - (to.top + to.height / 2);
+    return `translate(${dx}px, ${dy}px) scale(${sx}, ${sy}) rotate(${tilt}deg)`;
+  }, [from, tilt]);
+
+  useLayoutEffect(() => {
+    if (reduced() || !dlg.current || !bd.current) return;
+    const t = fromT();
+    dlg.current.animate([{ transform: t, opacity: 0.4 }, { transform: "none", opacity: 1 }], { duration: 300, easing: "cubic-bezier(.2,.8,.3,1)" });
+    bd.current.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300, easing: "ease-out" });
+  }, [fromT]);
+
+  const close = useCallback(() => {
+    if (closing.current) return;
+    closing.current = true;
+    if (reduced() || !dlg.current || !bd.current) { onClosed(); return; }
+    const t = fromT();
+    bd.current.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 200, easing: "ease-in", fill: "forwards" });
+    const done = () => { window.clearTimeout(fallback); onClosed(); };
+    const fallback = window.setTimeout(done, 320);   // if the animation never reports back (a hidden tab), close anyway
+    dlg.current.animate([{ transform: "none", opacity: 1 }, { transform: t, opacity: 0 }], { duration: 200, easing: "ease-in", fill: "forwards" }).finished.then(done, done);
+  }, [fromT, onClosed]);
+
+  /* scroll lock (the scrollbar's gutter stays, so nothing behind shifts), focus in, Escape, and a focus trap */
+  useEffect(() => {
+    const html = document.documentElement;
+    const prev = { overflow: html.style.overflow, gutter: html.style.scrollbarGutter };
+    html.style.scrollbarGutter = "stable";
+    html.style.overflow = "hidden";
+    x.current?.focus({ preventScroll: true });
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") { e.preventDefault(); close(); }
+      else if (e.key === "Tab") { e.preventDefault(); x.current?.focus({ preventScroll: true }); }   // the close button is the only stop
+    };
+    /* the page behind must not scroll: swallow wheel and touch moves unless they belong to the card's own scroller */
+    const guard = (e: Event) => { if (!(e.target instanceof Element && e.target.closest(".sk-dlg-body"))) e.preventDefault(); };
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("wheel", guard, { passive: false });
+    document.addEventListener("touchmove", guard, { passive: false });
+    return () => { document.removeEventListener("keydown", onKey); document.removeEventListener("wheel", guard); document.removeEventListener("touchmove", guard); html.style.overflow = prev.overflow; html.style.scrollbarGutter = prev.gutter; };
+  }, [close]);
+
+  return createPortal(
+    <div className="sk-ov">
+      <div ref={bd} className="sk-bd" onClick={close} aria-hidden="true" />
+      <div ref={dlg} className="sk-dlg" role="dialog" aria-modal="true" aria-labelledby="sk-dlg-title">
+        <span className="sk-paper" aria-hidden="true" />
+        <span className="sk-pin" aria-hidden="true" style={{ background: pin }} />
+        <button ref={x} type="button" className="sk-x" aria-label="Close" onClick={close}>
+          <svg viewBox="0 0 20 20" className="block h-[20px] w-[20px]" aria-hidden="true" focusable="false"><path d="M4.500 4.500L15.500 15.500M15.500 4.500L4.500 15.500" fill="none" stroke={INK} strokeWidth="3" strokeLinecap="round" /></svg>
+        </button>
+        <div className="sk-dlg-body">
+          <div className="h-16 w-16" aria-hidden="true"><SkillIcon id={card.icon} /></div>
+          <h3 id="sk-dlg-title" className="mt-3 pr-12 text-[26px] leading-[1.1] font-extrabold tracking-[-0.015em] text-[#14161A]" style={{ fontFamily: SANS }}>{card.title}</h3>
+          <p className="mt-2 text-[16px] leading-[1.45] font-medium text-[#2b2620]" style={{ fontFamily: BODY }}>{card.line}</p>
+          <h4 className="mt-6 text-[18px] leading-[1.1] font-extrabold tracking-[-0.01em] text-[#14161A]" style={{ fontFamily: SANS }}>How it works</h4>
+          <p className="mt-2 text-[17px] leading-[1.6] text-[#1d1a16]" style={{ fontFamily: BODY }}>{card.how}</p>
+        </div>
+      </div>
+    </div>,
+    document.body,
   );
 }
 
@@ -327,6 +430,29 @@ export function SkillsSection() {
   const { audience } = useAudience();
   const root = useRef<HTMLElement | null>(null);
   const cards = SETS[audience];
+
+  /* Which card is open (at most one), where it sat, and the button to hand focus back to. The set it belongs to is
+     remembered, so switching the toggle simply means it no longer matches and it closes. */
+  const [open, setOpen] = useState<{ i: number; aud: Audience; from: DOMRect } | null>(null);
+  const trigger = useRef<HTMLButtonElement | null>(null);
+  if (open && open.aud !== audience) setOpen(null);   // the toggle changed: close it (adjusting state while rendering, the sanctioned way)
+  const shown = open && open.aud === audience ? open : null;
+  const onOpen = useCallback((i: number, li: HTMLElement, btn: HTMLButtonElement) => {
+    trigger.current = btn;
+    setOpen({ i, aud: audience, from: li.getBoundingClientRect() });
+  }, [audience]);
+  const refocus = useRef(false);
+  const onClosed = useCallback(() => {
+    refocus.current = true;
+    setOpen(null);
+  }, []);
+  /* once the card is visible again, hand focus back to it */
+  useEffect(() => {
+    if (!open && refocus.current) {
+      refocus.current = false;
+      trigger.current?.focus({ preventScroll: true });
+    }
+  }, [open]);
 
   /* One observer: the entrance plays once when the section first scrolls into view; the idle loop runs only while it's on screen. */
   useEffect(() => {
@@ -378,11 +504,14 @@ export function SkillsSection() {
 
           <ul className="grid list-none grid-cols-4 gap-x-3.5 gap-y-5 p-0 min-[900px]:grid-cols-6 min-[900px]:gap-x-[22px] min-[900px]:gap-y-7">
             {cards.map((c, i) => (
-              <SkillCard key={`${audience}-${c.title}`} card={c} i={i} last={i === cards.length - 1} odd={cards.length % 2 === 1} />
+              <SkillCard key={`${audience}-${c.title}`} card={c} i={i} last={i === cards.length - 1} odd={cards.length % 2 === 1} open={shown?.i === i} onOpen={onOpen} />
             ))}
           </ul>
         </div>
       </div>
+      {shown && (
+        <CardDialog key={`${shown.aud}-${shown.i}`} card={cards[shown.i]} from={shown.from} tilt={TILTS[shown.i % TILTS.length]} pin={PINS[shown.i % PINS.length]} onClosed={onClosed} />
+      )}
     </section>
   );
 }
