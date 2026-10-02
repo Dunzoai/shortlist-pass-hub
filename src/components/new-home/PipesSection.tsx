@@ -20,6 +20,10 @@ const C = {
   litFill: "#1E2B27", dark: "#1F9E73", hi: "#9DF0CC", door: "#3A3F49", solidText: "#0D2B20",
   roof: "#0B0C0E", ground: "#1A1D22", disc: "#181B21", cloud: "#1B1E24",
 };
+/* Paper grain: the same noise the hero's bubbles and scenes use. */
+const GRAIN_URL =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .11 0 0 0 0 .1 0 0 0 0 .08 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E";
+const INK = "#2A2219";
 const SANS = "var(--font-sans-inter), system-ui, sans-serif";
 const SERIF = "var(--font-fraunces), Georgia, serif";
 
@@ -144,8 +148,6 @@ function buildCss(): string {
   });
   s += `.pp-sh{animation:${a("pp-sh-fade")},${a("pp-sh-walk")},${a("pp-sh-amp")}}`;
   s += `.pp-bob{animation:pp-bob .59s ease-in-out infinite}.pp-hop{animation:pp-hop ${D}s ease-in-out infinite}`;
-  /* His ink is black: on the dark ground he needs a cream paper-cutout edge (and a whisper of glow) to read. */
-  s += `.pp-sticker{filter:drop-shadow(var(--o) 0 0 ${C.cream}) drop-shadow(calc(var(--o) * -1) 0 0 ${C.cream}) drop-shadow(0 var(--o) 0 ${C.cream}) drop-shadow(0 calc(var(--o) * -1) 0 ${C.cream}) drop-shadow(0 0 14px rgba(246,241,228,.22))}`;
   /* Reduced motion: freeze at the 13 s mark (all drawn, bubbles lit, caption up, Shorty at the elbow, no stubs). */
   s += `@media (prefers-reduced-motion: reduce){.pp,.pp *{animation-play-state:paused !important;animation-delay:-13s !important}.pp-stub{display:none}}`;
   return s;
@@ -202,17 +204,14 @@ function Shop({ g }: { g: Geo }) {
   const boardBottom = s.roofY - 8 - s.post, boardTop = boardBottom - s.board;
   const bx = s.x0 + w * 0.055, bw = w * 0.9, mid = bx + bw / 2;
   const flap = (x: number) => `M${x} ${bodyTop} H${x + seg} V${bodyTop + s.awn - seg / 2} A${seg / 2} ${seg / 2} 0 0 1 ${x} ${bodyTop + s.awn - seg / 2} Z`;
-  const [wx, wy, ww, wh] = s.win, [dx, dw, dh] = s.door;
+  const [wx, wy, ww, wh] = s.win, [dx, dw, dh] = s.door, k = g.boardTitle / 30;
   return (
-    <g filter="url(#pp-cut)">
+    <>
+    <g filter="url(#pp-paper)">
       <rect x={s.x0 + w * 0.245} y={boardBottom} width={w * 0.028} height={s.post + 8} fill={C.dimText} />
       <rect x={s.x0 + w * 0.727} y={boardBottom} width={w * 0.028} height={s.post + 8} fill={C.dimText} />
       <rect x={bx} y={boardTop} width={bw} height={s.board} rx={6} fill={C.cream} />
       <rect x={bx + 6} y={boardTop + 6} width={bw - 12} height={s.board - 12} rx={4} fill="none" stroke={C.mint} strokeWidth={3} />
-      <text x={mid} y={boardTop + s.board * (g.boardSub.length > 1 ? 0.42 : 0.5)} textAnchor="middle" fontSize={g.boardTitle} fill={C.bg} style={{ fontFamily: SERIF }}>Website</text>
-      {g.boardSub.map((line, i) => (
-        <text key={line} x={mid} y={boardTop + s.board * (g.boardSub.length > 1 ? 0.63 : 0.74) + i * (g.boardSubSize + 2.5)} textAnchor="middle" fontSize={g.boardSubSize} fontWeight={800} fill={C.bg} style={{ fontFamily: SANS }}>{line}</text>
-      ))}
       <rect x={s.x0 - 6} y={s.roofY - 8} width={w + 12} height={14} fill={C.roof} />
       <rect x={s.x0} y={bodyTop} width={w} height={g.ground - bodyTop} fill={C.cream} />
       <rect x={s.x0} y={g.ground - s.band} width={w} height={s.band} fill={C.band} />
@@ -220,7 +219,29 @@ function Shop({ g }: { g: Geo }) {
       <rect x={s.x0 + wx} y={s.roofY + wy} width={ww} height={wh} fill={C.dimStroke} stroke={C.bg} strokeWidth={3} />
       <rect className="pp-door" x={dx} y={g.ground - dh} width={dw} height={dh} rx={3} fill={C.door} />
       <circle cx={dx + dw - 8} cy={g.ground - dh * 0.42} r={Math.max(2, dw * 0.05)} fill={C.dimText} />
+      {/* ink linework, like the hero scenes: window bars and glint, door panels, awning stitch, a hand-drawn underline */}
+      <g fill="none" strokeLinecap="round">
+        <path d={`M${s.x0 + wx + ww / 2} ${s.roofY + wy} V${s.roofY + wy + wh} M${s.x0 + wx} ${s.roofY + wy + wh / 2} H${s.x0 + wx + ww}`} stroke={C.bg} strokeWidth={3} />
+        <path d={`M${s.x0 + wx + ww * 0.12} ${s.roofY + wy + wh * 0.2} l${ww * 0.12} ${-wh * 0.1}`} stroke={C.cream} strokeOpacity={0.5} strokeWidth={2} />
+        <rect x={dx + 5} y={g.ground - dh + 7} width={dw - 10} height={dh * 0.36} rx={2} stroke={C.dimStroke} strokeWidth={2} />
+        <rect x={dx + 5} y={g.ground - dh * 0.52} width={dw - 10} height={dh * 0.4} rx={2} stroke={C.dimStroke} strokeWidth={2} />
+        <path d={`M${s.x0 + 3} ${bodyTop + 5} H${s.x1 - 3}`} stroke={C.roof} strokeOpacity={0.35} strokeWidth={1.4} strokeDasharray="4 4" />
+        <path d={`M${s.x0} ${g.ground - s.band} H${s.x1}`} stroke={INK} strokeOpacity={0.45} strokeWidth={1.4} />
+        <path d={`M${mid - 22 * k} ${boardTop + s.board * (g.boardSub.length > 1 ? 0.5 : 0.59)} q${4 * k} ${-3.5 * k} ${8 * k} 0 t${8 * k} 0 t${8 * k} 0 t${8 * k} 0 t${8 * k} 0`} stroke={INK} strokeWidth={1.5} />
+      </g>
+      {g.W > 600 && (
+        <>
+          <path d={`M${s.x0 - 28} ${g.ground - 24} H${s.x0 - 8} L${s.x0 - 11} ${g.ground} H${s.x0 - 25} Z`} fill="#D9825B" />
+          <path d={`M${s.x0 - 18} ${g.ground - 24} Q${s.x0 - 38} ${g.ground - 36} ${s.x0 - 32} ${g.ground - 54} Q${s.x0 - 18} ${g.ground - 46} ${s.x0 - 18} ${g.ground - 24} Z M${s.x0 - 18} ${g.ground - 24} Q${s.x0 - 6} ${g.ground - 40} ${s.x0 - 10} ${g.ground - 58} Q${s.x0 - 22} ${g.ground - 42} ${s.x0 - 18} ${g.ground - 24} Z`} fill="#6F8F5B" />
+        </>
+      )}
     </g>
+    {/* the words stay crisp: drawn on top of the torn paper, not through the filter */}
+    <text x={mid} y={boardTop + s.board * (g.boardSub.length > 1 ? 0.42 : 0.5)} textAnchor="middle" fontSize={g.boardTitle} fill={C.bg} style={{ fontFamily: SERIF }}>Website</text>
+    {g.boardSub.map((line, i) => (
+      <text key={line} x={mid} y={boardTop + s.board * (g.boardSub.length > 1 ? 0.63 : 0.74) + i * (g.boardSubSize + 2.5)} textAnchor="middle" fontSize={g.boardSubSize} fontWeight={800} fill={C.bg} style={{ fontFamily: SANS }}>{line}</text>
+    ))}
+    </>
   );
 }
 
@@ -231,6 +252,7 @@ function Pipes({ g }: { g: Geo }) {
     <g key={key}>
       <path d={d} pathLength={1} strokeDasharray="1 1" fill="none" stroke={C.dark} strokeWidth={pw + 6} className={cls} />
       <path d={d} pathLength={1} strokeDasharray="1 1" fill="none" stroke={C.mint} strokeWidth={pw} className={cls} />
+      <path d={d} pathLength={1} strokeDasharray="1 1" fill="none" stroke="url(#pp-grain)" strokeOpacity={0.55} strokeWidth={pw} className={cls} style={{ mixBlendMode: "multiply" }} />
       <path d={d} pathLength={1} strokeDasharray="1 1" fill="none" stroke={C.hi} strokeOpacity={0.7} strokeWidth={Math.max(2, pw * 0.14)} transform={hiShift} className={cls} />
     </g>
   );
@@ -261,13 +283,16 @@ function Bubbles({ g }: { g: Geo }) {
         const cy = b.ys[i], top = cy - b.h / 2;
         return (
           <g key={bub.name} className="pp-bfade">
-            <g className={`pp-float${i}`} filter="url(#pp-cut)">
-              <path className={`pp-b${i}`} d={bubblePath(b.x, top, b.w, b.h, b.r, b.tail)} fill={C.dimFill} stroke={C.dimStroke} strokeWidth={3} strokeLinejoin="round" />
+            <g className={`pp-float${i}`}>
+              <g filter="url(#pp-cut)">
+                <path className={`pp-b${i}`} d={bubblePath(b.x, top, b.w, b.h, b.r, b.tail)} fill={C.dimFill} stroke={C.dimStroke} strokeWidth={3} strokeLinejoin="round" />
+                <path d={bubblePath(b.x, top, b.w, b.h, b.r, b.tail)} fill="url(#pp-grain)" fillOpacity={0.5} style={{ mixBlendMode: "multiply" }} />
+              </g>
               <text className={`pp-t${i}`} x={b.x + b.pad} y={top + b.h * 0.45} fontSize={b.name} fontWeight={800} fill={C.dimText} style={{ fontFamily: SANS }}>{bub.name}</text>
               <text className={`pp-t${i}`} x={b.x + b.pad} y={top + b.h * 0.78} fontSize={b.cap} fontWeight={800} letterSpacing="0.14em" fill={C.dimText} style={{ fontFamily: SANS }}>{bub.cap}</text>
               {i === 3 && (
                 <g className="pp-badge" opacity={0}>
-                  <rect x={b.x + b.w - b.badge[0] - 14} y={top - b.badge[1] / 2} width={b.badge[0]} height={b.badge[1]} rx={b.badge[1] / 2} fill={C.amber} />
+                  <rect x={b.x + b.w - b.badge[0] - 14} y={top - b.badge[1] / 2} width={b.badge[0]} height={b.badge[1]} rx={b.badge[1] / 2} fill={C.amber} filter="url(#pp-cut)" />
                   <text x={b.x + b.w - b.badge[0] / 2 - 14} y={top + b.badge[2] * 0.36} textAnchor="middle" fontSize={b.badge[2]} fontWeight={800} letterSpacing="0.08em" fill={C.bg} style={{ fontFamily: SANS }}>LIVE NOW</text>
                 </g>
               )}
@@ -282,10 +307,12 @@ function Bubbles({ g }: { g: Geo }) {
 function Backdrop({ g }: { g: Geo }) {
   return (
     <>
-      <circle cx={g.moon[0]} cy={g.moon[1]} r={g.moon[2]} fill={C.disc} />
-      {g.clouds.map(([cx, cy, rx, ry]) => <ellipse key={`${cx}${cy}`} cx={cx} cy={cy} rx={rx} ry={ry} fill={C.cloud} />)}
+      <g filter="url(#pp-paper)">
+        <circle cx={g.moon[0]} cy={g.moon[1]} r={g.moon[2]} fill={C.disc} />
+        {g.clouds.map(([cx, cy, rx, ry]) => <ellipse key={`${cx}${cy}`} cx={cx} cy={cy} rx={rx} ry={ry} fill={C.cloud} />)}
+        <rect x={0} y={g.ground} width={g.W} height={g.H - g.ground} fill="url(#pp-ground)" />
+      </g>
       {g.stars.map(([x, y]) => <circle key={`${x}${y}`} className="pp-star" cx={x} cy={y} r={g.W > 600 ? 2.2 : 1.6} fill={C.amber} />)}
-      <rect x={0} y={g.ground} width={g.W} height={g.H - g.ground} fill="url(#pp-ground)" />
       <path d={`M0 ${g.ground} H${g.W}`} stroke="url(#pp-ground-line)" strokeWidth={2} />
     </>
   );
@@ -313,8 +340,11 @@ function Stubs({ g, svgRef }: { g: Geo; svgRef: RefObject<SVGSVGElement | null> 
             keyTimes={`0;${s.times[0] / D};${s.times[1] / D};1`}
             path={`M${g.bub.x + 14} ${s.y} H${g.riserX} V${g.pipeY} H${doorCx}`}
           />
-          <g transform={`translate(${-w / 2} ${-h / 2})`} filter="url(#pp-cut)">
-            <path d={stubPath(w, h, 6, h * 0.2)} fill={C.cream} />
+          <g transform={`translate(${-w / 2} ${-h / 2})`}>
+            <g filter="url(#pp-cut)">
+              <path d={stubPath(w, h, 6, h * 0.2)} fill={C.cream} />
+              <path d={stubPath(w, h, 6, h * 0.2)} fill="url(#pp-grain)" fillOpacity={0.5} style={{ mixBlendMode: "multiply" }} />
+            </g>
             <text x={w / 2} y={h / 2 + font * 0.36} textAnchor="middle" fontSize={font} fontWeight={800} fill={C.bg}>{s.label}</text>
           </g>
         </g>
@@ -347,7 +377,7 @@ function PipesScene() {
     top: `${((g.ground - 0.937 * boxH) / g.H) * 100}%`,
     width: `${(boxW / g.W) * 100}%`,
     "--walk": `${(((g.riserX - g.shop.x1) / boxW) * 100).toFixed(2)}%`,
-    "--hop1": hop[0], "--hop2": hop[1], "--o": desk ? "2px" : "1.4px",
+    "--hop1": hop[0], "--hop2": hop[1],
   } as CSSProperties;
 
   return (
@@ -365,8 +395,24 @@ function PipesScene() {
           <linearGradient id="pp-ground-line" gradientUnits="userSpaceOnUse" x1={0} x2={g.W} y1={0} y2={0}>
             <stop offset="0" stopColor={C.dimStroke} stopOpacity={0} /><stop offset="0.07" stopColor={C.dimStroke} /><stop offset="0.93" stopColor={C.dimStroke} /><stop offset="1" stopColor={C.dimStroke} stopOpacity={0} />
           </linearGradient>
+          <pattern id="pp-grain" patternUnits="userSpaceOnUse" width={160} height={160}>
+            <image href={GRAIN_URL} width={160} height={160} />
+          </pattern>
+          {/* Still art: torn edges + grain + the hard offset shadow (the hero scenes' technique). */}
+          <filter id="pp-paper" x="-8%" y="-8%" width="116%" height="124%" colorInterpolationFilters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves={2} seed={7} result="warp" />
+            <feDisplacementMap in="SourceGraphic" in2="warp" scale={3.2} xChannelSelector="R" yChannelSelector="G" result="torn" />
+            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves={2} seed={3} result="fine" />
+            <feColorMatrix in="fine" type="matrix" values="0 0 0 0 0.08  0 0 0 0 0.07  0 0 0 0 0.05  0.42 0 0 0 -0.16" result="specks" />
+            <feComposite in="specks" in2="torn" operator="in" result="grain" />
+            <feMerge result="sheet"><feMergeNode in="torn" /><feMergeNode in="grain" /></feMerge>
+            <feDropShadow in="sheet" dx="0" dy="5" stdDeviation="0" floodColor="#000" floodOpacity="0.38" />
+          </filter>
+          {/* Moving art (pipes, bubbles, stubs): a light torn edge + the same shadow; grain comes from the overlay pattern. */}
           <filter id="pp-cut" x="-10%" y="-10%" width="125%" height="135%" colorInterpolationFilters="sRGB">
-            <feDropShadow dx="0" dy="5" stdDeviation="0" floodColor="#000" floodOpacity="0.38" />
+            <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves={1} seed={5} result="warp" />
+            <feDisplacementMap in="SourceGraphic" in2="warp" scale={2.4} xChannelSelector="R" yChannelSelector="G" result="torn" />
+            <feDropShadow in="torn" dx="0" dy="5" stdDeviation="0" floodColor="#000" floodOpacity="0.38" />
           </filter>
         </defs>
         <Backdrop g={g} />
@@ -385,8 +431,14 @@ function PipesScene() {
       {/* Shorty: the hero's own rig, in front of the pipe. */}
       <div aria-hidden="true" className="pp-sh pointer-events-none absolute" style={shortyStyle}>
         <div className="pp-bob">
-          <div className="pp-hop pp-sticker">
-            {active && <ShortyMascot mood={mood} size={190} style={{ width: "100%", height: "auto" }} />}
+          <div className="pp-hop relative">
+            {active && (
+              <>
+                {/* The app's answer for dark surfaces: his ink is black, so a soft warm glow sits behind him. */}
+                <div className="pointer-events-none absolute" style={{ left: "6%", top: "12%", width: "88%", height: "86%", background: "radial-gradient(ellipse farthest-side at 50% 60%, rgba(242,231,204,.66), rgba(242,231,204,.42) 48%, rgba(242,231,204,0))" }} />
+                <ShortyMascot mood={mood} size={190} style={{ width: "100%", height: "auto", position: "relative" }} />
+              </>
+            )}
           </div>
         </div>
       </div>
