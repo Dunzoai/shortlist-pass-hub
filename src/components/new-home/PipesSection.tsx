@@ -322,31 +322,40 @@ export function PipesSection() {
   const { audience } = useAudience();
   const M = MODES[audience];
   return (
-    <section aria-labelledby="pipes-h" className="relative overflow-x-clip px-5 pt-16 pb-16 text-[#0D2B20] min-[900px]:px-10 min-[900px]:pt-24 min-[900px]:pb-24" style={{ background: MINT_BG }}>
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-[.4] mix-blend-multiply" style={{ backgroundImage: `url("${GRAIN_URL}")` }} />
-      <div className="relative mx-auto max-w-[1180px]">
-        <div data-agents="head" className="relative z-10 max-w-[1180px] origin-top-left" style={{ rotate: "-2deg" }}>
-          <h2
-            id="pipes-h"
-            className="font-extrabold leading-[1.02] tracking-[-0.03em] text-[#0A2A1D] [text-wrap:balance]"
-            style={{ fontFamily: SANS, fontSize: "clamp(25px, 4.4vw, 64px)" }}
+    <section aria-labelledby="pipes-h">
+      {/* The headline: its own black strip, the lead-in to the scene below. */}
+      <div className="overflow-x-clip bg-[#14161A] px-5 pt-12 pb-7 min-[900px]:px-10 min-[900px]:pt-20 min-[900px]:pb-14">
+        <div className="mx-auto max-w-[1180px]">
+          <div data-agents="head" className="relative z-10 origin-top-left" style={{ rotate: "-2deg" }}>
+            <h2
+              id="pipes-h"
+              className="font-extrabold leading-[1.02] tracking-[-0.03em] text-[#F6F1E4]"
+              style={{ fontFamily: SANS, fontSize: "clamp(25px, 4.4vw, 64px)" }}
+            >
+              {M.headline.map((line) => <span key={line} className="block [text-wrap:balance]">{line}</span>)}
+            </h2>
+            <p className="mt-2 font-bold leading-[1.15] text-[#5FDDAE] min-[900px]:mt-3" style={{ fontFamily: SANS, fontSize: "clamp(16px, 1.9vw, 27px)" }}>
+              Shorty builds the pipe.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* The scene, on mint. On phones the agents card tucks up over the strip's edge, so it reads as part of the headline group. */}
+      <div className="relative overflow-x-clip px-5 pb-16 text-[#0D2B20] min-[900px]:px-10 min-[900px]:pt-10 min-[900px]:pb-24" style={{ background: MINT_BG }}>
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-[.4] mix-blend-multiply" style={{ backgroundImage: `url("${GRAIN_URL}")` }} />
+        <div className="relative mx-auto max-w-[1180px]">
+          <div className="relative z-10 -mt-[18px] min-[900px]:mt-0">
+            <Scene key={`${desk ? "d" : "m"}-${audience}`} g={desk ? DESKTOP : MOBILE} mode={audience} />
+          </div>
+          <p
+            data-agents="para"
+            className="mx-auto mt-6 max-w-[1000px] text-center leading-[1.22] min-[900px]:mt-8"
+            style={{ fontFamily: SERIF, fontSize: "clamp(26px, 3vw, 42px)", fontWeight: 400 }}
           >
-            {M.headline.map((line) => <span key={line} className="block [text-wrap:balance]">{line}</span>)}
-          </h2>
-          <p className="mt-2 font-bold leading-[1.15] text-[#0F5F43] min-[900px]:mt-3" style={{ fontFamily: SANS, fontSize: "clamp(16px, 1.9vw, 27px)" }}>
-            Shorty builds the pipe.
+            Right now your website and socials are <em className="italic">a billboard.</em> They get read by agents, but can’t do anything. Shorty builds the pipes that let your customers’ AI agents <strong className="font-bold">transact</strong>, <strong className="font-bold">book</strong>, and <strong className="font-bold">interact</strong>.
           </p>
         </div>
-        <div className="mt-2.5 min-[900px]:mt-6">
-          <Scene key={`${desk ? "d" : "m"}-${audience}`} g={desk ? DESKTOP : MOBILE} mode={audience} />
-        </div>
-        <p
-          data-agents="para"
-          className="mx-auto mt-6 max-w-[1000px] text-center leading-[1.22] min-[900px]:mt-8"
-          style={{ fontFamily: SERIF, fontSize: "clamp(26px, 3vw, 42px)", fontWeight: 400 }}
-        >
-          Right now your website and socials are <em className="italic">a billboard.</em> They get read by agents, but can’t do anything. Shorty builds the pipes that let your customers’ AI agents <strong className="font-bold">transact</strong>, <strong className="font-bold">book</strong>, and <strong className="font-bold">interact</strong>.
-        </p>
       </div>
     </section>
   );
