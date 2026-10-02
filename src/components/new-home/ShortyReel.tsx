@@ -106,10 +106,6 @@ function Scene() {
       <Cloud y={110} s={0.8} className="reel-cloud-b" />
       <Cloud y={20} s={0.7} className="reel-cloud-c" />
       {/* the plane: a small cut-paper plane with a dotted trail, crossing every half minute */}
-      <g className="reel-anim reel-plane" style={{ transform: "translate(-200px, 78px)" }}>
-        <path d="M-130 4 H-68" stroke="#fff" strokeWidth={3} strokeDasharray="2 9" strokeLinecap="round" opacity={0.85} />
-        <Paper d="M0 0 L-30 -4 L-42 -16 L-48 -16 L-44 -3 L-60 0 L-44 4 L-48 17 L-42 17 L-30 5 L0 3 Z" fill="#FBF6E6" dx={-3} dy={4} />
-      </g>
       <Building x={14} w={196} h={262} fill="#9DBFCE" cols={4} rows={4} seed={11} />
       <Building x={226} w={170} h={318} fill="#DDA07A" cols={3} rows={5} seed={23} door awning="#C8624A" />
       <Building x={414} w={206} h={226} fill="#9EC3A8" cols={4} rows={3} seed={37} door awning="#E2A43C" />
@@ -118,6 +114,20 @@ function Scene() {
       <Building x={1058} w={150} h={306} fill="#F2DC96" cols={3} rows={5} seed={83} />
       <Tree x={408} s={0.85} />
       <Tree x={826} s={0.95} />
+      <g className="reel-anim reel-plane" style={{ transform: "translate(-560px, 104px)" }}>
+        {/* a little prop plane towing a banner */}
+        <path d="M-52 4 L-86 4" stroke="#6B5A48" strokeWidth={1.6} />
+        <path d="M-86 -16 H-396 L-382 4 L-396 24 H-86 Z" fill={SHADOW} transform="translate(3 4)" />
+        <Paper d="M-86 -16 H-396 L-382 4 L-396 24 H-86 Z" fill="#FBF6E6" dx={0} dy={0} />
+        <path d="M-86 -16 H-396 L-382 4 L-396 24 H-86 Z" fill="none" stroke="#5FDDAE" strokeWidth={3} strokeLinejoin="round" />
+        <text x={-241} y={9} textAnchor="middle" fontSize={15.5} fontWeight={800} letterSpacing={0.6} fill="#14161A" style={{ fontFamily: SANS }}>THE CITY POWERED BY THE SHORTLIST</text>
+        <Paper d="M-52 0 Q-52 -9 -36 -9 H20 Q36 -9 44 0 Q36 9 20 9 H-36 Q-52 9 -52 0 Z" fill="#E2A43C" dx={3} dy={4} />
+        <Paper d="M-52 -2 L-62 -20 L-50 -20 L-38 -4 Z" fill="#C8624A" dx={2} dy={2} />
+        <Paper d="M-12 -7 L-2 -28 L10 -28 L10 -6 Z M-12 7 L-2 24 L10 24 L10 6 Z" fill="#FBF6E6" dx={2} dy={3} />
+        <path d="M14 -6 H30 L36 -1 H14 Z" fill="#BFE0EA" stroke="#14161A" strokeWidth={1.5} strokeLinejoin="round" />
+        <circle cx="46" cy="0" r="3.2" fill="#3B3A38" />
+        <g className="reel-prop"><path d="M46 -16 V16" stroke="#3B3A38" strokeWidth={3.4} strokeLinecap="round" /></g>
+      </g>
       {/* the bird: flies in, lands on the roof of the red building, looks about, flies off */}
       <g className="reel-anim reel-bird" style={{ transform: "translate(1320px, 20px)" }}>
         <g className="reel-bird-fly">
@@ -138,8 +148,8 @@ function Scene() {
       <Paper d={cut(-30, 410, 1260, 140, 5, 3)} fill="#9A9486" dx={0} dy={-4} />
       <Paper d={cut(-30, 410, 1260, 20, 6, 2)} fill="#C4BDAA" dx={0} dy={3} />
       {Array.from({ length: 12 }, (_, i) => <Paper key={i} d={cut(14 + i * 104, 478, 56, 9, 90 + i, 1.4)} fill="#F2DC96" dx={2} dy={2} />)}
-      {/* a delivery cyclist with a Shortlist Pass bag on the back rack, riding past in front of the street every so often */}
-      <g className="reel-anim reel-bike" style={{ transform: "translate(-300px, 508px) scale(1.3)" }}>
+      {/* a delivery cyclist far down the sidewalk (small, like he is in the distance) with a Shortlist Pass bag on the back rack */}
+      <g className="reel-anim reel-bike" style={{ transform: "translate(-160px, 432px) scale(0.5)" }}>
         <ellipse cx="0" cy="2" rx="80" ry="5" fill={SHADOW} />
         {[-44, 44].map((cx) => (
           <g key={cx} transform={`translate(${cx} -28)`}>
@@ -154,11 +164,10 @@ function Scene() {
         <path d="M-20 -77 H-2" stroke="#14161A" strokeWidth={6} strokeLinecap="round" />
         {/* rear rack and the bag */}
         <path d="M-84 -64 H-30 M-74 -64 L-44 -28" stroke="#14161A" strokeWidth={3} strokeLinecap="round" />
-        <Paper d={cut(-86, -132, 58, 66, 61, 1.5)} fill="#5FDDAE" dx={3} dy={4} />
-        <Paper d={cut(-86, -132, 58, 14, 62, 1)} fill="#3FBF92" dx={0} dy={2} />
-        <path d="M-86 -100 H-28" stroke="#2E9C75" strokeWidth={3} />
-        <Paper d="M-70 -108 H-46 V-98 Q-43 -96 -46 -94 V-76 H-70 V-94 Q-73 -96 -70 -98 Z" fill="#FBF6E6" dx={1.5} dy={2} />
-        <path d="M-65 -92 L-60 -86 L-51 -100" fill="none" stroke="#14161A" strokeWidth={3.4} strokeLinecap="round" strokeLinejoin="round" />
+        <Paper d={cut(-90, -136, 66, 72, 61, 1.5)} fill="#23292E" dx={3} dy={4} />
+        <Paper d={cut(-90, -136, 66, 14, 62, 1)} fill="#34404A" dx={0} dy={2} />
+        
+        <image href="/shortlist-mint-mark.png" x={-80} y={-118} width={46} height={46} />
         {/* rider: far leg, torso, head and helmet, arm, near leg */}
         <path d="M-10 -78 L10 -58 L2 -32" fill="none" stroke="#25384B" strokeWidth={9} strokeLinecap="round" strokeLinejoin="round" opacity={0.7} className="reel-leg2" />
         <Paper d="M-22 -80 Q-24 -102 -6 -122 L16 -126 Q28 -120 22 -108 L8 -84 Z" fill="#F2B84B" dx={2} dy={3} />
@@ -227,9 +236,11 @@ export function ShortyReel() {
         .reel-cloud-a { --y: 40px; --s: 1.1; animation: cloudDrift 110s linear infinite; animation-delay: -30s }
         .reel-cloud-b { --y: 110px; --s: .8; animation: cloudDrift 150s linear infinite; animation-delay: -95s }
         .reel-cloud-c { --y: 20px; --s: .7; animation: cloudDrift 130s linear infinite; animation-delay: -10s }
-        @keyframes planeFly { 0%, 70% { transform: translate(-200px, 92px) } 100% { transform: translate(1400px, 52px) } }
-        .reel-plane { animation: planeFly 40s linear infinite }
-        @keyframes bikeRide { 0%, 30% { transform: translate(-300px, 508px) scale(1.3) } 62%, 100% { transform: translate(1500px, 508px) scale(1.3) } }
+        @keyframes planeFly { 0%, 55% { transform: translate(-560px, 104px) } 100% { transform: translate(1400px, 90px) } }
+        .reel-plane { animation: planeFly 60s linear infinite }
+        @keyframes propSpin { 0%, 100% { transform: scaleY(1) } 50% { transform: scaleY(.15) } }
+        .reel-prop { transform-origin: 46px 0; animation: propSpin .12s linear infinite }
+        @keyframes bikeRide { 0%, 30% { transform: translate(-160px, 432px) scale(0.5) } 62%, 100% { transform: translate(1340px, 432px) scale(0.5) } }
         .reel-bike { animation: bikeRide 38s linear infinite; animation-delay: -4s }
         @keyframes wheelSpin { to { transform: rotate(360deg) } }
         .reel-wheel { animation: wheelSpin .7s linear infinite }
@@ -254,7 +265,7 @@ export function ShortyReel() {
         .reel-wing { transform-box: fill-box; transform-origin: 50% 100%; animation: wingFlap .28s ease-in-out infinite }
         @keyframes birdHead { 0%, 38%, 100% { transform: rotate(0deg) } 42% { transform: rotate(-9deg) } 48% { transform: rotate(7deg) } 54% { transform: rotate(0deg) } }
         .reel-bird-head { transform-box: fill-box; transform-origin: 50% 100%; animation: birdHead 28s ease-in-out infinite }
-        @media (prefers-reduced-motion: reduce) { .reel-pulse { animation: none; opacity: 0 } .reel-anim, .reel-wheel, .reel-leg, .reel-leg2, .reel-wing, .reel-bird-head, .reel-bird-fly, .reel-bird-sit { animation: none } .reel-bird { opacity: 0 } }
+        @media (prefers-reduced-motion: reduce) { .reel-pulse { animation: none; opacity: 0 } .reel-anim, .reel-prop, .reel-wheel, .reel-leg, .reel-leg2, .reel-wing, .reel-bird-head, .reel-bird-fly, .reel-bird-sit { animation: none } .reel-bird { opacity: 0 } }
       `}</style>
     </section>
   );
