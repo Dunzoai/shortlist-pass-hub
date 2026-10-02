@@ -429,7 +429,7 @@ export function ShortyHero() {
           </div>
           {/* Each bubble has its own fixed spot, so nothing shifts when the other lands: the owner's
               grows down from the top right, Shorty's grows up from just over his head. */}
-          <div className="relative mt-4 h-[150px] sm:h-[190px] lg:mt-0 lg:h-[230px]">
+          <div className="relative mt-2 h-[176px] sm:mt-4 sm:h-[190px] lg:mt-0 lg:h-[230px]">
             <div className="absolute top-0 right-0">
               <TextBubble state={owner} name={ex.biz} tint={ex.tint}>{ex.ask}</TextBubble>
             </div>
@@ -438,13 +438,13 @@ export function ShortyHero() {
             </div>
           </div>
           {/* Shorty sits a little left of center so the card has room to come out on his right. */}
-          <div className="relative -mt-7 w-[var(--w)] -translate-x-[42px] self-center [--w:190px] sm:-mt-9 lg:-translate-x-[70px] lg:[--w:300px]">
+          <div className="relative -mt-7 w-[var(--w)] -translate-x-[38px] self-center [--w:170px] sm:-mt-9 sm:-translate-x-[42px] sm:[--w:190px] lg:-translate-x-[70px] lg:[--w:300px]">
             <ShortyMascot mood={mood} size={190} holdPhone={phase === "texts"} style={{ width: "100%", height: "auto" }} />
             <ResultCard state={card} ex={ex} />
           </div>
         </div>
 
-        <div className="mt-4 max-w-[480px] [grid-area:copy] lg:mt-0">
+        <div className="mt-2 max-w-[480px] [grid-area:copy] sm:mt-4 lg:mt-0">
           <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#2f7a50] sm:text-[12px]">{copy.eyebrow}</p>
           <h1 className="mt-2 font-[family-name:var(--font-fraunces)] text-[clamp(44px,6.4vw,84px)] leading-[0.95] font-normal tracking-[-0.03em] text-[#1d1a16] lg:mt-3 lg:whitespace-nowrap">
             Meet Shorty.
