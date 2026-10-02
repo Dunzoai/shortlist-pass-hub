@@ -159,7 +159,7 @@ const REACTIONS: MascotMood[] = ["content", "whistle", "pleased", "proud"];
    0 quiet · 1 owner typing… · 2 their text lands (he nods) · 3 he works his phone ·
    4 the card grows out of his phone · 5 Shorty typing… · 6 his reply lands ·
    7 the card drifts off up and to the right · 8 the texts clear */
-const STEP_MS = [500, 1400, 1200, 1100, 1200, 1300, 1400, 1400, 450];
+const STEP_MS = [500, 1400, 1200, 1100, 1400, 1300, 1400, 1400, 450];
 
 function Dots() {
   return (
@@ -205,7 +205,8 @@ const CARD_STYLE: Record<CardState, React.CSSProperties> = {
   tucked: { opacity: 0, transform: "translate(-12px, -100%) scale(.1)", transition: "none" },
   out: {
     opacity: 1, transform: "translate(calc(var(--w) * 0.14), calc(-100% + var(--w) * 0.3)) rotate(3deg) scale(1)",
-    transition: "transform 950ms cubic-bezier(.22,1.15,.36,1), opacity 120ms linear",
+    /* eases in so you see it small, rising out of the phone, before it swells out to its spot */
+    transition: "transform 1150ms cubic-bezier(.55,.05,.2,1.12), opacity 260ms ease-in",
   },
   away: {
     opacity: 0, transform: "translate(70vw, -70vh) rotate(10deg) scale(.9)",
