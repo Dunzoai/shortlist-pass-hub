@@ -99,8 +99,8 @@ function swayStops(): Stop[] {
   return out;
 }
 const KEYFRAMES = [
-  kf("sk-sip", [[0, tf("rotate(0)")], [1.2, tf("rotate(0)")], [1.8, tf("rotate(160deg)")], [2.6, tf("rotate(160deg)")], [3.2, tf("rotate(0)")], [LOOP, tf("rotate(0)")]]),
-  kf("sk-sipc", [[0, tf("rotate(0)")], [1.2, tf("rotate(0)")], [1.8, tf("rotate(-160deg)")], [2.6, tf("rotate(-160deg)")], [3.2, tf("rotate(0)")], [LOOP, tf("rotate(0)")]]),
+  kf("sk-sip", [[0, tf("rotate(0)")], [1.2, tf("rotate(0)")], [1.8, tf("rotate(-132deg)")], [2.6, tf("rotate(-132deg)")], [3.2, tf("rotate(0)")], [LOOP, tf("rotate(0)")]]),
+  kf("sk-sipc", [[0, tf("rotate(0)")], [1.2, tf("rotate(0)")], [1.8, tf("rotate(132deg)")], [2.6, tf("rotate(132deg)")], [3.2, tf("rotate(0)")], [LOOP, tf("rotate(0)")]]),
   kf("sk-armloop", [[0, tf(`rotate(${ARM_REST}deg)`)], [3.4, tf(`rotate(${ARM_REST}deg)`)], [4, tf(`rotate(${ARM_GLASSES}deg)`)], [5.4, tf(`rotate(${ARM_GLASSES}deg)`)], [6.2, tf(`rotate(${ARM_REST}deg)`)], [12.4, tf(`rotate(${ARM_REST}deg)`)], [12.9, tf(`rotate(${ARM_THUMB}deg)`)], [14, tf(`rotate(${ARM_THUMB}deg)`)], [14.7, tf(`rotate(${ARM_REST}deg)`)], [LOOP, tf(`rotate(${ARM_REST}deg)`)]]),
   kf("sk-handup", [[0, "opacity:0"], [12.8, "opacity:0"], [12.9, "opacity:1"], [14.1, "opacity:1"], [14.2, "opacity:0"], [LOOP, "opacity:0"]]),
   kf("sk-handrest", [[0, "opacity:1"], [12.8, "opacity:1"], [12.9, "opacity:0"], [14.1, "opacity:0"], [14.2, "opacity:1"], [LOOP, "opacity:1"]]),
@@ -262,8 +262,8 @@ function Shorty() {
           </g>
           <g className="sk-cup">{/* the cup stays upright as the arm lifts it (origin: the hand) */}
             <g transform={OFFSET}>
-              <path d="M-13 131 L-10 107 L-1 101" fill="none" stroke={G.ink} strokeWidth="5.400" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M-13 131 L-10 107 L-1 101" fill="none" stroke={MINT} strokeWidth="2.600" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M-13 131 L-12.500 112 L-14.600 104.200" fill="none" stroke={G.ink} strokeWidth="5.400" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M-13 131 L-12.500 112 L-14.600 104.200" fill="none" stroke={MINT} strokeWidth="2.600" strokeLinecap="round" strokeLinejoin="round" />
               <path d="M-27 118 L-24 156 H-4 L-1 118 Z" fill={CREAM} fillOpacity="0.28" {...ink(2.4)} />
               <path d="M-25.500 131 L-23.500 154 H-4.500 L-2.500 131 Z" fill={AMBER} />
               <path d="M-25.500 131 Q-14 135.500 -2.500 131" fill="none" stroke={CREAM} strokeWidth="2.600" strokeLinecap="round" opacity="0.9" />
