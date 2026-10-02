@@ -689,7 +689,8 @@ export function ShortyScenes({ scene, group, show }: { scene: string; group: "bu
       aria-hidden="true"
       className="pointer-events-none absolute inset-x-[-10%] bottom-0 h-[118%] lg:-left-[22%] lg:-right-[48%] lg:h-[140%] [mask-image:radial-gradient(ellipse_62%_70%_at_50%_62%,black_60%,transparent_100%)]"
     >
-      <svg viewBox="0 0 420 260" preserveAspectRatio="xMidYMax meet" className="absolute inset-0 h-full w-full">
+      {/* shared filters */}
+      <svg width={0} height={0} className="absolute" aria-hidden="true">
         <defs>
           <filter id="paper" x="-8%" y="-8%" width="116%" height="120%" colorInterpolationFilters="sRGB">
             <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves={2} seed={7} result="warp" />
@@ -704,15 +705,22 @@ export function ShortyScenes({ scene, group, show }: { scene: string; group: "bu
             <feGaussianBlur stdDeviation={4} />
           </filter>
         </defs>
-        {GROUPS[group].map((name) => {
-          const Scene = SCENES[name];
-          return (
-            <g key={name} className="transition-opacity duration-700" style={{ opacity: show && name === scene ? 1 : 0 }}>
-              <Scene />
-            </g>
-          );
-        })}
       </svg>
+      {/* Each scene is its own layer: drawn once, then the cross-fade is just compositing. */}
+      {GROUPS[group].map((name) => {
+        const Scene = SCENES[name];
+        return (
+          <svg
+            key={name}
+            viewBox="0 0 420 260"
+            preserveAspectRatio="xMidYMax meet"
+            className="absolute inset-0 h-full w-full transition-opacity duration-700"
+            style={{ opacity: show && name === scene ? 1 : 0, willChange: "opacity" }}
+          >
+            <Scene />
+          </svg>
+        );
+      })}
     </div>
   );
 }

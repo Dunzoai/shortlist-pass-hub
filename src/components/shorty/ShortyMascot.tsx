@@ -45,9 +45,11 @@ export function ShortyMascot({ mood, task = "none", size = 160, holdPhone = fals
     const svg = svgRef.current;
     if (!svg) return;
     const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+    /* Phones: skip the line-boil filter (it regenerates noise 10x a second) and draw at 30fps. */
+    const narrow = window.matchMedia?.("(max-width: 899px)").matches ?? false;
     const now = performance.now() / 1000;
     const st = {
-      update: makeRig(svg, { small, reduce }), reduce, current: resolved, start: now,
+      update: makeRig(svg, { small, reduce, boil: !small && !narrow }), reduce, current: resolved, start: now,
       from: null as Pose | null, blendAt: 0, last: null as Pose | null,
       nextBlink: now + 2 + Math.random() * 2, blinkAt: -1, raf: 0, draw: () => {},
     };
@@ -71,9 +73,27 @@ export function ShortyMascot({ mood, task = "none", size = 160, holdPhone = fals
       st.update(p, r.swapProps);
     };
     state.current = st;
-    const loop = () => { st.draw(); st.raf = requestAnimationFrame(loop); };
-    if (reduce) st.draw(); else st.raf = requestAnimationFrame(loop);
+    /* Only run while he's on screen. */
+    let visible = true, lastDraw = 0;
+    const loop = () => {
+      st.raf = 0;
+      if (!visible) return;
+      const now = performance.now();
+      if (!narrow || now - lastDraw >= 33) { lastDraw = now; st.draw(); }
+      st.raf = requestAnimationFrame(loop);
+    };
+    let io: IntersectionObserver | null = null;
+    if (reduce) st.draw();
+    else {
+      st.raf = requestAnimationFrame(loop);
+      io = new IntersectionObserver(([e]) => {
+        visible = e.isIntersecting;
+        if (visible && !st.raf) st.raf = requestAnimationFrame(loop);
+      }, { rootMargin: "200px" });
+      io.observe(svg);
+    }
     return () => {
+      io?.disconnect();
       cancelAnimationFrame(st.raf);
       while (svg.firstChild) svg.removeChild(svg.firstChild);
       state.current = null;
