@@ -31,6 +31,9 @@ export function ShortyMascot({ mood, task = "none", size = 160, holdPhone = fals
   const svgRef = useRef<SVGSVGElement | null>(null);
   const small = size < 100;
   const resolved = useMemo(() => resolvePose(mood, task), [mood, task]);
+  /* read every frame, so it can switch on after the loop is built */
+  const holdPhoneRef = useRef(holdPhone);
+  holdPhoneRef.current = holdPhone;
 
   const state = useRef<{
     update: RigUpdate; reduce: boolean; current: ResolvedPose; start: number;
@@ -52,7 +55,7 @@ export function ShortyMascot({ mood, task = "none", size = 160, holdPhone = fals
       const t = performance.now() / 1000;
       const r = st.current;
       let p = r.pose(st.reduce ? r.still : t - st.start);
-      if (holdPhone) p = withPhoneInHand(p);
+      if (holdPhoneRef.current) p = withPhoneInHand(p);
       if (st.from && !st.reduce) {
         const k = seg(t - st.blendAt, 0, BLEND_S);
         if (k < 1) p = lerpPose(st.from, p, easeInOutSoft(k)); else st.from = null;
