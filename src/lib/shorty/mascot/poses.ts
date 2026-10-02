@@ -19,7 +19,7 @@
  * Docs: docs/features/admin-dashboard/shorty-mascot.md.
  */
 
-export type MascotMood = 'walk' | 'wait' | 'nod' | 'tapping' | 'pleased' | 'content' | 'whistle' | 'proud' | 'surprised' | 'hello' | 'idle' | 'listening' | 'thinking' | 'working' | 'done' | 'oops';
+export type MascotMood = 'walk' | 'wait' | 'nod' | 'pocket' | 'tapping' | 'pleased' | 'content' | 'whistle' | 'proud' | 'surprised' | 'hello' | 'idle' | 'listening' | 'thinking' | 'working' | 'done' | 'oops';
 export type MascotTask = 'menu' | 'event' | 'social' | 'text' | 'none';
 export type Side = 'L' | 'R';
 
@@ -181,8 +181,8 @@ function tapping(t: number): Pose {
      glove (not pinned in space), so it travels with the hand from his side up to his chest. */
   p.props.phoneBack = hold({ hand: 'R', ox: -15, oy: 14, s: 1.5, rot: -6 });
   p.fx.glow = up;
-  p.R = arm(...to('R', px + 15, py - 14 - tap), 14, 1, 160, 0, 1);
-  p.L = arm(...to('L', px - 16, py - 12 - tap), 16, 1, 20, 0, 1);
+  p.R = arm(...to('R', px + 15, py - 14 - tap), 14, 1, 56, 0, 1);     // fingers wrap in from the right edge
+  p.L = arm(...to('L', px - 16, py - 12 - tap), 16, 1, -20, 0, 1);    // and from the left
   p.face = { ...p.face, mouth: 'none', gx: 1.6, gy: 2.8, bl: 1, br: 0.5, blr: 6, brr: -4 };
   return p;
 }
@@ -210,6 +210,22 @@ function proud(t: number): Pose {
   p.L = hip('L'); p.R = hang('R', Math.sin(t * 2) * 1.5);
   p.rot = -2.5 * k; p.sy = 1 + 0.02 * k; p.by = 0.6 + Math.sin(t * 2.2) * 0.4;
   p.face = { ...p.face, mouth: 'none', gx: -0.4, gy: -1, bl: -3.5 * k, br: -1 * k, brr: 8 * k };
+  return p;
+}
+/** POCKET (website hero): after the wave, he reaches to his hip, pulls his phone out of
+    his pocket and brings it up to a relaxed hold at his waist. */
+function pocket(t: number): Pose {
+  const p = base(t);
+  const reach = easeInOutSoft(seg(t, 0, 0.3)), lift = easeInOutSoft(seg(t, 0.38, 0.85));
+  const hipX = 108, hipY = 166;
+  const hx = 121 + (hipX - 121) * reach + (REST_HAND[0] - hipX) * lift;
+  const hy = 152 + (hipY - 152) * reach + (REST_HAND[1] - hipY) * lift;
+  p.R = arm(...to('R', hx, hy), 14, 1, 71 * lift + 6 * (1 - lift), 0, lift > 0.5 ? 1 : 0);
+  const out = seg(t, 0.3, 0.42);
+  p.props.phoneBack = { v: Math.max(0.001, out), s: 0.9 + 0.4 * lift, hand: 'R', rot: -8 * lift + 20 * (1 - lift), ox: -6 * lift, oy: 10, at: null };
+  p.L = hang('L', Math.sin(t * 3) * 1.5);
+  p.rot = 2 * reach * (1 - lift); p.by = 0.6 + Math.sin(t * 2.4) * 0.4;
+  p.face = { ...p.face, mouth: 'none', gx: 1.6 * reach * (1 - lift), gy: 2.4 * reach * (1 - lift), bl: -1, br: -1 };
   return p;
 }
 function hello(t: number): Pose {
@@ -403,6 +419,7 @@ export const DEFAULT_POSES: Record<string, PoseEntry> = {
   walk: { pose: walk, still: 0.15 },
   wait: { pose: wait, still: 0.5 },
   nod: { pose: nod, still: 0.4 },
+  pocket: { pose: pocket, still: 1 },
   tapping: { pose: tapping, still: 0.6 },
   pleased: { pose: pleased, still: 0.6 },
   content: { pose: content, still: 0.8 },
@@ -439,8 +456,14 @@ export type ResolvedPose = {
  */
 export function withPhoneInHand(p: Pose): Pose {
   if (p.props.phoneBack.v > 0.5) return p;
-  p.props.phoneBack = { v: 1, s: 1.2, hand: 'R', rot: 6, ox: -1, oy: 12, at: null };
+  restHold(p);
   return p;
+}
+/** Phone held loosely at his waist in the right glove, back toward us, screen off. */
+export const REST_HAND: [number, number] = [94, 150];
+function restHold(p: Pose, k = 1, s = 1.3) {
+  p.R = arm(...to('R', REST_HAND[0], REST_HAND[1]), 14, 1, 71, 0, 1);
+  p.props.phoneBack = { v: k, s, hand: 'R', rot: -8, ox: -6, oy: 10, at: null };
 }
 
 export function resolvePose(mood: MascotMood, task: MascotTask = 'none', overrides?: MascotOverrides | null): ResolvedPose {

@@ -153,6 +153,8 @@ const EXCHANGES: Exchange[] = [
 ];
 
 const HELLO_MS = 1500;
+/* then he pulls his phone out of his pocket and keeps it in hand from there on */
+const POCKET_MS = 1100;
 /* How he takes a finished job: a different look each round, the big grin only now and then. */
 const REACTIONS: MascotMood[] = ["content", "whistle", "pleased", "proud"];
 /* Per text:
@@ -241,7 +243,7 @@ function ResultCard({ state, ex }: { state: CardState; ex: Exchange }) {
 }
 
 export function ShortyHero() {
-  const [phase, setPhase] = useState<"hello" | "texts">("hello");
+  const [phase, setPhase] = useState<"hello" | "pocket" | "texts">("hello");
   const [n, setN] = useState(0);
   const [step, setStep] = useState(0);
   const reduce = useRef(false);
@@ -253,8 +255,8 @@ export function ShortyHero() {
 
   useEffect(() => {
     if (reduce.current) return;
-    if (phase === "hello") {
-      const id = window.setTimeout(() => setPhase("texts"), HELLO_MS);
+    if (phase === "hello" || phase === "pocket") {
+      const id = window.setTimeout(() => setPhase(phase === "hello" ? "pocket" : "texts"), phase === "hello" ? HELLO_MS : POCKET_MS);
       return () => clearTimeout(id);
     }
     const id = window.setTimeout(() => {
@@ -268,6 +270,7 @@ export function ShortyHero() {
   const live = phase === "texts";
   const mood: MascotMood =
     phase === "hello" ? "hello"
+    : phase === "pocket" ? "pocket"
     : reduce.current ? "pleased"
     : step === 2 ? "nod"
     : step >= 3 && step <= 5 ? "tapping"
@@ -307,7 +310,7 @@ export function ShortyHero() {
           </div>
           {/* Shorty sits a little left of center so the card has room to come out on his right. */}
           <div className="relative -mt-7 w-[var(--w)] -translate-x-[42px] self-center [--w:190px] sm:-mt-9 lg:-translate-x-[70px] lg:[--w:300px]">
-            <ShortyMascot mood={mood} size={190} holdPhone style={{ width: "100%", height: "auto" }} />
+            <ShortyMascot mood={mood} size={190} holdPhone={phase === "texts"} style={{ width: "100%", height: "auto" }} />
             <ResultCard state={card} ex={ex} />
           </div>
         </div>

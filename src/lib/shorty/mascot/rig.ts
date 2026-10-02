@@ -336,6 +336,8 @@ export function makeRig(svg: SVGSVGElement, opts: { small?: boolean; boil?: bool
       });
     } else { bubbles.forEach(b => show(b, false)); if (phone.typing) show(phone.typing, false); }
     const glowOn = p.fx.glow ?? 0;
+    /* the light spilling over the phone's top edge is the screen: only on while he's working it */
+    (held.phoneBack.firstChild as SVGElement | null)?.setAttribute('opacity', (0.55 * glowOn).toFixed(2));
     show(screenGlow, glowOn > 0.02);
     screenGlow.setAttribute('opacity', (glowOn * (0.85 + 0.15 * Math.sin(p.t * 9))).toFixed(2));
     show(hat, p.hat > 0.02);
