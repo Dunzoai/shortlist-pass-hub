@@ -159,7 +159,7 @@ const REACTIONS: MascotMood[] = ["content", "whistle", "pleased", "proud"];
    0 quiet · 1 owner typing… · 2 their text lands (he nods) · 3 he works his phone ·
    4 the card grows out of his phone · 5 Shorty typing… · 6 his reply lands ·
    7 the card drifts off up and to the right · 8 the texts clear */
-const STEP_MS = [500, 1400, 1200, 1100, 1000, 1300, 1400, 1400, 450];
+const STEP_MS = [500, 1400, 1200, 1100, 1200, 1300, 1400, 1400, 450];
 
 function Dots() {
   return (
@@ -196,15 +196,16 @@ function TextBubble({ state, name, tint, mine, children }: { state: BubbleState;
   );
 }
 
-/** What he did: grows out of his phone (TAP_PHONE_AT on the drawing, about 57% across and
-    53% down his box), lands beside him with a gap while he answers, then drifts off up and to
-    the right before the texts clear. --w is his box width, set on the wrapper. */
+/** What he did: comes up out of the top edge of his phone (where the screen light spills,
+    about 57% across and 43% down his box), grows as it travels out to its spot beside him,
+    then drifts off up and to the right before the texts clear. The card's bottom-left
+    corner is pinned to the phone; --w is his box width, set on the wrapper. */
 type CardState = "tucked" | "out" | "away";
 const CARD_STYLE: Record<CardState, React.CSSProperties> = {
-  tucked: { opacity: 0, transform: "translate(calc(var(--w) * -0.14), calc(var(--w) * 0.23 - 75%)) scale(.06)", transition: "none" },
+  tucked: { opacity: 0, transform: "translate(-12px, -100%) scale(.1)", transition: "none" },
   out: {
-    opacity: 1, transform: "translate(0, 0) rotate(3deg) scale(1)",
-    transition: "transform 700ms cubic-bezier(.18,1.25,.32,1), opacity 160ms ease-out",
+    opacity: 1, transform: "translate(calc(var(--w) * 0.14), calc(-100% + var(--w) * 0.3)) rotate(3deg) scale(1)",
+    transition: "transform 950ms cubic-bezier(.22,1.15,.36,1), opacity 120ms linear",
   },
   away: {
     opacity: 0, transform: "translate(70vw, -70vh) rotate(10deg) scale(.9)",
@@ -216,8 +217,8 @@ function ResultCard({ state, ex }: { state: CardState; ex: Exchange }) {
   return (
     <>
       {/* a burst of light off the screen as it comes out */}
-      {state === "out" && <span aria-hidden="true" className="slp-flash pointer-events-none absolute top-[50%] left-[57%] z-10 h-16 w-16 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,#f2fff8,rgba(191,240,212,.6)_45%,rgba(191,240,212,0))]" />}
-      <div className="absolute top-[28%] left-[71%] z-10 w-[160px] origin-[0%_75%] sm:w-[210px] lg:w-[235px]" style={CARD_STYLE[state]}>
+      {state === "out" && <span aria-hidden="true" className="slp-flash pointer-events-none absolute top-[43%] left-[57%] z-10 h-16 w-16 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,#f2fff8,rgba(191,240,212,.6)_45%,rgba(191,240,212,0))]" />}
+      <div data-result-card className="absolute top-[43%] left-[57%] z-10 w-[160px] origin-[0%_100%] sm:w-[210px] lg:w-[235px]" style={CARD_STYLE[state]}>
         <div className={`relative rounded-[12px] bg-[#fbf6e6] px-3 py-2.5 text-[#1d1a16] sm:rounded-[14px] sm:px-4 sm:py-3 ${PAPER}`}>
           <Grain />
           <div className="relative flex items-center gap-1.5 sm:gap-2">
@@ -305,7 +306,7 @@ export function ShortyHero() {
           </div>
           {/* Shorty sits a little left of center so the card has room to come out on his right. */}
           <div className="relative -mt-7 w-[var(--w)] -translate-x-[42px] self-center [--w:190px] sm:-mt-9 lg:-translate-x-[70px] lg:[--w:300px]">
-            <ShortyMascot mood={mood} size={190} style={{ width: "100%", height: "auto" }} />
+            <ShortyMascot mood={mood} size={190} holdPhone style={{ width: "100%", height: "auto" }} />
             <ResultCard state={card} ex={ex} />
           </div>
         </div>

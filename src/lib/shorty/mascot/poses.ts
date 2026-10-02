@@ -42,6 +42,8 @@ export type Pose = {
     q: number; sparkle: number; shake: number; dust: number; bulb: number; lit: number; notes: number;
     shout: number; shoutAt: [number, number];
     text: { on: number; typing: number; pop: number; n: number };
+    /** The phone's screen light on his face (website hero), 0–1. */
+    glow?: number;
   };
   /** Set per frame by the component, not by a pose. */
   blink?: number; boilSeed?: number;
@@ -171,12 +173,14 @@ function pleased(t: number): Pose {
     thumb tapping, eyes on the screen; the rig lights his face with its glow. */
 export const TAP_PHONE_AT: [number, number] = [84, 132];
 function tapping(t: number): Pose {
-  const p = base(t), up = easeOutBack(seg(t, 0, 0.3), 1.4), tap = Math.max(0, Math.sin(t * 13)) * 0.9;
+  const p = base(t), up = seg(t, 0, 0.4), tap = Math.max(0, Math.sin(t * 13)) * 0.9;
   const [px, py] = TAP_PHONE_AT;
   p.by = 0.5 + Math.sin(t * 2.2) * 0.5; p.rot = 1.5;
   /* both gloves wrap the phone's lower edges; the thumbs are on the screen side, out of sight,
-     so all we see is the phone give a tiny bob with each tap */
-  p.props.phoneBack = hold({ at: [px, py - tap], s: 1.5 * up, rot: -6 });
+     so all we see is the phone give a tiny bob with each tap. The phone rides in his right
+     glove (not pinned in space), so it travels with the hand from his side up to his chest. */
+  p.props.phoneBack = hold({ hand: 'R', ox: -15, oy: 14, s: 1.5, rot: -6 });
+  p.fx.glow = up;
   p.R = arm(...to('R', px + 15, py - 14 - tap), 14, 1, 160, 0, 1);
   p.L = arm(...to('L', px - 16, py - 12 - tap), 16, 1, 20, 0, 1);
   p.face = { ...p.face, mouth: 'none', gx: 1.6, gy: 2.8, bl: 1, br: 0.5, blr: 6, brr: -4 };
@@ -429,6 +433,16 @@ export type ResolvedPose = {
  * A vertical entry with no `pose` borrows the pose of the first DEFAULT that
  * answers for the same mood/task, and keeps its own swaps.
  */
+/**
+ * The website hero keeps the phone in his right glove the whole time: any pose that isn't
+ * already working the phone gets it hanging from his hand at his side, back toward us.
+ */
+export function withPhoneInHand(p: Pose): Pose {
+  if (p.props.phoneBack.v > 0.5) return p;
+  p.props.phoneBack = { v: 1, s: 1.2, hand: 'R', rot: 6, ox: -1, oy: 12, at: null };
+  return p;
+}
+
 export function resolvePose(mood: MascotMood, task: MascotTask = 'none', overrides?: MascotOverrides | null): ResolvedPose {
   const keys = task !== 'none' ? [`${mood}:${task}`, mood] : [mood];
   const fromDefault = keys.map(k => [k, DEFAULT_POSES[k]] as const).find(([, e]) => e?.pose)

@@ -9,7 +9,7 @@
 import { useEffect, useMemo, useRef, type CSSProperties } from "react";
 import { makeRig, type RigUpdate } from "@/lib/shorty/mascot/rig";
 import {
-  resolvePose, lerpPose, easeInOutSoft, seg,
+  resolvePose, lerpPose, easeInOutSoft, seg, withPhoneInHand,
   type MascotMood, type MascotTask, type Pose, type ResolvedPose,
 } from "@/lib/shorty/mascot/poses";
 import { MASCOT_VIEWBOX, mascotBoxHeight, mascotBoxWidth } from "@/lib/shorty/mascot/frame";
@@ -19,13 +19,15 @@ type Props = {
   task?: MascotTask;
   /** HIS height in px; the drawn box is bigger (frame.ts). Under 100 draws the small version. */
   size?: number;
+  /** Keep his phone in his right glove in every pose (website hero). */
+  holdPhone?: boolean;
   style?: CSSProperties;
 };
 
 const BLEND_S = 0.6;
 const SEEDS = [3, 7, 11];
 
-export function ShortyMascot({ mood, task = "none", size = 160, style }: Props) {
+export function ShortyMascot({ mood, task = "none", size = 160, holdPhone = false, style }: Props) {
   const svgRef = useRef<SVGSVGElement | null>(null);
   const small = size < 100;
   const resolved = useMemo(() => resolvePose(mood, task), [mood, task]);
@@ -50,6 +52,7 @@ export function ShortyMascot({ mood, task = "none", size = 160, style }: Props) 
       const t = performance.now() / 1000;
       const r = st.current;
       let p = r.pose(st.reduce ? r.still : t - st.start);
+      if (holdPhone) p = withPhoneInHand(p);
       if (st.from && !st.reduce) {
         const k = seg(t - st.blendAt, 0, BLEND_S);
         if (k < 1) p = lerpPose(st.from, p, easeInOutSoft(k)); else st.from = null;
