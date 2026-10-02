@@ -499,9 +499,9 @@ function HoaBingo() {
         <path d="M26 128 L210 72 L394 128 Z" fill="#b9523b" />
       </Paper>
       <Paper rot={-0.6} at={[210, 160]}>
-        <path d="M150 140 H270 V198 H150 Z" fill="#5d4637" />
-        <path d="M178 150 H242 V198 H178 Z" fill="#ffd27a" />
-        {[[188, 142], [248, 142], [298, 142], [338, 142]].map(([x, y]) => <path key={x} d={`M${x} ${y} h26 v22 h-26 Z`} fill="#ffd27a" />)}
+        <path d="M186 146 H234 V198 H186 Z" fill="#5d4637" />
+        <path d="M192 152 H228 V198 H192 Z" fill="#ffd27a" />
+        {[[136, 144], [256, 144], [300, 144], [344, 144]].map(([x, y]) => <path key={x} d={`M${x} ${y} h26 v22 h-26 Z`} fill="#ffd27a" />)}
       </Paper>
       <Paper rot={0.4}><path d="M8 198 H412 V246 H8 Z" fill="#5a4f73" /></Paper>
       <path d="M0 26 Q105 58 210 32 Q315 58 420 26" {...INK} />
@@ -532,7 +532,7 @@ function HoaPool() {
   return (
     <>
       <Paper rot={1}><path d={ARCH} fill="#cfe5f1" /></Paper>
-      <Paper rot={-1} at={[340, 70]}><circle cx={340} cy={70} r={26} fill="#f6d35e" /></Paper>
+      <Paper rot={-1} at={[236, 60]}><circle cx={236} cy={60} r={22} fill="#f6d35e" /></Paper>
       <Paper rot={1.5} at={[84, 66]}><circle cx={84} cy={66} r={24} fill="#fbf6e6" /></Paper>
       <g {...INK} strokeWidth={1.8}>
         <path d="M84 66 V48 M84 66 V82" />
@@ -545,10 +545,11 @@ function HoaPool() {
         <path d="M30 172 q10 -6 20 0 t20 0 M150 186 q10 -6 20 0 t20 0 M290 170 q10 -6 20 0 t20 0 M70 198 q10 -6 20 0 t20 0 M240 200 q10 -6 20 0 t20 0" />
       </g>
       {[20, 304].map((x, i) => (
-        <Paper key={x} rot={i ? 1 : -1} at={[x + 50, 214]}>
-          <path d={`M${x + 8} 222 H${x + 76} L${x + 82} 230 H${x + 2} Z`} fill="#fbf6e6" />
-          <path d={`M${x + 8} 222 L${x + 32} 190 L${x + 42} 196 L${x + 22} 224 Z`} fill="#f5a46a" />
-          <path d={`M${x + 36} 222 H${x + 54} L${x + 58} 230 H${x + 32} Z`} fill="#f5a46a" />
+        <Paper key={x} rot={i ? 1 : -1} at={[x + 52, 214]}>
+          <path d={`M${x + 14} 220 H${x + 92} V229 H${x + 14} Z`} fill="#fbf6e6" />
+          <path d={`M${x + 18} 220 L${x + 44} 178 L${x + 57} 185 L${x + 34} 220 Z`} fill="#f5a46a" />
+          <path d={`M${x + 38} 220 H${x + 92} V225 H${x + 38} Z`} fill="#f5a46a" />
+          <path d={`M${x + 22} 229 h5 v11 h-5 Z M${x + 82} 229 h5 v11 h-5 Z`} fill="#8f8a83" />
         </Paper>
       ))}
       <Paper rot={1} at={[370, 130]}>
@@ -556,7 +557,7 @@ function HoaPool() {
         <ellipse cx={346} cy={64} rx={22} ry={15} fill="#bfe3ea" />
       </Paper>
       <g {...INK} strokeWidth={1.1}>
-        <path d="M326 64 h40 M346 49 v30 M332 55 l28 18 M360 55 l-28 18" opacity={0.7} />
+        <path d="M333 56 h26 M328 64 h36 M333 72 h26 M338 52 v24 M346 50 v28 M354 52 v24" opacity={0.7} />
         <ellipse cx={346} cy={64} rx={22} ry={15} />
       </g>
     </>
