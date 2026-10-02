@@ -91,6 +91,22 @@ function Cloud({ y, s, className }: { y: number; s: number; className: string })
     </g>
   );
 }
+/** The towed banner: a ribbon with a gentle ripple along both edges and a swallowtail end. */
+const ripple = (x: number, y: number, ph: number) => y + 3.2 * Math.sin(x * 0.045 + ph);
+const BANNER = (() => {
+  const x0 = -112, x1 = -494, top = -16, bot = 20, pts: string[] = [];
+  for (let x = x0; x >= x1; x -= 19) pts.push(`${x} ${ripple(x, top, 0).toFixed(1)}`);
+  const notch = `${x1 + 20} ${(top + bot) / 2}`;
+  const back: string[] = [];
+  for (let x = x1; x <= x0; x += 19) back.push(`${x} ${ripple(x, bot, 0.8).toFixed(1)}`);
+  return `M${pts.join(" L")} L${x1 - 2} ${top + 1} L${notch} L${x1 - 2} ${bot} L${back.join(" L")} L${x0} ${bot} Z`;
+})();
+const BANNER_STITCH = (() => {
+  const pts: string[] = [];
+  for (let x = -122; x >= -484; x -= 19) pts.push(`${x} ${ripple(x, -9.5, 0).toFixed(1)}`);
+  for (let x = -484; x <= -122; x += 19) pts.push(`${x} ${ripple(x, 13.5, 0.8).toFixed(1)}`);
+  return `M${pts.join(" L")} Z`;
+})();
 function Scene() {
   return (
     <svg viewBox="0 0 1200 520" preserveAspectRatio="xMidYMax slice" className="absolute inset-0 h-full w-full" aria-hidden="true">
@@ -114,19 +130,31 @@ function Scene() {
       <Building x={1058} w={150} h={306} fill="#F2DC96" cols={3} rows={5} seed={83} />
       <Tree x={408} s={0.85} />
       <Tree x={826} s={0.95} />
-      <g className="reel-anim reel-plane" style={{ transform: "translate(-560px, 104px)" }}>
-        {/* a little prop plane towing a banner */}
-        <path d="M-52 4 L-86 4" stroke="#6B5A48" strokeWidth={1.6} />
-        <path d="M-86 -16 H-396 L-382 4 L-396 24 H-86 Z" fill={SHADOW} transform="translate(3 4)" />
-        <Paper d="M-86 -16 H-396 L-382 4 L-396 24 H-86 Z" fill="#FBF6E6" dx={0} dy={0} />
-        <path d="M-86 -16 H-396 L-382 4 L-396 24 H-86 Z" fill="none" stroke="#5FDDAE" strokeWidth={3} strokeLinejoin="round" />
-        <text x={-241} y={9} textAnchor="middle" fontSize={15.5} fontWeight={800} letterSpacing={0.6} fill="#14161A" style={{ fontFamily: SANS }}>THE CITY POWERED BY THE SHORTLIST</text>
-        <Paper d="M-52 0 Q-52 -9 -36 -9 H20 Q36 -9 44 0 Q36 9 20 9 H-36 Q-52 9 -52 0 Z" fill="#E2A43C" dx={3} dy={4} />
-        <Paper d="M-52 -2 L-62 -20 L-50 -20 L-38 -4 Z" fill="#C8624A" dx={2} dy={2} />
-        <Paper d="M-12 -7 L-2 -28 L10 -28 L10 -6 Z M-12 7 L-2 24 L10 24 L10 6 Z" fill="#FBF6E6" dx={2} dy={3} />
-        <path d="M14 -6 H30 L36 -1 H14 Z" fill="#BFE0EA" stroke="#14161A" strokeWidth={1.5} strokeLinejoin="round" />
-        <circle cx="46" cy="0" r="3.2" fill="#3B3A38" />
-        <g className="reel-prop"><path d="M46 -16 V16" stroke="#3B3A38" strokeWidth={3.4} strokeLinecap="round" /></g>
+      <g className="reel-anim reel-plane" style={{ transform: "translate(-640px, 124px)" }}>
+        {/* a little prop plane towing a banner, all cut paper: layered pieces, hard shadows, grain, a rippling ribbon */}
+        <path d="M-60 2 L-112 -14 M-60 4 L-112 20" stroke="#6B5A48" strokeWidth={1.4} fill="none" />
+        <g className="reel-banner">
+          <Paper d={BANNER} fill="#FBF6E6" dx={4} dy={5} />
+          <path d={BANNER} fill="none" stroke="#5FDDAE" strokeWidth={3.2} strokeLinejoin="round" />
+          <path d={BANNER_STITCH} fill="none" stroke="#5FDDAE" strokeWidth={1.2} strokeDasharray="5 5" opacity={0.9} />
+          <text x={-306} y={9.5} textAnchor="middle" fontSize={15.5} fontWeight={800} letterSpacing={0.5} fill="#14161A" style={{ fontFamily: SANS }}>THE CITY POWERED BY THE SHORTLIST</text>
+        </g>
+        <g transform="scale(1.1)">
+          <Paper d="M-48 -4 L-64 -34 L-46 -34 L-32 -6 Z" fill="#C8624A" dx={2.5} dy={3} />
+          <Paper d="M-56 4 L-74 16 L-50 16 Z" fill="#B5553F" dx={2} dy={2} />
+          <Paper d="M-22 6 L-8 30 H14 L10 6 Z" fill="#F3E7C9" dx={2.5} dy={3} />
+          <Paper d="M-62 0 Q-58 -13 -30 -15 H20 Q44 -15 52 0 Q44 13 20 13 H-30 Q-58 13 -62 0 Z" fill="#E8A94A" dx={3} dy={4} />
+          <path d="M-34 -3 H44 Q46 0 44 3 H-34 Z" fill="#5FDDAE" opacity={0.95} />
+          <Paper d="M8 -12 H28 Q34 -12 36 -6 V-3 H8 Z" fill="#CBE7EE" dx={1.5} dy={1.5} />
+          <path d="M-16 -13 L-24 -36 M12 -13 L16 -36" stroke="#6B5A48" strokeWidth={1.6} />
+          <Paper d="M-28 -36 H24 L18 -14 H-20 Z" fill="#F7EDD2" dx={2.5} dy={3} />
+          <path d="M-20 -26 H16" stroke="#5FDDAE" strokeWidth={2.4} strokeLinecap="round" />
+          <Paper d="M48 -9 H58 V9 H48 Z" fill="#4A4A48" dx={2} dy={2} />
+          <circle cx="26" cy="17" r="5" fill="#3B3A38" />
+          <path d="M26 13 V20" stroke="#6B5A48" strokeWidth={1.4} />
+          <circle cx="60" cy="0" r="3" fill="#3B3A38" />
+          <g className="reel-prop"><Paper d="M57 -19 Q62 0 57 19 Q55 0 57 -19 Z" fill="#7B6A58" dx={1.5} dy={1.5} /></g>
+        </g>
       </g>
       {/* the bird: flies in, lands on the roof of the red building, looks about, flies off */}
       <g className="reel-anim reel-bird" style={{ transform: "translate(1320px, 20px)" }}>
@@ -236,10 +264,12 @@ export function ShortyReel() {
         .reel-cloud-a { --y: 40px; --s: 1.1; animation: cloudDrift 110s linear infinite; animation-delay: -30s }
         .reel-cloud-b { --y: 110px; --s: .8; animation: cloudDrift 150s linear infinite; animation-delay: -95s }
         .reel-cloud-c { --y: 20px; --s: .7; animation: cloudDrift 130s linear infinite; animation-delay: -10s }
-        @keyframes planeFly { 0%, 55% { transform: translate(-560px, 104px) } 100% { transform: translate(1400px, 90px) } }
-        .reel-plane { animation: planeFly 60s linear infinite }
+        @keyframes planeFly { 0%, 12% { transform: translate(-640px, 124px) } 100% { transform: translate(1420px, 108px) } }
+        .reel-plane { animation: planeFly 34s linear infinite; animation-delay: -3.5s }
+        @keyframes bannerWave { 0%, 100% { transform: skewY(-1.6deg) } 50% { transform: skewY(1.6deg) } }
+        .reel-banner { transform-origin: -112px 2px; animation: bannerWave 2.2s ease-in-out infinite }
         @keyframes propSpin { 0%, 100% { transform: scaleY(1) } 50% { transform: scaleY(.15) } }
-        .reel-prop { transform-origin: 46px 0; animation: propSpin .12s linear infinite }
+        .reel-prop { transform-origin: 59px 0; animation: propSpin .12s linear infinite }
         @keyframes bikeRide { 0%, 30% { transform: translate(-160px, 432px) scale(0.5) } 62%, 100% { transform: translate(1340px, 432px) scale(0.5) } }
         .reel-bike { animation: bikeRide 38s linear infinite; animation-delay: -4s }
         @keyframes wheelSpin { to { transform: rotate(360deg) } }
@@ -265,7 +295,7 @@ export function ShortyReel() {
         .reel-wing { transform-box: fill-box; transform-origin: 50% 100%; animation: wingFlap .28s ease-in-out infinite }
         @keyframes birdHead { 0%, 38%, 100% { transform: rotate(0deg) } 42% { transform: rotate(-9deg) } 48% { transform: rotate(7deg) } 54% { transform: rotate(0deg) } }
         .reel-bird-head { transform-box: fill-box; transform-origin: 50% 100%; animation: birdHead 28s ease-in-out infinite }
-        @media (prefers-reduced-motion: reduce) { .reel-pulse { animation: none; opacity: 0 } .reel-anim, .reel-prop, .reel-wheel, .reel-leg, .reel-leg2, .reel-wing, .reel-bird-head, .reel-bird-fly, .reel-bird-sit { animation: none } .reel-bird { opacity: 0 } }
+        @media (prefers-reduced-motion: reduce) { .reel-pulse { animation: none; opacity: 0 } .reel-anim, .reel-banner, .reel-prop, .reel-wheel, .reel-leg, .reel-leg2, .reel-wing, .reel-bird-head, .reel-bird-fly, .reel-bird-sit { animation: none } .reel-bird { opacity: 0 } }
       `}</style>
     </section>
   );
