@@ -119,8 +119,8 @@ function Salon() {
       <g {...INK}>
         <path d="M186 62 q10 -10 22 -8 M190 72 q6 -6 13 -5" stroke="#fbfdff" strokeWidth={2.2} />
         <path d="M34 140 H86 M182 206 H238" />
-        <circle cx={82} cy={78} r={6} /> <circle cx={82} cy={98} r={6} />
-        <path d="M87 81 L120 94 M87 95 L120 82" />
+        <circle cx={322} cy={62} r={6} /> <circle cx={322} cy={82} r={6} />
+        <path d="M327 65 L360 78 M327 79 L360 66" />
       </g>
     </>
   );

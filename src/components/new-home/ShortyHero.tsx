@@ -155,7 +155,7 @@ const EXCHANGES: Exchange[] = [
 const HELLO_MS = 1500;
 /* Per text:
    0 quiet · 1 owner typing… · 2 their text lands (he nods) · 3 he works his phone ·
-   4 the card unfolds out of the phone · 5 Shorty typing… · 6 his reply lands ·
+   4 the card grows out of his phone · 5 Shorty typing… · 6 his reply lands ·
    7 the card drifts off up and to the right · 8 the texts clear */
 const STEP_MS = [500, 1400, 1200, 1100, 1000, 1300, 1400, 1400, 450];
 
@@ -194,22 +194,29 @@ function TextBubble({ state, name, tint, mine, children }: { state: BubbleState;
   );
 }
 
-/** What he did: unfolds out of the back of his phone with a flash, sits beside him while he
-    answers, then drifts off up and to the right before the texts clear. */
+/** What he did: grows out of his phone (TAP_PHONE_AT on the drawing, about 57% across and
+    53% down his box), lands beside him with a gap while he answers, then drifts off up and to
+    the right before the texts clear. --w is his box width, set on the wrapper. */
 type CardState = "tucked" | "out" | "away";
 const CARD_STYLE: Record<CardState, React.CSSProperties> = {
-  tucked: { opacity: 0, transform: "perspective(700px) translate(-46px, 34px) rotateY(-88deg) scale(.18)", transition: "none" },
-  out: { opacity: 1, transform: "perspective(700px) translate(10px, -4px) rotateY(0deg) rotate(3deg) scale(1)", transition: "transform 620ms cubic-bezier(.2,1.1,.3,1.15), opacity 200ms ease-out" },
-  away: { opacity: 0, transform: "perspective(700px) translate(70vw, -70vh) rotate(10deg) scale(.9)", transition: "transform 1400ms cubic-bezier(.45,0,.6,.6), opacity 1400ms cubic-bezier(.7,0,.9,.5)" },
+  tucked: { opacity: 0, transform: "translate(calc(var(--w) * -0.14), calc(var(--w) * 0.23 - 75%)) scale(.06)", transition: "none" },
+  out: {
+    opacity: 1, transform: "translate(0, 0) rotate(3deg) scale(1)",
+    transition: "transform 700ms cubic-bezier(.18,1.25,.32,1), opacity 160ms ease-out",
+  },
+  away: {
+    opacity: 0, transform: "translate(70vw, -70vh) rotate(10deg) scale(.9)",
+    transition: "transform 1400ms cubic-bezier(.45,0,.6,.6), opacity 1400ms cubic-bezier(.7,0,.9,.5)",
+  },
 };
 
 function ResultCard({ state, ex }: { state: CardState; ex: Exchange }) {
   return (
     <>
-      {/* the flash at the back of the phone as it comes out */}
-      {state === "out" && <span aria-hidden="true" className="slp-flash pointer-events-none absolute top-[44%] left-[56%] z-10 h-16 w-16 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,#f2fff8,rgba(191,240,212,.6)_45%,rgba(191,240,212,0))]" />}
-      <div className="absolute top-[30%] left-[58%] z-10 w-[160px] origin-[0%_75%] sm:w-[205px] lg:w-[225px]" style={CARD_STYLE[state]}>
-        <div className={`relative rounded-[12px] bg-[#fbf6e6] px-2.5 py-2 text-[#1d1a16] sm:rounded-[14px] sm:px-3 sm:py-2.5 ${PAPER}`}>
+      {/* a burst of light off the screen as it comes out */}
+      {state === "out" && <span aria-hidden="true" className="slp-flash pointer-events-none absolute top-[50%] left-[57%] z-10 h-16 w-16 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,#f2fff8,rgba(191,240,212,.6)_45%,rgba(191,240,212,0))]" />}
+      <div className="absolute top-[28%] left-[71%] z-10 w-[160px] origin-[0%_75%] sm:w-[210px] lg:w-[235px]" style={CARD_STYLE[state]}>
+        <div className={`relative rounded-[12px] bg-[#fbf6e6] px-3 py-2.5 text-[#1d1a16] sm:rounded-[14px] sm:px-4 sm:py-3 ${PAPER}`}>
           <Grain />
           <div className="relative flex items-center gap-1.5 sm:gap-2">
             <span className="grid h-5 w-5 shrink-0 place-items-center rounded-md border-[1.5px] border-[#1d1a16] sm:h-6 sm:w-6" style={{ background: ex.tint }}>
@@ -219,8 +226,8 @@ function ResultCard({ state, ex }: { state: CardState; ex: Exchange }) {
             </span>
             <span className="text-[8.5px] font-extrabold uppercase tracking-[0.12em] sm:text-[10px]">{ex.card.label}</span>
           </div>
-          <div className="relative mt-1.5 sm:mt-2">{ex.card.art}</div>
-          <p className="relative mt-1.5 inline-flex items-center gap-1 rounded-full bg-[#2f7a50] px-1.5 py-px text-[8.5px] font-bold uppercase tracking-[0.1em] text-[#fbf6e6] sm:mt-2 sm:px-2 sm:text-[10px]">
+          <div className="relative mt-2 sm:mt-2.5">{ex.card.art}</div>
+          <p className="relative mt-2 inline-flex items-center gap-1 rounded-full bg-[#2f7a50] px-1.5 py-px text-[8.5px] font-bold uppercase tracking-[0.1em] text-[#fbf6e6] sm:mt-2 sm:px-2 sm:text-[10px]">
             ✓ Done
           </p>
         </div>
