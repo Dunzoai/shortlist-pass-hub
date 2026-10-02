@@ -19,7 +19,7 @@
  * Docs: docs/features/admin-dashboard/shorty-mascot.md.
  */
 
-export type MascotMood = 'walk' | 'wait' | 'nod' | 'pocket' | 'tapping' | 'pleased' | 'content' | 'whistle' | 'proud' | 'surprised' | 'hello' | 'idle' | 'listening' | 'thinking' | 'working' | 'done' | 'oops';
+export type MascotMood = 'walk' | 'walkR' | 'wait' | 'nod' | 'pocket' | 'tapping' | 'pleased' | 'content' | 'whistle' | 'proud' | 'surprised' | 'hello' | 'idle' | 'listening' | 'thinking' | 'working' | 'done' | 'oops';
 export type MascotTask = 'menu' | 'event' | 'social' | 'text' | 'none';
 export type Side = 'L' | 'R';
 
@@ -121,6 +121,18 @@ function walk(t: number): Pose {
   p.L = arm(-10 + s * 10, 50 - Math.abs(s) * 4, 14, 0, -6 + s * 8);
   p.R = arm(10 - s * 10, 50 - Math.abs(s) * 4, 14, 0, 6 - s * 8);
   p.face = { ...p.face, mouth: 'grin', bl: -2, br: -2, gx: -2.2, gy: -0.4 };
+  return p;
+}
+/** WALK, facing right (pipes section): the same stride as `walk`, mirrored so he heads toward +x. */
+function walkR(t: number): Pose {
+  const p = base(t), w = t * Math.PI * 2 * WALK_HZ, s = Math.sin(w), c = Math.cos(w), A = 13;
+  p.feet.L = { x: A * s, lift: Math.max(0, c) * 9, tilt: -Math.max(0, c) * 14 };
+  p.feet.R = { x: -A * s, lift: Math.max(0, -c) * 9, tilt: -Math.max(0, -c) * 14 };
+  p.by = Math.abs(c) * 3; p.sy = 1 + Math.abs(c) * 0.012; p.sx = 1 - Math.abs(c) * 0.008;
+  p.rot = 3.5 - c * 0.8;
+  p.L = arm(-10 - s * 10, 50 - Math.abs(s) * 4, 14, 0, -6 - s * 8);
+  p.R = arm(10 + s * 10, 50 - Math.abs(s) * 4, 14, 0, 6 + s * 8);
+  p.face = { ...p.face, mouth: 'grin', bl: -2, br: -2, gx: 2.2, gy: -0.4 };
   return p;
 }
 /**
@@ -417,6 +429,7 @@ function oops(t: number): Pose {
 /** The default library. `still` = the frame shown under reduced motion. */
 export const DEFAULT_POSES: Record<string, PoseEntry> = {
   walk: { pose: walk, still: 0.15 },
+  walkR: { pose: walkR, still: 0.15 },
   wait: { pose: wait, still: 0.5 },
   nod: { pose: nod, still: 0.4 },
   pocket: { pose: pocket, still: 1 },
