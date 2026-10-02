@@ -298,7 +298,7 @@ export function PipesSection() {
       {/* The headline: its own black strip, the lead-in to the scene below. */}
       <div className="overflow-x-clip bg-[#14161A] px-5 pt-12 pb-7 min-[900px]:px-10 min-[900px]:pt-20 min-[900px]:pb-14">
         <div className="mx-auto max-w-[1180px]">
-          <div data-agents="head" className="relative z-10">
+          <div data-agents="head" className="relative z-10 text-center">
             <h2
               id="pipes-h"
               className="font-extrabold leading-[1.02] tracking-[-0.03em] text-[#F6F1E4]"
