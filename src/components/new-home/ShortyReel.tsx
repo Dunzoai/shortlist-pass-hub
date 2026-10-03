@@ -221,8 +221,8 @@ export function ShortyReel() {
   if (audience === "hoa") return null;   // the film is the business version; an HOA cut would be its own video
 
   return (
-    <section aria-label="Watch Shorty in action" className="relative px-4 pb-24 pt-28 sm:px-6 md:pb-28 md:pt-44" style={{ background: NEWSPRINT }}>
-      <div className="absolute inset-0 overflow-hidden"><NewsBackdrop /></div>
+    <section aria-label="Watch Shorty in action" className="relative px-4 pb-24 pt-32 sm:px-6 md:pb-28 md:pt-[262px]" style={{ background: NEWSPRINT }}>
+      <NewsBackdrop />
       <TornEdge fill="#f5eddc" />
       <TornEdge fill={NEWSPRINT} after />
       <div className="relative mx-auto max-w-[1120px]">
