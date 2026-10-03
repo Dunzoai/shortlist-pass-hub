@@ -19,14 +19,14 @@ const HALFTONE = `radial-gradient(${PRINT} 28%, transparent 31%) 0 0/3.5px 3.5px
 const H = ({ children, size = 20 }: { children: string; size?: number }) => (
   <h3 className="mb-1 mt-2 break-after-avoid font-black leading-[1.02] tracking-[-0.015em]" style={{ fontFamily: SERIF, fontSize: size, color: PRINT }}>{children}</h3>
 );
-const By = ({ children }: { children: string }) => <p className="mb-1 text-[7.5px] font-bold uppercase tracking-[0.1em]" style={{ fontFamily: BODY }}>{children}</p>;
-const P = ({ children }: { children: string }) => <p className="mb-1.5 text-justify text-[9.5px] leading-[1.28]" style={{ fontFamily: BODY, hyphens: "auto", textIndent: "1em" }}>{children}</p>;
+const By = ({ children }: { children: string }) => <p className="mb-1 text-[8.5px] font-bold uppercase tracking-[0.1em]" style={{ fontFamily: BODY }}>{children}</p>;
+const P = ({ children }: { children: string }) => <p className="mb-1.5 text-justify text-[11.5px] leading-[1.3]" style={{ fontFamily: BODY, hyphens: "auto", textIndent: "1em" }}>{children}</p>;
 
 export function NewsBackdrop() {
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 select-none overflow-hidden" style={{ background: NEWSPRINT }}>
       {/* the page itself, washed out */}
-      <div className="absolute left-1/2 top-0 w-[1280px] -translate-x-1/2 px-6 pt-10" style={{ color: PRINT, opacity: 0.5, filter: "sepia(.45) contrast(.95)" }}>
+      <div className="absolute left-1/2 top-0 w-[1280px] -translate-x-1/2 px-6 pt-16" style={{ color: PRINT, opacity: 0.3, filter: "sepia(.6) contrast(.85)" }}>
         {/* top line: weather, masthead, price */}
         <div className="flex items-end justify-between gap-6 border-b-2 border-[#33291d] pb-1">
           <div className="w-[190px] text-[8px] leading-[1.3]" style={{ fontFamily: BODY }}>
@@ -46,7 +46,7 @@ export function NewsBackdrop() {
         <h2 className="whitespace-nowrap border-b-2 border-[#33291d] pb-1 pt-1 text-center font-black leading-[0.95] tracking-[-0.03em]" style={{ fontFamily: SERIF, fontSize: 80 }}>Shorty Takes Over Main Street</h2>
         <p className="border-b border-[#33291d] py-0.5 text-center text-[11px] italic" style={{ fontFamily: BODY }}>New hire answers every text, fills the calendar and never asks for a day off, owners say</p>
 
-        <div className="mt-2" style={{ columnCount: 6, columnGap: 20, columnRuleStyle: "solid", columnRuleWidth: 1, columnRuleColor: "rgba(51,41,29,.5)", height: 760 }}>
+        <div className="mt-2" style={{ columnCount: 6, columnGap: 20, columnRuleStyle: "solid", columnRuleWidth: 1, columnRuleColor: "rgba(51,41,29,.5)", height: 620 }}>
           <H>Corner Bakery Hires New Coworker</H>
           <By>By the Gazette Staff</By>
           <P>MAIN STREET — The corner bakery opened Tuesday with a new face behind the counter: a small green ticket named Shorty, who answers every customer text before the ovens are warm. The owner said the new hire has already updated the menu, posted the weekend special and moved two bookings without being asked twice.</P>
@@ -96,16 +96,35 @@ export function NewsBackdrop() {
           <P>WANTED — One reliable coworker. Must work weekends and holidays. Apply to Shorty.</P>
           <P>LOST — One missed call, last seen Tuesday. If found, Shorty has already returned it.</P>
           <P>FOR SALE — Handwritten signs, gently used. Owner has gone digital.</P>
+          <H size={22}>Food Truck Fans Told Where to Find Lunch</H>
+          <By>By the Gazette Staff</By>
+          <P>Hungry crowds no longer have to guess where the truck is parked. Shorty posts each stop, answers the question of the day and takes the order before the window opens, so that the line, when it forms, is a happy one.</P>
+          <P>“We sold out by one o’clock,” the cook said. “Nobody called. Everybody just knew.”</P>
+          <H>Owners Say Evenings Are Their Own Again</H>
+          <P>Shop owners report that the hours after closing, once spent at the counter with a phone and a pencil, now belong to them. Newsletters go out on schedule, loyalty rewards are tallied without a ledger and the week is summed up in a single line on request.</P>
+          <P>A florist on Maple said she had attended her daughter’s recital for the first time in two years. “Shorty took the calls,” she said.</P>
+          <H size={18}>Notices</H>
+          <P>The Main Street Merchants will meet Thursday. Refreshments will be served. Questions may be sent to Shorty, who is expected to answer.</P>
+          <P>Lost and found: one umbrella, one loyalty card, one very patient dog. Inquire at the bakery.</P>
+          <H size={22}>New Page for Every Shop on the Block</H>
+          <P>Every business that claims a free page receives a Shorty of its own, limited at first to answering questions about what it sells. Those who wish to take orders, bookings and reports may upgrade at any time.</P>
+          <P>The company notes that claiming a page takes only a few minutes and no special skill beyond knowing one’s own business.</P>
           <H size={18}>Weather</H>
           <P>Fair skies over the city, a gentle breeze, and not a customer left on read.</P>
         </div>
       </div>
 
-      {/* age: yellowed edges, a fold crease, stains and grain; nothing at the bottom so the torn edge below matches */}
-      <div className="absolute inset-0" style={{ background: "radial-gradient(120% 90% at 50% 40%, rgba(229,215,177,0) 45%, rgba(176,128,52,.42) 100%)" }} />
-      <div className="absolute inset-y-0 left-1/2 w-[34px] -translate-x-1/2" style={{ background: "linear-gradient(90deg, rgba(60,40,15,0), rgba(60,40,15,.22) 46%, rgba(255,250,235,.45) 52%, rgba(60,40,15,0))" }} />
-      <div className="absolute -left-10 top-[22%] h-[160px] w-[220px] rounded-full" style={{ background: "radial-gradient(closest-side, rgba(150,100,40,.28), transparent)" }} />
-      <div className="absolute right-[6%] top-[58%] h-[130px] w-[180px] rounded-full" style={{ background: "radial-gradient(closest-side, rgba(150,100,40,.22), transparent)" }} />
+      {/* age: yellowed, foxed and creased; edges darkened left, right and top only (nothing at the bottom, so the torn edge below matches) */}
+      <div className="absolute inset-0" style={{ background: "linear-gradient(90deg, rgba(150,100,40,.55), rgba(150,100,40,0) 15%, rgba(150,100,40,0) 85%, rgba(150,100,40,.55)), linear-gradient(180deg, rgba(150,100,40,.4), rgba(150,100,40,0) 22%)" }} />
+      {/* foxing: small brown spots, in two sizes */}
+      <div className="absolute inset-0 opacity-70" style={{ backgroundImage: "radial-gradient(circle at 20% 30%, rgba(125,80,25,.5) 0 1.4px, transparent 2.4px), radial-gradient(circle at 70% 60%, rgba(125,80,25,.4) 0 1px, transparent 2px), radial-gradient(circle at 45% 85%, rgba(125,80,25,.45) 0 2px, transparent 3.4px)", backgroundSize: "173px 131px, 97px 113px, 241px 197px" }} />
+      {/* the fold crease down the middle, and one across */}
+      <div className="absolute inset-y-0 left-1/2 w-[34px] -translate-x-1/2" style={{ background: "linear-gradient(90deg, rgba(60,40,15,0), rgba(60,40,15,.3) 46%, rgba(255,250,235,.5) 52%, rgba(60,40,15,0))" }} />
+      <div className="absolute inset-x-0 top-[56%] h-[26px]" style={{ background: "linear-gradient(180deg, rgba(60,40,15,0), rgba(60,40,15,.2) 46%, rgba(255,250,235,.4) 52%, rgba(60,40,15,0))" }} />
+      {/* water stains and a tide mark */}
+      <div className="absolute -left-10 top-[22%] h-[180px] w-[250px] rounded-full" style={{ background: "radial-gradient(closest-side, rgba(150,100,40,.34), rgba(150,100,40,.1) 70%, transparent)" }} />
+      <div className="absolute right-[7%] top-[52%] h-[150px] w-[200px] rounded-full border-2 border-[rgba(140,95,40,.25)]" style={{ background: "radial-gradient(closest-side, rgba(150,100,40,.16), transparent)" }} />
+      <div className="absolute left-[22%] top-[8%] h-[90px] w-[140px] rounded-full" style={{ background: "radial-gradient(closest-side, rgba(150,100,40,.22), transparent)" }} />
       <div className="absolute inset-0 opacity-[.28] mix-blend-multiply" style={{ backgroundImage: `url("${GRAIN_URL}")` }} />
     </div>
   );
