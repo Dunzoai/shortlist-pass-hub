@@ -22,9 +22,9 @@ const H = ({ children, size = 20 }: { children: string; size?: number }) => (
 const By = ({ children }: { children: string }) => <p className="mb-1 text-[8.5px] font-bold uppercase tracking-[0.1em]" style={{ fontFamily: BODY }}>{children}</p>;
 const P = ({ children }: { children: string }) => <p className="mb-1.5 text-justify text-[11.5px] leading-[1.3]" style={{ fontFamily: BODY, hyphens: "auto", textIndent: "1em" }}>{children}</p>;
 
-export function NewsBackdrop() {
+export function NewsBackdrop({ clip }: { clip?: string }) {
   return (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 isolate select-none overflow-hidden" style={{ background: NEWSPRINT }}>
+    <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 isolate select-none overflow-hidden" style={{ background: NEWSPRINT, clipPath: clip }}>
       {/* the page itself, washed out */}
       <div className="absolute left-1/2 top-0 w-[1280px] -translate-x-1/2 px-6 pt-16" style={{ color: PRINT, opacity: 0.3, filter: "sepia(.6) contrast(.85) blur(.3px)" }}>
         {/* top line: weather, masthead, price */}

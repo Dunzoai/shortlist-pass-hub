@@ -49,3 +49,15 @@ export function TornEdge({ fill, after = false, angle = 0, rough = 1, seed = 5, 
     </svg>
   );
 }
+
+/**
+ * The same tear as a CSS clip-path, for cutting a textured element's own bottom edge (so the texture runs right to the rip, unlike
+ * the flat `TornEdge` flap). The rip lives in the bottom `T` px of the element. `paper` is the element's cut; `core` is a copy
+ * a little lower, to sit behind it as the pale torn core.
+ */
+export function tearPolys(seed: number, angle: number, rough: number, T: number) {
+  const base = angle < 0 ? 12 - angle : 12;
+  const top = edge(seed, base, angle, rough), core = edge(seed + 41, base + 4.5, angle, rough * 1.1);
+  const poly = (pts: [number, number][]) => "polygon(0 0, 100% 0, " + [...pts].reverse().filter((_, i) => i % 3 === 0).map(([x, y]) => `${((x / W) * 100).toFixed(2)}% calc(100% - ${Math.max(0, T - Math.min(T - 2, y * 0.8)).toFixed(1)}px)`).join(", ") + ")";
+  return { paper: poly(top), core: poly(core) };
+}

@@ -9,7 +9,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ShortyMascot } from "@/components/shorty/ShortyMascot";
 import { useAudience } from "./audience";
-import { TornEdge } from "./TornEdge";
+import { TornEdge, tearPolys } from "./TornEdge";
 import { PaperCard } from "./PaperCard";
 import { NewsBackdrop, NEWSPRINT } from "./Newsprint";
 
@@ -213,6 +213,8 @@ function Scene() {
   );
 }
 
+const TEAR = tearPolys(13, -12, 0.75, 56);
+
 /* ── The teaser ───────────────────────────────────────────────────────────── */
 export function ShortyReel() {
   const [open, setOpen] = useState(false);
@@ -224,9 +226,12 @@ export function ShortyReel() {
   return (
     <>
     <section aria-label="Watch Shorty in action" className="relative px-4 pb-24 pt-32 sm:px-6 md:pb-28 md:pt-[290px]" style={{ background: NEWSPRINT }}>
-      <NewsBackdrop />
+      {/* the newspaper runs 56px past the section and its own bottom is torn (a pale core behind it, a soft shadow under it), so the texture goes right down to the rip */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 -bottom-[56px] z-0" style={{ filter: "drop-shadow(0 3px 2.5px rgba(40,25,10,.3))" }}>
+        <div className="absolute inset-0" style={{ clipPath: TEAR.core, background: "#FFFDF6" }} />
+        <NewsBackdrop clip={TEAR.paper} />
+      </div>
       <TornEdge fill="#f5eddc" angle={46} rough={1.5} seed={5} />
-      <TornEdge fill="#D9C89D" after angle={-12} rough={0.75} seed={13} />
       <div className="relative z-[1] mx-auto max-w-[1120px]">
         <PaperCard seed={61} tilt={0} shadow="rgba(40,25,10,.42)" className="mx-auto">
           <div className="p-3 sm:p-5 md:p-6">
