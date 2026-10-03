@@ -4,6 +4,7 @@ import { ShortyReel } from "@/components/new-home/ShortyReel";
 import { PipesSection } from "@/components/new-home/PipesSection";
 import { SkillsSection } from "@/components/new-home/SkillsSection";
 import { PricingSection } from "@/components/new-home/PricingSection";
+import { SiteFooter } from "@/components/new-home/SiteFooter";
 import { AudienceProvider } from "@/components/new-home/audience";
 
 export default function NewHomePage() {
@@ -17,6 +18,7 @@ export default function NewHomePage() {
         <PipesSection />
         <SkillsSection />
         <PricingSection />
+        <SiteFooter />
       </AudienceProvider>
     </main>
   );

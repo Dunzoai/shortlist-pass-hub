@@ -9,6 +9,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ShortyMascot } from "@/components/shorty/ShortyMascot";
 import { useAudience } from "./audience";
+import { TornEdge } from "./TornEdge";
 
 const INK = "#14161A";
 const CREAM = "#FBF6E6";
@@ -219,8 +220,10 @@ export function ShortyReel() {
   if (audience === "hoa") return null;   // the film is the business version; an HOA cut would be its own video
 
   return (
-    <section aria-label="Watch Shorty in action" className="bg-[#f5eddc] px-4 pb-14 pt-2 sm:px-6 md:pb-20">
+    <section aria-label="Watch Shorty in action" className="relative bg-[#eadcb8] px-4 pb-14 pt-16 sm:px-6 md:pb-20 md:pt-20">
+      <TornEdge fill="#f5eddc" />
       <div className="mx-auto max-w-[1120px]">
+        <p className="mb-5 text-center text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#3f7a5a]">See him at work</p>
         <button
           ref={opener}
           type="button"
