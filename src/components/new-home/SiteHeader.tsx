@@ -37,7 +37,7 @@ export function SiteHeader() {
     <>
       <header className="fixed inset-x-0 top-0 z-40 border-b border-[#f6f1e4]/10 bg-[#14161a]">
         <div className="mx-auto flex max-w-[1180px] items-center justify-between gap-3 px-4 py-3 sm:px-8 lg:py-4">
-          <Link href="/new" className="flex items-center gap-2.5">
+          <Link href="/" className="flex items-center gap-2.5">
             <Image src="/shortlist-mint-mark.png" alt="" width={36} height={36} priority className="h-8 w-8 sm:h-9 sm:w-9" />
             <span className="hidden font-[family-name:var(--font-fraunces)] text-[19px] tracking-[-0.01em] text-[#f6f1e4] sm:inline">
               Shortlist Pass
@@ -47,6 +47,9 @@ export function SiteHeader() {
             <AudienceToggle />
           </div>
           <div className="flex items-center gap-3 sm:gap-5">
+            {/* temporary: the old site's Social and Digital pages, until they're folded in */}
+            <Link href="/social" className="hidden text-[14px] font-medium text-[#f6f1e4] hover:underline sm:inline">Social</Link>
+            <Link href="/digital" className="hidden text-[14px] font-medium text-[#f6f1e4] hover:underline sm:inline">Digital</Link>
             <a href={APP_LOGIN_URL} className="hidden text-[14px] font-medium text-[#f6f1e4] hover:underline sm:inline">
               Sign in
             </a>
@@ -58,9 +61,14 @@ export function SiteHeader() {
             </a>
           </div>
         </div>
+        {/* phones: a slim second row for the temporary Social and Digital links */}
+        <div className="flex justify-center gap-8 border-t border-[#f6f1e4]/10 py-1.5 text-[13px] font-medium text-[#f6f1e4] sm:hidden">
+          <Link href="/social">Social</Link>
+          <Link href="/digital">Digital</Link>
+        </div>
       </header>
       {/* holds the header's place at the top of the page */}
-      <div aria-hidden="true" className="h-[60px] lg:h-[76px]" />
+      <div aria-hidden="true" className="h-[92px] sm:h-[60px] lg:h-[76px]" />
     </>
   );
 }

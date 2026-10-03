@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import { fraunces } from "@/lib/fonts";
 
-// Staging route for the next homepage. Kept out of search until it replaces "/".
-// To promote: move page.tsx over src/app/page.tsx and delete this folder.
+// The homepage ("/"). A route group so it can have its own layout (cream page, the global nav hidden) without touching other pages.
+// The previous homepage lives at /classic.
 
 export const metadata: Metadata = {
   title: "Meet Shorty | Shortlist Pass",
   description:
     "Shorty is the coworker who never clocks out: knows what you sell, talks to your customers, takes their money, and handles the busywork. Just text him.",
-  robots: { index: false, follow: false },
+  alternates: { canonical: "/" },
 };
 
 export default function NewHomeLayout({

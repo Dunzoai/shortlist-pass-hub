@@ -9,7 +9,7 @@ const Ctx = createContext<{ audience: Audience; setAudience: (a: Audience) => vo
   setAudience: () => {},
 });
 
-/** Which version of the page we're showing. `/new#hoa` opens the HOA version directly. */
+/** Which version of the page we're showing. `/#hoa` opens the HOA version directly. */
 export function AudienceProvider({ children }: { children: ReactNode }) {
   const [audience, setState] = useState<Audience>("business");
 
