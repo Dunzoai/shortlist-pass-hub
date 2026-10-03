@@ -24,9 +24,9 @@ const P = ({ children }: { children: string }) => <p className="mb-1.5 text-just
 
 export function NewsBackdrop() {
   return (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-0 select-none overflow-hidden" style={{ background: NEWSPRINT }}>
+    <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 isolate select-none overflow-hidden" style={{ background: NEWSPRINT }}>
       {/* the page itself, washed out */}
-      <div className="absolute left-1/2 top-0 w-[1280px] -translate-x-1/2 px-6 pt-16" style={{ color: PRINT, opacity: 0.3, filter: "sepia(.6) contrast(.85)" }}>
+      <div className="absolute left-1/2 top-0 w-[1280px] -translate-x-1/2 px-6 pt-16" style={{ color: PRINT, opacity: 0.3, filter: "sepia(.6) contrast(.85) blur(.3px)" }}>
         {/* top line: weather, masthead, price */}
         <div className="flex items-end justify-between gap-6 border-b-2 border-[#33291d] pb-1">
           <div className="w-[190px] text-[8px] leading-[1.3]" style={{ fontFamily: BODY }}>
@@ -125,7 +125,9 @@ export function NewsBackdrop() {
       <div className="absolute -left-10 top-[22%] h-[180px] w-[250px] rounded-full" style={{ background: "radial-gradient(closest-side, rgba(150,100,40,.34), rgba(150,100,40,.1) 70%, transparent)" }} />
       <div className="absolute right-[7%] top-[52%] h-[150px] w-[200px] rounded-full border-2 border-[rgba(140,95,40,.25)]" style={{ background: "radial-gradient(closest-side, rgba(150,100,40,.16), transparent)" }} />
       <div className="absolute left-[22%] top-[8%] h-[90px] w-[140px] rounded-full" style={{ background: "radial-gradient(closest-side, rgba(150,100,40,.22), transparent)" }} />
-      <div className="absolute inset-0 opacity-[.28] mix-blend-multiply" style={{ backgroundImage: `url("${GRAIN_URL}")` }} />
+      {/* paper made of noise (mottled tone, long fibres, a lit tooth), baked once into /paper-texture.webp so it costs nothing to draw */}
+      <div className="absolute inset-0" style={{ backgroundImage: "url(/paper-texture.webp)", backgroundSize: "800px 800px" }} />
+      <div className="absolute inset-0 opacity-[.28]" style={{ backgroundImage: `url("${GRAIN_URL}")` }} />
     </div>
   );
 }

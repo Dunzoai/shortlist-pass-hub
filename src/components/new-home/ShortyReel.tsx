@@ -10,6 +10,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ShortyMascot } from "@/components/shorty/ShortyMascot";
 import { useAudience } from "./audience";
 import { TornEdge } from "./TornEdge";
+import { PaperCard } from "./PaperCard";
 import { NewsBackdrop, NEWSPRINT } from "./Newsprint";
 
 const INK = "#14161A";
@@ -221,18 +222,21 @@ export function ShortyReel() {
   if (audience === "hoa") return null;   // the film is the business version; an HOA cut would be its own video
 
   return (
+    <>
     <section aria-label="Watch Shorty in action" className="relative px-4 pb-24 pt-32 sm:px-6 md:pb-28 md:pt-[290px]" style={{ background: NEWSPRINT }}>
       <NewsBackdrop />
       <TornEdge fill="#f5eddc" angle={46} rough={1.5} seed={5} />
-      <TornEdge fill="#D9C89D" after angle={-34} rough={1.3} seed={13} />
-      <div className="relative mx-auto max-w-[1120px]">
+      <TornEdge fill="#D9C89D" after angle={-12} rough={0.75} seed={13} />
+      <div className="relative z-[1] mx-auto max-w-[1120px]">
+        <PaperCard seed={61} tilt={0} shadow="rgba(40,25,10,.42)" className="mx-auto">
+          <div className="p-3 sm:p-5 md:p-6">
         <button
           ref={opener}
           type="button"
           onClick={() => setOpen(true)}
           aria-label="Play the film: Shorty in action"
           className="group relative block aspect-square w-full cursor-pointer rounded-[28px] text-left md:aspect-[16/6.2]"
-          style={{ boxShadow: `6px 7px 0 rgba(20,22,26,.9)`, background: "#F4E7B9" }}
+          style={{ boxShadow: "1px 2px 0 rgba(40,25,10,.35), 0 0 0 2px rgba(110,85,45,.22)", background: "#F4E7B9" }}
         >
           <span className="absolute inset-0 overflow-hidden rounded-[28px]">
           <Scene />
@@ -259,9 +263,15 @@ export function ShortyReel() {
           </span>
           <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-[28px] opacity-[.12] mix-blend-multiply" style={{ backgroundImage: `url("${GRAIN_URL}")` }} />
         </button>
+          </div>
+          {/* masking tape holding the print to the page */}
+          <span aria-hidden="true" className="reel-tape absolute -top-3 left-[7%] z-10 h-[26px] w-[92px] sm:-top-4 sm:h-[32px] sm:w-[120px]" style={{ rotate: "-5deg" }} />
+          <span aria-hidden="true" className="reel-tape absolute -top-3 right-[8%] z-10 h-[26px] w-[92px] sm:-top-4 sm:h-[32px] sm:w-[120px]" style={{ rotate: "4deg" }} />
+        </PaperCard>
       </div>
       {open && <ReelModal onClose={close} />}
       <style>{`
+        .reel-tape { background: linear-gradient(180deg, rgba(240,226,180,.88), rgba(228,210,160,.82)); box-shadow: 0 2px 3px rgba(40,25,10,.28); clip-path: polygon(0 8%, 4% 0, 8% 10%, 12% 0, 100% 0, 96% 25%, 100% 50%, 96% 75%, 100% 100%, 12% 100%, 8% 90%, 4% 100%, 0 92%, 4% 75%, 0 50%, 4% 25%) }
         @keyframes reelPulse { 0% { transform: scale(1); opacity: .9 } 100% { transform: scale(1.7); opacity: 0 } }
         .reel-pulse { animation: reelPulse 2.2s ease-out infinite }
         .reel-pulse-2 { animation-delay: 1.1s }
@@ -303,6 +313,9 @@ export function ShortyReel() {
         @media (prefers-reduced-motion: reduce) { .reel-pulse { animation: none; opacity: 0 } .reel-anim, .reel-banner, .reel-prop, .reel-wheel, .reel-leg, .reel-leg2, .reel-wing, .reel-bird-head, .reel-bird-fly, .reel-bird-sit { animation: none } .reel-bird { opacity: 0 } }
       `}</style>
     </section>
+    {/* dark room under the newspaper for its torn edge to hang over, so it never touches the "AI agents" headline below */}
+    <div aria-hidden="true" className="h-14 bg-[#14161A] sm:h-16" />
+    </>
   );
 }
 
