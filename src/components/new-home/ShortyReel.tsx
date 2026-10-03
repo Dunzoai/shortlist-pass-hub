@@ -10,6 +10,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ShortyMascot } from "@/components/shorty/ShortyMascot";
 import { useAudience } from "./audience";
 import { TornEdge } from "./TornEdge";
+import { Newsprint } from "./Newsprint";
 
 const INK = "#14161A";
 const CREAM = "#FBF6E6";
@@ -220,10 +221,10 @@ export function ShortyReel() {
   if (audience === "hoa") return null;   // the film is the business version; an HOA cut would be its own video
 
   return (
-    <section aria-label="Watch Shorty in action" className="relative bg-[#eadcb8] px-4 pb-14 pt-16 sm:px-6 md:pb-20 md:pt-20">
+    <>
+    <section aria-label="Watch Shorty in action" className="relative bg-[#eadcb8] px-4 pb-14 pt-20 sm:px-6 md:pb-20 md:pt-24">
       <TornEdge fill="#f5eddc" />
       <div className="mx-auto max-w-[1120px]">
-        <p className="mb-5 text-center text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#3f7a5a]">See him at work</p>
         <button
           ref={opener}
           type="button"
@@ -301,6 +302,8 @@ export function ShortyReel() {
         @media (prefers-reduced-motion: reduce) { .reel-pulse { animation: none; opacity: 0 } .reel-anim, .reel-banner, .reel-prop, .reel-wheel, .reel-leg, .reel-leg2, .reel-wing, .reel-bird-head, .reel-bird-fly, .reel-bird-sit { animation: none } .reel-bird { opacity: 0 } }
       `}</style>
     </section>
+    <Newsprint />
+    </>
   );
 }
 
