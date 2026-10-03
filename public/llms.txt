@@ -1,0 +1,34 @@
+# Shortlist Pass
+
+> Shortlist Pass makes Shorty, an AI coworker for small businesses and HOAs. Shorty knows everything a business sells, answers its customers around the clock, takes orders and bookings, posts to social media and handles the busywork. Owners just text him. Shortlist Pass also gives each business a public page that AI agents (ChatGPT, Claude, Grok, Meta and others) can read and act on.
+
+Website: https://www.shortlistpass.com
+Company: Shortlist Pass Company
+Contact: connect@shortlistpass.com (business and sales), hello@shortlistpass.com (custom builds and tech)
+Social: https://www.instagram.com/shortlistpass , https://www.facebook.com/shortlistpass
+
+## What Shorty does
+- Answers customers 24/7 about hours, menus, services and availability.
+- Takes orders and bookings. Integrated with Square and Stripe; Shortlist Pass never touches the money.
+- Keeps the menu, hours and specials up to date when the owner texts a change.
+- Reports on the week in a line. Texting and social posting are available as add-ons.
+- For HOAs: answers residents' questions about the rules, takes event RSVPs and shares community news. Free for every HOA.
+
+## Pricing
+- Verified Shorty: $50 per month. Answers customers 24/7, ordering, bookings, reports.
+- Free Shorty: $0. Add your offerings and Shorty chats with customers about your business. Limited knowledge; no ordering, booking or marketing.
+- HOAs: free.
+- Sign up: https://app.shortlistpass.com/signup
+
+## For AI agents
+- Business pages, menus, upcoming events and pickup availability are published and readable. Orders can be started on a business's behalf; the customer reviews the cart and pays on the business's own page, so no payment details pass through an agent.
+- Agent API (plain JSON): https://app.shortlistpass.com/api/agent/v1
+- Agent API documentation: https://app.shortlistpass.com/developers/agents
+- Operations: search businesses, get a business, get a menu, get upcoming events and stops, start an order (creates a cart from offering ids and returns a cart_url).
+
+## Pages
+- [Home](https://www.shortlistpass.com/): meet Shorty, the film, how agents reach a business, what Shorty can do, pricing.
+- [Social](https://www.shortlistpass.com/social): social media management.
+- [Digital](https://www.shortlistpass.com/digital): websites and custom builds.
+- [Smart Assistant](https://www.shortlistpass.com/smartassistant): the assistant product page.
+- [Full text for AI](https://www.shortlistpass.com/llms-full.txt): this file with more detail.

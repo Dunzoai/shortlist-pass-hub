@@ -1,0 +1,34 @@
+# Shortlist Pass (full description)
+
+Shortlist Pass makes Shorty, an AI coworker for small businesses and HOAs, and publishes each business's page in a form people and AI agents can both use.
+
+## The idea
+Everyone is about to have a personal AI agent, much as everyone has an email address. Those agents order lunch, book haircuts and look for a plumber for Saturday at 7pm. Most small businesses were built for people, with websites and social pages an agent cannot act on, so the request stops short of the shop. Shortlist Pass builds the missing pipe: the business gets a page agents can read and act on, and Shorty runs the conversation behind it.
+
+## Shorty
+Shorty is a small green ticket-shaped character and the face of the product: "the coworker who never clocks out." He knows everything you sell, talks to your customers, takes their money for you, and handles the busywork so you can focus on what you do best. You text him what you need; you say yes and he gets it done. Examples: add a menu item at a price and post it to social media; move a 2pm appointment to Thursday and let the customer know; email a quote to a client; text the next appointment that you are on your way.
+
+## Skills (what Shorty can do)
+Answers customers, ordering, bookings, events, loyalty rewards, social posts, texting, business emails and newsletters, reports, and a menu or catalogue kept up to date by text.
+
+## Pricing
+- Verified Shorty: $50 per month (answers customers 24/7, ordering, bookings, reports). Integrated with Square and Stripe; Shortlist Pass never touches your money. Texting and social posting are add-ons.
+- Free Shorty: $0 (add your offerings; Shorty chats with customers about your business; limited knowledge, no ordering, booking or marketing).
+- HOAs: Shorty is free to every HOA. The Shortlist wants communities to control the communication in their own community.
+- Sign up: https://app.shortlistpass.com/signup  Sign in: https://app.shortlistpass.com/login
+
+## For AI agents and developers
+- Plain JSON API: https://app.shortlistpass.com/api/agent/v1
+- Documentation: https://app.shortlistpass.com/developers/agents
+- Read tools return published data only: business pages, menus, upcoming stops and events, pickup availability. Food trucks sell per stop, and each stop's menu is listed with the upcoming events.
+- Starting an order creates a cart from offering ids (prices are not accepted) and returns a cart_url on the business's page, where the customer reviews the order and pays. Payment details are never handled by the agent tools.
+
+## Company
+Shortlist Pass Company. Business and sales: connect@shortlistpass.com. Custom builds and tech: hello@shortlistpass.com. Instagram: https://www.instagram.com/shortlistpass . Facebook: https://www.facebook.com/shortlistpass .
+
+## Site map
+- https://www.shortlistpass.com/ (home)
+- https://www.shortlistpass.com/social
+- https://www.shortlistpass.com/digital
+- https://www.shortlistpass.com/smartassistant
+- https://www.shortlistpass.com/llms.txt

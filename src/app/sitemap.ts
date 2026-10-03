@@ -8,7 +8,14 @@ const supabase = createClient(
 );
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const entries: MetadataRoute.Sitemap = [];
+  const base = 'https://www.shortlistpass.com';
+  const entries: MetadataRoute.Sitemap = [
+    { url: `${base}/`, lastModified: new Date(), changeFrequency: 'weekly', priority: 1.0 },
+    { url: `${base}/social`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${base}/digital`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${base}/smartassistant`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${base}/llms.txt`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.4 },
+  ];
   const today = new Date().toISOString().split('T')[0];
 
   try {
@@ -143,8 +150,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   } catch (error) {
     console.error('[Sitemap] Unexpected error:', error);
-    // Return empty array on catastrophic failure - don't crash
-    return [];
+    // On catastrophic failure, still return the static pages - don't crash
+    return entries;
   }
 
   return entries;
