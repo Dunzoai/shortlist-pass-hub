@@ -9,7 +9,7 @@
  */
 import Image from "next/image";
 import { useAudience } from "./audience";
-import { APP_SIGNUP_URL } from "./SiteHeader";
+import { APP_FREE_URL, APP_SIGNUP_URL } from "./SiteHeader";
 
 const INK = "#14161A", MINT_LIGHT = "#D7F5E8", MINT = "#34D399", PAPER = "#F6F1E4";
 const SANS = "var(--font-sora), system-ui, sans-serif";
@@ -207,7 +207,7 @@ export function PricingSection() {
                   </p>
                   <Lines items={["Add your offerings", "Shorty chats with customers about your business"]} />
                   <p className={FINE} style={{ fontFamily: BODY }}>Limited knowledge. No ordering, booking or marketing.</p>
-                  <a href={APP_SIGNUP_URL} className={`${BTN} mt-auto self-start border-[3px] border-[#14161A] bg-transparent text-[#14161A]`} style={{ fontFamily: BODY }}>
+                  <a href={APP_FREE_URL} className={`${BTN} mt-auto self-start border-[3px] border-[#14161A] bg-transparent text-[#14161A]`} style={{ fontFamily: BODY }}>
                     Claim a free Shorty
                   </a>
                 </div>

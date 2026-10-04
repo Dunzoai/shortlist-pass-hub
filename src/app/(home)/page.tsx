@@ -49,7 +49,7 @@ const JSON_LD = {
       publisher: { "@id": `${SITE}/#org` },
       offers: [
         { "@type": "Offer", name: "Verified Shorty", price: "50", priceCurrency: "USD", priceSpecification: { "@type": "UnitPriceSpecification", price: "50", priceCurrency: "USD", unitText: "MONTH" }, url: "https://app.shortlistpass.com/signup" },
-        { "@type": "Offer", name: "Free Shorty", price: "0", priceCurrency: "USD", url: "https://app.shortlistpass.com/signup" },
+        { "@type": "Offer", name: "Free Shorty", price: "0", priceCurrency: "USD", url: "https://app.shortlistpass.com/freeshorty" },
       ],
     },
   ],

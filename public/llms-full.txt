@@ -15,6 +15,7 @@ Answers customers, ordering, bookings, events, loyalty rewards, social posts, te
 - Verified Shorty: $50 per month (answers customers 24/7, ordering, bookings, reports). Integrated with Square and Stripe; Shortlist Pass never touches your money. Texting and social posting are add-ons.
 - Free Shorty: $0 (add your offerings; Shorty chats with customers about your business; limited knowledge, no ordering, booking or marketing).
 - HOAs: Shorty is free to every HOA. The Shortlist wants communities to control the communication in their own community.
+- Claim a free Shorty: https://app.shortlistpass.com/freeshorty
 - Sign up: https://app.shortlistpass.com/signup  Sign in: https://app.shortlistpass.com/login
 
 ## For AI agents and developers

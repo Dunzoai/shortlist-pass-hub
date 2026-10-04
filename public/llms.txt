@@ -19,6 +19,7 @@ Social: https://www.instagram.com/shortlistpass , https://www.facebook.com/short
 - Free Shorty: $0. Add your offerings and Shorty chats with customers about your business. Limited knowledge; no ordering, booking or marketing.
 - HOAs: free.
 - Sign up: https://app.shortlistpass.com/signup
+- Claim a free Shorty: https://app.shortlistpass.com/freeshorty
 
 ## For AI agents
 - Business pages, menus, upcoming events and pickup availability are published and readable. Orders can be started on a business's behalf; the customer reviews the cart and pays on the business's own page, so no payment details pass through an agent.

@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { useAudience, type Audience } from "./audience";
 
 export const APP_SIGNUP_URL = "https://app.shortlistpass.com/signup";
+export const APP_FREE_URL = "https://app.shortlistpass.com/freeshorty";
 const APP_LOGIN_URL = "https://app.shortlistpass.com/login";
 
 function AudienceToggle() {
