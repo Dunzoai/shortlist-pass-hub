@@ -86,7 +86,7 @@ function MoreMenu() {
       </button>
       {open && (
         <div role="menu" className="absolute right-0 top-[calc(100%+10px)] w-44 rounded-xl border border-[#f6f1e4]/10 bg-[#14161a] p-1.5 shadow-[0_10px_30px_rgba(0,0,0,.45)]">
-          <a role="menuitem" href={EVENTS_URL} className={`${item} flex items-center gap-2 lg:hidden`} onClick={() => setOpen(false)}>Events <Pumpkin className="h-[18px] w-[18px]" /></a>
+          <a role="menuitem" href={EVENTS_URL} className={`${item} hidden items-center gap-2 sm:flex lg:hidden`} onClick={() => setOpen(false)}>Events <Pumpkin className="h-[18px] w-[18px]" /></a>
           <Link role="menuitem" href="/social" className={item} onClick={() => setOpen(false)}>Social</Link>
           <Link role="menuitem" href="/digital" className={item} onClick={() => setOpen(false)}>Digital</Link>
         </div>
@@ -118,9 +118,12 @@ export function SiteHeader() {
             </a>
             <a
               href={APP_SIGNUP_URL}
-              className="whitespace-nowrap rounded-full bg-[#7fd0a4] px-3 py-2 text-[12.5px] font-semibold text-[#12301f] transition-transform hover:-translate-y-px sm:px-4 sm:py-2.5 sm:text-[13px]"
+              className="hidden whitespace-nowrap rounded-full bg-[#7fd0a4] px-3 py-2 text-[12.5px] font-semibold text-[#12301f] transition-transform hover:-translate-y-px sm:inline-block sm:px-4 sm:py-2.5 sm:text-[13px]"
             >
               Hire Shorty
+            </a>
+            <a href={EVENTS_URL} className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-[#7fd0a4] px-3 py-1.5 text-[12.5px] font-semibold text-[#12301f] sm:hidden">
+              Events <Pumpkin className="h-5 w-5" />
             </a>
             <MoreMenu />
           </div>
