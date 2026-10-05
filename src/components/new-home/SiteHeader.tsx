@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { useAudience, type Audience } from "./audience";
 
 export const APP_SIGNUP_URL = "https://app.shortlistpass.com/signup";
+export const EVENTS_URL = "https://events.shortlistpass.com";
 export const APP_FREE_URL = "https://app.shortlistpass.com/freeshorty";
 const APP_LOGIN_URL = "https://app.shortlistpass.com/login";
 
@@ -32,6 +33,29 @@ function AudienceToggle() {
   );
 }
 
+
+/** A little paper pumpkin: three lobes, a stem and a curl. */
+function Pumpkin({ className = "h-6 w-6" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden="true" focusable="false">
+      <ellipse cx="7.2" cy="14" rx="5.4" ry="7" fill="#E56F14" />
+      <ellipse cx="16.8" cy="14" rx="5.4" ry="7" fill="#E56F14" />
+      <ellipse cx="12" cy="14" rx="5" ry="7.6" fill="#F58A2A" />
+      <path d="M12 7.2v13.6M8.6 8.4c-1.4 2.2-1.4 9 0 11.2M15.4 8.4c1.4 2.2 1.4 9 0 11.2" fill="none" stroke="#C85A0C" strokeWidth="0.9" strokeLinecap="round" opacity=".7" />
+      <path d="M11.2 7.4c-.2-1.6.3-2.9 1.3-3.8.3.9.4 2 .2 3.8z" fill="#4F7F3A" />
+      <path d="M13.4 5.4c1.2-.7 2.4-.4 3 .5" fill="none" stroke="#4F7F3A" strokeWidth="1" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+/** The Events link: sits right after the For Businesses / For HOAs toggle on wide screens (on narrower ones it lives in the menu). */
+function EventsLink() {
+  return (
+    <a href={EVENTS_URL} className="hidden items-center gap-1.5 rounded-full px-3.5 py-2 text-[14px] font-semibold text-[#f6f1e4] transition-colors hover:bg-[#2a2e36] lg:inline-flex">
+      Events <Pumpkin />
+    </a>
+  );
+}
 
 /** A small menu for the old site's pages (Social, Digital), temporary until they're folded in. */
 function MoreMenu() {
@@ -62,6 +86,7 @@ function MoreMenu() {
       </button>
       {open && (
         <div role="menu" className="absolute right-0 top-[calc(100%+10px)] w-44 rounded-xl border border-[#f6f1e4]/10 bg-[#14161a] p-1.5 shadow-[0_10px_30px_rgba(0,0,0,.45)]">
+          <a role="menuitem" href={EVENTS_URL} className={`${item} flex items-center gap-2 lg:hidden`} onClick={() => setOpen(false)}>Events <Pumpkin className="h-[18px] w-[18px]" /></a>
           <Link role="menuitem" href="/social" className={item} onClick={() => setOpen(false)}>Social</Link>
           <Link role="menuitem" href="/digital" className={item} onClick={() => setOpen(false)}>Digital</Link>
         </div>
@@ -83,8 +108,9 @@ export function SiteHeader() {
               Shortlist Pass
             </span>
           </Link>
-          <div>
+          <div className="flex items-center gap-1.5">
             <AudienceToggle />
+            <EventsLink />
           </div>
           <div className="flex shrink-0 items-center gap-2 sm:gap-5">
             <a href={APP_LOGIN_URL} className="hidden text-[14px] font-medium text-[#f6f1e4] hover:underline sm:inline">
