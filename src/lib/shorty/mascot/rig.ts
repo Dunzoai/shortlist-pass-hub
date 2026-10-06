@@ -60,7 +60,7 @@ export function pipeEnds(p: Pose): { L: [number, number]; R: [number, number] } 
 
 /* ── Parts ──────────────────────────────────────────────────────────────── */
 function glove(parent: Element) {                                 // fingers along +x, wrist at 0,0
-  const g = el('g', {}, parent), open = el('g', {}, g), fist = el('g', {}, g), point = el('g', {}, g);
+  const g = el('g', {}, parent), open = el('g', {}, g), fist = el('g', {}, g), point = el('g', {}, g), thumb = el('g', {}, g);
   const w = { fill: C.white, ...ink(2.3) };
   el('ellipse', { cx: 6, cy: -9.4, rx: 3.6, ry: 4.2, transform: 'rotate(-25 6 -9.4)', ...w }, open);
   for (const [x, y] of [[15, -6.2], [18, -2.1], [18, 2.2], [15, 6.3]]) el('circle', { cx: x, cy: y, r: 3.9, ...w }, open);
@@ -70,6 +70,11 @@ function glove(parent: Element) {                                 // fingers alo
   el('circle', { cx: 9, cy: 0, r: 9.2, ...w }, fist);
   el('path', { d: 'M15 -5.4 Q13 -3.4 15.3 -1.5 M15.9 -1.1 Q13.4 0.8 15.9 2.8 M15.1 3.4 Q13 5.2 14.8 6.8', fill: 'none', ...ink(LW.inner) }, fist);
   el('path', { d: 'M3.8 -3 Q7 -3.3 10 -3 M3.8 0.2 H10 M3.8 3.4 Q7 3.7 10 3.4', fill: 'none', ...ink(LW.inner) }, fist);
+  /* THUMBS UP (fist = 3): a round fist with a proper thumb standing up from it, a knuckle crease and a little nail */
+  el('path', { d: 'M3.2 -4 V-18.5 A3.9 3.9 0 0 1 11 -18.5 V-4 Z', transform: 'rotate(-6 7 -4)', ...w }, thumb);
+  el('circle', { cx: 9, cy: 1.2, r: 9.4, ...w }, thumb);
+  el('path', { d: 'M4.6 -10.5 H10.2 M5.6 -17.6 Q7.2 -20.2 9.6 -17.8', fill: 'none', ...ink(LW.inner), transform: 'rotate(-6 7 -4)' }, thumb);
+  el('path', { d: 'M15.6 -2.4 Q13.4 -0.4 15.6 1.6 M16 2.4 Q13.6 4.4 16 6.4 M14.6 7.2 Q12.8 8.6 14.2 9.8 M3.8 -2.4 Q7 -2.8 10.4 -2.4 M3.8 1.4 H10.4 M3.8 5 H10', fill: 'none', ...ink(LW.inner) }, thumb);
   /* POINTING (fist = 2): the fist with the index finger out along the arm */
   el('path', { d: 'M10 -9.9 H29 A3.7 3.7 0 0 1 29 -2.5 H10 Z', ...w }, point);
   el('ellipse', { cx: 6.5, cy: -8.6, rx: 3.4, ry: 3.8, ...w }, point);
@@ -77,7 +82,7 @@ function glove(parent: Element) {                                 // fingers alo
   el('path', { d: 'M15.4 -1.1 Q13.4 0.8 15.4 2.8 M15 3.4 Q13 5.2 14.8 6.8 M4 -1.6 H11 M4 1.8 H10.5 M4 5 H10', fill: 'none', ...ink(LW.inner) }, point);
   el('path', { d: 'M-7.5 -8.4 Q-3.4 -9.4 0.4 -7.4 V7.4 Q-3.4 9.4 -7.5 8.4 Q-9 0 -7.5 -8.4 Z', ...w }, g);   // rolled cuff
   el('path', { d: 'M-3.6 -8.2 Q-5 0 -3.6 8.2', fill: 'none', ...ink(LW.inner) }, g);
-  return { g, open, fist, point };
+  return { g, open, fist, point, thumb };
 }
 function shoe(parent: Element, side: number) {
   const g = el('g', {}, parent);
@@ -341,7 +346,7 @@ export function makeRig(svg: SVGSVGElement, opts: { small?: boolean; boil?: bool
       bumps[s].setAttribute('transform', `translate(${f1(mx)} ${f1(my)}) scale(${Math.max(0.001, a.bump).toFixed(3)})`);
       const ang = Math.atan2(hy - cy, hx - cx) * 180 / Math.PI + a.rot;
       gloves[s].g.setAttribute('transform', `translate(${f1(hx)} ${f1(hy)}) rotate(${f1(ang)}) scale(1 ${s === 'L' ? -1 : 1})`);
-      show(gloves[s].open, a.fist <= 0.5); show(gloves[s].fist, a.fist > 0.5 && a.fist < 1.5); show(gloves[s].point, a.fist >= 1.5);
+      show(gloves[s].open, a.fist <= 0.5); show(gloves[s].fist, a.fist > 0.5 && a.fist < 1.5); show(gloves[s].point, a.fist >= 1.5 && a.fist < 2.5); show(gloves[s].thumb, a.fist >= 2.5);
       const [hpx, hpy] = apply(m, HIP[s]);
       const fx = FOOT[s][0] + p.feet[s].x, fy = FOOT[s][1] - p.feet[s].lift;
       legs[s].setAttribute('d', `M${f1(hpx)} ${f1(hpy)} Q${f1((hpx + fx) / 2 + side * (6 + p.feet.bow))} ${f1((hpy + fy) / 2)} ${f1(fx)} ${f1(fy - 4)}`);
