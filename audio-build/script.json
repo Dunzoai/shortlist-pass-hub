@@ -21,7 +21,7 @@
   "id": "L04",
   "scene": 1,
   "start_real_ms": 17500,
-  "text": "And now? I'm fully trained on your community. Any question, any hour, day or night. Twenty-four seven."
+  "text": "Trained on your official documents and information. Ready to talk day or night. Ask me anything, twenty-four seven."
  },
  {
   "id": "L05",
@@ -93,12 +93,12 @@
   "id": "L16",
   "scene": 3,
   "start_real_ms": 78700,
-  "text": "Friday bingo is her whole week. But management emails? She never opens 'em."
+  "text": "Management company emails? She never opens them. Industry average: one in ten. Betty's one of the nine."
  },
  {
   "id": "L17",
   "scene": 3,
-  "start_real_ms": 84700,
+  "start_real_ms": 86000,
   "text": "And the gym, where they pin up the news? Betty doesn't go."
  },
  {
@@ -129,55 +129,43 @@
   "id": "L22",
   "scene": 3,
   "start_real_ms": 106500,
-  "text": "She never had to open one single email."
+  "text": "Communication inside one sticky app fed her exactly what she wanted to do."
  },
  {
   "id": "L23",
   "scene": 4,
   "start_real_ms": 111500,
-  "text": "Meanwhile, back at the office, I'm already hard at work."
+  "text": "Meanwhile, Shorty runs the office. It works because it lives in the app residents actually use, not just to pay dues."
  },
  {
   "id": "L24",
   "scene": 4,
-  "start_real_ms": 115800,
-  "text": "Weekly newsletter? Typed, polished, sent to every resident."
+  "start_real_ms": 119300,
+  "text": "So I get to work. Weekly newsletter? Automated from your events list, sent to everyone."
  },
  {
   "id": "L25",
   "scene": 4,
-  "start_real_ms": 119200,
+  "start_real_ms": 125000,
   "text": "Burn ban today? One text, and every phone lights up."
  },
  {
   "id": "L26",
   "scene": 4,
-  "start_real_ms": 123600,
-  "text": "Resident reports? I read every single one. Streetlight out? Logged. Handled."
+  "start_real_ms": 128600,
+  "text": "Resident reports? I read each one, alert the board in their dashboard, and can email the list to your management company."
  },
  {
   "id": "L27",
   "scene": 4,
-  "start_real_ms": 128600,
-  "text": "And look who rolled up outside the clubhouse. A food truck."
+  "start_real_ms": 136000,
+  "text": "Food truck outside the clubhouse? One tap, lunch is ordered and paid."
  },
  {
   "id": "L28",
   "scene": 4,
-  "start_real_ms": 133400,
-  "text": "One tap on my phone, and lunch is ordered and paid."
- },
- {
-  "id": "L29",
-  "scene": 4,
-  "start_real_ms": 138200,
-  "text": "Walk on out, and my food's already waiting for me."
- },
- {
-  "id": "L30",
-  "scene": 4,
-  "start_real_ms": 142800,
-  "text": "Hot food. No waiting. No wallet. Just one tap."
+  "start_real_ms": 140800,
+  "text": "Yeah, it's that easy. Anything on site can be handled by the app, and the whole experience gets better."
  },
  {
   "id": "L31",
