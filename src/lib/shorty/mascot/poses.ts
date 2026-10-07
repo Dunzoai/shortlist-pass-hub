@@ -19,11 +19,11 @@
  * Docs: docs/features/admin-dashboard/shorty-mascot.md.
  */
 
-export type MascotMood = 'carry' | 'walk' | 'walkR' | 'wait' | 'nod' | 'pocket' | 'tapping' | 'pleased' | 'content' | 'whistle' | 'proud' | 'surprised' | 'hello' | 'idle' | 'listening' | 'thinking' | 'working' | 'done' | 'oops' | 'coffee';
+export type MascotMood = 'carry' | 'walk' | 'walkR' | 'wait' | 'nod' | 'pocket' | 'tapping' | 'pleased' | 'content' | 'whistle' | 'proud' | 'surprised' | 'hello' | 'idle' | 'listening' | 'thinking' | 'working' | 'done' | 'oops' | 'coffee' | 'typing';
 export type MascotTask = 'menu' | 'event' | 'social' | 'text' | 'none';
 export type Side = 'L' | 'R';
 
-export const PROP_NAMES = ['whisk', 'spatula', 'bowl', 'pad', 'pencil', 'phone', 'phoneBack', 'megaphone', 'hammer', 'stamp', 'pipe', 'cup'] as const;
+export const PROP_NAMES = ['whisk', 'spatula', 'bowl', 'pad', 'pencil', 'phone', 'phoneBack', 'megaphone', 'hammer', 'stamp', 'pipe', 'cup', 'laptop'] as const;
 export type PropName = typeof PROP_NAMES[number];
 
 export type Arm = { hx: number; hy: number; bend: number; fist: number; rot: number; bump: number; front: number };
@@ -331,6 +331,20 @@ function coffee(t: number): Pose {
   p.fx.notes = wh > 0.5 ? 1 : 0;
   return p;
 }
+/**
+ * TYPING (website "your customers live inside ChatGPT" section): he's behind a laptop, the lid's back toward us with the Shortlist mark on it,
+ * both gloves going on the keys (one then the other, quick and uneven), eyes down on the screen, brows set, a slow nod now and then.
+ */
+function typing(t: number): Pose {
+  const p = base(t);
+  const a = Math.max(0, Math.sin(t * 13.7)), b = Math.max(0, Math.sin(t * 11.3 + 1.7));
+  p.by = 0.4 + Math.abs(Math.sin(t * 1.4)) * 0.5; p.rot = Math.sin(t * 0.8) * 0.7;
+  p.props.laptop = hold({ at: [63, 146], s: 1.45 });
+  p.L = arm(...to('L', 38, 128 - a * 4), 16, 1, 0, 0, 1);
+  p.R = arm(...to('R', 88, 128 - b * 4), 16, 1, 0, 0, 1);
+  p.face = { ...p.face, mouth: 'none', gx: 0.3, gy: 1.6, bl: -1.2, br: -1.2 };
+  return p;
+}
 function listening(t: number): Pose {
   const p = base(t), nod = Math.sin(t * 2.2);
   p.rot = -2 + nod * 0.9; p.by = 0.5 + Math.abs(nod) * 0.5;
@@ -511,6 +525,7 @@ export const DEFAULT_POSES: Record<string, PoseEntry> = {
   hello: { pose: hello, still: 1.2 },
   idle: { pose: idle, still: 3.0 },
   coffee: { pose: coffee, still: 1.0 },
+  typing: { pose: typing, still: 0.6 },
   listening: { pose: listening, still: 0.4 },
   thinking: { pose: thinking, still: 2.6 },
   working: { pose: working, still: 0.5 },

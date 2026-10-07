@@ -35,7 +35,7 @@ export function PaperCard({ seed, fill = "#FBF6E6", tilt = 0, shadow = "rgba(0,0
           <pattern id={`${id}-g`} patternUnits="userSpaceOnUse" width="80" height="80"><image href={GRAIN_URL} width="80" height="80" /></pattern>
         </defs>
         <path d={d} transform="translate(8 10)" fill={shadow} />
-        <path d={d} fill={fill} stroke="rgba(110,85,45,.3)" strokeWidth={1.6} vectorEffect="non-scaling-stroke" strokeLinejoin="round" />
+        <path className="pc-sheet" d={d} fill={fill} stroke="rgba(110,85,45,.3)" strokeWidth={1.6} vectorEffect="non-scaling-stroke" strokeLinejoin="round" />
         <path d={d} fill={`url(#${id}-w)`} />
         <path d={d} fill={`url(#${id}-g)`} opacity={0.3} style={{ mixBlendMode: "multiply" }} />
       </svg>

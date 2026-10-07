@@ -136,6 +136,13 @@ const PROPS: Record<PropName, (p: Element, phone: Partial<PhoneParts>) => SVGGEl
     el('path', { d: 'M-8.6 -1 H8.6 L8.3 3 H-8.3 Z', fill: '#8cc3a1', stroke: 'none' }, g);
     el('ellipse', { cx: 0, cy: -9, rx: 9, ry: 2.4, fill: '#6b4428', ...ink(1.8) }, g);
     return g; },
+  /* A laptop seen from behind (lid toward us, the Shortlist mark on it), centred on its own origin. */
+  laptop(p) { const g = el('g', {}, p);
+    el('path', { d: 'M-34 19 H34 L38 25 Q38 28 34 28 H-34 Q-38 28 -38 25 Z', fill: '#9a9fa4', ...ink(2) }, g);
+    el('rect', { x: -31, y: -22, width: 62, height: 43, rx: 3.5, fill: '#d6d9dc', ...ink(2.2) }, g);
+    el('rect', { x: -9, y: -12, width: 18, height: 20, rx: 5, fill: '#5FDDAE', ...ink(1.8) }, g);
+    el('path', { d: 'M-4 -2 L-1 2 L5 -6', fill: 'none', ...ink(2) }, g);
+    return g; },
   phone(p, phone) { const g = el('g', {}, p);
     el('rect', { x: -9, y: -40, width: 18, height: 40, rx: 3.5, fill: C.ink, ...ink(2) }, g);
     el('rect', { x: -6.5, y: -35.5, width: 13, height: 28, rx: 1.6, fill: '#bfe0cb' }, g);
