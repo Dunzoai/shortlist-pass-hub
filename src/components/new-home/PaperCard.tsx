@@ -5,7 +5,7 @@
 const GRAIN_URL =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .11 0 0 0 0 .1 0 0 0 0 .08 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E";
 
-function cutPath(w: number, h: number, seed: number, r = 14, step = 9, amp = 1.7) {
+export function cutPath(w: number, h: number, seed: number, r = 14, step = 9, amp = 1.7) {
   let a = seed;
   const rnd = () => { a = (a + 0x6d2b79f5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
   const wob = (i: number) => (rnd() - 0.5) * amp * 1.6 + Math.sin(i * 0.41 + seed) * amp * 0.7;

@@ -9,7 +9,7 @@
 import { useEffect, useRef } from "react";
 import { ShortyMascot } from "@/components/shorty/ShortyMascot";
 import { AI_LOGOS } from "./aiLogos";
-import { PaperCard } from "./PaperCard";
+import { PaperCard, cutPath } from "./PaperCard";
 import { TornEdge, tearPolys } from "./TornEdge";
 import { useAudience } from "./audience";
 
@@ -142,68 +142,91 @@ function Ask({ ask, done, seed, tilt }: { ask: string; done: string; seed: numbe
   );
 }
 
-/** The two posters: THEIR website as a billboard (posts, catwalk, lamps; look but don't touch), YOUR Shorty as a door (arched, mint, open). */
-const WOOD = "#A9744A";
+/**
+ * The two posters, as paper cutouts from an art project: every piece is a hand-cut shape (wobbly edges, an arch for the door) with its own soft
+ * shadow, a paper-fibre texture and grain, stuck down a hair crooked. THEIR website is a billboard on posts (look, don't touch); YOUR Shorty is a mint door.
+ */
+const rnd = (seed: number) => () => ((seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296);
+/** A tall arch (a door) with a slightly uneven cut. */
+function archPath(w: number, h: number, seed: number, j = 2.6) {
+  const r = rnd(seed), pts: string[] = [], f = (n: number) => n.toFixed(1), jit = () => (r() - 0.5) * j * 2;
+  for (let y = h; y >= w / 2; y -= 16) pts.push(`${f(jit())} ${f(y)}`);
+  for (let k = 0; k <= 28; k++) { const a = Math.PI + (k / 28) * Math.PI; pts.push(`${f(w / 2 + Math.cos(a) * (w / 2) + jit())} ${f(w / 2 + Math.sin(a) * (w / 2) + jit())}`); }
+  for (let y = w / 2; y <= h; y += 16) pts.push(`${f(w + jit())} ${f(y)}`);
+  pts.push(`${f(w * 0.6)} ${f(h + jit())}`, `${f(w * 0.3)} ${f(h + jit())}`);
+  return `M${pts.join("L")}Z`;
+}
+/** One cut piece: shadow, paper, wash, fibres, grain. `x y` place it, `rot` sets it a little crooked. */
+function Piece({ d, x = 0, y = 0, rot = 0, ox = 0, oy = 0, fill, sh = 8, tex = 0.5, id }: { d: string; x?: number; y?: number; rot?: number; ox?: number; oy?: number; fill: string; sh?: number; tex?: number; id: string }) {
+  return (
+    <g transform={`translate(${x} ${y}) rotate(${rot} ${ox} ${oy})`}>
+      <path d={d} transform={`translate(${sh} ${sh * 1.15})`} fill="rgba(45,30,12,.36)" />
+      <path d={d} transform={`translate(${sh * 0.4} ${sh * 0.5})`} fill="rgba(45,30,12,.16)" />
+      <path d={d} fill={fill} stroke="rgba(110,85,45,.32)" strokeWidth="1.5" vectorEffect="non-scaling-stroke" strokeLinejoin="round" />
+      <path d={d} fill={`url(#${id}-w)`} />
+      <path d={d} fill={`url(#${id}-t)`} opacity={tex} />
+      <path d={d} fill={`url(#${id}-g)`} opacity=".3" style={{ mixBlendMode: "multiply" }} />
+    </g>
+  );
+}
+const WOOD = "#B58A5B";
 function Poster({ kind, tilt }: { kind: "billboard" | "door"; tilt: number }) {
   const id = `po-${kind}`;
   const door = kind === "door";
   return (
-    <div className="relative mx-auto w-full max-w-[440px]" style={{ aspectRatio: "420 / 560", rotate: `${tilt}deg` }}>
+    <div className="relative mx-auto w-full max-w-[440px]" style={{ aspectRatio: "420 / 560", rotate: `${tilt}deg`, containerType: "inline-size" }}>
       <svg viewBox="-14 -10 448 590" className="absolute inset-0 h-full w-full overflow-visible" aria-hidden="true" focusable="false" preserveAspectRatio="none">
         <defs>
           <pattern id={`${id}-g`} patternUnits="userSpaceOnUse" width="80" height="80"><image href={GRAIN_URL} width="80" height="80" /></pattern>
-          <linearGradient id={`${id}-w`} x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#fff" stopOpacity=".42" /><stop offset=".55" stopColor="#fff" stopOpacity="0" /><stop offset="1" stopColor="#0d2b20" stopOpacity=".16" /></linearGradient>
+          <pattern id={`${id}-t`} patternUnits="userSpaceOnUse" width="420" height="420"><image href="/paper-texture.webp" width="420" height="420" /></pattern>
+          <linearGradient id={`${id}-w`} x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#fff" stopOpacity=".42" /><stop offset=".55" stopColor="#fff" stopOpacity="0" /><stop offset="1" stopColor="#3a2410" stopOpacity=".16" /></linearGradient>
         </defs>
         {door ? (
           <>
-            <path d="M0 560 V190 Q0 0 210 0 Q420 0 420 190 V560 Z" transform="translate(12 14)" fill="rgba(45,30,12,.34)" />
-            <path d="M0 560 V190 Q0 0 210 0 Q420 0 420 190 V560 Z" fill={PAPER} stroke={INK} strokeWidth="6" strokeLinejoin="round" />
-            <path d="M24 560 V196 Q24 24 210 24 Q396 24 396 196 V560 Z" fill={MINT} stroke={INK} strokeWidth="5" strokeLinejoin="round" />
-            <path d="M24 560 V196 Q24 24 210 24 Q396 24 396 196 V560 Z" fill={`url(#${id}-w)`} />
-            <path d="M24 560 V196 Q24 24 210 24 Q396 24 396 196 V560 Z" fill={`url(#${id}-g)`} opacity=".28" style={{ mixBlendMode: "multiply" }} />
-            <path d="M62 372 V210 Q62 62 210 62 Q358 62 358 210 V372 Z" fill="none" stroke="rgba(13,43,32,.4)" strokeWidth="4" />
-            <rect x="62" y="396" width="296" height="130" rx="14" fill="none" stroke="rgba(13,43,32,.4)" strokeWidth="4" />
-            <circle cx="360" cy="400" r="17" fill="#F2B84B" stroke={INK} strokeWidth="4" />
-            <g transform="translate(228 424) rotate(7)">
-              <rect width="124" height="58" rx="6" fill={PAPER} stroke={INK} strokeWidth="4" transform="translate(4 5)" opacity=".35" />
-              <rect width="124" height="58" rx="6" fill={PAPER} stroke={INK} strokeWidth="4" />
-              <path d="M62 0 L58 -26" stroke={INK} strokeWidth="3" />
+            <Piece id={id} d={archPath(420, 560, 11)} fill="#FBF6E6" sh={12} tex={0.35} />
+            <Piece id={id} d={archPath(372, 536, 12)} x={24} y={24} rot={-0.4} ox={186} oy={268} fill="#6FDDB2" sh={6} />
+            <Piece id={id} d={archPath(300, 306, 13, 2)} x={60} y={70} rot={0.5} ox={150} oy={150} fill="#9BEACB" sh={5} tex={0.4} />
+            <Piece id={id} d={cutPath(300, 128, 14, 12, 10, 2)} x={60} y={398} rot={-0.6} ox={150} oy={64} fill="#9BEACB" sh={5} tex={0.4} />
+            <circle cx="362" cy="404" r="17" fill="rgba(45,30,12,.36)" transform="translate(4 5)" />
+            <circle cx="362" cy="404" r="17" fill="#F2B84B" stroke="rgba(110,85,45,.4)" strokeWidth="1.5" />
+            <circle cx="356" cy="398" r="5" fill="rgba(255,255,255,.55)" />
+            <g transform="translate(232 424) rotate(7)">
+              <path d="M62 0 L58 -24" stroke="#6b5a3a" strokeWidth="3" />
+              <Piece id={id} d={cutPath(124, 58, 15, 6, 10, 1.6)} fill="#FBF6E6" sh={5} tex={0.35} />
+              <text x="62" y="39" textAnchor="middle" fontSize="27" fontWeight="800" letterSpacing="3" style={{ fontFamily: SANS, fill: INK }}>OPEN</text>
             </g>
           </>
         ) : (
           <>
-            <rect x="0" y="540" width="420" height="20" fill="#cfc7b0" stroke={INK} strokeWidth="4" />
-            {[80, 310].map((x) => <rect key={x} x={x} y="356" width="32" height="188" fill={WOOD} stroke={INK} strokeWidth="4" />)}
-            <rect x="34" y="350" width="352" height="16" fill="#6b6558" stroke={INK} strokeWidth="4" />
-            {[100, 210, 320].map((x) => (
+            <Piece id={id} d={cutPath(420, 24, 21, 4, 12, 2)} y={538} fill="#CFC7B0" sh={3} />
+            {[78, 312].map((x, i) => <Piece key={x} id={id} d={cutPath(32, 190, 22 + i, 3, 14, 2)} x={x} y={356} rot={i ? 0.6 : -0.5} ox={16} oy={95} fill={WOOD} sh={6} tex={0.55} />)}
+            <Piece id={id} d={cutPath(352, 18, 24, 4, 12, 1.6)} x={34} y={350} fill="#7a7466" sh={4} />
+            {[100, 210, 320].map((x, i) => (
               <g key={x}>
-                <path d={`M${x} 82 V54`} stroke={INK} strokeWidth="5" />
-                <path d={`M${x - 15} 54 H${x + 15} L${x + 10} 38 H${x - 10} Z`} fill="#55504a" stroke={INK} strokeWidth="4" strokeLinejoin="round" />
-                <path d={`M${x - 10} 56 L${x - 46} 130 H${x + 46} L${x + 10} 56 Z`} fill="rgba(255,236,170,.28)" />
+                <path d={`M${x - 10} 62 L${x - 46} 134 H${x + 46} L${x + 10} 62 Z`} fill="rgba(255,236,170,.3)" />
+                <Piece id={id} d={cutPath(8, 28, 30 + i, 2, 10, 1)} x={x - 4} y={54} fill="#5d5750" sh={2} />
+                <Piece id={id} d={cutPath(34, 16, 33 + i, 3, 10, 1.2)} x={x - 17} y={40} fill="#6c665d" sh={3} />
               </g>
             ))}
-            <rect x="14" y="82" width="392" height="268" rx="6" fill="rgba(45,30,12,.34)" transform="translate(12 14)" />
-            <rect x="14" y="82" width="392" height="268" rx="6" fill="#E6DEC8" stroke={INK} strokeWidth="6" />
-            <rect x="14" y="82" width="392" height="268" rx="6" fill={`url(#${id}-w)`} />
-            <rect x="14" y="82" width="392" height="268" rx="6" fill={`url(#${id}-g)`} opacity=".3" style={{ mixBlendMode: "multiply" }} />
-            <rect x="32" y="100" width="356" height="232" rx="3" fill="none" stroke="rgba(60,50,35,.28)" strokeWidth="3" />
+            <Piece id={id} d={cutPath(392, 270, 25, 6, 12, 2.6)} x={14} y={80} rot={-0.4} ox={196} oy={135} fill="#E9E1CB" sh={12} tex={0.5} />
+            <Piece id={id} d={cutPath(354, 232, 26, 6, 12, 2.4)} x={33} y={98} rot={0.5} ox={177} oy={116} fill="#F2ECDA" sh={4} tex={0.45} />
           </>
         )}
       </svg>
       {door ? (
-        <div className="absolute left-[21%] right-[21%] top-[19%] text-[#0D2B20]">
-          <p className="text-[12px] font-extrabold tracking-[0.14em] sm:text-[13px]" style={{ fontFamily: SANS }}>YOUR SHORTY</p>
-          <p className="mt-1 text-[40px] leading-[1] font-extrabold sm:text-[56px]" style={{ fontFamily: SANS }}>A door.</p>
-          <p className="mt-3 text-[15px] leading-[1.28] sm:text-[18px]" style={{ fontFamily: BODY }}>Agents walk right in and get it done. The Shortlist built the foundation that makes it possible.</p>
+        <div className="absolute left-[19%] right-[19%] top-[33%] text-[#0D2B20]">
+          <p className="font-extrabold" style={{ fontFamily: SANS, fontSize: "clamp(10px, 3.1cqw, 14px)", letterSpacing: "0.14em" }}>YOUR SHORTY</p>
+          <p className="mt-1 font-extrabold leading-[1]" style={{ fontFamily: SANS, fontSize: "clamp(30px, 10.5cqw, 56px)" }}>A door.</p>
+          <p className="mt-2 leading-[1.25]" style={{ fontFamily: BODY, fontSize: "clamp(13px, 4.1cqw, 19px)" }}>Agents walk right in and get it done. The Shortlist built the foundation that makes it possible.</p>
         </div>
       ) : (
-        <div className="absolute left-[11%] right-[11%] top-[20%] text-[#4a463a]">
-          <p className="text-[12px] font-extrabold tracking-[0.14em] text-[#6b6558] sm:text-[13px]" style={{ fontFamily: SANS }}>THEIR WEBSITE</p>
-          <p className="mt-1 text-[40px] leading-[1] font-extrabold text-[#5d5848] sm:text-[56px]" style={{ fontFamily: SANS }}>A billboard.</p>
-          <p className="mt-3 text-[16px] leading-[1.28] sm:text-[19px]" style={{ fontFamily: BODY }}>Agents can read it. Nobody can order, book or buy. It just sits there.</p>
+        <div className="absolute left-[12%] right-[12%] top-[21%] text-[#4a463a]">
+          <p className="font-extrabold text-[#6b6558]" style={{ fontFamily: SANS, fontSize: "clamp(10px, 3.1cqw, 14px)", letterSpacing: "0.14em" }}>THEIR WEBSITE</p>
+          <p className="mt-1 font-extrabold leading-[1] text-[#5d5848]" style={{ fontFamily: SANS, fontSize: "clamp(28px, 10cqw, 52px)" }}>A billboard.</p>
+          <p className="mt-2 leading-[1.25]" style={{ fontFamily: BODY, fontSize: "clamp(12px, 3.9cqw, 18px)" }}>Agents can read it. Nobody can order, book or buy. It just sits there.</p>
+          <p className="mt-3 italic font-semibold leading-[1.22]" style={{ fontFamily: SERIF, color: BRICK, fontSize: "clamp(12px, 4cqw, 19px)" }}>When’s the last time <u>you</u> took action from a billboard? Yeah. Never.</p>
         </div>
       )}
-      {door && <p className="absolute left-[56%] top-[78.2%] w-[28%] -rotate-0 text-center text-[18px] font-extrabold tracking-[0.1em] sm:text-[24px]" style={{ fontFamily: SANS, color: INK, transform: "rotate(7deg)" }}>OPEN</p>}
     </div>
   );
 }

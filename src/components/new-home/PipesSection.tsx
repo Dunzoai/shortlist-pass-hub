@@ -433,7 +433,7 @@ export function PipesSection() {
             style={{ fontFamily: SERIF, fontSize: "clamp(26px, 3vw, 42px)", fontWeight: 400 }}
           >
             <span data-rv="l" className="pp-pill block text-[27px] leading-[1.15] min-[900px]:inline min-[900px]:text-[length:inherit] min-[900px]:leading-[inherit]">
-              Right now your website and socials are <em className="italic">a billboard.</em>
+              Right now your website and socials are <em className="italic">outdated.</em>
             </span>{" "}
             <span data-rv="r" className="pp-pill mt-3.5 block text-[22px] leading-[1.2] min-[900px]:mt-0 min-[900px]:inline min-[900px]:text-[length:inherit]">
               They get read by agents, but can’t do anything.
