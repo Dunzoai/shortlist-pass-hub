@@ -8,7 +8,7 @@ import { useAudience, type Audience } from "./audience";
 export const APP_SIGNUP_URL = "https://app.shortlistpass.com/signup";
 export const EVENTS_URL = "https://events.shortlistpass.com";
 export const APP_FREE_URL = "https://app.shortlistpass.com/freeshorty";
-const APP_LOGIN_URL = "https://app.shortlistpass.com/login";
+const APP_URL = "https://app.shortlistpass.com";
 
 function AudienceToggle() {
   const { audience, setAudience } = useAudience();
@@ -89,6 +89,7 @@ function MoreMenu() {
           <a role="menuitem" href={EVENTS_URL} className={`${item} hidden items-center gap-2 sm:flex lg:hidden`} onClick={() => setOpen(false)}>Events <Pumpkin className="h-[18px] w-[18px]" /></a>
           <Link role="menuitem" href="/social" className={item} onClick={() => setOpen(false)}>Social</Link>
           <Link role="menuitem" href="/digital" className={item} onClick={() => setOpen(false)}>Digital</Link>
+          <a role="menuitem" href={APP_URL} className={`${item} mt-1 border-t border-[#f6f1e4]/10 sm:hidden`} onClick={() => setOpen(false)}>Sign in</a>
         </div>
       )}
     </div>
@@ -113,14 +114,9 @@ export function SiteHeader() {
             <EventsLink />
           </div>
           <div className="flex shrink-0 items-center gap-2 sm:gap-5">
-            <a href={APP_LOGIN_URL} className="hidden text-[14px] font-medium text-[#f6f1e4] hover:underline sm:inline">
+            {/* small and quiet: the owners' way into the app */}
+            <a href={APP_URL} className="hidden text-[13px] font-medium text-[#f6f1e4]/75 hover:text-[#f6f1e4] hover:underline sm:inline">
               Sign in
-            </a>
-            <a
-              href={APP_SIGNUP_URL}
-              className="hidden whitespace-nowrap rounded-full bg-[#7fd0a4] px-3 py-2 text-[12.5px] font-semibold text-[#12301f] transition-transform hover:-translate-y-px sm:inline-block sm:px-4 sm:py-2.5 sm:text-[13px]"
-            >
-              Hire Shorty
             </a>
             <a href={EVENTS_URL} className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-[#7fd0a4] px-3 py-1.5 text-[12.5px] font-semibold text-[#12301f] sm:hidden">
               Events <Pumpkin className="h-5 w-5" />
