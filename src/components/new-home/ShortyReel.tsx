@@ -110,7 +110,80 @@ const BANNER_STITCH = (() => {
   for (let x = -484; x <= -122; x += 19) pts.push(`${x} ${ripple(x, 13.5, 0.8).toFixed(1)}`);
   return `M${pts.join(" L")} Z`;
 })();
-function Scene() {
+/** HOA scene pieces: pitched-roof houses, a clubhouse, picket fences, a mailbox and a lamp post, in the same cut paper as the city. */
+function House({ x, w, h, fill, roof, roofH = 90, seed, chimney, door = "#8A5A3A", shutters = "#5E8F7A", garage }: { x: number; w: number; h: number; fill: string; roof: string; roofH?: number; seed: number; chimney?: boolean; door?: string; shutters?: string; garage?: boolean }) {
+  const y = 410 - h, apex = `${x + w / 2} ${y - roofH}`;
+  const winY = y + 30, wh = Math.min(46, h * 0.28);
+  return (
+    <g>
+      {chimney && <Paper d={cut(x + w * 0.66, y - roofH * 0.78, 26, roofH * 0.7, seed + 5, 1.2)} fill="#B3694F" dx={3} dy={3} />}
+      <Paper d={cut(x, y, w, h, seed)} fill={fill} />
+      <Paper d={`M${x - 14} ${y + 2} L${apex} L${x + w + 14} ${y + 2} Z`} fill={roof} dx={5} dy={6} />
+      <Paper d={`M${x - 14} ${y + 2} H${x + w + 14} v7 H${x - 14} Z`} fill="#F4ECD6" dx={0} dy={2} />
+      {[0, 1].map((i) => {
+        const wx = x + 24 + i * (w - 48 - 40);
+        return (
+          <g key={i}>
+            <Paper d={cut(wx - 9, winY, 12, wh, seed + 10 + i, 1)} fill={shutters} dx={1.5} dy={2} />
+            <Paper d={cut(wx + 40, winY, 12, wh, seed + 12 + i, 1)} fill={shutters} dx={1.5} dy={2} />
+            <Paper d={cut(wx + 5, winY, 34, wh, seed + 14 + i, 1)} fill={(i + seed) % 3 === 0 ? "#F2C45C" : "#FBF2DA"} dx={2} dy={2.5} />
+            <path d={`M${wx + 22} ${winY} v${wh} M${wx + 5} ${winY + wh / 2} h34`} stroke="rgba(110,85,45,.45)" strokeWidth={2} />
+          </g>
+        );
+      })}
+      {garage ? <Paper d={cut(x + w * 0.3, 410 - 62, w * 0.4, 62, seed + 20, 1.2)} fill="#E7DFCA" dx={3} dy={3} /> : <Paper d={cut(x + w / 2 - 15, 410 - 58, 30, 58, seed + 20, 1.2)} fill={door} dx={3} dy={3} />}
+      {!garage && <circle cx={x + w / 2 + 8} cy={410 - 30} r={2.6} fill="#F2B84B" />}
+      <Paper d={cut(x + w / 2 - 26, 404, 52, 8, seed + 22, 1)} fill="#CFC7B0" dx={0} dy={2} />
+    </g>
+  );
+}
+function Clubhouse({ x }: { x: number }) {
+  const w = 240, h = 150, y = 410 - h;
+  return (
+    <g>
+      <Paper d={cut(x, y, w, h, 301)} fill="#EADBB8" />
+      <Paper d={`M${x - 16} ${y + 2} L${x + w / 2} ${y - 70} L${x + w + 16} ${y + 2} Z`} fill="#8E6F9E" dx={5} dy={6} />
+      {[0, 1, 2, 3].map((i) => <Paper key={i} d={cut(x + 22 + i * 56, y + 26, 34, 60, 310 + i, 1)} fill={i % 2 ? "#FBF2DA" : "#F2C45C"} dx={2} dy={2.5} />)}
+      <Paper d={cut(x + w / 2 - 22, 410 - 62, 44, 62, 320, 1.2)} fill="#8A5A3A" dx={3} dy={3} />
+      <Paper d={cut(x + 40, y + 98, w - 80, 20, 321, 1.2)} fill="#FBF6E6" dx={2} dy={3} />
+      <text x={x + w / 2} y={y + 113} textAnchor="middle" fontSize={13} fontWeight={800} letterSpacing={2.4} fill="#14161A" style={{ fontFamily: SANS }}>CLUBHOUSE</text>
+      <path d={`M${x + w - 18} ${y + 2} V${y - 96}`} stroke="#6B5A48" strokeWidth={3} />
+      <Paper d={`M${x + w - 18} ${y - 96} h34 l-8 11 l8 11 h-34 Z`} fill="#C8624A" dx={2} dy={2} />
+    </g>
+  );
+}
+function Fence({ x, w }: { x: number; w: number }) {
+  const n = Math.round(w / 15);
+  return (
+    <g>
+      <Paper d={cut(x, 392, w, 7, 400 + x, 1)} fill="#FBF6E6" dx={0} dy={2} />
+      <Paper d={cut(x, 410, w, 6, 410 + x, 1)} fill="#FBF6E6" dx={0} dy={2} />
+      {Array.from({ length: n }, (_, i) => <Paper key={i} d={`M${x + i * 15 + 2} 424 V394 L${x + i * 15 + 7.5} 387 L${x + i * 15 + 13} 394 V424 Z`} fill="#FBF6E6" dx={1.5} dy={2} />)}
+    </g>
+  );
+}
+function HoaScenery() {
+  return (
+    <g>
+      <House x={14} w={196} h={150} fill="#9DBFCE" roof="#B9604A" roofH={74} seed={11} chimney />
+      <House x={226} w={168} h={206} fill="#EEC79A" roof="#6F7C8C" roofH={88} seed={23} />
+      <Clubhouse x={412} />
+      <House x={630} w={196} h={190} fill="#CC6E56" roof="#4F6D8C" roofH={100} seed={51} chimney door="#F2DC96" />
+      <House x={846} w={200} h={160} fill="#BDAED0" roof="#C98F5B" roofH={78} seed={67} garage />
+      <House x={1062} w={150} h={176} fill="#F2DC96" roof="#7A5A8C" roofH={84} seed={83} />
+      <Tree x={404} s={0.8} /><Tree x={622} s={0.9} /><Tree x={836} s={0.75} />
+      {/* a lamp post and a mailbox */}
+      <Paper d={cut(215, 300, 7, 112, 330, 1)} fill="#4A4A48" dx={2} dy={2} />
+      <Paper d={cut(204, 290, 29, 18, 331, 1.2)} fill="#F2DC96" dx={2} dy={2} />
+      <Paper d={cut(603, 372, 6, 42, 332, 1)} fill="#8A6A4A" dx={2} dy={2} />
+      <Paper d={cut(594, 354, 30, 20, 333, 1.2)} fill="#5E8F7A" dx={2} dy={2} />
+      <Paper d={cut(620, 358, 5, 12, 334, 0.8)} fill="#C8624A" dx={1} dy={1} />
+      <Fence x={14} w={196} /><Fence x={226} w={168} /><Fence x={846} w={200} /><Fence x={1062} w={150} />
+    </g>
+  );
+}
+
+function Scene({ hoa = false }: { hoa?: boolean }) {
   return (
     <svg viewBox="0 0 1200 520" preserveAspectRatio="xMidYMax slice" className="absolute inset-0 h-full w-full" aria-hidden="true">
       <defs>
@@ -125,6 +198,8 @@ function Scene() {
       <Cloud y={110} s={0.8} className="reel-cloud-b" />
       <Cloud y={20} s={0.7} className="reel-cloud-c" />
       {/* the plane: a small cut-paper plane with a dotted trail, crossing every half minute */}
+      {hoa ? <HoaScenery /> : (
+        <>
       <Building x={14} w={196} h={262} fill="#9DBFCE" cols={4} rows={4} seed={11} />
       <Building x={226} w={170} h={318} fill="#DDA07A" cols={3} rows={5} seed={23} door awning="#C8624A" />
       <Building x={414} w={206} h={226} fill="#9EC3A8" cols={4} rows={3} seed={37} door awning="#E2A43C" />
@@ -133,6 +208,8 @@ function Scene() {
       <Building x={1058} w={150} h={306} fill="#F2DC96" cols={3} rows={5} seed={83} />
       <Tree x={408} s={0.85} />
       <Tree x={826} s={0.95} />
+        </>
+      )}
       <g className="reel-anim reel-plane" style={{ transform: "translate(-640px, 124px)" }}>
         {/* a little prop plane towing a banner, all cut paper: layered pieces, hard shadows, grain, a rippling ribbon */}
         <path d="M-60 2 L-112 -14 M-60 4 L-112 20" stroke="#6B5A48" strokeWidth={1.4} fill="none" />
@@ -140,7 +217,7 @@ function Scene() {
           <Paper d={BANNER} fill="#FBF6E6" dx={4} dy={5} />
           <path d={BANNER} fill="none" stroke="#5FDDAE" strokeWidth={3.2} strokeLinejoin="round" />
           <path d={BANNER_STITCH} fill="none" stroke="#5FDDAE" strokeWidth={1.2} strokeDasharray="5 5" opacity={0.9} />
-          <text x={-306} y={9.5} textAnchor="middle" fontSize={15.5} fontWeight={800} letterSpacing={0.5} fill="#14161A" style={{ fontFamily: SANS }}>THE CITY POWERED BY THE SHORTLIST</text>
+          <text x={-306} y={9.5} textAnchor="middle" fontSize={hoa ? 12.6 : 15.5} fontWeight={800} letterSpacing={hoa ? 0.3 : 0.5} fill="#14161A" style={{ fontFamily: SANS }}>{hoa ? "YOUR COMMUNITY, POWERED BY THE SHORTLIST" : "THE CITY POWERED BY THE SHORTLIST"}</text>
         </g>
         <g transform="scale(1.1)">
           <Paper d="M-48 -4 L-64 -34 L-46 -34 L-32 -6 Z" fill="#C8624A" dx={2.5} dy={3} />
@@ -175,10 +252,21 @@ function Scene() {
           <path d="M-2 8 V13 M4 8 V13" stroke="#14161A" strokeWidth={1.6} />
         </g>
       </g>
-      {/* the street: a strip of grey paper, a pavement edge, and cut-paper dashes */}
+      {hoa ? (
+        <>
+          {/* lawn, sidewalk and a quiet neighbourhood street */}
+          <Paper d={cut(-30, 396, 1260, 40, 7, 3)} fill="#9CC79A" dx={0} dy={-3} />
+          <Paper d={cut(-30, 424, 1260, 26, 8, 2)} fill="#D9D2BE" dx={0} dy={3} />
+          <Paper d={cut(-30, 446, 1260, 110, 9, 3)} fill="#8F8A7E" dx={0} dy={-3} />
+          {Array.from({ length: 12 }, (_, i) => <Paper key={i} d={cut(14 + i * 104, 490, 56, 8, 190 + i, 1.4)} fill="#F2DC96" dx={2} dy={2} />)}
+        </>
+      ) : (
+        <>
       <Paper d={cut(-30, 410, 1260, 140, 5, 3)} fill="#9A9486" dx={0} dy={-4} />
       <Paper d={cut(-30, 410, 1260, 20, 6, 2)} fill="#C4BDAA" dx={0} dy={3} />
       {Array.from({ length: 12 }, (_, i) => <Paper key={i} d={cut(14 + i * 104, 478, 56, 9, 90 + i, 1.4)} fill="#F2DC96" dx={2} dy={2} />)}
+        </>
+      )}
       {/* a delivery cyclist far down the sidewalk (small, like he is in the distance) with a Shortlist Pass bag on the back rack */}
       <g className="reel-anim reel-bike" style={{ transform: "translate(-160px, 432px) scale(0.5)" }}>
         <ellipse cx="0" cy="2" rx="80" ry="5" fill={SHADOW} />
@@ -244,7 +332,7 @@ export function ShortyReel() {
           style={{ boxShadow: "1px 2px 0 rgba(40,25,10,.35), 0 0 0 2px rgba(110,85,45,.22)", background: "#F4E7B9" }}
         >
           <span className="absolute inset-0 overflow-hidden rounded-[28px]">
-          <Scene />
+          <Scene hoa={hoa} />
           {/* Shorty, standing easy in the middle with his coffee, taking it all in */}
           <span aria-hidden="true" className="absolute bottom-[4%] left-1/2 block h-[50%] w-[26%] -translate-x-1/2 md:bottom-[3%] md:h-[62%] md:w-[20%]">
             <span className="absolute inset-x-0 bottom-0 flex justify-center">
