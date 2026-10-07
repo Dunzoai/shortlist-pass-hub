@@ -20,6 +20,7 @@ Answers customers, ordering, bookings, events, loyalty rewards, social posts, te
 
 ## For AI agents and developers
 - ChatGPT plugin: https://chatgpt.com/plugins/plugin_asdk_app_6abf0138fbb88191875bfcf06eca0dd9
+- Claude connector: https://claude.ai/directory/connectors/shortlist-pass
 - Plain JSON API: https://app.shortlistpass.com/api/agent/v1
 - Documentation: https://app.shortlistpass.com/developers/agents
 - Read tools return published data only: business pages, menus, upcoming stops and events, pickup availability. Food trucks sell per stop, and each stop's menu is listed with the upcoming events.

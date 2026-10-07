@@ -24,6 +24,7 @@ Social: https://www.instagram.com/shortlistpass , https://www.facebook.com/short
 ## For AI agents
 - Business pages, menus, upcoming events and pickup availability are published and readable. Orders can be started on a business's behalf; the customer reviews the cart and pays on the business's own page, so no payment details pass through an agent.
 - ChatGPT plugin: https://chatgpt.com/plugins/plugin_asdk_app_6abf0138fbb88191875bfcf06eca0dd9
+- Claude connector: https://claude.ai/directory/connectors/shortlist-pass
 - Agent API (plain JSON): https://app.shortlistpass.com/api/agent/v1
 - Agent API documentation: https://app.shortlistpass.com/developers/agents
 - Operations: search businesses, get a business, get a menu, get upcoming events and stops, start an order (creates a cart from offering ids and returns a cart_url).

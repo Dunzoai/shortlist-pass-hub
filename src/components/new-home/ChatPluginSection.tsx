@@ -4,7 +4,7 @@
  * "Your customers are already asking ChatGPT": between the mint "AI agents are here" section and "Shorty's got skills." Cream paper
  * torn over the mint above and torn again over the charcoal below. Shorty is plugged into ChatGPT and Claude (their marks, drawn on paper
  * cards in our style), three things customers can now just ask for, and the billboard-vs-door point. Business view only.
- * The two install links are constants. ChatGPT is the real plugin page; Claude still points at the agent docs until its connector link is known.
+ * The two install links are constants: the real ChatGPT plugin page and the Claude connector directory page.
  */
 import { ShortyMascot } from "@/components/shorty/ShortyMascot";
 import { AI_LOGOS } from "./aiLogos";
@@ -13,7 +13,7 @@ import { TornEdge, tearPolys } from "./TornEdge";
 import { useAudience } from "./audience";
 
 export const CHATGPT_PLUGIN_URL = "https://chatgpt.com/plugins/plugin_asdk_app_6abf0138fbb88191875bfcf06eca0dd9";
-export const CLAUDE_CONNECTOR_URL = "https://app.shortlistpass.com/developers/agents";
+export const CLAUDE_CONNECTOR_URL = "https://claude.ai/directory/connectors/shortlist-pass";
 
 const INK = "#14161A";
 const CREAM = "#F5EDDC";
