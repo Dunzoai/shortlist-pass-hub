@@ -6,6 +6,7 @@
  * cards in our style), three things customers can now just ask for, and the billboard-vs-door point. Business view only.
  * The two install links are constants: the real ChatGPT plugin page and the Claude connector directory page.
  */
+import { useEffect, useRef } from "react";
 import { ShortyMascot } from "@/components/shorty/ShortyMascot";
 import { AI_LOGOS } from "./aiLogos";
 import { PaperCard } from "./PaperCard";
@@ -27,33 +28,97 @@ const GRAIN_URL =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .11 0 0 0 0 .1 0 0 0 0 .08 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E";
 const TEAR = tearPolys(29, 10, 0.8, 56);
 
-/** One AI's card, tappable: its mark in ink on a paper tile, its name, a LIVE chip. Goes to the install page; turns mint on hover and press. */
+/** One AI's card, tappable, sized in the scene's own units (cqw) so the whole picture scales together. Mint on hover and press. */
 function LogoCard({ path, name, href, seed, tilt }: { path: string; name: string; href: string; seed: number; tilt: number }) {
   return (
     <a href={href} aria-label={`Add Shorty to ${name}`} className="logo-card block cursor-pointer no-underline outline-none">
       <PaperCard seed={seed} tilt={tilt} fill={PAPER} shadow="rgba(45,30,12,.34)">
-        <div className="flex flex-col items-center gap-1.5 px-1.5 py-3 sm:gap-2.5 sm:px-6 sm:py-7">
-          <svg viewBox="0 0 24 24" aria-hidden="true" className="h-10 w-10 sm:h-20 sm:w-20" fill={INK}><path d={path} /></svg>
-          <span className="text-[13px] font-extrabold sm:text-[22px]" style={{ fontFamily: SANS, color: INK }}>{name}</span>
-          <span className="inline-flex items-center gap-1.5 rounded-full border-2 border-[#14161A] px-2 py-0.5 text-[10px] font-extrabold tracking-[0.12em] sm:text-[12px]" style={{ background: MINT, color: "#0D2B20", fontFamily: SANS }}>
-            <span className="h-1.5 w-1.5 rounded-full bg-[#14161A]" />LIVE
+        <div className="flex flex-col items-center" style={{ gap: "0.9cqw", padding: "2.2cqw 0.8cqw" }}>
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill={INK} style={{ width: "8.6cqw", height: "8.6cqw" }}><path d={path} /></svg>
+          <span className="font-extrabold" style={{ fontFamily: SANS, color: INK, fontSize: "clamp(11px, 2.5cqw, 23px)" }}>{name}</span>
+          <span className="inline-flex items-center rounded-full border-2 border-[#14161A] font-extrabold" style={{ background: MINT, color: "#0D2B20", fontFamily: SANS, fontSize: "clamp(8px, 1.25cqw, 12px)", letterSpacing: "0.12em", padding: "0.2cqw 1cqw", gap: "0.5cqw" }}>
+            <span className="rounded-full bg-[#14161A]" style={{ width: "0.7cqw", height: "0.7cqw" }} />LIVE
           </span>
         </div>
       </PaperCard>
-      <p className="mt-4 text-center text-[9px] leading-tight font-extrabold tracking-[0.1em] text-[#6b6558] sm:text-[13px]" style={{ fontFamily: SANS }}>TAP TO ADD THE PLUGIN</p>
+      <p className="text-center font-extrabold leading-tight text-[#6b6558]" style={{ fontFamily: SANS, marginTop: "1.2cqw", fontSize: "clamp(7.5px, 1.25cqw, 13px)", letterSpacing: "0.1em" }}>TAP TO ADD THE PLUGIN</p>
     </a>
   );
 }
 
-/** The cable from a card to Shorty: a thick ink line with a plug on each end. */
-function Cable({ flip = false }: { flip?: boolean }) {
+/** Little confirmations that float up out of the laptop, on a loop. */
+const BUBBLES: { text: string; dx: number; fill: string }[] = [
+  { text: "Plumber booked", dx: -17, fill: "#FBF6E6" },
+  { text: "Burger ordered", dx: 17, fill: "#D7F5E8" },
+  { text: "Dress shipped", dx: -19, fill: "#FBF6E6" },
+  { text: "Yoga confirmed 7pm", dx: 16, fill: "#F5E7B6" },
+  { text: "Coffee beans ordered", dx: -15, fill: "#D7F5E8" },
+  { text: "Haircut Sat 2pm", dx: 19, fill: "#FBF6E6" },
+  { text: "Table for 4 at 8", dx: -18, fill: "#F5E7B6" },
+  { text: "Flowers on the way", dx: 15, fill: "#FBF6E6" },
+  { text: "Oil change Tuesday", dx: 18, fill: "#D7F5E8" },
+  { text: "Tacos ordered", dx: -16, fill: "#FBF6E6" },
+];
+const STEP = 1.7;
+
+/** The stage: Shorty behind a paper desk, a laptop with the Shortlist mark in front of him, the two AI cards plugged into its sides, confirmations rising out of it. */
+function PlugScene() {
+  const root = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    const el = root.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver((e) => e.forEach((x) => el.toggleAttribute("data-live", x.isIntersecting)), { threshold: 0.1 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  const cable = "M322 388 C 262 440, 268 214, 214 206";
   return (
-    <svg viewBox="0 0 120 40" preserveAspectRatio="none" aria-hidden="true" className="h-8 w-full min-w-0 sm:h-10" style={{ transform: flip ? "scaleX(-1)" : undefined }}>
-      <path d="M6 20 C 40 4, 80 36, 114 20" fill="none" stroke={INK} strokeWidth="5" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
-      <path d="M6 20 C 40 4, 80 36, 114 20" fill="none" stroke={MINT} strokeWidth="2" strokeDasharray="2 7" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
-      <rect x="0" y="12" width="9" height="16" rx="2" fill={INK} />
-      <rect x="111" y="12" width="9" height="16" rx="2" fill={INK} />
-    </svg>
+    <div ref={root} className="plug-scene relative mx-auto mt-12 w-full max-w-[940px] sm:mt-16" style={{ containerType: "inline-size", aspectRatio: "940 / 520" }}>
+      {/* Shorty, behind everything */}
+      <div className="absolute left-1/2 z-[1] -translate-x-1/2" style={{ bottom: "22%", height: "92%", width: "40%" }}>
+        <ShortyMascot mood="typing" size={170} style={{ position: "absolute", left: "50%", bottom: 0, transform: "translateX(-50%)", height: "100%", width: "auto" }} />
+      </div>
+      {/* confirmations, rising from behind the laptop */}
+      {BUBBLES.map((b, i) => (
+        <span key={b.text} aria-hidden="true" className={`plug-bubble absolute left-1/2 z-[2] whitespace-nowrap rounded-full border-2 border-[#14161A] font-bold ${i > 5 ? "max-sm:hidden" : ""}`} style={{ bottom: "34%", background: b.fill, color: INK, fontFamily: BODY, fontSize: "clamp(10px, 1.9cqw, 18px)", padding: "0.5cqw 1.6cqw", boxShadow: `2px 3px 0 ${INK}`, ["--dx" as string]: `${b.dx}cqw`, animationDelay: `${(i * STEP).toFixed(1)}s`, animationDuration: `${(BUBBLES.length * STEP).toFixed(1)}s` }}>
+          {b.text} <span style={{ color: "#1f9d74" }}>✓</span>
+        </span>
+      ))}
+      {/* the two cards, standing on the desk */}
+      <div className="absolute z-[4]" style={{ left: "1%", top: "9%", width: "21%" }}><LogoCard path={AI_LOGOS.openai} name="ChatGPT" href={CHATGPT_PLUGIN_URL} seed={71} tilt={-1.5} /></div>
+      <div className="absolute z-[4]" style={{ right: "1%", top: "9%", width: "21%" }}><LogoCard path={AI_LOGOS.claude} name="Claude" href={CLAUDE_CONNECTOR_URL} seed={72} tilt={1.5} /></div>
+      {/* the desk: a slab of paper, in front of Shorty's legs */}
+      <div className="absolute inset-x-[-1.5%] bottom-0 z-[3]" style={{ height: "27%" }}>
+        <PaperCard seed={63} fill="#D8B987" shadow="rgba(45,30,12,.38)" className="h-full">
+          <div className="relative h-full" style={{ borderTop: "6px solid rgba(255,255,255,.3)" }}>
+            <span className="absolute left-[14%] top-[28%] h-[34%] w-[30%] rounded-md border-[3px] border-[rgba(90,60,25,.35)]" /><span className="absolute left-[22%] top-[40%] h-[8%] w-[14%] rounded-full bg-[rgba(90,60,25,.45)]" />
+            <span className="absolute right-[14%] top-[28%] h-[34%] w-[30%] rounded-md border-[3px] border-[rgba(90,60,25,.35)]" /><span className="absolute right-[22%] top-[40%] h-[8%] w-[14%] rounded-full bg-[rgba(90,60,25,.45)]" />
+          </div>
+        </PaperCard>
+      </div>
+      {/* the laptop, back of the lid toward us, with our logo on it */}
+      <svg viewBox="0 0 330 210" aria-hidden="true" focusable="false" className="absolute left-1/2 z-[4] -translate-x-1/2 overflow-visible" style={{ bottom: "23%", width: "30%" }}>
+        <rect x="38" y="22" width="262" height="158" rx="12" fill="rgba(45,30,12,.34)" />
+        <rect x="30" y="12" width="262" height="158" rx="12" fill="#D6D9DC" stroke={INK} strokeWidth="5" />
+        <rect x="30" y="12" width="262" height="158" rx="12" fill="url(#lap-w)" />
+        <image href="/shortlist-mint-mark.png" x="121" y="48" width="80" height="80" />
+        <rect x="60" y="168" width="202" height="8" fill="#8f9499" stroke={INK} strokeWidth="3" />
+        <path d="M6 176 H316 L324 196 Q324 204 316 204 H6 Q-2 204 -2 196 Z" fill="#B9BDC1" stroke={INK} strokeWidth="5" strokeLinejoin="round" />
+        <defs><linearGradient id="lap-w" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#fff" stopOpacity=".55" /><stop offset=".6" stopColor="#fff" stopOpacity="0" /><stop offset="1" stopColor="#3a2410" stopOpacity=".12" /></linearGradient></defs>
+      </svg>
+      {/* USB cables: from the laptop's two sides to the two cards, plugged in at both ends */}
+      <svg viewBox="0 0 940 520" preserveAspectRatio="none" aria-hidden="true" focusable="false" className="pointer-events-none absolute inset-0 z-[5] h-full w-full overflow-visible">
+        {[false, true].map((flip) => (
+          <g key={String(flip)} transform={flip ? "translate(940 0) scale(-1 1)" : undefined}>
+            <path d={cable} fill="none" stroke={INK} strokeWidth="9" strokeLinecap="round" />
+            <path d={cable} fill="none" stroke="#5FDDAE" strokeWidth="3" strokeDasharray="3 10" strokeLinecap="round" />
+            <rect x="306" y="380" width="30" height="16" rx="3" fill="#3a3d42" stroke={INK} strokeWidth="3" />
+            <rect x="312" y="385" width="12" height="6" fill="#d6d9dc" />
+            <rect x="198" y="197" width="26" height="18" rx="3" fill="#3a3d42" stroke={INK} strokeWidth="3" />
+          </g>
+        ))}
+      </svg>
+    </div>
   );
 }
 
@@ -144,6 +209,10 @@ function Poster({ kind, tilt }: { kind: "billboard" | "door"; tilt: number }) {
 }
 
 const LOGO_CSS = `
+@keyframes plugRise{0%{opacity:0;transform:translate(calc(-50% + var(--dx) * .12),0) scale(.55)}8%{opacity:1;transform:translate(calc(-50% + var(--dx) * .2),-4cqw) scale(.8)}17%{opacity:1;transform:translate(calc(-50% + var(--dx)),-27cqw) scale(1)}23%,100%{opacity:0;transform:translate(calc(-50% + var(--dx)),-31cqw) scale(1)}}
+.plug-bubble{opacity:0;animation:plugRise 17s ease-out infinite;animation-play-state:paused}
+.plug-scene[data-live] .plug-bubble{animation-play-state:running}
+@media (prefers-reduced-motion: reduce){.plug-bubble{animation:none;opacity:0}}
 .logo-card{transition:transform .15s ease}
 .logo-card .pc-sheet{transition:fill .18s ease}
 .logo-card:hover,.logo-card:focus-visible{transform:translateY(-4px)}
@@ -184,16 +253,7 @@ export function ChatPluginSection() {
             </p>
           </div>
 
-          {/* Shorty, plugged in to both */}
-          <div className="mx-auto mt-12 grid max-w-[900px] grid-cols-[minmax(0,1fr)_minmax(14px,.3fr)_92px_minmax(14px,.3fr)_minmax(0,1fr)] items-center gap-x-0.5 sm:mt-16 sm:grid-cols-[1fr_minmax(34px,.5fr)_auto_minmax(34px,.5fr)_1fr] sm:gap-x-3">
-            <LogoCard path={AI_LOGOS.openai} name="ChatGPT" href={CHATGPT_PLUGIN_URL} seed={71} tilt={-1.5} />
-            <Cable />
-            <div className="relative h-[170px] w-[92px] sm:h-[300px] sm:w-[190px]">
-              <ShortyMascot mood="typing" size={170} style={{ position: "absolute", left: "50%", top: "50%", height: "130%", width: "auto", transform: "translate(-50%, -50%)" }} />
-            </div>
-            <Cable flip />
-            <LogoCard path={AI_LOGOS.claude} name="Claude" href={CLAUDE_CONNECTOR_URL} seed={72} tilt={1.5} />
-          </div>
+          <PlugScene />
 
           {/* what they can now just ask for */}
           <div className="mt-14 text-center sm:mt-20">

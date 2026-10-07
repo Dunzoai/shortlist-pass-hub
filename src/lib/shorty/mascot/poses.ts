@@ -332,16 +332,15 @@ function coffee(t: number): Pose {
   return p;
 }
 /**
- * TYPING (website "your customers live inside ChatGPT" section): he's behind a laptop, the lid's back toward us with the Shortlist mark on it,
- * both gloves going on the keys (one then the other, quick and uneven), eyes down on the screen, brows set, a slow nod now and then.
+ * TYPING (website "your customers live inside ChatGPT" section): he stands behind a desk and a laptop that the page draws in front of him, so the
+ * gloves (going on the keys, one then the other, quick and uneven) are hidden behind its lid; eyes down on the screen, brows set, a slow nod now and then.
  */
 function typing(t: number): Pose {
   const p = base(t);
   const a = Math.max(0, Math.sin(t * 13.7)), b = Math.max(0, Math.sin(t * 11.3 + 1.7));
   p.by = 0.4 + Math.abs(Math.sin(t * 1.4)) * 0.5; p.rot = Math.sin(t * 0.8) * 0.7;
-  p.props.laptop = hold({ at: [63, 146], s: 1.45 });
-  p.L = arm(...to('L', 38, 128 - a * 4), 16, 1, 0, 0, 1);
-  p.R = arm(...to('R', 88, 128 - b * 4), 16, 1, 0, 0, 1);
+  p.L = arm(...to('L', 38, 144 - a * 4), 16, 1, 0, 0, 1);
+  p.R = arm(...to('R', 88, 144 - b * 4), 16, 1, 0, 0, 1);
   p.face = { ...p.face, mouth: 'none', gx: 0.3, gy: 1.6, bl: -1.2, br: -1.2 };
   return p;
 }
