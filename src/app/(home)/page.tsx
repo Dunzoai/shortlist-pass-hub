@@ -2,6 +2,7 @@ import { SiteHeader } from "@/components/new-home/SiteHeader";
 import { ShortyHero } from "@/components/new-home/ShortyHero";
 import { ShortyReel } from "@/components/new-home/ShortyReel";
 import { PipesSection } from "@/components/new-home/PipesSection";
+import { ChatPluginSection } from "@/components/new-home/ChatPluginSection";
 import { SkillsSection } from "@/components/new-home/SkillsSection";
 import { PricingSection } from "@/components/new-home/PricingSection";
 import { SiteFooter } from "@/components/new-home/SiteFooter";
@@ -66,6 +67,7 @@ export default function NewHomePage() {
         {/* HOA version plugs in here: read useAudience() and pass HOA copy/scene. For now both views show the same section. */}
         <ShortyReel />
         <PipesSection />
+        <ChatPluginSection />
         <SkillsSection />
         <PricingSection />
         <SiteFooter />
