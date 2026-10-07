@@ -1,0 +1,194 @@
+[
+ {
+  "t": 600,
+  "real_ms": 750,
+  "scene": 1,
+  "line": "Hey, I'm Shorty. The board member who never clocks out."
+ },
+ {
+  "t": 5200,
+  "real_ms": 6500,
+  "scene": 1,
+  "line": "First, the board uploads the community rules."
+ },
+ {
+  "t": 8300,
+  "real_ms": 10375,
+  "scene": 1,
+  "line": "Then the info that matters: contacts, links and events."
+ },
+ {
+  "t": 14000,
+  "real_ms": 17500,
+  "scene": 1,
+  "line": "Now I'm fully trained on your community. Ask me anything, 24/7."
+ },
+ {
+  "t": 20000,
+  "real_ms": 25000,
+  "scene": 2,
+  "line": "Eleven at night. The office is closed."
+ },
+ {
+  "t": 24300,
+  "real_ms": 30375,
+  "scene": 2,
+  "line": "Sally's up late with her new puppy."
+ },
+ {
+  "t": 26800,
+  "real_ms": 33500,
+  "scene": 2,
+  "line": "She wonders about a fence for the backyard."
+ },
+ {
+  "t": 29900,
+  "real_ms": 37375,
+  "scene": 2,
+  "line": "So she asks Shorty."
+ },
+ {
+  "t": 35200,
+  "real_ms": 44000,
+  "scene": 2,
+  "line": "Zone 2. Black aluminum fence, 54 inches max."
+ },
+ {
+  "t": 38000,
+  "real_ms": 47500,
+  "scene": 2,
+  "line": "A neighbor owns a fence company. Want me to reach out?"
+ },
+ {
+  "t": 44000,
+  "real_ms": 55000,
+  "scene": 2,
+  "line": "She says yes."
+ },
+ {
+  "t": 46000,
+  "real_ms": 57500,
+  "scene": 2,
+  "line": "Done. Free estimate booked for tomorrow."
+ },
+ {
+  "t": 51900,
+  "real_ms": 64875,
+  "scene": 2,
+  "line": "Sally and the pup call it a night. Shorty doesn't."
+ },
+ {
+  "t": 58600,
+  "real_ms": 73250,
+  "scene": 3,
+  "line": "This is Betty. She's 70, and she lives for bingo."
+ },
+ {
+  "t": 64200,
+  "real_ms": 80250,
+  "scene": 3,
+  "line": "But she never opens the management emails."
+ },
+ {
+  "t": 67000,
+  "real_ms": 83750,
+  "scene": 3,
+  "line": "And she skips the gym, where the bulletin board is."
+ },
+ {
+  "t": 69800,
+  "real_ms": 87250,
+  "scene": 3,
+  "line": "So she never sees what's going on."
+ },
+ {
+  "t": 72200,
+  "real_ms": 90250,
+  "scene": 3,
+  "line": "Now it all lands on her phone."
+ },
+ {
+  "t": 75400,
+  "real_ms": 94250,
+  "scene": 3,
+  "line": "Bingo night. 15 spots left."
+ },
+ {
+  "t": 79200,
+  "real_ms": 99000,
+  "scene": 3,
+  "line": "One tap, and she's in."
+ },
+ {
+  "t": 82800,
+  "real_ms": 103500,
+  "scene": 3,
+  "line": "Betty's happy. Bingo is saved."
+ },
+ {
+  "t": 88500,
+  "real_ms": 110625,
+  "scene": 4,
+  "line": "Meanwhile, Shorty runs the office."
+ },
+ {
+  "t": 90500,
+  "real_ms": 113125,
+  "scene": 4,
+  "line": "He sends the weekly newsletter."
+ },
+ {
+  "t": 94500,
+  "real_ms": 118125,
+  "scene": 4,
+  "line": "Burn ban today? One text goes to every resident."
+ },
+ {
+  "t": 99300,
+  "real_ms": 124125,
+  "scene": 4,
+  "line": "He reads every resident report."
+ },
+ {
+  "t": 104300,
+  "real_ms": 130375,
+  "scene": 4,
+  "line": "There's a food truck parked outside the clubhouse. Shorty orders lunch."
+ },
+ {
+  "t": 108500,
+  "real_ms": 135625,
+  "scene": 4,
+  "line": "He walks out, and it's already paid for."
+ },
+ {
+  "t": 115000,
+  "real_ms": 143750,
+  "scene": 4,
+  "line": "Hot food, no waiting. Shorty never clocks out."
+ },
+ {
+  "t": 118500,
+  "real_ms": 148125,
+  "scene": 5,
+  "line": "And Sally and Betty aren't the only ones."
+ },
+ {
+  "t": 121600,
+  "real_ms": 152000,
+  "scene": 5,
+  "line": "Every resident can do this. If a business is on the Shortlist, it's one tap in the app."
+ },
+ {
+  "t": 130800,
+  "real_ms": 163500,
+  "scene": 5,
+  "line": "It's not just about communicating. It's about a great place to live."
+ },
+ {
+  "t": 135000,
+  "real_ms": 168750,
+  "scene": 5,
+  "line": "Shorty and the Shortlist make that happen."
+ }
+]

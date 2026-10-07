@@ -445,6 +445,7 @@ function ReelModal({ onClose }: { onClose: () => void }) {
 
 /* ── The HOA popup: the animated clip in an iframe, with chapter buttons and a bar that drive the clip's own clock ─────────────────────────── */
 const HOA_CLIP_SRC = "/hoa/shorty-hoa-clip.html";
+const HOA_AUDIO_SRC = "/hoa/hoa-clip-audio.mp3";   // narration, music and effects, 175 s, one file
 const HOA_TOTAL = 140000, HOA_SPEED = 1.25;   // the clip's own length (ms) and its playback slowdown
 const HOA_CHAPTERS = [
   { at: 0, label: "Meet Shorty" },
@@ -462,6 +463,9 @@ function HoaClipModal({ onClose }: { onClose: () => void }) {
   const [now, setNow] = useState(0);
   const [playing, setPlaying] = useState(true);
   const [h, setH] = useState(700);
+  const [muted, setMuted] = useState(false);
+  const [blocked, setBlocked] = useState(false);   // a browser refused autoplay: show a "Play with sound" button
+  const audio = useRef<HTMLAudioElement | null>(null);
   const win = () => (frame.current?.contentWindow ?? null) as ClipWin | null;
 
   useEffect(() => {
@@ -470,15 +474,28 @@ function HoaClipModal({ onClose }: { onClose: () => void }) {
     dialog.current?.focus();
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", onKey);
-    const id = window.setInterval(() => { const t = win()?.__time?.(); if (typeof t === "number") setNow(t); }, 250);
-    return () => { window.removeEventListener("keydown", onKey); window.clearInterval(id); document.body.style.overflow = prev; };
+    /* keep the sound on the clip's own clock: audio time = clip time x 1.25 */
+    const aud = audio.current;
+    const id = window.setInterval(() => {
+      const w = win(), a = audio.current, t = w?.__time?.();
+      if (typeof t !== "number") return;
+      setNow(t);
+      if (a && !a.paused && Math.abs(a.currentTime - (t * HOA_SPEED) / 1000) > 0.15) a.currentTime = (t * HOA_SPEED) / 1000;
+    }, 250);
+    const onVis = () => { const a = audio.current, w = win(); if (document.hidden) a?.pause(); else if (a && w && (w.__time?.() ?? 0) < HOA_TOTAL) a.play().catch(() => {}); };
+    document.addEventListener("visibilitychange", onVis);
+    return () => { window.removeEventListener("keydown", onKey); document.removeEventListener("visibilitychange", onVis); window.clearInterval(id); document.body.style.overflow = prev; aud?.pause(); };
   }, [onClose]);
 
-  const jump = (ms: number) => { const w = win(); if (!w?.__seek) return; w.__seek(ms); setNow(ms); if (playing) w.__resume?.(); };
+  const jump = (ms: number) => { const w = win(); if (!w?.__seek) return; w.__seek(ms); setNow(ms); if (audio.current) audio.current.currentTime = (ms * HOA_SPEED) / 1000; if (playing) w.__resume?.(); };
   const toggle = () => {
     const w = win(); if (!w) return;
-    if (playing) { w.__pause?.(); setPlaying(false); }
-    else { if ((w.__time?.() ?? 0) >= HOA_TOTAL - 1000) w.__play?.(); else w.__resume?.(); setPlaying(true); }
+    const a = audio.current;
+    if (playing) { w.__pause?.(); a?.pause(); setPlaying(false); }
+    else {
+      if ((w.__time?.() ?? 0) >= HOA_TOTAL - 1000) { w.__play?.(); if (a) a.currentTime = 0; } else w.__resume?.();
+      a?.play().catch(() => setBlocked(true)); setPlaying(true);
+    }
   };
   const scrub = (clientX: number) => { const r = bar.current?.getBoundingClientRect(); if (r) jump(Math.max(0, Math.min(HOA_TOTAL - 1, ((clientX - r.left) / r.width) * HOA_TOTAL))); };
   const chapter = HOA_CHAPTERS.reduce((k, c, i) => (now >= c.at ? i : k), 0);
@@ -501,8 +518,9 @@ function HoaClipModal({ onClose }: { onClose: () => void }) {
         {/* the clip page is as tall as it needs to be; this area scrolls on short screens so the controls below stay put */}
         <div className="min-h-0 flex-1 overflow-y-auto">
           <iframe ref={frame} src={HOA_CLIP_SRC} title="Shorty, the digital board member for your HOA" className="block w-full border-0" style={{ height: h }}
-            onLoad={() => { const d = frame.current?.contentDocument; if (!d) return; const fit = () => setH(Math.ceil(d.documentElement.scrollHeight)); fit(); frame.current?.contentWindow?.addEventListener("resize", fit); }} />
+            onLoad={() => { const w0 = win(); w0?.__play?.(); const a = audio.current; if (a) { a.currentTime = 0; a.play().then(() => setBlocked(false)).catch(() => setBlocked(true)); } const d = frame.current?.contentDocument; if (!d) return; const fit = () => { const m = d.querySelector("main"); if (m) setH(Math.ceil(m.getBoundingClientRect().height + 40)); }; fit(); frame.current?.contentWindow?.addEventListener("resize", fit); }} />
         </div>
+        <audio ref={audio} src={HOA_AUDIO_SRC} preload="auto" muted={muted} onEnded={() => setPlaying(false)} />
         {/* chapters and progress, under the clip so they never cover it */}
         <div className="px-3 pb-4 pt-3" style={{ fontFamily: SANS, background: CREAM }}>
           <div className="mb-3 flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" role="tablist" aria-label="Chapters">
@@ -526,7 +544,13 @@ function HoaClipModal({ onClose }: { onClose: () => void }) {
               <span className="absolute top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ left: `${(now / HOA_TOTAL) * 100}%`, background: MINT, border: `2px solid ${INK}` }} />
             </div>
             <span className="w-9 shrink-0 text-right tabular-nums">{fmt((HOA_TOTAL * HOA_SPEED) / 1000)}</span>
+            <button type="button" onClick={() => setMuted((m) => !m)} aria-label={muted ? "Unmute" : "Mute"} aria-pressed={muted} className="grid h-8 w-8 shrink-0 place-items-center rounded-full" style={{ background: "#EFE6CF", border: `2px solid ${INK}` }}>
+              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke={INK} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.500z" fill={INK} />{muted ? <path d="M16 9.5l5 5M21 9.5l-5 5" /> : <path d="M15.500 9a4 4 0 0 1 0 6M18 6.500a8 8 0 0 1 0 11" />}</svg>
+            </button>
           </div>
+          {blocked && (
+            <button type="button" onClick={() => { const a = audio.current, w = win(); if (!a) return; a.currentTime = ((w?.__time?.() ?? 0) * HOA_SPEED) / 1000; a.play().then(() => setBlocked(false)).catch(() => {}); }} className="mt-3 w-full rounded-full px-4 py-2 text-[14px] font-extrabold" style={{ background: MINT, color: INK, border: `2.5px solid ${INK}`, boxShadow: `2px 3px 0 ${INK}` }}>🔊 Play with sound</button>
+          )}
         </div>
       </div>
     </div>
