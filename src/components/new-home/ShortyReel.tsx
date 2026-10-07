@@ -454,7 +454,7 @@ const HOA_CHAPTERS = [
   { at: 88000, label: "Shorty runs the office" },
   { at: 118000, label: "Every resident" },
 ] as const;
-type ClipWin = Window & { __seek?: (t: number) => void; __play?: () => void; __pause?: () => void; __resume?: () => void; __time?: () => number };
+type ClipWin = Window & { __clock?: (f: () => number | undefined) => void; __seek?: (t: number) => void; __play?: () => void; __pause?: () => void; __resume?: () => void; __time?: () => number };
 
 function HoaClipModal({ onClose }: { onClose: () => void }) {
   const frame = useRef<HTMLIFrameElement | null>(null);
@@ -465,8 +465,20 @@ function HoaClipModal({ onClose }: { onClose: () => void }) {
   const [h, setH] = useState(700);
   const [muted, setMuted] = useState(false);
   const [blocked, setBlocked] = useState(false);   // a browser refused autoplay: show a "Play with sound" button
-  const audio = useRef<HTMLAudioElement | null>(null);
+  const [ready, setReady] = useState(false);       // the whole mp3 is buffered (canplaythrough)
+  const audio = useRef<HTMLAudioElement | null>(null);   // the ONE audio element
+  const master = useRef(false);                          // true once the audio is playing: from then on the AUDIO is the clock
   const win = () => (frame.current?.contentWindow ?? null) as ClipWin | null;
+
+  /* The audio is the master clock. While it plays, the clip's time is audio.currentTime / 1.25, so a slow phone makes the pictures wait
+     instead of seeking the sound (a seek chops words). Nothing ever sets audio.currentTime in a loop: only start, replay, chapter taps and scrubbing do. */
+  const clock = () => { const a = audio.current; if (!a) return undefined; if (a.ended) return HOA_TOTAL; return master.current && !a.paused ? (a.currentTime * 1000) / HOA_SPEED : undefined; };
+  const startBoth = () => {
+    const a = audio.current, w = win(); if (!a) return;
+    master.current = false; w?.__seek?.(0);                // hold the pictures at 0 until the sound is really playing
+    a.pause(); a.currentTime = 0;
+    a.play().then(() => { master.current = true; setBlocked(false); w?.__resume?.(); }).catch(() => { setBlocked(true); w?.__play?.(); });   // blocked: pictures play silent on their own timer
+  };
 
   useEffect(() => {
     const prev = document.body.style.overflow;
@@ -474,28 +486,21 @@ function HoaClipModal({ onClose }: { onClose: () => void }) {
     dialog.current?.focus();
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", onKey);
-    /* keep the sound on the clip's own clock: audio time = clip time x 1.25 */
     const aud = audio.current;
-    const id = window.setInterval(() => {
-      const w = win(), a = audio.current, t = w?.__time?.();
-      if (typeof t !== "number") return;
-      setNow(t);
-      if (a && !a.paused && Math.abs(a.currentTime - (t * HOA_SPEED) / 1000) > 0.15) a.currentTime = (t * HOA_SPEED) / 1000;
-    }, 250);
-    const onVis = () => { const a = audio.current, w = win(); if (document.hidden) a?.pause(); else if (a && w && (w.__time?.() ?? 0) < HOA_TOTAL) a.play().catch(() => {}); };
+    if (aud) { aud.load(); if (aud.readyState >= 4) setReady(true); }
+    const id = window.setInterval(() => { const t = win()?.__time?.(); if (typeof t === "number") setNow(t); }, 250);   // the display only; it never touches the audio
+    const onVis = () => { const a = audio.current, w = win(); if (document.hidden) { a?.pause(); w?.__pause?.(); } else if (a && w && master.current && (w.__time?.() ?? 0) < HOA_TOTAL) { a.play().then(() => w.__resume?.()).catch(() => {}); } };
     document.addEventListener("visibilitychange", onVis);
     return () => { window.removeEventListener("keydown", onKey); document.removeEventListener("visibilitychange", onVis); window.clearInterval(id); document.body.style.overflow = prev; aud?.pause(); };
   }, [onClose]);
 
   const jump = (ms: number) => { const w = win(); if (!w?.__seek) return; w.__seek(ms); setNow(ms); if (audio.current) audio.current.currentTime = (ms * HOA_SPEED) / 1000; if (playing) w.__resume?.(); };
   const toggle = () => {
-    const w = win(); if (!w) return;
-    const a = audio.current;
-    if (playing) { w.__pause?.(); a?.pause(); setPlaying(false); }
-    else {
-      if ((w.__time?.() ?? 0) >= HOA_TOTAL - 1000) { w.__play?.(); if (a) a.currentTime = 0; } else w.__resume?.();
-      a?.play().catch(() => setBlocked(true)); setPlaying(true);
-    }
+    const w = win(), a = audio.current; if (!w) return;
+    if (playing) { w.__pause?.(); a?.pause(); setPlaying(false); return; }
+    setPlaying(true);
+    if ((w.__time?.() ?? 0) >= HOA_TOTAL - 1000) { startBoth(); return; }
+    a?.play().then(() => { master.current = true; w.__resume?.(); }).catch(() => { setBlocked(true); w.__resume?.(); });
   };
   const scrub = (clientX: number) => { const r = bar.current?.getBoundingClientRect(); if (r) jump(Math.max(0, Math.min(HOA_TOTAL - 1, ((clientX - r.left) / r.width) * HOA_TOTAL))); };
   const chapter = HOA_CHAPTERS.reduce((k, c, i) => (now >= c.at ? i : k), 0);
@@ -518,9 +523,16 @@ function HoaClipModal({ onClose }: { onClose: () => void }) {
         {/* the clip page is as tall as it needs to be; this area scrolls on short screens so the controls below stay put */}
         <div className="min-h-0 flex-1 overflow-y-auto">
           <iframe ref={frame} src={HOA_CLIP_SRC} title="Shorty, the digital board member for your HOA" className="block w-full border-0" style={{ height: h }}
-            onLoad={() => { const w0 = win(); w0?.__play?.(); const a = audio.current; if (a) { a.currentTime = 0; a.play().then(() => setBlocked(false)).catch(() => setBlocked(true)); } const d = frame.current?.contentDocument; if (!d) return; const fit = () => { const m = d.querySelector("main"); if (m) setH(Math.ceil(m.getBoundingClientRect().height + 40)); }; fit(); frame.current?.contentWindow?.addEventListener("resize", fit); }} />
+            onLoad={() => {
+              const w0 = win(), d = frame.current?.contentDocument; if (!w0 || !d) return;
+              w0.__clock?.(clock);
+              d.getElementById("replay")?.addEventListener("click", () => { startBoth(); setPlaying(true); });   // the clip's own Replay also rewinds the sound
+              const fit = () => { const m = d.querySelector("main"); if (m) setH(Math.ceil(m.getBoundingClientRect().height + 40)); };
+              fit(); w0.addEventListener("resize", fit);
+              startBoth();
+            }} />
         </div>
-        <audio ref={audio} src={HOA_AUDIO_SRC} preload="auto" muted={muted} onEnded={() => setPlaying(false)} />
+        <audio ref={audio} src={HOA_AUDIO_SRC} preload="auto" muted={muted} onCanPlayThrough={() => setReady(true)} onEnded={() => setPlaying(false)} />
         {/* chapters and progress, under the clip so they never cover it */}
         <div className="px-3 pb-4 pt-3" style={{ fontFamily: SANS, background: CREAM }}>
           <div className="mb-3 flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" role="tablist" aria-label="Chapters">
@@ -549,7 +561,7 @@ function HoaClipModal({ onClose }: { onClose: () => void }) {
             </button>
           </div>
           {blocked && (
-            <button type="button" onClick={() => { const a = audio.current, w = win(); if (!a) return; a.currentTime = ((w?.__time?.() ?? 0) * HOA_SPEED) / 1000; a.play().then(() => setBlocked(false)).catch(() => {}); }} className="mt-3 w-full rounded-full px-4 py-2 text-[14px] font-extrabold" style={{ background: MINT, color: INK, border: `2.5px solid ${INK}`, boxShadow: `2px 3px 0 ${INK}` }}>🔊 Play with sound</button>
+            <button type="button" disabled={!ready} onClick={() => { startBoth(); setPlaying(true); }} className="mt-3 w-full rounded-full px-4 py-2 text-[14px] font-extrabold disabled:opacity-60" style={{ background: MINT, color: INK, border: `2.5px solid ${INK}`, boxShadow: `2px 3px 0 ${INK}` }}>{ready ? "🔊 Play with sound" : "Loading sound…"}</button>
           )}
         </div>
       </div>
