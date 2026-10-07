@@ -39,9 +39,9 @@ for (const [name, [text, secs]] of Object.entries(SFX)) {
   if (!r.ok) { console.log("SFX FAIL", name, r.status, (await r.text()).slice(0, 120)); continue; }
   fs.writeFileSync(f, Buffer.from(await r.arrayBuffer())); console.log("sfx", name);
 }
-const mf = "audio-build/music/bed.mp3";
+const mf = "audio-build/music/bed2.mp3";
 if (!fs.existsSync(mf)) {
-  const r = await fetch("https://api.elevenlabs.io/v1/music?output_format=mp3_44100_128", { method: "POST", headers: H, body: JSON.stringify({ prompt: "A warm, light, friendly instrumental background track for a neighborhood explainer. Soft acoustic guitar, gentle piano and light percussion. Calm and gentle at the start, a quiet almost lullaby-like middle section, a small lift in the second half, and a warm uplifting finish. No vocals.", music_length_ms: 175000, force_instrumental: true }) });
+  const r = await fetch("https://api.elevenlabs.io/v1/music?output_format=mp3_44100_128", { method: "POST", headers: H, body: JSON.stringify({ prompt: "A warm, light, friendly instrumental background track for a neighborhood explainer. Soft acoustic guitar, gentle piano and light percussion. Calm and gentle at the start, a quiet almost lullaby-like middle section, a small lift in the second half, and a warm uplifting finish. No vocals.", music_length_ms: Math.round(JSON.parse(fs.readFileSync("audio-build/timeline.json","utf8")).total_real_ms + 1500), force_instrumental: true }) });
   if (!r.ok) console.log("MUSIC FAIL", r.status, (await r.text()).slice(0, 300));
   else { fs.writeFileSync(mf, Buffer.from(await r.arrayBuffer())); console.log("music ok"); }
 }

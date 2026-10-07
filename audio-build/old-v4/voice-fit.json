@@ -1,0 +1,308 @@
+[
+ {
+  "id": "L01",
+  "scene": 1,
+  "start": 500,
+  "dur": 4598,
+  "win": 6100,
+  "speed": 0.89,
+  "fits": true
+ },
+ {
+  "id": "L02",
+  "scene": 1,
+  "start": 6600,
+  "dur": 4458,
+  "win": 5600,
+  "speed": 1.04,
+  "fits": true
+ },
+ {
+  "id": "L03",
+  "scene": 1,
+  "start": 12200,
+  "dur": 4458,
+  "win": 5300,
+  "speed": 1.15,
+  "fits": true
+ },
+ {
+  "id": "L04",
+  "scene": 1,
+  "start": 17500,
+  "dur": 7152,
+  "win": 7900,
+  "speed": 0.9,
+  "fits": true
+ },
+ {
+  "id": "L05",
+  "scene": 2,
+  "start": 25400,
+  "dur": 2647,
+  "win": 3500,
+  "speed": 1.15,
+  "fits": true
+ },
+ {
+  "id": "L06",
+  "scene": 2,
+  "start": 28900,
+  "dur": 2554,
+  "win": 4100,
+  "speed": 0.85,
+  "fits": true
+ },
+ {
+  "id": "L07",
+  "scene": 2,
+  "start": 33000,
+  "dur": 3901,
+  "win": 5300,
+  "speed": 0.9,
+  "fits": true
+ },
+ {
+  "id": "L08",
+  "scene": 2,
+  "start": 38300,
+  "dur": 4690,
+  "win": 5600,
+  "speed": 1.06,
+  "fits": true
+ },
+ {
+  "id": "L09",
+  "scene": 2,
+  "start": 43900,
+  "dur": 3065,
+  "win": 3700,
+  "speed": 1.15,
+  "fits": true
+ },
+ {
+  "id": "L10",
+  "scene": 2,
+  "start": 47600,
+  "dur": 5573,
+  "win": 7400,
+  "speed": 0.85,
+  "fits": true
+ },
+ {
+  "id": "L11",
+  "scene": 2,
+  "start": 55000,
+  "dur": 1904,
+  "win": 2600,
+  "speed": 1.06,
+  "fits": true
+ },
+ {
+  "id": "L12",
+  "scene": 2,
+  "start": 57600,
+  "dur": 4365,
+  "win": 4900,
+  "speed": 1.06,
+  "fits": true
+ },
+ {
+  "id": "L13",
+  "scene": 2,
+  "start": 62500,
+  "dur": 4644,
+  "win": 5800,
+  "speed": 0.85,
+  "fits": true
+ },
+ {
+  "id": "L14",
+  "scene": 2,
+  "start": 68300,
+  "dur": 3715,
+  "win": 5500,
+  "speed": 1.06,
+  "fits": true
+ },
+ {
+  "id": "L15",
+  "scene": 3,
+  "start": 73800,
+  "dur": 4272,
+  "win": 4900,
+  "speed": 0.88,
+  "fits": true
+ },
+ {
+  "id": "L16",
+  "scene": 3,
+  "start": 78700,
+  "dur": 6362,
+  "win": 7300,
+  "speed": 1.08,
+  "fits": true
+ },
+ {
+  "id": "L17",
+  "scene": 3,
+  "start": 86000,
+  "dur": 3297,
+  "win": 3800,
+  "speed": 1.02,
+  "fits": true
+ },
+ {
+  "id": "L18",
+  "scene": 3,
+  "start": 89800,
+  "dur": 4551,
+  "win": 4800,
+  "speed": 1.03,
+  "fits": true
+ },
+ {
+  "id": "L19",
+  "scene": 3,
+  "start": 94600,
+  "dur": 4226,
+  "win": 4800,
+  "speed": 1.15,
+  "fits": true
+ },
+ {
+  "id": "L20",
+  "scene": 3,
+  "start": 99400,
+  "dur": 2508,
+  "win": 3200,
+  "speed": 1.03,
+  "fits": true
+ },
+ {
+  "id": "L21",
+  "scene": 3,
+  "start": 102600,
+  "dur": 3297,
+  "win": 3900,
+  "speed": 1.03,
+  "fits": true
+ },
+ {
+  "id": "L22",
+  "scene": 3,
+  "start": 106500,
+  "dur": 4783,
+  "win": 5000,
+  "speed": 0.93,
+  "fits": true
+ },
+ {
+  "id": "L23",
+  "scene": 4,
+  "start": 111500,
+  "dur": 6687,
+  "win": 7800,
+  "speed": 1,
+  "fits": true
+ },
+ {
+  "id": "L24",
+  "scene": 4,
+  "start": 119300,
+  "dur": 5480,
+  "win": 5700,
+  "speed": 1,
+  "fits": true
+ },
+ {
+  "id": "L25",
+  "scene": 4,
+  "start": 125000,
+  "dur": 3437,
+  "win": 3600,
+  "speed": 1.02,
+  "fits": true
+ },
+ {
+  "id": "L26",
+  "scene": 4,
+  "start": 128600,
+  "dur": 7105,
+  "win": 7400,
+  "speed": 1.02,
+  "fits": true
+ },
+ {
+  "id": "L27",
+  "scene": 4,
+  "start": 136000,
+  "dur": 4458,
+  "win": 4800,
+  "speed": 1.02,
+  "fits": true
+ },
+ {
+  "id": "L28",
+  "scene": 4,
+  "start": 140800,
+  "dur": 5991,
+  "win": 7400,
+  "speed": 0.94,
+  "fits": true
+ },
+ {
+  "id": "L31",
+  "scene": 5,
+  "start": 148200,
+  "dur": 3576,
+  "win": 4800,
+  "speed": 1,
+  "fits": true
+ },
+ {
+  "id": "L32",
+  "scene": 5,
+  "start": 153000,
+  "dur": 4319,
+  "win": 5200,
+  "speed": 1,
+  "fits": true
+ },
+ {
+  "id": "L33",
+  "scene": 5,
+  "start": 158200,
+  "dur": 5619,
+  "win": 6100,
+  "speed": 1,
+  "fits": true
+ },
+ {
+  "id": "L34",
+  "scene": 5,
+  "start": 164300,
+  "dur": 2647,
+  "win": 3500,
+  "speed": 0.95,
+  "fits": true
+ },
+ {
+  "id": "L35",
+  "scene": 5,
+  "start": 167800,
+  "dur": 3483,
+  "win": 4400,
+  "speed": 0.95,
+  "fits": true
+ },
+ {
+  "id": "L36",
+  "scene": 5,
+  "start": 172200,
+  "dur": 2136,
+  "win": 2800,
+  "speed": 0.95,
+  "fits": true
+ }
+]

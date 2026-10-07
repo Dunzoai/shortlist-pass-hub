@@ -1,212 +1,206 @@
 [
  {
-  "id": "S1-1",
+  "id": "L01",
   "scene": 1,
-  "start_real_ms": 830,
+  "start_real_ms": 500,
   "text": "Hey, come on in! Name's Shorty. The board member who never clocks out."
  },
  {
-  "id": "S1-2",
+  "id": "L02",
   "scene": 1,
-  "start_real_ms": 6580,
+  "start_real_ms": 6600,
   "text": "Watch this. The board uploads the rules, and boom, it's in my head."
  },
  {
-  "id": "S1-3",
+  "id": "L03",
   "scene": 1,
-  "start_real_ms": 11295,
+  "start_real_ms": 12200,
   "text": "Management, phone numbers, links, food truck night, bingo. All of it, straight in."
  },
  {
-  "id": "S1-4",
+  "id": "L04",
   "scene": 1,
-  "start_real_ms": 18420,
+  "start_real_ms": 17500,
   "text": "Trained on your official documents and information. Ready to talk day or night. Ask me anything, twenty-four seven."
  },
  {
   "id": "L05",
   "scene": 2,
-  "start_real_ms": 26671,
+  "start_real_ms": 25400,
   "text": "Eleven at night. Office is closed. Street's quiet."
  },
  {
   "id": "L06",
   "scene": 2,
-  "start_real_ms": 30171,
+  "start_real_ms": 28900,
   "text": "But up in that house, a light's still on."
  },
  {
   "id": "L07",
   "scene": 2,
-  "start_real_ms": 34271,
+  "start_real_ms": 33000,
   "text": "That's Sally. New puppy, no sleep, and a fence on her mind."
  },
  {
   "id": "L08",
   "scene": 2,
-  "start_real_ms": 39571,
+  "start_real_ms": 38300,
   "text": "So she texts me. Right now. Eleven o'clock. And I answer instantly."
  },
  {
   "id": "L09",
   "scene": 2,
-  "start_real_ms": 45171,
+  "start_real_ms": 43900,
   "text": "Zone two. Black aluminum, fifty-four inches max."
  },
  {
   "id": "L10",
   "scene": 2,
-  "start_real_ms": 48871,
+  "start_real_ms": 47600,
   "text": "And here's the good part. A neighbor owns a fence company, so I offer to reach out."
  },
  {
   "id": "L11",
   "scene": 2,
-  "start_real_ms": 56271,
+  "start_real_ms": 55000,
   "text": "She says yes. Just like that."
  },
  {
   "id": "L12",
   "scene": 2,
-  "start_real_ms": 58871,
+  "start_real_ms": 57600,
   "text": "Done. Free estimate, tomorrow morning. Booked while she's in her pajamas."
  },
  {
   "id": "L13",
   "scene": 2,
-  "start_real_ms": 63771,
+  "start_real_ms": 62500,
   "text": "Phone down. Puppy's curled up. Problem solved in thirty seconds."
  },
  {
   "id": "L14",
   "scene": 2,
-  "start_real_ms": 69571,
+  "start_real_ms": 68300,
   "text": "Lights out. Sally sleeps. But me? I never do."
  },
  {
-  "id": "S3-1",
+  "id": "L15",
   "scene": 3,
-  "start_real_ms": 74601,
+  "start_real_ms": 73800,
   "text": "Now meet Betty. Seventy years young, and she lives for bingo."
  },
  {
-  "id": "S3-2",
+  "id": "L16",
   "scene": 3,
-  "start_real_ms": 81601,
+  "start_real_ms": 78700,
   "text": "Management company emails? She never opens them. Industry average: one in ten. Betty's one of the nine."
  },
  {
-  "id": "S3-3",
+  "id": "L17",
   "scene": 3,
-  "start_real_ms": 89195,
+  "start_real_ms": 86000,
   "text": "And the gym, where they pin up the news? Betty doesn't go."
  },
  {
-  "id": "S3-4",
+  "id": "L18",
   "scene": 3,
-  "start_real_ms": 92982,
+  "start_real_ms": 89800,
   "text": "So she's missing everything. Bingo night, and she'd never know."
  },
  {
-  "id": "S3-5",
+  "id": "L19",
   "scene": 3,
-  "start_real_ms": 97001,
-  "text": "Now it all lands right on her phone."
+  "start_real_ms": 94600,
+  "text": "Until now. She spots her favorite event, and RSVPs right there."
  },
  {
-  "id": "S3-6",
+  "id": "L20",
   "scene": 3,
-  "start_real_ms": 101001,
-  "text": "She spots her favorite event, and RSVPs right there."
- },
- {
-  "id": "S3-7",
-  "scene": 3,
-  "start_real_ms": 105751,
+  "start_real_ms": 99400,
   "text": "One tap, and she's in. Fourteen left!"
  },
  {
-  "id": "S3-8",
+  "id": "L21",
   "scene": 3,
-  "start_real_ms": 110251,
-  "text": "Betty's happy. Communication inside one sticky app fed her exactly what she wanted to do."
+  "start_real_ms": 102600,
+  "text": "Look at that face. Betty's happy, and bingo's saved."
  },
  {
-  "id": "S4-1",
-  "scene": 4,
-  "start_real_ms": 117831,
-  "text": "Meanwhile, Shorty runs the office. It lives in the app residents actually use, not just where they pay dues."
+  "id": "L22",
+  "scene": 3,
+  "start_real_ms": 106500,
+  "text": "Communication inside one sticky app fed her exactly what she wanted to do."
  },
  {
-  "id": "S4-2",
+  "id": "L23",
   "scene": 4,
-  "start_real_ms": 124636,
+  "start_real_ms": 111500,
+  "text": "Meanwhile, Shorty runs the office. It works because it lives in the app residents actually use, not just to pay dues."
+ },
+ {
+  "id": "L24",
+  "scene": 4,
+  "start_real_ms": 119300,
   "text": "So I get to work. Weekly newsletter? Automated from your events list, sent to everyone."
  },
  {
-  "id": "S4-3",
+  "id": "L25",
   "scene": 4,
-  "start_real_ms": 130373,
+  "start_real_ms": 125000,
   "text": "Burn ban today? One text, and every phone lights up."
  },
  {
-  "id": "S4-4",
+  "id": "L26",
   "scene": 4,
-  "start_real_ms": 136373,
+  "start_real_ms": 128600,
   "text": "Resident reports? I read each one, alert the board in their dashboard, and can email the list to your management company."
  },
  {
-  "id": "S4-5",
+  "id": "L27",
   "scene": 4,
-  "start_real_ms": 143689,
+  "start_real_ms": 136000,
   "text": "Food truck outside the clubhouse? One tap, lunch is ordered and paid."
  },
  {
-  "id": "S4-6",
+  "id": "L28",
   "scene": 4,
-  "start_real_ms": 148939,
+  "start_real_ms": 140800,
   "text": "Yeah, it's that easy. Anything on site can be handled by the app, and the whole experience gets better."
- },
- {
-  "id": "S4-7",
-  "scene": 4,
-  "start_real_ms": 157064,
-  "text": "And Shorty never clocks out."
  },
  {
   "id": "L31",
   "scene": 5,
-  "start_real_ms": 161434,
+  "start_real_ms": 148200,
   "text": "And here's the thing. Sally and Betty? Not the only ones."
  },
  {
   "id": "L32",
   "scene": 5,
-  "start_real_ms": 166234,
+  "start_real_ms": 153000,
   "text": "Every resident can do this. If a business is on the Shortlist..."
  },
  {
   "id": "L33",
   "scene": 5,
-  "start_real_ms": 171434,
+  "start_real_ms": 158200,
   "text": "...it's one tap, right in the app. Order lunch. Book the fence guy. Done."
  },
  {
   "id": "L34",
   "scene": 5,
-  "start_real_ms": 177534,
+  "start_real_ms": 164300,
   "text": "Because this was never just about sending notices."
  },
  {
   "id": "L35",
   "scene": 5,
-  "start_real_ms": 181034,
+  "start_real_ms": 167800,
   "text": "It's about making your community a great place to live."
  },
  {
   "id": "L36",
   "scene": 5,
-  "start_real_ms": 185434,
+  "start_real_ms": 172200,
   "text": "That's Shorty, and the Shortlist."
  }
 ]

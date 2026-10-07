@@ -1,6 +1,10 @@
 # Writes audio-build/build.sh (the ffmpeg mix) from the narration timings and the cue list. Clip ms x 1.25 = real ms.
 import json, shlex
-SP = 1.25
+TL = json.load(open("audio-build/timeline.json")); SEGS = TL["segments"]; TOTAL_S = TL["total_real_ms"] / 1000
+def c2r(c):   # clip ms -> real ms, through the per-beat time map the clip itself uses
+    for g in SEGS:
+        if c <= g["c1"]: return g["r0"] + (c - g["c0"]) * (g["r1"] - g["r0"]) / (g["c1"] - g["c0"])
+    return TL["total_real_ms"]
 N = json.load(open("audio-build/script.json"))
 OFF = {1: 0, 2: 20000, 3: 58000, 4: 88000, 5: 118000}
 cues = []   # (file, clip_ms_start, clip_ms_end or None, semitones)
@@ -40,20 +44,20 @@ for i, n in enumerate(N):
     k = add(f"audio-build/voice/{n['id']}.mp3"); at = n["start_real_ms"]
     fl.append(f"[{k}:a]aformat=sample_rates=44100:channel_layouts=stereo,adelay={at}|{at}[v{i}]"); voices.append(f"[v{i}]")
 for j, (f, a, b, st) in enumerate(cues):
-    k = add(f"audio-build/sfx/{f}.mp3"); at = round(a * SP); chain = "aformat=sample_rates=44100:channel_layouts=stereo"
+    k = add(f"audio-build/sfx/{f}.mp3"); at = round(c2r(a)); chain = "aformat=sample_rates=44100:channel_layouts=stereo"
     if st: chain += f",asetrate={round(44100*2**(st/12))},aresample=44100"
     if b is not None:
-        d = (b - a) * SP / 1000
+        d = (c2r(b) - c2r(a)) / 1000
         chain += f",aloop=loop=-1:size=2000000,atrim=0:{d:.3f},afade=t=in:d=0.08,afade=t=out:st={max(0,d-0.15):.3f}:d=0.15"
     fl.append(f"[{k}:a]{chain},adelay={at}|{at}[s{j}]"); sfxs.append(f"[s{j}]")
-m = add("audio-build/music/bed.mp3")
+m = add("audio-build/music/bed2.mp3")
 fl.append("".join(voices) + f"amix=inputs={len(voices)}:normalize=0:dropout_transition=0,asplit=2[vox][vsc]")
 fl.append("".join(sfxs) + f"amix=inputs={len(sfxs)}:normalize=0:dropout_transition=0,volume=-12dB[fx]")
-fl.append(f"[{m}:a]aformat=sample_rates=44100:channel_layouts=stereo,volume=-22dB,apad,atrim=0:175[mus]")
+fl.append(f"[{m}:a]aformat=sample_rates=44100:channel_layouts=stereo,volume=-22dB,apad,atrim=0:{TOTAL_S:.3f}[mus]")
 fl.append("[mus][vsc]sidechaincompress=threshold=0.02:ratio=6:attack=40:release=500[duck]")
-fl.append("[vox][fx][duck]amix=inputs=3:normalize=0:dropout_transition=0,apad,atrim=0:175,loudnorm=I=-16:TP=-1.5:LRA=11[out]")
+fl.append(f"[vox][fx][duck]amix=inputs=3:normalize=0:dropout_transition=0,apad,atrim=0:{TOTAL_S:.3f},loudnorm=I=-16:TP=-1.5:LRA=11[out]")
 open("audio-build/filter.txt", "w").write(";\n".join(fl))
 cmd = "#!/bin/bash\n# Rebuilds audio-build/hoa-clip-audio.mp3 (175 s, 128k, about -16 LUFS). Run from the repo root: bash audio-build/build.sh\nset -e\n"
-cmd += "ffmpeg -y -loglevel error " + " ".join(f"-i {shlex.quote(p)}" for p in ins) + " -filter_complex_script audio-build/filter.txt -map '[out]' -t 175 -ar 44100 -ac 2 -b:a 128k audio-build/hoa-clip-audio.mp3\n"
+cmd += f"ffmpeg -y -loglevel error " + " ".join(f"-i {shlex.quote(p)}" for p in ins) + " -filter_complex_script audio-build/filter.txt -map '[out]' -t " + f"{TOTAL_S:.3f}" + " -ar 44100 -ac 2 -b:a 128k audio-build/hoa-clip-audio.mp3\n"
 open("audio-build/build.sh", "w").write(cmd)
 print(len(ins), "inputs,", len(cues), "effect cues")

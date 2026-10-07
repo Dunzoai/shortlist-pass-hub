@@ -533,7 +533,7 @@ function ReelModal({ onClose }: { onClose: () => void }) {
 
 /* ── The HOA popup: the animated clip in an iframe, with chapter buttons and a bar that drive the clip's own clock ─────────────────────────── */
 const HOA_CLIP_SRC = "/hoa/shorty-hoa-clip.html";
-const HOA_AUDIO_SRC = "/hoa/hoa-clip-audio-v4.mp3";   // narration, music and effects, 175 s, one file
+const HOA_AUDIO_SRC = "/hoa/hoa-clip-audio-v5.mp3";   // narration, music and effects, 175 s, one file
 const HOA_TOTAL = 140000, HOA_SPEED = 1.25;   // the clip's own length (ms) and its playback slowdown
 const HOA_CHAPTERS = [
   { at: 0, label: "Meet Shorty" },
@@ -542,13 +542,15 @@ const HOA_CHAPTERS = [
   { at: 88000, label: "Shorty runs the office" },
   { at: 118000, label: "Every resident" },
 ] as const;
-type ClipWin = Window & { __clock?: (f: () => number | undefined) => void; __seek?: (t: number) => void; __play?: () => void; __pause?: () => void; __resume?: () => void; __time?: () => number };
+type ClipWin = Window & { __r2c?: (r: number) => number; __c2r?: (c: number) => number; __realTotal?: number; __clock?: (f: () => number | undefined) => void; __seek?: (t: number) => void; __play?: () => void; __pause?: () => void; __resume?: () => void; __time?: () => number };
 
 function HoaClipModal({ onClose }: { onClose: () => void }) {
   const frame = useRef<HTMLIFrameElement | null>(null);
   const bar = useRef<HTMLDivElement | null>(null);
   const dialog = useRef<HTMLDivElement | null>(null);
   const [now, setNow] = useState(0);
+  const [nowReal, setNowReal] = useState(0);   // seconds of sound, through the clip's time map
+  const [totalReal, setTotalReal] = useState((HOA_TOTAL * HOA_SPEED) / 1000);
   const [playing, setPlaying] = useState(true);
   const [h, setH] = useState(700);
   const [muted, setMuted] = useState(false);
@@ -560,7 +562,9 @@ function HoaClipModal({ onClose }: { onClose: () => void }) {
 
   /* The audio is the master clock. While it plays, the clip's time is audio.currentTime / 1.25, so a slow phone makes the pictures wait
      instead of seeking the sound (a seek chops words). Nothing ever sets audio.currentTime in a loop: only start, replay, chapter taps and scrubbing do. */
-  const clock = () => { const a = audio.current; if (!a) return undefined; if (a.ended) return HOA_TOTAL; return master.current && !a.paused ? (a.currentTime * 1000) / HOA_SPEED : undefined; };
+  const toClip = (sec: number) => { const w = win(); return w?.__r2c ? w.__r2c(sec * 1000) : (sec * 1000) / HOA_SPEED; };   // real seconds -> clip ms, through the clip's own per-beat time map
+  const toReal = (ms: number) => { const w = win(); return (w?.__c2r ? w.__c2r(ms) : ms * HOA_SPEED) / 1000; };
+  const clock = () => { const a = audio.current; if (!a) return undefined; if (a.ended) return HOA_TOTAL; return master.current && !a.paused ? toClip(a.currentTime) : undefined; };
   const startBoth = () => {
     const a = audio.current, w = win(); if (!a) return;
     master.current = false; w?.__seek?.(0);                // hold the pictures at 0 until the sound is really playing
@@ -576,13 +580,13 @@ function HoaClipModal({ onClose }: { onClose: () => void }) {
     window.addEventListener("keydown", onKey);
     const aud = audio.current;
     if (aud) { aud.load(); if (aud.readyState >= 4) setReady(true); }
-    const id = window.setInterval(() => { const t = win()?.__time?.(); if (typeof t === "number") setNow(t); }, 250);   // the display only; it never touches the audio
+    const id = window.setInterval(() => { const w = win(), t = w?.__time?.(); if (typeof t === "number") { setNow(t); setNowReal(toReal(t)); } if (w?.__realTotal) setTotalReal(w.__realTotal / 1000); }, 250);   // the display only; it never touches the audio
     const onVis = () => { const a = audio.current, w = win(); if (document.hidden) { a?.pause(); w?.__pause?.(); } else if (a && w && master.current && (w.__time?.() ?? 0) < HOA_TOTAL) { a.play().then(() => w.__resume?.()).catch(() => {}); } };
     document.addEventListener("visibilitychange", onVis);
     return () => { window.removeEventListener("keydown", onKey); document.removeEventListener("visibilitychange", onVis); window.clearInterval(id); document.body.style.overflow = prev; aud?.pause(); };
   }, [onClose]);
 
-  const jump = (ms: number) => { const w = win(); if (!w?.__seek) return; w.__seek(ms); setNow(ms); if (audio.current) audio.current.currentTime = (ms * HOA_SPEED) / 1000; if (playing) w.__resume?.(); };
+  const jump = (ms: number) => { const w = win(); if (!w?.__seek) return; w.__seek(ms); setNow(ms); if (audio.current) audio.current.currentTime = toReal(ms); if (playing) w.__resume?.(); };
   const toggle = () => {
     const w = win(), a = audio.current; if (!w) return;
     if (playing) { w.__pause?.(); a?.pause(); setPlaying(false); return; }
@@ -634,8 +638,8 @@ function HoaClipModal({ onClose }: { onClose: () => void }) {
                 ? <svg viewBox="0 0 24 24" className="h-4 w-4" fill={INK}><path d="M7 5h3.5v14H7zM13.500 5H17v14h-3.500z" /></svg>
                 : <svg viewBox="0 0 24 24" className="h-4 w-4 translate-x-[1px]" fill={INK}><path d="M7 4.500v15l13-7.500z" /></svg>}
             </button>
-            <span className="w-9 shrink-0 tabular-nums">{fmt((now * HOA_SPEED) / 1000)}</span>
-            <div ref={bar} role="slider" aria-label="Seek" aria-valuemin={0} aria-valuemax={Math.round((HOA_TOTAL * HOA_SPEED) / 1000)} aria-valuenow={Math.round((now * HOA_SPEED) / 1000)} tabIndex={0} className="relative h-8 flex-1 cursor-pointer touch-none"
+            <span className="w-9 shrink-0 tabular-nums">{fmt(nowReal)}</span>
+            <div ref={bar} role="slider" aria-label="Seek" aria-valuemin={0} aria-valuemax={Math.round(totalReal)} aria-valuenow={Math.round(nowReal)} tabIndex={0} className="relative h-8 flex-1 cursor-pointer touch-none"
               onPointerDown={(e) => { e.currentTarget.setPointerCapture(e.pointerId); scrub(e.clientX); }}
               onPointerMove={(e) => { if (e.buttons) scrub(e.clientX); }}>
               <div className="absolute inset-x-0 top-1/2 h-1.5 -translate-y-1/2 rounded-full" style={{ background: "rgba(20,22,26,.18)" }} />
@@ -643,7 +647,7 @@ function HoaClipModal({ onClose }: { onClose: () => void }) {
               {HOA_CHAPTERS.slice(1).map((c) => <span key={c.at} className="absolute top-1/2 h-3 w-[3px] -translate-y-1/2 rounded" style={{ left: `${(c.at / HOA_TOTAL) * 100}%`, background: INK }} />)}
               <span className="absolute top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ left: `${(now / HOA_TOTAL) * 100}%`, background: MINT, border: `2px solid ${INK}` }} />
             </div>
-            <span className="w-9 shrink-0 text-right tabular-nums">{fmt((HOA_TOTAL * HOA_SPEED) / 1000)}</span>
+            <span className="w-9 shrink-0 text-right tabular-nums">{fmt(totalReal)}</span>
             <button type="button" onClick={() => setMuted((m) => !m)} aria-label={muted ? "Unmute" : "Mute"} aria-pressed={muted} className="grid h-8 w-8 shrink-0 place-items-center rounded-full" style={{ background: "#EFE6CF", border: `2px solid ${INK}` }}>
               <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke={INK} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.500z" fill={INK} />{muted ? <path d="M16 9.5l5 5M21 9.5l-5 5" /> : <path d="M15.500 9a4 4 0 0 1 0 6M18 6.500a8 8 0 0 1 0 11" />}</svg>
             </button>
