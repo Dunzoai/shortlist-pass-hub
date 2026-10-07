@@ -221,7 +221,7 @@ export function ShortyReel() {
   const opener = useRef<HTMLButtonElement | null>(null);
   const close = useCallback(() => { setOpen(false); setTimeout(() => opener.current?.focus(), 0); }, []);
   const { audience } = useAudience();
-  if (audience === "hoa") return null;   // the film is the business version; an HOA cut would be its own video
+  const hoa = audience === "hoa";   // the HOA view plays the animated HOA clip instead of the business film
 
   return (
     <>
@@ -239,7 +239,7 @@ export function ShortyReel() {
           ref={opener}
           type="button"
           onClick={() => setOpen(true)}
-          aria-label="Play the film: Shorty in action"
+          aria-label={hoa ? "Play the clip: Shorty for your HOA" : "Play the film: Shorty in action"}
           className="group relative block aspect-square w-full cursor-pointer rounded-[28px] text-left md:aspect-[16/6.2]"
           style={{ boxShadow: "1px 2px 0 rgba(40,25,10,.35), 0 0 0 2px rgba(110,85,45,.22)", background: "#F4E7B9" }}
         >
@@ -263,7 +263,7 @@ export function ShortyReel() {
             </span>
           </span>
           <span className="absolute -right-3 -top-3 z-10 max-w-[150px] rotate-[7deg] rounded-xl px-3 py-2 text-center text-[15px] md:left-1/2 md:right-auto md:top-[calc(27%+60px)] md:max-w-none md:-translate-x-1/2 md:rotate-0 md:px-4 font-bold leading-tight sm:text-[17px]" style={{ background: CREAM, border: `2.5px solid ${INK}`, boxShadow: `3px 4px 0 ${INK}`, fontFamily: SERIF, color: INK }}>
-              Play to see Shorty in action
+              {hoa ? "Play to see Shorty run your HOA" : "Play to see Shorty in action"}
               <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-[.2] mix-blend-multiply" style={{ backgroundImage: `url("${GRAIN_URL}")` }} />
           </span>
           <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-[28px] opacity-[.12] mix-blend-multiply" style={{ backgroundImage: `url("${GRAIN_URL}")` }} />
@@ -274,7 +274,7 @@ export function ShortyReel() {
           <span aria-hidden="true" className="reel-tape absolute -top-3 right-[8%] z-10 h-[26px] w-[92px] sm:-top-4 sm:h-[32px] sm:w-[120px]" style={{ rotate: "4deg" }} />
         </PaperCard>
       </div>
-      {open && <ReelModal onClose={close} />}
+      {open && (hoa ? <HoaClipModal onClose={close} /> : <ReelModal onClose={close} />)}
       <style>{`
         .reel-tape { background: linear-gradient(180deg, rgba(240,226,180,.88), rgba(228,210,160,.82)); box-shadow: 0 2px 3px rgba(40,25,10,.28); clip-path: polygon(0 8%, 4% 0, 8% 10%, 12% 0, 100% 0, 96% 25%, 100% 50%, 96% 75%, 100% 100%, 12% 100%, 8% 90%, 4% 100%, 0 92%, 4% 75%, 0 50%, 4% 25%) }
         @keyframes reelPulse { 0% { transform: scale(1); opacity: .9 } 100% { transform: scale(1.7); opacity: 0 } }
@@ -435,6 +435,97 @@ function ReelModal({ onClose }: { onClose: () => void }) {
               {dur > 0 && <span className="absolute top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ left: `${(now / dur) * 100}%`, background: MINT, border: `2px solid ${INK}` }} />}
             </div>
             <span className="w-9 shrink-0 text-right tabular-nums">{fmt(dur)}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+/* ── The HOA popup: the animated clip in an iframe, with chapter buttons and a bar that drive the clip's own clock ─────────────────────────── */
+const HOA_CLIP_SRC = "/hoa/shorty-hoa-clip.html";
+const HOA_TOTAL = 140000, HOA_SPEED = 1.25;   // the clip's own length (ms) and its playback slowdown
+const HOA_CHAPTERS = [
+  { at: 0, label: "Meet Shorty" },
+  { at: 20000, label: "Sally's 11pm question" },
+  { at: 58000, label: "Betty and bingo" },
+  { at: 88000, label: "Shorty runs the office" },
+  { at: 118000, label: "Every resident" },
+] as const;
+type ClipWin = Window & { __seek?: (t: number) => void; __play?: () => void; __pause?: () => void; __resume?: () => void; __time?: () => number };
+
+function HoaClipModal({ onClose }: { onClose: () => void }) {
+  const frame = useRef<HTMLIFrameElement | null>(null);
+  const bar = useRef<HTMLDivElement | null>(null);
+  const dialog = useRef<HTMLDivElement | null>(null);
+  const [now, setNow] = useState(0);
+  const [playing, setPlaying] = useState(true);
+  const [h, setH] = useState(700);
+  const win = () => (frame.current?.contentWindow ?? null) as ClipWin | null;
+
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    dialog.current?.focus();
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    const id = window.setInterval(() => { const t = win()?.__time?.(); if (typeof t === "number") setNow(t); }, 250);
+    return () => { window.removeEventListener("keydown", onKey); window.clearInterval(id); document.body.style.overflow = prev; };
+  }, [onClose]);
+
+  const jump = (ms: number) => { const w = win(); if (!w?.__seek) return; w.__seek(ms); setNow(ms); if (playing) w.__resume?.(); };
+  const toggle = () => {
+    const w = win(); if (!w) return;
+    if (playing) { w.__pause?.(); setPlaying(false); }
+    else { if ((w.__time?.() ?? 0) >= HOA_TOTAL - 1000) w.__play?.(); else w.__resume?.(); setPlaying(true); }
+  };
+  const scrub = (clientX: number) => { const r = bar.current?.getBoundingClientRect(); if (r) jump(Math.max(0, Math.min(HOA_TOTAL - 1, ((clientX - r.left) / r.width) * HOA_TOTAL))); };
+  const chapter = HOA_CHAPTERS.reduce((k, c, i) => (now >= c.at ? i : k), 0);
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-3 backdrop-blur-sm sm:p-6" onClick={onClose}>
+      <div
+        ref={dialog}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Shorty for your HOA"
+        tabIndex={-1}
+        onClick={(e) => e.stopPropagation()}
+        className="relative flex max-h-[96dvh] w-full max-w-[880px] flex-col overflow-hidden rounded-3xl outline-none sm:border-[3px]"
+        style={{ background: CREAM, borderColor: INK, boxShadow: `0 0 0 3px ${MINT}` }}
+      >
+        <button type="button" onClick={onClose} aria-label="Close" className="absolute right-3 top-3 z-10 grid h-11 w-11 place-items-center rounded-full" style={{ background: CREAM, border: `2.5px solid ${INK}`, boxShadow: `2px 3px 0 ${INK}` }}>
+          <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke={INK} strokeWidth={3} strokeLinecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
+        </button>
+        {/* the clip page is as tall as it needs to be; this area scrolls on short screens so the controls below stay put */}
+        <div className="min-h-0 flex-1 overflow-y-auto">
+          <iframe ref={frame} src={HOA_CLIP_SRC} title="Shorty, the digital board member for your HOA" className="block w-full border-0" style={{ height: h }}
+            onLoad={() => { const d = frame.current?.contentDocument; if (!d) return; const fit = () => setH(Math.ceil(d.documentElement.scrollHeight)); fit(); frame.current?.contentWindow?.addEventListener("resize", fit); }} />
+        </div>
+        {/* chapters and progress, under the clip so they never cover it */}
+        <div className="px-3 pb-4 pt-3" style={{ fontFamily: SANS, background: CREAM }}>
+          <div className="mb-3 flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" role="tablist" aria-label="Chapters">
+            {HOA_CHAPTERS.map((c, i) => (
+              <button key={c.label} type="button" role="tab" aria-selected={i === chapter} onClick={() => jump(c.at)} className="shrink-0 rounded-full px-3 py-1.5 text-[12px] font-bold" style={{ background: i === chapter ? MINT : "#EFE6CF", color: INK, border: `2px solid ${INK}` }}>{c.label}</button>
+            ))}
+          </div>
+          <div className="flex items-center gap-3 text-[12px] font-semibold" style={{ color: INK }}>
+            <button type="button" onClick={toggle} aria-label={playing ? "Pause" : "Play"} className="grid h-8 w-8 shrink-0 place-items-center rounded-full" style={{ background: MINT, border: `2px solid ${INK}` }}>
+              {playing
+                ? <svg viewBox="0 0 24 24" className="h-4 w-4" fill={INK}><path d="M7 5h3.5v14H7zM13.500 5H17v14h-3.500z" /></svg>
+                : <svg viewBox="0 0 24 24" className="h-4 w-4 translate-x-[1px]" fill={INK}><path d="M7 4.500v15l13-7.500z" /></svg>}
+            </button>
+            <span className="w-9 shrink-0 tabular-nums">{fmt((now * HOA_SPEED) / 1000)}</span>
+            <div ref={bar} role="slider" aria-label="Seek" aria-valuemin={0} aria-valuemax={Math.round((HOA_TOTAL * HOA_SPEED) / 1000)} aria-valuenow={Math.round((now * HOA_SPEED) / 1000)} tabIndex={0} className="relative h-8 flex-1 cursor-pointer touch-none"
+              onPointerDown={(e) => { e.currentTarget.setPointerCapture(e.pointerId); scrub(e.clientX); }}
+              onPointerMove={(e) => { if (e.buttons) scrub(e.clientX); }}>
+              <div className="absolute inset-x-0 top-1/2 h-1.5 -translate-y-1/2 rounded-full" style={{ background: "rgba(20,22,26,.18)" }} />
+              <div className="absolute left-0 top-1/2 h-1.5 -translate-y-1/2 rounded-full" style={{ width: `${(now / HOA_TOTAL) * 100}%`, background: MINT }} />
+              {HOA_CHAPTERS.slice(1).map((c) => <span key={c.at} className="absolute top-1/2 h-3 w-[3px] -translate-y-1/2 rounded" style={{ left: `${(c.at / HOA_TOTAL) * 100}%`, background: INK }} />)}
+              <span className="absolute top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ left: `${(now / HOA_TOTAL) * 100}%`, background: MINT, border: `2px solid ${INK}` }} />
+            </div>
+            <span className="w-9 shrink-0 text-right tabular-nums">{fmt((HOA_TOTAL * HOA_SPEED) / 1000)}</span>
           </div>
         </div>
       </div>
