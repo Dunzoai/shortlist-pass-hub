@@ -1,7 +1,7 @@
 # Writes audio-build/build.sh (the ffmpeg mix) from the narration timings and the cue list. Clip ms x 1.25 = real ms.
 import json, shlex
 SP = 1.25
-N = json.load(open("audio-build/narration.json"))
+N = json.load(open("audio-build/script.json"))
 OFF = {1: 0, 2: 20000, 3: 58000, 4: 88000, 5: 118000}
 cues = []   # (file, clip_ms_start, clip_ms_end or None, semitones)
 def c(scene, f, a, b=None, st=0): cues.append((f, OFF[scene] + a, None if b is None else OFF[scene] + b, st))
@@ -37,7 +37,7 @@ c(5,"endchime",18000)
 ins, fl, voices, sfxs = [], [], [], []
 def add(path): ins.append(path); return len(ins) - 1
 for i, n in enumerate(N):
-    k = add(f"audio-build/voice/{i+1:02d}.mp3"); at = n["real_ms"] - (250 if i == 8 else 0)   # line 9 starts 250 ms early so it fits its window
+    k = add(f"audio-build/voice/{n['id']}.mp3"); at = n["start_real_ms"]
     fl.append(f"[{k}:a]aformat=sample_rates=44100:channel_layouts=stereo,adelay={at}|{at}[v{i}]"); voices.append(f"[v{i}]")
 for j, (f, a, b, st) in enumerate(cues):
     k = add(f"audio-build/sfx/{f}.mp3"); at = round(a * SP); chain = "aformat=sample_rates=44100:channel_layouts=stereo"
@@ -48,8 +48,8 @@ for j, (f, a, b, st) in enumerate(cues):
     fl.append(f"[{k}:a]{chain},adelay={at}|{at}[s{j}]"); sfxs.append(f"[s{j}]")
 m = add("audio-build/music/bed.mp3")
 fl.append("".join(voices) + f"amix=inputs={len(voices)}:normalize=0:dropout_transition=0,asplit=2[vox][vsc]")
-fl.append("".join(sfxs) + f"amix=inputs={len(sfxs)}:normalize=0:dropout_transition=0,volume=-10dB[fx]")
-fl.append(f"[{m}:a]aformat=sample_rates=44100:channel_layouts=stereo,volume=-20dB,apad,atrim=0:175[mus]")
+fl.append("".join(sfxs) + f"amix=inputs={len(sfxs)}:normalize=0:dropout_transition=0,volume=-12dB[fx]")
+fl.append(f"[{m}:a]aformat=sample_rates=44100:channel_layouts=stereo,volume=-22dB,apad,atrim=0:175[mus]")
 fl.append("[mus][vsc]sidechaincompress=threshold=0.02:ratio=6:attack=40:release=500[duck]")
 fl.append("[vox][fx][duck]amix=inputs=3:normalize=0:dropout_transition=0,apad,atrim=0:175,loudnorm=I=-16:TP=-1.5:LRA=11[out]")
 open("audio-build/filter.txt", "w").write(";\n".join(fl))

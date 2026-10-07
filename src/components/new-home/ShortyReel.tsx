@@ -445,7 +445,7 @@ function ReelModal({ onClose }: { onClose: () => void }) {
 
 /* ── The HOA popup: the animated clip in an iframe, with chapter buttons and a bar that drive the clip's own clock ─────────────────────────── */
 const HOA_CLIP_SRC = "/hoa/shorty-hoa-clip.html";
-const HOA_AUDIO_SRC = "/hoa/hoa-clip-audio.mp3";   // narration, music and effects, 175 s, one file
+const HOA_AUDIO_SRC = "/hoa/hoa-clip-audio-v2.mp3";   // narration, music and effects, 175 s, one file
 const HOA_TOTAL = 140000, HOA_SPEED = 1.25;   // the clip's own length (ms) and its playback slowdown
 const HOA_CHAPTERS = [
   { at: 0, label: "Meet Shorty" },
