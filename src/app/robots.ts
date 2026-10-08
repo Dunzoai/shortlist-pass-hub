@@ -8,7 +8,7 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       { userAgent: "*", allow: "/", disallow: PRIVATE },
-      { userAgent: AI_BOTS, allow: ["/", "/llms.txt", "/llms-full.txt"], disallow: PRIVATE },
+      { userAgent: AI_BOTS, allow: ["/", "/AGENTS.md", "/llms.txt", "/llms-full.txt", "/agents"], disallow: PRIVATE },
     ],
     sitemap: "https://www.shortlistpass.com/sitemap.xml",
     host: "https://www.shortlistpass.com",

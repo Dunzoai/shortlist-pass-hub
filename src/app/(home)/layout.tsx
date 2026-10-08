@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { fraunces } from "@/lib/fonts";
+import { siteGraph, jsonLd } from "@/lib/structuredData";
 
 // The homepage ("/"). A route group so it can have its own layout (cream page, the global nav hidden) without touching other pages.
 // The previous homepage lives at /classic.
@@ -13,7 +14,7 @@ export const metadata: Metadata = {
   title: { absolute: TITLE },
   description: DESCRIPTION,
   keywords: ["Shortlist Pass", "Shorty", "AI assistant for small business", "AI agents", "customer messaging", "online ordering", "bookings", "HOA", "small business software"],
-  alternates: { canonical: "/", types: { "text/markdown": "/llms.txt" } },
+  alternates: { canonical: "/", types: { "text/markdown": [{ url: "/AGENTS.md" }, { url: "/llms.txt" }] } },
   icons: { icon: [{ url: "/shortlist-mint-mark.png", type: "image/png" }], apple: [{ url: "/shortlist-mint-mark.png" }] },
   openGraph: { type: "website", url: "/", siteName: "Shortlist Pass", locale: "en_US", title: TITLE, description: DESCRIPTION, images: [OG_IMAGE] },
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION, images: [{ url: OG_IMAGE.url, alt: OG_IMAGE.alt }] },
@@ -35,6 +36,7 @@ export default function NewHomeLayout({
           `,
         }}
       />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(siteGraph()) }} />
       {children}
     </div>
   );

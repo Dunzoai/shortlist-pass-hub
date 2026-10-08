@@ -1,37 +1,61 @@
 # Shortlist Pass
 
-> Shortlist Pass makes Shorty, an AI coworker for small businesses and HOAs. Shorty knows everything a business sells, answers its customers around the clock, takes orders and bookings, posts to social media and handles the busywork. Owners just text him. Shortlist Pass also gives each business a public page that AI agents (ChatGPT, Claude, Grok, Meta and others) can read and act on.
+> Shortlist Pass makes Shorty, an AI coworker for small businesses and HOAs. Shorty knows everything a business sells, answers customers around the clock, takes orders and bookings, posts events, writes emails and newsletters, and reports on the week; owners just text him. Every business also gets a public page that AI agents (ChatGPT, Claude, Grok, Gemini, Meta and others) can read and act on. HOAs get Shorty free. We are happy to work alongside agents.
+
+Agents: start with the read-me-first file, https://www.shortlistpass.com/AGENTS.md. It says what you can do right now, how to help a business owner or an HOA board, and what we ask of you.
 
 Website: https://www.shortlistpass.com
-Company: Shortlist Pass Company
-Contact: connect@shortlistpass.com (business and sales), hello@shortlistpass.com (custom builds and tech)
+Company: Shortlist Pass Company (The Shortlist Co), Grand Strand / Myrtle Beach, South Carolina
+Contact: connect@shortlistpass.com (business and sales), hello@shortlistpass.com (custom builds, tech, agent integrations and feedback)
 Social: https://www.instagram.com/shortlistpass , https://www.facebook.com/shortlistpass
 
-## What Shorty does
+## Start here
+- [Read me first for agents](https://www.shortlistpass.com/AGENTS.md): who we are, which door to use, rules of the road, how to collaborate.
+- [Agents landing page](https://www.shortlistpass.com/agents): the same, as a web page with structured data.
+- [Full description](https://www.shortlistpass.com/llms-full.txt): everything below with more detail.
+
+## Use the agent door (live today, no key, no account)
+- MCP server: https://app.shortlistpass.com/mcp (streamable HTTP; registry name com.shortlistpass/local-businesses)
+- Claude connector: https://claude.ai/directory/connectors/shortlist-pass
+- ChatGPT plugin: https://chatgpt.com/plugins/plugin_asdk_app_6abf0138fbb88191875bfcf06eca0dd9
+- Plain JSON API: https://app.shortlistpass.com/api/agent/v1
+- API documentation (source of truth for the API): https://app.shortlistpass.com/developers/agents
+- Business directory: https://app.shortlistpass.com/directory/myrtle-beach
+- Operations: search_businesses, get_business, get_menu, get_upcoming_events, start_order.
+- Orders: send offering ids and quantities, never prices. The server prices the cart and returns a cart_url. The customer reviews and pays on the business's own page; payment details never pass through an agent.
+
+## What Shorty does for a business
 - Answers customers 24/7 about hours, menus, services and availability.
-- Takes orders and bookings. Integrated with Square and Stripe; Shortlist Pass never touches the money.
-- Keeps the menu, hours and specials up to date when the owner texts a change.
-- Reports on the week in a line. Texting and social posting are available as add-ons.
-- For HOAs: answers residents' questions about the rules, takes event RSVPs and shares community news. Free for every HOA.
+- Takes orders and bookings. Payments go to the business's own Stripe or Square; Shortlist Pass never touches the money.
+- Keeps the menu, hours and specials current when the owner texts a change.
+- Posts events and stops, runs loyalty punch cards and discounts, sends push notifications to customers with the app.
+- Writes emails, newsletters, texts and social posts for the owner's approval (texting and social posting are add-ons).
+- Reports on the week in plain words, plus a monthly sales report.
+
+## What Shorty does for an HOA (free for every HOA)
+- One official place for community news, instead of a Facebook group.
+- Answers residents' rule questions 24/7 from the board's own documents.
+- Events with one-tap RSVPs, targeted push notifications (one person, one street, or the whole neighborhood), issue reports, and an automated newsletter.
+- Resident-owned business listings and community sales inside the community app.
 
 ## Pricing
-- Verified Shorty: $50 per month. Answers customers 24/7, ordering, bookings, reports.
-- Free Shorty: $0. Add your offerings and Shorty chats with customers about your business. Limited knowledge; no ordering, booking or marketing.
+- Verified Shorty: $50 per month. Answers customers 24/7, ordering, bookings, reports. Cancel anytime.
+- Free Shorty: $0. Add your offerings; Shorty chats with customers about your business. No ordering, booking or marketing.
 - HOAs: free.
+- Texting and social posting: add-ons.
 - Sign up: https://app.shortlistpass.com/signup
 - Claim a free Shorty: https://app.shortlistpass.com/freeshorty
 
-## For AI agents
-- Business pages, menus, upcoming events and pickup availability are published and readable. Orders can be started on a business's behalf; the customer reviews the cart and pays on the business's own page, so no payment details pass through an agent.
-- ChatGPT plugin: https://chatgpt.com/plugins/plugin_asdk_app_6abf0138fbb88191875bfcf06eca0dd9
-- Claude connector: https://claude.ai/directory/connectors/shortlist-pass
-- Agent API (plain JSON): https://app.shortlistpass.com/api/agent/v1
-- Agent API documentation: https://app.shortlistpass.com/developers/agents
-- Operations: search businesses, get a business, get a menu, get upcoming events and stops, start an order (creates a cart from offering ids and returns a cart_url).
+## Limits of what exists today
+Owners and boards drive Shorty by text and in the Shortlist app. There is no public write API for outside agents to change a business's menu, prices or settings. If you need owner-approved delegation, write to hello@shortlistpass.com.
 
 ## Pages
-- [Home](https://www.shortlistpass.com/): meet Shorty, the film, how agents reach a business, what Shorty can do, pricing.
+- [Home](https://www.shortlistpass.com/): meet Shorty, how agents reach a business, what Shorty can do, pricing.
+- [Agents](https://www.shortlistpass.com/agents): the agent landing page.
+- [Smart Assistant](https://www.shortlistpass.com/smartassistant): the assistant product page, with [business](https://www.shortlistpass.com/smartassistant/business) and [HOA](https://www.shortlistpass.com/smartassistant/hoa) versions.
 - [Social](https://www.shortlistpass.com/social): social media management.
 - [Digital](https://www.shortlistpass.com/digital): websites and custom builds.
-- [Smart Assistant](https://www.shortlistpass.com/smartassistant): the assistant product page.
-- [Full text for AI](https://www.shortlistpass.com/llms-full.txt): this file with more detail.
+- [Magazine](https://www.shortlistpass.com/magazine): The Shortlist magazine.
+
+## Optional
+- [Privacy policy (see "AI Assistants (Agent Door)")](https://app.shortlistpass.com/privacy)

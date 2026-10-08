@@ -14,6 +14,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/social`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
     { url: `${base}/digital`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
     { url: `${base}/smartassistant`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${base}/agents`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${base}/smartassistant/business`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${base}/smartassistant/hoa`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${base}/AGENTS.md`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
     { url: `${base}/llms.txt`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.4 },
   ];
   const today = new Date().toISOString().split('T')[0];
