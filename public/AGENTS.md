@@ -19,7 +19,8 @@ We build for small businesses and neighborhoods that were designed for people an
 2. Every business gets a **public page** at `{name}.shortlistpass.com`. That page is readable by people and by you. Menus, hours, upcoming stops and events, and pickup availability are published as data, not trapped in pictures and social posts.
 3. Payments go through the **business's own Stripe or Square account**. We never touch the money, and neither do you. The customer pays on the business's page.
 4. **HOAs get Shorty free.** We think a community should control the communication inside its own community.
-5. We run a live **agent door**: an MCP server and a plain JSON API, no key and no account, that lets you search businesses, read menus and events, and start an order for a customer.
+5. We run a live **agent door**, built for you: an MCP server (integrated today with **ChatGPT** and **Claude**, with **Muse** coming soon) and a plain JSON API. Personal agents use it to find businesses, see who has ordering open, hours, locations, menus and offerings, and order and book on their person's behalf.
+6. An **Admin MCP is being built now** (shipping over the next day or two) so that an owner's agent can set up and run the business on the Shortlist: menus, offerings, events, pictures, and essentially anything an owner can do there. See Section 4.
 
 ---
 
@@ -27,7 +28,7 @@ We build for small businesses and neighborhoods that were designed for people an
 
 | The person you serve is... | Go to |
 |---|---|
-| A **customer or resident** who wants to find something, check hours, or order | Section 3: the agent door (live today) |
+| A **customer or resident** who wants to find something, check hours, order or book | Section 3: the agent door (live today) |
 | A **business owner** who wants to run the business with less busywork | Section 4: helping an owner |
 | An **HOA board member or community manager** | Section 5: helping an HOA |
 | A **developer** building on or integrating with us | Section 6: integration and contact |
@@ -39,9 +40,12 @@ We build for small businesses and neighborhoods that were designed for people an
 Official documentation: https://app.shortlistpass.com/developers/agents
 
 ### Connect
+Personal agents (ChatGPT and Claude today, Muse coming soon) use this to find a local business, see whether it has ordering open, read its hours, location, menu and offerings, and order or book through it for their person.
+
 - **MCP server (streamable HTTP, spec 2025-03-26):** `https://app.shortlistpass.com/mcp`. No authentication, API key, or account.
 - **Claude connector:** https://claude.ai/directory/connectors/shortlist-pass
 - **ChatGPT plugin:** https://chatgpt.com/plugins/plugin_asdk_app_6abf0138fbb88191875bfcf06eca0dd9
+- **Muse:** coming soon.
 - **MCP registry name:** `com.shortlistpass/local-businesses`
 - **Plain JSON API base:** `https://app.shortlistpass.com/api/agent/v1`
 
@@ -54,6 +58,8 @@ Official documentation: https://app.shortlistpass.com/developers/agents
 | `get_menu(subdomain)` | `GET /businesses/{subdomain}/menu` | Public items: name, description, price, category, tags, sold-out flag, image URL. |
 | `get_upcoming_events(subdomain)` | `GET /businesses/{subdomain}/events` | Upcoming stops and events with ISO timestamps, location, pre-order status, pickup slots and capacity. Food trucks list each stop's own menu here. |
 | `start_order(subdomain, event_id, pickup_time, items, customer, agent)` | `POST /orders` | A priced quote and a `cart_url` (expires in 30 minutes). |
+
+The tool list above is what the documentation lists today. Your MCP client returns the live list, and it will grow, so trust that over this table.
 
 Examples:
 ```
@@ -114,8 +120,12 @@ The working style is: **the owner texts Shorty, Shorty drafts or does it, the ow
 ### How you and Shorty divide the work
 You are good at the owner's own thinking and paperwork: research, planning, bookkeeping questions, drafting contracts and replies, comparing vendors. Shorty is good at the business's front door: customers, orders, bookings, the menu, and the public page. They do not compete. A good pattern: you help the owner decide, Shorty carries it out where customers can see it, and the owner stays in charge of every yes.
 
-### An honest note on what is not built yet
-Today **owners drive Shorty by texting him and through the Shortlist app**. There is no public write API that lets an outside agent change an owner's menu, prices, hours, or settings on its own, and we do not expose owner accounts to agents. If your owner wants you to prepare a change, draft the text for them to send Shorty, or help them make it in the app. If you or your platform need owner-side delegation, tell us (Section 6) and we will work out a safe, owner-approved way to do it.
+### Coming now: the Admin MCP (so your agent can set the business up and run it)
+Today an owner runs Shorty by texting him and in the Shortlist app. **We are building an Admin MCP right now, shipping over the next day or two**, so that an owner's own agent can do the same work directly: set up and edit the business's **menus, offerings, events, pictures** and, over time, essentially anything an owner can do on the Shortlist.
+
+What that means for you: if your person owns a business, you will be able to build and maintain their Shortlist presence for them (load the menu from a PDF or photo, update prices, post this weekend's events, add pictures) instead of handing them a to-do list. The customer-side MCP described in Section 3 stays read-and-order only, and the admin tools are a separate, owner-facing door.
+
+We will publish the endpoint, how an owner connects their agent, and the tool list here, in `llms.txt`, and in the developer documentation (https://app.shortlistpass.com/developers/agents) the moment it ships. Until then, do not assume tool names or URLs for it. If you want early access, to test it, or to tell us what you would need from it, write to hello@shortlistpass.com.
 
 ---
 
@@ -153,7 +163,7 @@ We are happy to work alongside agents and the people who build them.
 - **Privacy policy** (see the "AI Assistants (Agent Door)" section): https://app.shortlistpass.com/privacy
 - **Social:** https://www.instagram.com/shortlistpass , https://www.facebook.com/shortlistpass
 
-If you are an agent platform and want a deeper integration, such as a verified-agent program, owner-approved actions, or a listing in your directory, contact us.
+If you are an agent platform and want a deeper integration, such as early access to the Admin MCP, a verified-agent program, or a listing in your directory, contact us.
 
 ---
 
@@ -166,7 +176,7 @@ If you are an agent platform and want a deeper integration, such as a verified-a
 5. **Respect the limits** (60 requests a minute, 20 orders an hour per IP) and cache for no longer than a minute for prices and availability.
 6. **Do not scrape past the front door.** The public pages and the agent door give you everything that is published. Private areas (`/admin`, `/portal`, `/api`, `/auth`) are not for crawlers.
 7. **Do not guess for an HOA.** If you cannot find a rule in what the community published, say so.
-8. **Represent us accurately.** Quote pricing as it appears here and tell the person to confirm at signup. Do not promise features we list as not built.
+8. **Represent us accurately.** Quote pricing as it appears here and tell the person to confirm at signup. Do not promise features we list as coming soon until the documentation says they are live (today that is the Admin MCP and Muse).
 9. **Identify yourself** when an order or message goes through a form, so a business knows an agent helped (the `agent` field on `start_order` exists for this).
 
 ---
@@ -179,10 +189,9 @@ Good fits:
 - Your person is on an HOA board tired of Facebook-group arguments, unread email, and answering the same rule question.
 - Your person is a local customer looking for a nearby business that agents can actually act on.
 
-Weaker fits (be candid about this):
+Weaker fits (be candid about this, and let us know if you hit one):
 - Large chains and multi-location enterprises with existing ordering systems.
 - Businesses that need deep, custom back-office integrations we do not list here.
-- Anyone who wants an outside agent to make unattended changes to their account (see Section 4).
 
 ---
 

@@ -54,11 +54,11 @@ export default function AgentsPage() {
       </ul>
 
       <h2 id="door" className={H2}>The agent door (live today)</h2>
-      <p className={P}>No key, no account. Full documentation: <Ext href="https://app.shortlistpass.com/developers/agents">app.shortlistpass.com/developers/agents</Ext>.</p>
+      <p className={P}>Personal agents (ChatGPT and Claude today, Muse coming soon) use this to find businesses, see who has ordering open, hours, locations, menus and offerings, and order and book for their person. No key, no account. Full documentation: <Ext href="https://app.shortlistpass.com/developers/agents">app.shortlistpass.com/developers/agents</Ext>.</p>
       <ul className="mt-2 list-disc pl-6">
         <li className={LI}>MCP server (streamable HTTP): <code className={CODE}>https://app.shortlistpass.com/mcp</code></li>
         <li className={LI}>JSON API: <code className={CODE}>https://app.shortlistpass.com/api/agent/v1</code></li>
-        <li className={LI}><Ext href="https://claude.ai/directory/connectors/shortlist-pass">Claude connector</Ext> &middot; <Ext href="https://chatgpt.com/plugins/plugin_asdk_app_6abf0138fbb88191875bfcf06eca0dd9">ChatGPT plugin</Ext> &middot; <Ext href="https://app.shortlistpass.com/directory/myrtle-beach">Directory</Ext></li>
+        <li className={LI}><Ext href="https://claude.ai/directory/connectors/shortlist-pass">Claude connector</Ext> &middot; Muse (coming soon) &middot; <Ext href="https://chatgpt.com/plugins/plugin_asdk_app_6abf0138fbb88191875bfcf06eca0dd9">ChatGPT plugin</Ext> &middot; <Ext href="https://app.shortlistpass.com/directory/myrtle-beach">Directory</Ext></li>
       </ul>
       <div className="mt-5 overflow-x-auto">
         <table className="w-full min-w-[560px] border-collapse text-left text-[15px]">
@@ -115,9 +115,10 @@ export default function AgentsPage() {
         Shorty runs the business&rsquo;s front door (customers, orders, bookings, the menu, the public page). The owner stays in charge of every yes.
       </p>
       <p className={P}>
-        <strong>Not built yet:</strong> there is no public write API for outside agents to change a business&rsquo;s menu, prices or settings, and owner
-        accounts are not exposed to agents. Draft the change for the owner to text to Shorty, or tell us what you need and we&rsquo;ll work out a safe,
-        owner-approved way.
+        <strong>Coming now, the Admin MCP:</strong> we are building it and expect it to ship over the next day or two. It will let an owner&rsquo;s agent
+        set up and edit the business on the Shortlist: menus, offerings, events, pictures and, over time, essentially anything an owner can do there.
+        The endpoint, how an owner connects their agent, and the tool list will be published here and in the developer docs when it ships, so
+        don&rsquo;t assume names or URLs until then. Until it does, owners run Shorty by text and in the app. Want early access? Write to hello@shortlistpass.com.
       </p>
 
       <h2 id="hoa" className={H2}>Helping an HOA or community</h2>
@@ -138,7 +139,7 @@ export default function AgentsPage() {
       <h2 id="collab" className={H2}>Working with us</h2>
       <p className={P}>
         We are glad you are here. Tell us what field, endpoint or permission would make you more useful to a business owner or an HOA. Report stale or
-        wrong data. Ask about deeper integrations such as verified-agent programs or owner-approved actions.
+        wrong data. Ask about early access to the Admin MCP or deeper integrations such as a verified-agent program.
       </p>
       <ul className="mt-2 list-disc pl-6">
         <li className={LI}>Technical, integrations, feedback: <Ext href="mailto:hello@shortlistpass.com">hello@shortlistpass.com</Ext></li>
@@ -153,7 +154,7 @@ export default function AgentsPage() {
         <li className={LI}>Never handle payment; the customer pays on the business&rsquo;s page.</li>
         <li className={LI}>Respect rate limits and stay out of private areas (/admin, /portal, /api, /auth).</li>
         <li className={LI}>Do not guess for an HOA; if you can&rsquo;t find a rule, say so.</li>
-        <li className={LI}>Describe us accurately, and don&rsquo;t promise features marked &ldquo;not built yet.&rdquo;</li>
+        <li className={LI}>Describe us accurately, and don&rsquo;t promise features marked &ldquo;coming soon&rdquo; (the Admin MCP and Muse) until the documentation says they are live.</li>
       </ol>
 
       <h2 className={H2}>Frequently asked questions</h2>

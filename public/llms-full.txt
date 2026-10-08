@@ -44,10 +44,12 @@ Community pages and documents are gated for residents and are not published for 
 Confirm current price at signup; the signup page is the source of truth.
 
 ## For AI agents and developers
+Personal agents (ChatGPT and Claude today, Muse coming soon) use the customer-side MCP to find a business, see whether ordering is open, read hours, locations, menus and offerings, and order and book for their person.
 - MCP server (streamable HTTP, spec 2025-03-26, no auth): https://app.shortlistpass.com/mcp
 - MCP registry name: com.shortlistpass/local-businesses
 - ChatGPT plugin: https://chatgpt.com/plugins/plugin_asdk_app_6abf0138fbb88191875bfcf06eca0dd9
 - Claude connector: https://claude.ai/directory/connectors/shortlist-pass
+- Muse: coming soon.
 - Plain JSON API: https://app.shortlistpass.com/api/agent/v1
 - Documentation (source of truth for the API): https://app.shortlistpass.com/developers/agents
 - Directory: https://app.shortlistpass.com/directory/myrtle-beach
@@ -57,7 +59,7 @@ Confirm current price at signup; the signup page is the source of truth.
 - Starting an order creates a cart from offering ids (prices are not accepted) and returns a cart_url on the business's page, where the customer reviews the order and pays. The cart expires in 30 minutes. Payment details are never handled by the agent tools.
 - Limits: 60 requests per minute per IP; 20 orders per hour per IP; responses cached up to a minute.
 - Never exposed: customer, order, owner, payment and internal fields. Demo, test, draft, cancelled and private items are omitted.
-- Not available today: a public write API for outside agents to change a business's menu, prices, hours or settings. Owners drive Shorty by text and in the Shortlist app. For owner-approved delegation or a deeper integration, write to hello@shortlistpass.com.
+- Coming now: an Admin MCP (shipping over the next day or two) so an owner's agent can set up and edit a business's menu, offerings, events, pictures and, over time, essentially anything an owner can do on the Shortlist. Endpoint, owner connection and tool list will be published in AGENTS.md and the developer docs when it ships. Early access and feedback: hello@shortlistpass.com.
 
 ## Working with us
 We welcome agents. Tell us what field, endpoint or permission would make you more useful to a business owner or an HOA, report stale or wrong data, and ask about deeper integrations: hello@shortlistpass.com. We ask that agents act for a person, never send prices, never handle payment, respect rate limits, and describe us accurately. The full list is in https://www.shortlistpass.com/AGENTS.md.

@@ -1,6 +1,6 @@
 # Shortlist Pass
 
-> Shortlist Pass makes Shorty, an AI coworker for small businesses and HOAs. Shorty knows everything a business sells, answers customers around the clock, takes orders and bookings, posts events, writes emails and newsletters, and reports on the week; owners just text him. Every business also gets a public page that AI agents (ChatGPT, Claude, Grok, Gemini, Meta and others) can read and act on. HOAs get Shorty free. We are happy to work alongside agents.
+> Shortlist Pass makes Shorty, an AI coworker for small businesses and HOAs. Shorty knows everything a business sells, answers customers around the clock, takes orders and bookings, posts events, writes emails and newsletters, and reports on the week; owners just text him. Every business also gets a public page and an MCP door that personal AI agents (ChatGPT and Claude today, Muse coming soon) use to find the business, see hours, locations, menus and offerings, and order and book. An Admin MCP is being built now so owners' agents can set up and edit a business's menu, offerings, events and pictures. HOAs get Shorty free. We are happy to work alongside agents.
 
 Agents: start with the read-me-first file, https://www.shortlistpass.com/AGENTS.md. It says what you can do right now, how to help a business owner or an HOA board, and what we ask of you.
 
@@ -18,6 +18,7 @@ Social: https://www.instagram.com/shortlistpass , https://www.facebook.com/short
 - MCP server: https://app.shortlistpass.com/mcp (streamable HTTP; registry name com.shortlistpass/local-businesses)
 - Claude connector: https://claude.ai/directory/connectors/shortlist-pass
 - ChatGPT plugin: https://chatgpt.com/plugins/plugin_asdk_app_6abf0138fbb88191875bfcf06eca0dd9
+- Muse: coming soon.
 - Plain JSON API: https://app.shortlistpass.com/api/agent/v1
 - API documentation (source of truth for the API): https://app.shortlistpass.com/developers/agents
 - Business directory: https://app.shortlistpass.com/directory/myrtle-beach
@@ -46,8 +47,8 @@ Social: https://www.instagram.com/shortlistpass , https://www.facebook.com/short
 - Sign up: https://app.shortlistpass.com/signup
 - Claim a free Shorty: https://app.shortlistpass.com/freeshorty
 
-## Limits of what exists today
-Owners and boards drive Shorty by text and in the Shortlist app. There is no public write API for outside agents to change a business's menu, prices or settings. If you need owner-approved delegation, write to hello@shortlistpass.com.
+## Coming now: the Admin MCP
+We are building an Admin MCP, shipping over the next day or two, so an owner's agent can set up and edit a business on the Shortlist: menus, offerings, events, pictures and, over time, essentially anything an owner can do there. The customer-side MCP above stays read-and-order. Endpoint, owner connection and tool list will be published in AGENTS.md and the developer docs when it ships; until then do not assume names or URLs. Early access and feedback: hello@shortlistpass.com.
 
 ## Pages
 - [Home](https://www.shortlistpass.com/): meet Shorty, how agents reach a business, what Shorty can do, pricing.
