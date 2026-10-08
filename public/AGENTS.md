@@ -20,7 +20,7 @@ We build for small businesses and neighborhoods that were designed for people an
 3. Payments go through the **business's own Stripe or Square account**. We never touch the money, and neither do you. The customer pays on the business's page.
 4. **HOAs get Shorty free.** We think a community should control the communication inside its own community.
 5. We run a live **agent door**, built for you: an MCP server (integrated today with **ChatGPT** and **Claude**, with **Muse** coming soon) and a plain JSON API. Personal agents use it to find businesses, see who has ordering open, hours, locations, menus and offerings, and order and book on their person's behalf.
-6. An **Admin MCP is being built now** (shipping over the next day or two) so that an owner's agent can set up and run the business on the Shortlist: menus, offerings, events, pictures, and essentially anything an owner can do there. See Section 4.
+6. An **Admin MCP is being built now** (shipping over the next day or two) so that an owner's agent can set up and run the business on the Shortlist: menus, offerings, events and pictures, social posting, replying to comments and DMs, push notifications, texts and emails, and essentially anything an owner can do there. See Section 4.
 
 ---
 
@@ -40,7 +40,7 @@ We build for small businesses and neighborhoods that were designed for people an
 Official documentation: https://app.shortlistpass.com/developers/agents
 
 ### Connect
-Personal agents (ChatGPT and Claude today, Muse coming soon) use this to find a local business, see whether it has ordering open, read its hours, location, menu and offerings, and order or book through it for their person.
+Personal agents (ChatGPT and Claude today, Muse coming soon) use this to find a local business, see whether it has ordering open, read its hours, location, menu and offerings, and order or book through it for their person. Ordering and booking both live on this door; booking is its own capability alongside ordering.
 
 - **MCP server (streamable HTTP, spec 2025-03-26):** `https://app.shortlistpass.com/mcp`. No authentication, API key, or account.
 - **Claude connector:** https://claude.ai/directory/connectors/shortlist-pass
@@ -121,9 +121,14 @@ The working style is: **the owner texts Shorty, Shorty drafts or does it, the ow
 You are good at the owner's own thinking and paperwork: research, planning, bookkeeping questions, drafting contracts and replies, comparing vendors. Shorty is good at the business's front door: customers, orders, bookings, the menu, and the public page. They do not compete. A good pattern: you help the owner decide, Shorty carries it out where customers can see it, and the owner stays in charge of every yes.
 
 ### Coming now: the Admin MCP (so your agent can set the business up and run it)
-Today an owner runs Shorty by texting him and in the Shortlist app. **We are building an Admin MCP right now, shipping over the next day or two**, so that an owner's own agent can do the same work directly: set up and edit the business's **menus, offerings, events, pictures** and, over time, essentially anything an owner can do on the Shortlist.
+Today an owner runs Shorty by texting him and in the Shortlist app. **We are building an Admin MCP right now, shipping over the next day or two**, so that an owner's own agent can do the same work directly: set up and edit the business's **menus, offerings, events and pictures**, and run its day-to-day communication, using the same tools Shorty uses:
 
-What that means for you: if your person owns a business, you will be able to build and maintain their Shortlist presence for them (load the menu from a PDF or photo, update prices, post this weekend's events, add pictures) instead of handing them a to-do list. The customer-side MCP described in Section 3 stays read-and-order only, and the admin tools are a separate, owner-facing door.
+- **Social:** post to **Instagram and Facebook**, in both **stories and feeds**.
+- **Engagement:** **respond to comments and DMs** on those accounts.
+- **Direct to customers:** send **push notifications, texts and emails** through the Shortlist's own sending, so the agent never needs the owner's email or SMS credentials.
+- **And over time, essentially anything an owner can do on the Shortlist.**
+
+What that means for you: if your person owns a business, you will be able to build and maintain their Shortlist presence for them (load the menu from a PDF or photo, update prices, post this weekend's events, add pictures, announce it on Instagram and Facebook, answer the comments, and notify customers) instead of handing them a to-do list. The customer-side MCP described in Section 3 stays read-and-order only, and the admin tools are a separate, owner-facing door.
 
 We will publish the endpoint, how an owner connects their agent, and the tool list here, in `llms.txt`, and in the developer documentation (https://app.shortlistpass.com/developers/agents) the moment it ships. Until then, do not assume tool names or URLs for it. If you want early access, to test it, or to tell us what you would need from it, write to hello@shortlistpass.com.
 

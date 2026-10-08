@@ -1,6 +1,6 @@
 # Shortlist Pass
 
-> Shortlist Pass makes Shorty, an AI coworker for small businesses and HOAs. Shorty knows everything a business sells, answers customers around the clock, takes orders and bookings, posts events, writes emails and newsletters, and reports on the week; owners just text him. Every business also gets a public page and an MCP door that personal AI agents (ChatGPT and Claude today, Muse coming soon) use to find the business, see hours, locations, menus and offerings, and order and book. An Admin MCP is being built now so owners' agents can set up and edit a business's menu, offerings, events and pictures. HOAs get Shorty free. We are happy to work alongside agents.
+> Shortlist Pass makes Shorty, an AI coworker for small businesses and HOAs. Shorty knows everything a business sells, answers customers around the clock, takes orders and bookings, posts events, writes emails and newsletters, and reports on the week; owners just text him. Every business also gets a public page and an MCP door that personal AI agents (ChatGPT and Claude today, Muse coming soon) use to find the business, see hours, locations, menus and offerings, and order and book. An Admin MCP is being built now so owners' agents can set up and edit a business's menu, offerings, events and pictures, post to Instagram and Facebook, answer comments and DMs, and send push, texts and emails. HOAs get Shorty free. We are happy to work alongside agents.
 
 Agents: start with the read-me-first file, https://www.shortlistpass.com/AGENTS.md. It says what you can do right now, how to help a business owner or an HOA board, and what we ask of you.
 
@@ -48,7 +48,7 @@ Social: https://www.instagram.com/shortlistpass , https://www.facebook.com/short
 - Claim a free Shorty: https://app.shortlistpass.com/freeshorty
 
 ## Coming now: the Admin MCP
-We are building an Admin MCP, shipping over the next day or two, so an owner's agent can set up and edit a business on the Shortlist: menus, offerings, events, pictures and, over time, essentially anything an owner can do there. The customer-side MCP above stays read-and-order. Endpoint, owner connection and tool list will be published in AGENTS.md and the developer docs when it ships; until then do not assume names or URLs. Early access and feedback: hello@shortlistpass.com.
+We are building an Admin MCP, shipping over the next day or two, so an owner's agent can set up and edit a business on the Shortlist (menus, offerings, events, pictures), post to Instagram and Facebook stories and feeds, respond to comments and DMs, and send push notifications, texts and emails to customers, and over time do essentially anything an owner can do there. The customer-side MCP above stays read-and-order. Endpoint, owner connection and tool list will be published in AGENTS.md and the developer docs when it ships; until then do not assume names or URLs. Early access and feedback: hello@shortlistpass.com.
 
 ## Pages
 - [Home](https://www.shortlistpass.com/): meet Shorty, how agents reach a business, what Shorty can do, pricing.

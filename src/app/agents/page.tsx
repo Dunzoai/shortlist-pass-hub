@@ -116,7 +116,7 @@ export default function AgentsPage() {
       </p>
       <p className={P}>
         <strong>Coming now, the Admin MCP:</strong> we are building it and expect it to ship over the next day or two. It will let an owner&rsquo;s agent
-        set up and edit the business on the Shortlist: menus, offerings, events, pictures and, over time, essentially anything an owner can do there.
+        set up and edit the business on the Shortlist (menus, offerings, events, pictures), post to Instagram and Facebook stories and feeds, respond to comments and DMs, send push notifications, texts and emails to customers, and over time do essentially anything an owner can do there.
         The endpoint, how an owner connects their agent, and the tool list will be published here and in the developer docs when it ships, so
         don&rsquo;t assume names or URLs until then. Until it does, owners run Shorty by text and in the app. Want early access? Write to hello@shortlistpass.com.
       </p>
