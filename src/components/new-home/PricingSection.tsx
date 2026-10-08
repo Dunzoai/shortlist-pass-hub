@@ -9,7 +9,7 @@
  */
 import Image from "next/image";
 import { useAudience } from "./audience";
-import { APP_FREE_URL, APP_SIGNUP_URL } from "./SiteHeader";
+import { APP_FREE_URL, APP_SIGNUP_URL, APP_VERIFIED_URL } from "./SiteHeader";
 
 const INK = "#14161A", MINT_LIGHT = "#D7F5E8", MINT = "#34D399", PAPER = "#F6F1E4";
 const SANS = "var(--font-sora), system-ui, sans-serif";
@@ -191,7 +191,7 @@ export function PricingSection() {
                     <p className={FINE} style={{ fontFamily: BODY }}>Integrated with Square and Stripe. We never touch your money.</p>
                     <p className={FINE} style={{ fontFamily: BODY }}>Texting and social posting are available as add-ons.</p>
                   </div>
-                  <a href={APP_SIGNUP_URL} className={`${BTN} mt-auto self-start bg-[#14161A] text-[#F6F1E4]`} style={{ fontFamily: BODY }}>
+                  <a href={APP_VERIFIED_URL} className={`${BTN} mt-auto self-start bg-[#14161A] text-[#F6F1E4]`} style={{ fontFamily: BODY }}>
                     Get your own Shorty
                   </a>
                 </div>

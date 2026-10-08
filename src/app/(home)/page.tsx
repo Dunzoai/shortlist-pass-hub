@@ -49,7 +49,7 @@ const JSON_LD = {
         "An AI coworker for small businesses. Shorty knows what you sell, answers customers around the clock, takes orders and bookings, posts to social media and handles the busywork. Integrated with Square and Stripe; Shortlist Pass never touches your money. Free for HOAs.",
       publisher: { "@id": `${SITE}/#org` },
       offers: [
-        { "@type": "Offer", name: "Verified Shorty", price: "50", priceCurrency: "USD", priceSpecification: { "@type": "UnitPriceSpecification", price: "50", priceCurrency: "USD", unitText: "MONTH" }, url: "https://app.shortlistpass.com/signup" },
+        { "@type": "Offer", name: "Verified Shorty", price: "50", priceCurrency: "USD", priceSpecification: { "@type": "UnitPriceSpecification", price: "50", priceCurrency: "USD", unitText: "MONTH" }, url: "https://app.shortlistpass.com/go" },
         { "@type": "Offer", name: "Free Shorty", price: "0", priceCurrency: "USD", url: "https://app.shortlistpass.com/freeshorty" },
       ],
     },

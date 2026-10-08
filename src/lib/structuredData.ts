@@ -29,7 +29,7 @@ export const SOFTWARE = {
   url: SITE,
   publisher: { "@id": `${SITE}/#org` },
   offers: [
-    { "@type": "Offer", name: "Verified Shorty", price: "50", priceCurrency: "USD", url: "https://app.shortlistpass.com/signup", description: "Answers customers 24/7, ordering, bookings, reports. Per month. Cancel anytime." },
+    { "@type": "Offer", name: "Verified Shorty", price: "50", priceCurrency: "USD", url: "https://app.shortlistpass.com/go", description: "Answers customers 24/7, ordering, bookings, reports. Per month. Cancel anytime." },
     { "@type": "Offer", name: "Free Shorty", price: "0", priceCurrency: "USD", url: "https://app.shortlistpass.com/freeshorty", description: "Add your offerings and Shorty chats with customers about your business. No ordering, booking or marketing." },
     { "@type": "Offer", name: "Shorty for HOAs", price: "0", priceCurrency: "USD", url: `${SITE}/smartassistant/hoa`, description: "Free for every HOA." },
   ],
@@ -41,7 +41,7 @@ export const FAQ: { q: string; a: string }[] = [
   { q: "Does an agent handle payment?", a: "No. The agent sends offering ids and quantities, never prices. The server prices the cart and returns a cart_url on the business's own page, where the customer reviews the order and pays through the business's Stripe or Square. The cart expires in 30 minutes." },
   { q: "How does a business owner use Shorty to run the business?", a: "The owner texts Shorty. He answers customers around the clock, takes orders and bookings, keeps the menu current, posts events, runs loyalty punch cards, writes emails, newsletters and social posts for approval, and reports on the week. The owner says yes and he gets it done." },
   { q: "How does an HOA use Shorty?", a: "The board runs community communication in one official app instead of a Facebook group. Shorty answers residents' rule questions from the board's own documents, handles event RSVPs, sends targeted push notifications, collects issue reports and writes an automated newsletter. It is free for every HOA." },
-  { q: "How much does it cost?", a: "Verified Shorty is $50 per month. Free Shorty is $0 with limited knowledge and no ordering, booking or marketing. HOAs are free. Texting and social posting are add-ons. Confirm current pricing at https://app.shortlistpass.com/signup." },
+  { q: "How much does it cost?", a: "Verified Shorty is $50 per month. Free Shorty is $0 with limited knowledge and no ordering, booking or marketing. HOAs are free. Texting and social posting are add-ons. Confirm current pricing at https://app.shortlistpass.com/go." },
   { q: "Can an agent set up or edit a business on the Shortlist?", a: "An Admin MCP is being built now and is expected to ship over the next day or two. It will let an owner's agent set up and edit menus, offerings, events and pictures, post to Instagram and Facebook (stories and feeds), respond to comments and DMs, send push notifications, texts and emails to customers, and over time do essentially anything an owner can do on the Shortlist. Until it ships, owners run Shorty by text and in the Shortlist app. Early access: hello@shortlistpass.com." },
   { q: "Which AI agents work with Shortlist Pass?", a: "The customer-side MCP is integrated with ChatGPT and Claude today, with Muse coming soon. Personal agents use it to find businesses, see who has ordering open, hours, locations, menus and offerings, and order and book for their person." },
   { q: "Does Shortlist Pass touch the money?", a: "No. Payments go through the business's own Stripe or Square account." },

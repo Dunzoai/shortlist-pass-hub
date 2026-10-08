@@ -7,6 +7,7 @@ import { useAudience, type Audience } from "./audience";
 
 export const APP_SIGNUP_URL = "https://app.shortlistpass.com/signup";
 export const EVENTS_URL = "https://events.shortlistpass.com";
+export const APP_VERIFIED_URL = "https://app.shortlistpass.com/go"; // the $50 Verified Shorty checkout
 export const APP_FREE_URL = "https://app.shortlistpass.com/freeshorty";
 const APP_URL = "https://app.shortlistpass.com";
 

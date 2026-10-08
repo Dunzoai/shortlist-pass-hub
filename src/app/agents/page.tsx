@@ -106,7 +106,7 @@ export default function AgentsPage() {
       <h3 className={H3}>Getting your owner started</h3>
       <ol className="mt-2 list-decimal pl-6">
         <li className={LI}>Check whether they are already listed with <code className={CODE}>search_businesses</code>.</li>
-        <li className={LI}><Ext href="https://app.shortlistpass.com/freeshorty">Claim a free Shorty</Ext> or <Ext href="https://app.shortlistpass.com/signup">sign up for Verified Shorty</Ext>.</li>
+        <li className={LI}><Ext href="https://app.shortlistpass.com/freeshorty">Claim a free Shorty</Ext> or <Ext href="https://app.shortlistpass.com/go">sign up for Verified Shorty</Ext>.</li>
         <li className={LI}>The owner uploads a menu or price list and chats with Shorty about the business.</li>
         <li className={LI}>From then on, every agent can read and act on their page.</li>
       </ol>

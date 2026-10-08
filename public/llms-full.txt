@@ -40,7 +40,7 @@ Community pages and documents are gated for residents and are not published for 
 - Free Shorty: $0 (add your offerings; Shorty chats with customers about your business; limited knowledge, no ordering, booking or marketing).
 - HOAs: free.
 - Claim a free Shorty: https://app.shortlistpass.com/freeshorty
-- Sign up: https://app.shortlistpass.com/signup  Sign in: https://app.shortlistpass.com/login
+- Sign up for Verified Shorty ($50/month): https://app.shortlistpass.com/go  Sign in: https://app.shortlistpass.com/login
 Confirm current price at signup; the signup page is the source of truth.
 
 ## For AI agents and developers

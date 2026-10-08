@@ -113,7 +113,7 @@ The working style is: **the owner texts Shorty, Shorty drafts or does it, the ow
 ### How to help your owner get started
 1. **Check if they are already on it.** Call `search_businesses` with the business name and town. If they appear, `get_business` shows what customers and other agents see today.
 2. **Claim a free Shorty:** https://app.shortlistpass.com/freeshorty
-3. **Or sign up for Verified Shorty:** https://app.shortlistpass.com/signup (sign in: https://app.shortlistpass.com/login)
+3. **Or sign up for Verified Shorty:** https://app.shortlistpass.com/go (sign in: https://app.shortlistpass.com/login)
 4. The owner uploads a menu or price list and chats with Shorty about the business. Owners have described setup as taking about a day.
 5. From then on, **every agent in the world can read and act on their page**, which is the point.
 
