@@ -1,0 +1,733 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Shorty's lot</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Schibsted+Grotesk:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.stg button{font-family:'Schibsted Grotesk','Helvetica Neue',Helvetica,sans-serif;cursor:pointer}
+.stg .obj{position:absolute;padding:0;border:0;background:transparent;transition:transform .15s}
+.stg .obj:hover{transform:translateY(-3px)}
+.stg .obj:focus-visible,.stg .chip:focus-visible,.stg .pill:focus-visible,.stg .pb:focus-visible{outline:3px solid #34D399;outline-offset:2px}
+.stg .chip{transition:transform .12s,box-shadow .12s,background .12s}
+.stg .chip:hover{background:#D7F5E8}
+.stg .chip:active{transform:translate(2px,2px);box-shadow:0 2px 6px -4px rgba(26,28,32,.5)}
+.stg .bubble{animation:bpop .3s cubic-bezier(.3,1.5,.5,1) both}
+.stg .dot{animation:tw 3s ease-in-out infinite}
+.stg .dot:nth-child(even){animation-delay:1.2s}
+.stg .grab{cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+.stg .grab.held{cursor:grabbing}
+.stg .shake{animation:shake .55s ease-in-out both}
+.stg .lift{transition:transform .7s cubic-bezier(.2,1.3,.4,1),opacity .4s}
+.stg .ding .cph{fill:#E2A43C}
+.stg .ding .ring{animation:ring 1s ease-out 3;transform-box:fill-box;transform-origin:50% 50%}
+.stg .ring{opacity:0}
+.stg .sign{transition:transform .5s;transform-style:preserve-3d}
+.stg .sign.flip{transform:rotateY(180deg)}
+.stg .face{backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.stg .hint{animation:hintIn .6s ease-out 1.2s both}
+.stg .ph{animation:phIn .45s cubic-bezier(.2,1.2,.4,1) both}
+.stg .msg{animation:bpop .3s ease-out both}
+.stg .tapme{animation:tapme 1.1s ease-in-out infinite}
+.stg .pb{transition:transform .1s}
+.stg .pb:active{transform:scale(.96)}
+.stg .shr{animation:shrink .5s ease-in both}
+@keyframes bpop{from{opacity:0;transform:translateY(6px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes tw{0%,100%{opacity:1}50%{opacity:.55}}
+@keyframes shake{0%,100%{transform:translate(0,0) rotate(0)}15%{transform:translate(-4px,-3px) rotate(-1.2deg)}35%{transform:translate(4px,-5px) rotate(1.2deg)}55%{transform:translate(-3px,-2px) rotate(-.8deg)}75%{transform:translate(3px,-3px) rotate(.8deg)}}
+@keyframes ring{0%{opacity:.9;transform:scale(.6)}100%{opacity:0;transform:scale(2.6)}}
+@keyframes hintIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@keyframes phIn{from{opacity:0;transform:translateY(40px) rotate(-3deg)}to{opacity:1;transform:none}}
+@keyframes tapme{0%,100%{box-shadow:0 0 0 0 rgba(229,190,85,.9)}60%{box-shadow:0 0 0 10px rgba(229,190,85,0)}}
+@keyframes shrink{from{transform:scale(1)}to{transform:scale(.2);opacity:0}}
+@media (prefers-reduced-motion: reduce){.stg *{animation-duration:.01ms !important;transition-duration:.01ms !important}}
+</style>
+</helmet>
+<div class="stg" style="width: 100%; box-sizing: border-box; background: #F6F1E4; border: 1px solid #E6DFCC; border-radius: 24px; overflow: hidden; box-shadow: 0 24px 48px -30px rgba(26,28,32,.55); font-family: 'Schibsted Grotesk', 'Helvetica Neue', Helvetica, sans-serif; color: #1A1C20">
+
+  <section ref="{{stageRef}}" aria-label="Shorty's lot" style="position: relative; height: {{H}}px; background: #2A2E36; overflow: hidden; touch-action: none; transition: height .3s">
+    <div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 0; height: {{skyH}}px; background: #3A3F49"></div>
+    <div aria-hidden="true" style="position: absolute; right: 7%; top: 58px; width: 40px; height: 40px; border-radius: 99px; background: #F6F1E4; opacity: {{moonOp}}; transition: opacity .3s"></div>
+    <div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 12px; display: flex; justify-content: space-around; padding: 0 14px">
+      <span class="dot" style="width: 9px; height: 9px; border-radius: 99px; background: #E2A43C"></span><span class="dot" style="width: 9px; height: 9px; border-radius: 99px; background: #E2A43C; margin-top: 5px"></span><span class="dot" style="width: 9px; height: 9px; border-radius: 99px; background: #E2A43C; margin-top: 8px"></span><span class="dot" style="width: 9px; height: 9px; border-radius: 99px; background: #E2A43C; margin-top: 10px"></span><span class="dot" style="width: 9px; height: 9px; border-radius: 99px; background: #E2A43C; margin-top: 8px"></span><span class="dot" style="width: 9px; height: 9px; border-radius: 99px; background: #E2A43C; margin-top: 5px"></span><span class="dot" style="width: 9px; height: 9px; border-radius: 99px; background: #E2A43C"></span>
+    </div>
+
+    <!-- customers at the back fence -->
+    <svg class="{{dingCls}}" aria-hidden="true" viewBox="0 0 200 60" style="position: absolute; left: {{custX}}px; bottom: {{custY}}px; width: {{custW}}px; height: auto; opacity: {{lotOp}}; transition: opacity .3s">
+      <g>
+        <circle cx="30" cy="18" r="9" fill="#1A1C20"></circle><rect x="20" y="28" width="20" height="26" rx="6" fill="#45423C"></rect>
+        <rect class="cph" x="36" y="26" width="9" height="14" rx="2" fill="#6B6356" stroke="#1A1C20" stroke-width="1.5"></rect><circle class="ring" cx="40" cy="33" r="8" fill="none" stroke="#E2A43C" stroke-width="2"></circle>
+      </g>
+      <g>
+        <circle cx="100" cy="16" r="9" fill="#1A1C20"></circle><rect x="90" y="26" width="20" height="28" rx="6" fill="#5A5448"></rect>
+        <rect class="cph" x="106" y="24" width="9" height="14" rx="2" fill="#6B6356" stroke="#1A1C20" stroke-width="1.5"></rect><circle class="ring" cx="110" cy="31" r="8" fill="none" stroke="#E2A43C" stroke-width="2"></circle>
+      </g>
+      <g>
+        <circle cx="166" cy="19" r="9" fill="#1A1C20"></circle><rect x="156" y="29" width="20" height="25" rx="6" fill="#45423C"></rect>
+        <rect class="cph" x="146" y="27" width="9" height="14" rx="2" fill="#6B6356" stroke="#1A1C20" stroke-width="1.5"></rect><circle class="ring" cx="150" cy="34" r="8" fill="none" stroke="#E2A43C" stroke-width="2"></circle>
+      </g>
+    </svg>
+
+    <div aria-hidden="true" style="position: absolute; left: 0; right: 0; bottom: 0; height: {{G}}px; background: #14161A; border-top: 1px solid #E6DFCC"></div>
+
+    <!-- post card, rises from behind the crate -->
+    <div class="lift" aria-hidden="true" style="position: absolute; left: {{crateX}}px; bottom: {{objBottom}}px; width: {{postW}}px; box-sizing: border-box; background: #F6F1E4; border: 1px solid #E6DFCC; border-radius: 8px; padding: 8px 10px; box-shadow: 0 14px 28px -20px rgba(26,28,32,.5); transform: translateY({{postY}}px) rotate(-3deg); opacity: {{postOp}}">
+      <div style="font-size: 9px; font-weight: 700; letter-spacing: .14em; color: #0B7A50">NEW POST · ALL FOLLOWERS</div>
+      <div style="font-family: 'Instrument Serif', Georgia, serif; font-size: 14px; line-height: 1.15; margin-top: 3px">Tonight at [PLACE] til 9</div>
+    </div>
+
+    <!-- order ticket, rises from behind the truck -->
+    <div class="lift" aria-hidden="true" style="position: absolute; left: {{orderX}}px; bottom: {{objBottom}}px; width: {{orderW}}px; box-sizing: border-box; background: #FFFFFF; border: 1px solid #E6DFCC; border-radius: 6px 6px 2px 2px; padding: 8px 10px; box-shadow: 0 14px 28px -20px rgba(26,28,32,.5); transform: translateY({{orderY}}px) rotate(2deg); opacity: {{orderOp}}">
+      <div style="display: flex; justify-content: space-between; font-size: 9px; font-weight: 700; letter-spacing: .12em"><span>ORDER</span><span style="color: #0B7A50">PAID</span></div>
+      <div style="font-size: 13px; font-weight: 700; margin-top: 3px">2 × [ITEM]</div>
+      <div style="font-size: 11px; color: #45423C">Pickup 6:40 · [CUSTOMER]</div>
+    </div>
+
+    <!-- A-frame sign -->
+    <button type="button" class="obj" aria-label="Tap the sign" onClick="{{tapSign}}" style="left: {{signX}}px; bottom: {{objBottom}}px; width: {{signW}}px; opacity: {{lotOp}}; pointer-events: {{lotPE}}; perspective: 400px">
+      <div class="sign {{signCls}}" style="position: relative; width: 100%; aspect-ratio: 1 / 1.25">
+        <svg class="face" viewBox="0 0 90 112" style="position: absolute; inset: 0; width: 100%; height: 100%" aria-hidden="true">
+          <path d="M14 10 L4 104 M76 10 L86 104" stroke="#1A1C20" stroke-width="4" stroke-linecap="round"></path>
+          <rect x="10" y="8" width="70" height="78" rx="4" fill="#F6F1E4" stroke="#1A1C20" stroke-width="3"></rect>
+          <text x="45" y="34" text-anchor="middle" font-family="Instrument Serif, Georgia, serif" font-style="italic" font-size="22" fill="#0B7A50">Tonight</text>
+          <text x="45" y="54" text-anchor="middle" font-family="Schibsted Grotesk, sans-serif" font-size="11" font-weight="700" fill="#1A1C20">[PLACE]</text>
+          <text x="45" y="70" text-anchor="middle" font-family="Schibsted Grotesk, sans-serif" font-size="11" font-weight="700" fill="#1A1C20">5 – 9</text>
+        </svg>
+        <svg class="face" viewBox="0 0 90 112" style="position: absolute; inset: 0; width: 100%; height: 100%; transform: rotateY(180deg)" aria-hidden="true">
+          <path d="M14 10 L4 104 M76 10 L86 104" stroke="#1A1C20" stroke-width="4" stroke-linecap="round"></path>
+          <rect x="10" y="8" width="70" height="78" rx="4" fill="#34D399" stroke="#1A1C20" stroke-width="3"></rect>
+          <text x="45" y="26" text-anchor="middle" font-family="Schibsted Grotesk, sans-serif" font-size="9" font-weight="700" letter-spacing="1.5" fill="#1A1C20">THIS WEEK</text>
+          <text x="16" y="44" font-family="Schibsted Grotesk, sans-serif" font-size="10" font-weight="700" fill="#1A1C20">TUE  [PLACE]</text>
+          <text x="16" y="60" font-family="Schibsted Grotesk, sans-serif" font-size="10" font-weight="700" fill="#1A1C20">THU  [PLACE]</text>
+          <text x="16" y="76" font-family="Schibsted Grotesk, sans-serif" font-size="10" font-weight="700" fill="#1A1C20">SAT  [PARK]</text>
+        </svg>
+      </div>
+    </button>
+
+    <!-- crate with the phone and the megaphone -->
+    <svg aria-hidden="true" viewBox="0 0 120 70" style="position: absolute; left: {{crateX}}px; bottom: {{objBottom}}px; width: {{crateW}}px; height: auto; opacity: {{lotOp}}; transition: opacity .3s">
+      <rect x="4" y="22" width="112" height="46" rx="3" fill="#8A6A3C" stroke="#1A1C20" stroke-width="3"></rect>
+      <path d="M4 38 H116 M4 54 H116 M30 22 V68 M90 22 V68" stroke="#1A1C20" stroke-width="2.5" opacity=".55"></path>
+    </svg>
+    <button type="button" class="obj {{phoneTap}}" aria-label="Pick up the phone" onClick="{{tapPhone}}" style="left: {{phoneX}}px; bottom: {{phoneBottom}}px; width: {{phoneW}}px; border-radius: 10px; opacity: {{lotOp}}; pointer-events: {{lotPE}}">
+      <svg viewBox="0 0 40 70" style="display: block; width: 100%; height: auto" aria-hidden="true">
+        <rect x="3" y="3" width="34" height="64" rx="7" fill="#1A1C20"></rect>
+        <rect x="6" y="9" width="28" height="52" rx="4" fill="#34D399"></rect>
+        <path d="M13 36 L18 41 L28 29" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
+      </svg>
+    </button>
+    <button type="button" class="obj" aria-label="Tap the megaphone" onClick="{{tapMega}}" style="left: {{megaX}}px; bottom: {{megaBottom}}px; width: {{megaW}}px; opacity: {{lotOp}}; pointer-events: {{lotPE}}">
+      <svg viewBox="0 0 70 50" style="display: block; width: 100%; height: auto; transform: rotate(-28deg)" aria-hidden="true">
+        <rect x="4" y="18" width="14" height="16" rx="3" fill="#1A1C20"></rect>
+        <path d="M16 14 L54 2 L54 46 L16 34 Z" fill="#E2A43C" stroke="#1A1C20" stroke-width="3" stroke-linejoin="round"></path>
+        <ellipse cx="54" cy="24" rx="6" ry="22" fill="#0B7A50" stroke="#1A1C20" stroke-width="3"></ellipse>
+      </svg>
+    </button>
+
+    <!-- table with the burger -->
+    <svg aria-hidden="true" viewBox="0 0 110 60" style="position: absolute; left: {{tableX}}px; bottom: {{objBottom}}px; width: {{tableW}}px; height: auto; opacity: {{lotOp}}; transition: opacity .3s">
+      <rect x="2" y="24" width="106" height="9" rx="2" fill="#6B4F2E" stroke="#1A1C20" stroke-width="3"></rect>
+      <path d="M22 33 L12 58 M88 33 L98 58 M30 33 L26 58 M80 33 L84 58" stroke="#1A1C20" stroke-width="3.5" stroke-linecap="round"></path>
+    </svg>
+    <button type="button" class="obj" aria-label="Tap the burger" onClick="{{tapBurger}}" style="left: {{burgerX}}px; bottom: {{burgerBottom}}px; width: {{burgerW}}px; opacity: {{lotOp}}; pointer-events: {{lotPE}}">
+      <svg viewBox="0 0 56 44" style="display: block; width: 100%; height: auto" aria-hidden="true">
+        <path d="M6 30 H50 V34 Q50 40 44 40 H12 Q6 40 6 34 Z" fill="#34D399" stroke="#1A1C20" stroke-width="2.5"></path>
+        <rect x="4" y="20" width="48" height="10" rx="5" fill="#8A5A3C" stroke="#1A1C20" stroke-width="2.5"></rect>
+        <path d="M4 19 Q10 12 16 19 Q22 12 28 19 Q34 12 40 19 Q46 12 52 19" fill="#34D399" stroke="#1A1C20" stroke-width="2.5" stroke-linejoin="round"></path>
+        <path d="M6 18 Q6 2 28 2 Q50 2 50 18 Z" fill="#34D399" stroke="#1A1C20" stroke-width="2.5"></path>
+        <circle cx="18" cy="10" r="1.6" fill="#F6F1E4"></circle><circle cx="28" cy="7" r="1.6" fill="#F6F1E4"></circle><circle cx="38" cy="11" r="1.6" fill="#F6F1E4"></circle>
+      </svg>
+    </button>
+
+    <!-- the truck -->
+    <button type="button" class="obj {{truckCls}}" aria-label="Tap the truck" onClick="{{tapTruck}}" style="left: {{truckX}}px; bottom: {{objBottom}}px; width: {{truckW}}px; transition: opacity .3s">
+      <svg viewBox="0 0 170 124" style="display: block; width: 100%; height: auto" aria-hidden="true">
+        <rect x="6" y="14" width="114" height="84" rx="5" fill="#E2A43C" stroke="#1A1C20" stroke-width="4"></rect>
+        <path d="M120 40 H140 L160 68 V98 H120 Z" fill="#E2A43C" stroke="#1A1C20" stroke-width="4" stroke-linejoin="round"></path>
+        <path d="M127 47 H138 L148 66 H127 Z" fill="#FFFFFF" stroke="#1A1C20" stroke-width="2.5" stroke-linejoin="round"></path>
+        <rect x="20" y="36" width="82" height="40" rx="3" fill="#1A1C20"></rect>
+        <rect x="23" y="39" width="76" height="34" fill="{{winFill}}" style="transition: fill .3s"></rect>
+        <sc-if value="{{inWindow}}" hint-placeholder-val="{{false}}">
+          <g>
+            <clipPath id="winClip"><rect x="23" y="39" width="76" height="34"></rect></clipPath>
+            <image href="/_blob/39976e4dd411d72e7a98347b6e0be321" x="38" y="44" width="46" height="49" clip-path="url(#winClip)"></image>
+          </g>
+        </sc-if>
+        <rect x="20" y="76" width="82" height="6" fill="#1A1C20"></rect>
+        <rect x="12" y="22" width="98" height="14" fill="#F6F1E4" stroke="#1A1C20" stroke-width="3"></rect>
+        <path d="M26 22 v14 M40 22 v14 M54 22 v14 M68 22 v14 M82 22 v14 M96 22 v14" stroke="#1A1C20" stroke-width="3"></path>
+        <text x="87" y="93" text-anchor="middle" font-family="Schibsted Grotesk, sans-serif" font-size="7" font-weight="700" letter-spacing="1" fill="#F6F1E4">[YOUR TRUCK]</text>
+        <circle cx="38" cy="100" r="13" fill="#1A1C20"></circle><circle cx="38" cy="100" r="4.5" fill="#8D8A80"></circle>
+        <circle cx="136" cy="100" r="13" fill="#1A1C20"></circle><circle cx="136" cy="100" r="4.5" fill="#8D8A80"></circle>
+      </svg>
+    </button>
+
+    <!-- the big phone -->
+    <sc-if value="{{phoneOpen}}" hint-placeholder-val="{{false}}">
+      <div class="ph" style="position: absolute; left: {{phX}}px; top: {{phTop}}px; width: {{phW}}px; height: {{phH}}px; box-sizing: border-box; background: #1A1C20; border-radius: 28px; padding: 9px; box-shadow: 0 18px 40px rgba(0,0,0,.45)">
+        <div style="position: relative; width: 100%; height: 100%; box-sizing: border-box; background: #FFFFFF; border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; font-size: 13px">
+
+          <div style="background: #1A1C20; color: #F6F1E4; padding: 12px 14px 10px; display: flex; justify-content: space-between; align-items: center">
+            <div>
+              <div style="font-family: 'Instrument Serif', Georgia, serif; font-size: 15px; line-height: 1">[YOUR TRUCK]</div>
+              <div style="font-size: 10px; color: #8D8A80; margin-top: 3px">Tonight · [PLACE] · til 9</div>
+            </div>
+            <span style="font-size: 9px; font-weight: 700; letter-spacing: .1em; color: #34D399">LIVE</span>
+          </div>
+
+          <sc-if value="{{scHome}}" hint-placeholder-val="{{true}}">
+            <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 10px; padding: 12px">
+              <div style="display: flex; gap: 8px; align-items: flex-end">
+                <sc-if value="{{inPhone}}" hint-placeholder-val="{{false}}">
+                  <div style="flex: none; width: 54px; margin: 0 -6px -6px -8px"><dc-import name="Shorty" pose="wave" talking="{{yes}}" w="64" bg="transparent" pad="0" hint-size="64px,42px"></dc-import></div>
+                </sc-if>
+                <sc-if value="{{notInPhone}}" hint-placeholder-val="{{true}}">
+                  <div style="flex: none; width: 24px; height: 24px; border-radius: 99px; background: #34D399; border: 1px solid #E6DFCC"></div>
+                </sc-if>
+                <div style="background: #34D399; color: #0D2B20; border-radius: 14px 14px 14px 4px; padding: 8px 10px; font-size: 12px; line-height: 1.35; font-weight: 600">{{phoneChat}}</div>
+              </div>
+              <button type="button" class="pb" onClick="{{goMenu}}" style="min-height: 44px; border-radius: 999px; border: 0; background: #1A1C20; color: #F6F1E4; font-size: 14px; font-weight: 700">Order ahead</button>
+              <div style="display: flex; gap: 8px">
+                <button type="button" class="pb" onClick="{{goFollow}}" style="flex: 1; min-height: 44px; border-radius: 10px; border: 1px solid #E6DFCC; background: {{followBg}}; color: #1A1C20; font-size: 13px; font-weight: 700">{{followLabel}}</button>
+                <button type="button" class="pb" onClick="{{goMenu}}" style="flex: 1; min-height: 44px; border-radius: 10px; border: 1px solid #E6DFCC; background: #FFFFFF; color: #1A1C20; font-size: 13px; font-weight: 700">Menu</button>
+              </div>
+              <div style="display: flex; gap: 6px; margin-top: 2px">
+                <div style="flex: 1; aspect-ratio: 1; border-radius: 8px; background: #E2A43C; border: 1px solid #E6DFCC"></div>
+                <div style="flex: 1; aspect-ratio: 1; border-radius: 8px; background: #34D399; border: 1px solid #E6DFCC"></div>
+                <div style="flex: 1; aspect-ratio: 1; border-radius: 8px; background: #7FA8E6; border: 1px solid #E6DFCC"></div>
+              </div>
+              <div style="font-size: 10px; color: #45423C; text-align: center">Tonight's menu · 3 items</div>
+              <div style="flex-grow: 1"></div>
+              <button type="button" class="pb" onClick="{{goInstall}}" style="min-height: 40px; border-radius: 10px; border: 1px dashed #BFB8A6; background: transparent; color: #1A1C20; font-size: 12px; font-weight: 700">Add to home screen</button>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{scMenu}}" hint-placeholder-val="{{false}}">
+            <div style="flex-grow: 1; display: flex; flex-direction: column; padding: 10px 12px; gap: 6px">
+              <div style="font-size: 10px; font-weight: 700; letter-spacing: .14em; color: #45423C">MENU · TONIGHT</div>
+              <sc-for list="{{items}}" as="it" hint-placeholder-count="3">
+                <div style="display: flex; align-items: center; gap: 10px; padding: 7px 8px; background: {{it.bg}}; border-radius: 8px; transition: background .2s">
+                  <div style="width: 30px; height: 30px; flex: none; border-radius: 6px; background: {{it.color}}; border: 1px solid #E6DFCC"></div>
+                  <div style="flex-grow: 1; min-width: 0"><div style="font-weight: 700; font-size: 12px">{{it.name}}</div><div style="font-size: 10px; color: #45423C">[PRICE]</div></div>
+                  <button type="button" class="pb" aria-label="{{it.aria}}" onClick="{{it.add}}" style="width: 34px; height: 34px; border-radius: 99px; border: 1px solid #E6DFCC; background: #34D399; font-size: 14px; font-weight: 700; padding: 0">{{it.btn}}</button>
+                </div>
+              </sc-for>
+              <div style="flex-grow: 1"></div>
+              <button type="button" class="pb" onClick="{{pay}}" style="min-height: 46px; border-radius: 999px; border: 0; background: {{payBg}}; color: {{payColor}}; font-size: 14px; font-weight: 700">{{payLabel}}</button>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{scPaid}}" hint-placeholder-val="{{false}}">
+            <div style="flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 14px; text-align: center">
+              <div class="msg" style="width: 100%; box-sizing: border-box; background: #F6F1E4; border: 1px solid #E6DFCC; border-radius: 6px; padding: 12px; box-shadow: 0 14px 28px -20px rgba(26,28,32,.5)">
+                <div style="font-size: 9px; font-weight: 700; letter-spacing: .14em; color: #0B7A50">PAID · YOU'RE IN</div>
+                <div style="font-family: 'Instrument Serif', Georgia, serif; font-size: 22px; line-height: 1.05; margin-top: 4px">Pickup 6:40</div>
+                <div style="font-size: 11px; color: #45423C; margin-top: 4px">At the window. Skip the line.</div>
+              </div>
+              <div style="font-size: 11px; line-height: 1.35; color: #45423C">Shorty texts them when it's up.</div>
+              <button type="button" class="pb" onClick="{{goHome}}" style="min-height: 40px; padding: 0 14px; border-radius: 99px; border: 1px solid #E6DFCC; background: #FFFFFF; font-size: 12px; font-weight: 700">Back to the page</button>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{scFollow}}" hint-placeholder-val="{{false}}">
+            <div style="flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 14px; text-align: center">
+              <div style="width: 56px; height: 56px; border-radius: 14px; background: #E2A43C; border: 1px solid #E6DFCC"></div>
+              <div style="font-family: 'Instrument Serif', Georgia, serif; font-size: 18px; line-height: 1.1">[YOUR TRUCK]</div>
+              <button type="button" class="pb" onClick="{{toggleFollow}}" style="min-height: 46px; padding: 0 22px; border-radius: 99px; border: 1px solid #E6DFCC; background: {{followBg}}; font-size: 14px; font-weight: 700; box-shadow: 0 10px 20px -16px rgba(26,28,32,.5)">{{followLabel}}</button>
+              <div style="font-size: 11px; line-height: 1.4; color: #45423C; min-height: 30px">{{followNote}}</div>
+              <button type="button" class="pb" onClick="{{goHome}}" style="min-height: 40px; padding: 0 14px; border-radius: 99px; border: 1px solid #E6DFCC; background: #FFFFFF; font-size: 12px; font-weight: 700">Back to the page</button>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{scInstall}}" hint-placeholder-val="{{false}}">
+            <div style="flex-grow: 1; display: flex; flex-direction: column; padding: 12px; gap: 8px; position: relative">
+              <sc-if value="{{inst0}}" hint-placeholder-val="{{true}}">
+                <div style="font-size: 12px; line-height: 1.4; color: #45423C">No app store. They tap the share button…</div>
+                <div style="flex-grow: 1"></div>
+                <div style="display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #EFE9DA">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8D8A80" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M15 18 L9 12 L15 6"></path></svg>
+                  <svg class="tapme" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1A1C20" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="border-radius: 99px" aria-hidden="true"><path d="M12 3 V15 M8 7 L12 3 L16 7 M5 12 V20 H19 V12"></path></svg>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8D8A80" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6 H20 M4 12 H20 M4 18 H20"></path></svg>
+                </div>
+              </sc-if>
+              <sc-if value="{{inst1}}" hint-placeholder-val="{{false}}">
+                <div style="font-size: 12px; line-height: 1.4; color: #45423C">…then "Add to Home Screen".</div>
+                <div style="flex-grow: 1"></div>
+                <div class="msg" style="background: #F6F1E4; border: 1px solid #E6DFCC; border-radius: 12px; overflow: hidden">
+                  <div style="padding: 10px 12px; font-size: 12px; border-bottom: 1px solid #EFE9DA">Copy link</div>
+                  <div class="tapme" style="padding: 10px 12px; font-size: 12px; font-weight: 700; background: #34D399; display: flex; justify-content: space-between"><span>Add to Home Screen</span><span>+</span></div>
+                  <div style="padding: 10px 12px; font-size: 12px">Share…</div>
+                </div>
+              </sc-if>
+              <sc-if value="{{inst2}}" hint-placeholder-val="{{false}}">
+                <div style="font-size: 12px; line-height: 1.4; color: #45423C">Now your truck is an icon on their phone.</div>
+                <div class="msg" style="flex-grow: 1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; align-content: start; padding-top: 6px">
+                  <div style="aspect-ratio: 1; border-radius: 10px; background: #E6DFCC"></div>
+                  <div style="aspect-ratio: 1; border-radius: 10px; background: #E6DFCC"></div>
+                  <div style="aspect-ratio: 1; border-radius: 10px; background: #E6DFCC"></div>
+                  <div style="aspect-ratio: 1; border-radius: 10px; background: #E6DFCC"></div>
+                  <div style="aspect-ratio: 1; border-radius: 10px; background: #E6DFCC"></div>
+                  <div class="tapme" style="aspect-ratio: 1; border-radius: 10px; background: #E2A43C; border: 1px solid #E6DFCC; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12 L10 17 L19 7"></path></svg></div>
+                  <div style="aspect-ratio: 1; border-radius: 10px; background: #E6DFCC"></div>
+                  <div style="aspect-ratio: 1; border-radius: 10px; background: #E6DFCC"></div>
+                </div>
+                <div style="font-size: 10px; font-weight: 700; text-align: center; color: #45423C; margin-left: 25%; width: 25%">[YOUR TRUCK]</div>
+              </sc-if>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{scText}}" hint-placeholder-val="{{false}}">
+            <div style="flex-grow: 1; display: flex; flex-direction: column; padding: 10px 12px; gap: 8px; background: #FFFFFF">
+              <div style="font-size: 10px; font-weight: 700; letter-spacing: .12em; color: #45423C; text-align: center">MESSAGES · [YOUR TRUCK]</div>
+              <sc-for list="{{texts}}" as="t" hint-placeholder-count="1">
+                <div class="msg" style="align-self: flex-start; max-width: 88%; background: #FFFFFF; border: 1px solid #E6DFCC; border-radius: 12px 12px 12px 3px; padding: 8px 10px; font-size: 12px; line-height: 1.35">{{t.text}}</div>
+              </sc-for>
+              <div style="flex-grow: 1"></div>
+              <div style="font-size: 10px; color: #45423C; text-align: center; line-height: 1.35">{{textNote}}</div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{scEmail}}" hint-placeholder-val="{{false}}">
+            <div style="flex-grow: 1; display: flex; flex-direction: column; padding: 12px; gap: 10px">
+              <div class="msg" style="background: #FFFFFF; border: 1px solid #E6DFCC; border-radius: 10px; padding: 10px 12px; box-shadow: 0 10px 20px -16px rgba(26,28,32,.5)">
+                <div style="display: flex; justify-content: space-between; font-size: 9px; font-weight: 700; letter-spacing: .1em; color: #45423C"><span>MAIL</span><span>now</span></div>
+                <div style="font-weight: 700; font-size: 12px; margin-top: 4px">Shortlist Pass</div>
+                <div style="font-size: 12px; line-height: 1.35">Your truck page, preorders, and how customers follow you. Sent to {{emailTo}}</div>
+              </div>
+              <div style="flex-grow: 1"></div>
+              <button type="button" class="pb" onClick="{{goHome}}" style="min-height: 40px; border-radius: 99px; border: 1px solid #E6DFCC; background: #FFFFFF; font-size: 12px; font-weight: 700">Back to the page</button>
+            </div>
+          </sc-if>
+
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- Shorty: grab him -->
+    <sc-if value="{{shortyOut}}" hint-placeholder-val="{{true}}">
+      <div class="grab {{heldCls}}" onPointerDown="{{onDown}}" role="button" tabindex="0" aria-label="Shorty. Drag him around, or flick him." style="position: absolute; left: 0; bottom: {{shortyBase}}px; width: {{sw}}px; transform: translate({{tx}}px, {{ty}}px); transition: transform {{dur}}s ease-in-out; z-index: 5">
+        <div style="transform: scaleX({{face}}); transition: transform .25s ease-out">
+          <dc-import name="Shorty" pose="{{pose}}" walking="{{walking}}" talking="{{talking}}" w="{{sw}}" bg="transparent" pad="0" hint-size="230px,245px"></dc-import>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- what Shorty says -->
+    <div class="bubble" key="{{replyKey}}" style="position: absolute; left: {{bx}}px; bottom: {{by}}px; width: {{bw}}px; box-sizing: border-box; background: #FFFFFF; border: 1px solid #E6DFCC; border-radius: 18px; padding: 10px 14px 12px; box-shadow: 0 18px 36px -24px rgba(0,0,0,.7); z-index: 6; transition: left .35s ease-out, bottom .35s ease-out">
+      <div style="font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #0B7A50">Shorty</div>
+      <div aria-live="polite" style="font-size: {{bfs}}px; line-height: 1.35; margin-top: 2px">{{reply}}</div>
+    </div>
+
+    <sc-if value="{{hintOn}}" hint-placeholder-val="{{true}}">
+      <div class="hint" aria-hidden="true" style="position: absolute; left: 0; right: 0; bottom: 8px; text-align: center; font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-size: {{hintFs}}px; color: #34D399; pointer-events: none">{{hintText}}</div>
+    </sc-if>
+  </section>
+
+  <form onSubmit="{{submit}}" style="display: flex; gap: 8px; padding: 12px; background: #F6F1E4; border-top: 1px solid #E6DFCC">
+    <label for="ask-shorty" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">{{inputLabel}}</label>
+    <input id="ask-shorty" type="{{inputType}}" value="{{typed}}" onChange="{{onType}}" placeholder="{{placeholder}}" style="flex-grow: 1; min-width: 0; min-height: 48px; box-sizing: border-box; border: 1px solid #E6DFCC; border-radius: 999px; background: {{inputBg}}; padding: 0 18px; font: 16px 'Schibsted Grotesk', sans-serif; color: #1A1C20">
+    <button type="submit" aria-label="{{sendAria}}" style="min-width: 48px; height: 48px; padding: 0 {{sendPad}}px; border-radius: 999px; border: 0; background: #1A1C20; color: #F6F1E4; font-size: {{sendFs}}px; font-weight: 700; white-space: nowrap">{{sendLabel}}</button>
+  </form>
+
+  <div style="display: flex; flex-wrap: wrap; justify-content: {{chipJustify}}; gap: 10px; padding: 14px 12px 16px; background: #F6F1E4; border-top: 1px solid #EFE9DA">
+    <sc-for list="{{chips}}" as="c" hint-placeholder-count="5">
+      <button type="button" class="chip" onClick="{{c.pick}}" style="min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1px solid #E6DFCC; background: {{c.bg}}; color: #1A1C20; font-size: {{chipFs}}px; font-weight: 700; box-shadow: 0 10px 20px -16px rgba(26,28,32,.35); text-align: left; display: flex; align-items: center; gap: 8px">
+        <sc-if value="{{c.play}}" hint-placeholder-val="{{false}}"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1 L11 6 L2 11 Z" fill="#0B7A50" stroke="#1A1C20" stroke-width="1.5" stroke-linejoin="round"></path></svg></sc-if>
+        <span>{{c.label}}</span>
+      </button>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"compact":{"editor":"boolean","default":false,"section":"Stage"},"$preview":{"width":1120,"height":800}}'>
+class Component extends DCLogic {
+  state = {
+    sx: 420, sy: 0, pose: 'wave', walking: false, talking: true, faceLeft: false, dur: 0,
+    drag: false, flying: false, where: '', mode: 'lot', screen: 'home',
+    cart: { a: 0, b: 0, c: 0 }, following: false, inst: 0, texts: [], textStep: 0,
+    inputMode: 'ask', typed: '', emailTo: '', shake: false, orderUp: false, postUp: false, ding: false,
+    signFlip: false, active: '', hint: true, replyKey: 0, W: 1070,
+    reply: "I'm Shorty. I'd be your employee. Grab me, flick me, tap the phone, the truck, the sign. Or ask me what I do."
+  };
+
+  componentDidMount() {
+    this.alive = true; this.tm = []; this.v = { vx: 0, vy: 0 }; this.samples = [];
+    this.onMoveB = (e) => this.onMove(e); this.onUpB = (e) => this.onUp(e);
+    window.addEventListener('pointermove', this.onMoveB);
+    window.addEventListener('pointerup', this.onUpB);
+    window.addEventListener('pointercancel', this.onUpB);
+    this.measure();
+    if (window.ResizeObserver && this.stageEl) { this.ro = new ResizeObserver(() => this.measure()); this.ro.observe(this.stageEl); }
+    this.setState({ sx: this.W() * 0.5 });
+    this.later(2600, () => this.setState({ pose: 'idle', talking: false }));
+    this.later(3400, () => this.wander());
+    this.later(9000, () => this.setState({ hint: false }));
+  }
+  componentWillUnmount() {
+    this.alive = false; this.tm.forEach(clearTimeout);
+    window.removeEventListener('pointermove', this.onMoveB);
+    window.removeEventListener('pointerup', this.onUpB);
+    window.removeEventListener('pointercancel', this.onUpB);
+    if (this.ro) this.ro.disconnect();
+    if (this.raf) cancelAnimationFrame(this.raf);
+  }
+  measure() { if (this.stageEl) { const w = this.stageEl.getBoundingClientRect().width; if (w && w !== this.state.W) this.setState({ W: w }); } }
+  W() { return this.state.W || 1070; }
+  k() { return this.props.compact ? 0.54 : 1.12; }
+  G() { return this.props.compact ? 96 : 110; }
+  H() { return this.props.compact ? (this.state.mode === 'phone' ? 590 : 470) : 560; }
+  sw() { const c = this.props.compact; return this.state.mode === 'phone' ? (c ? 100 : 190) : (c ? 130 : 210); }
+  sh() { return this.sw() * 149 / 140; }
+  later(ms, fn) { const id = setTimeout(() => { if (this.alive) fn(); }, ms); this.tm.push(id); return id; }
+  stopAll() { this.tm.forEach(clearTimeout); this.tm = []; if (this.raf) { cancelAnimationFrame(this.raf); this.raf = 0; } }
+  clearFx() { this.setState({ postUp: false, orderUp: false, ding: false, shake: false }); }
+  say(line, keep) { this.setState({ reply: line, replyKey: this.state.replyKey + 1, talking: true, hint: false }); if (!keep) this.later(2600, () => this.setState({ talking: false })); }
+
+  // ---- layout of the lot (stage px; x from left, y up from the floor) ----
+  geo() {
+    const W = this.W(), k = this.k(), G = this.G();
+    const truckW = 230 * k, truckX = W - truckW - W * 0.03;
+    const crateW = 120 * k, crateX = W * 0.17;
+    const tableW = 110 * k, tableX = W * 0.36;
+    const signW = 90 * k, signX = W * 0.035;
+    return { W: W, k: k, G: G, truckW: truckW, truckX: truckX, truckH: truckW * 124 / 170, roof: truckW * 124 / 170 * (110 / 124) - 6,
+      crateW: crateW, crateX: crateX, tableW: tableW, tableX: tableX, signW: signW, signX: signX, objBottom: G - 10 };
+  }
+
+  // ---- walking and wandering ----
+  walkTo(x, then) {
+    const half = this.sw() / 2, W = this.W();
+    x = Math.max(half + 4, Math.min(W - half - 4, x));
+    const dx = Math.abs(x - this.state.sx);
+    const dur = Math.max(0.35, dx / (this.props.compact ? 220 : 260));
+    this.setState({ sx: x, sy: 0, faceLeft: x < this.state.sx, walking: dx > 2, dur: dur, flying: false });
+    this.later(dur * 1000 + 80, () => { this.setState({ walking: false }); if (then) then(); });
+  }
+  wander() {
+    const s = this.state;
+    if (s.mode !== 'lot' || s.pose !== 'idle' || s.where || s.drag || s.flying) { this.later(1500, () => this.wander()); return; }
+    const spots = this.props.compact ? [0.5, 0.4, 0.56, 0.46] : [0.31, 0.55, 0.66, 0.5, 0.6, 0.31, 0.56];
+    this.spot = ((this.spot || 0) + 1) % spots.length;
+    this.walkTo(spots[this.spot] * this.W(), () => this.later(1600 + Math.random() * 1600, () => this.wander()));
+  }
+  idleSoon(ms) { this.later(ms, () => this.setState({ pose: 'idle', talking: false, active: '' })); this.later(ms + 1500, () => this.wander()); }
+
+  // ---- the objects ----
+  tapBurger() {
+    const g = this.geo(); this.stopAll(); this.clearFx();
+    this.setState({ active: 'burger', pose: 'idle', where: '' });
+    this.walkTo(g.tableX + g.tableW * 0.5 - 20 * g.k, () => { this.setState({ pose: 'eat', faceLeft: false }); this.say('Pre-ordered this one. Walked up, grabbed it, gone. No line.'); this.idleSoon(3600); });
+  }
+  tapMega() {
+    const g = this.geo(); this.stopAll(); this.clearFx();
+    this.setState({ active: 'mega', pose: 'idle', where: '' });
+    this.walkTo(g.crateX + g.crateW * 0.5 - 30 * g.k, () => {
+      this.setState({ pose: 'mega', faceLeft: false });
+      this.say("One post, every follower. 'We're at [PLACE] tonight til 9.' With Communications it goes out as a text too.", true);
+      this.later(700, () => this.setState({ postUp: true }));
+      this.later(1400, () => this.setState({ ding: true }));
+      this.later(4600, () => this.setState({ postUp: false, ding: false, talking: false }));
+      this.idleSoon(3800);
+    });
+  }
+  tapSign() {
+    const g = this.geo(); this.stopAll(); this.clearFx();
+    this.setState({ active: 'sign', pose: 'idle', where: '' });
+    this.walkTo(g.signX + g.signW + this.sw() * 0.6, () => {
+      this.setState({ pose: 'point', faceLeft: true, signFlip: !this.state.signFlip });
+      this.say('Text me your week or snap your flyer. I put your stops on your page and on the finder. A park posts its lineup once and every truck on it updates.');
+      this.idleSoon(4200);
+    });
+  }
+  tapTruck() {
+    const g = this.geo(); this.stopAll(); this.clearFx();
+    if (this.state.where === 'window') { this.setState({ where: '', sx: g.truckX - this.sw() * 0.4, sy: 0, pose: 'oof', dur: 0 }); this.say('Out. I take the orders, I don\'t cook them.'); this.idleSoon(2000); return; }
+    this.setState({ active: 'truck', pose: 'idle', where: '' });
+    const go = this.state.mode === 'phone' ? (fn) => fn() : (fn) => this.walkTo(g.truckX - this.sw() * 0.45, fn);
+    go(() => {
+      this.setState({ pose: 'phone', faceLeft: false });
+      this.say('Somebody just ordered ahead. Watch the truck.', true);
+      this.later(900, () => this.orderLands());
+      this.later(2000, () => this.say('That\'s a preorder landing. Your phone buzzes, the ticket shows at the truck. No commission on it.'));
+      this.idleSoon(4800);
+    });
+  }
+  orderLands() {
+    this.setState({ shake: true, orderUp: true });
+    this.later(700, () => this.setState({ shake: false }));
+    this.later(5200, () => this.setState({ orderUp: false }));
+  }
+
+  // ---- the phone ----
+  openPhone(line, screen, keep) {
+    const g = this.geo(); this.stopAll(); this.clearFx();
+    const phW = this.props.compact ? 236 : 290, phX = this.props.compact ? 12 : 36;
+    this.setState({ mode: 'phone', screen: screen || 'home', where: this.state.where === 'phone' ? 'phone' : '', pose: 'idle', active: 'phone', hint: false, inputMode: 'ask', typed: '' });
+    this.later(30, () => this.walkTo(phX + phW + this.sw() * (this.props.compact ? 0.45 : 0.6), () => {
+      this.setState({ pose: 'point', faceLeft: true });
+      if (line) this.say(line, keep);
+    }));
+  }
+  closePhone() {
+    this.stopAll();
+    this.setState({ mode: 'lot', where: '', pose: 'idle', active: '', inputMode: 'ask', typed: '', texts: [], textStep: 0, screen: 'home', cart: { a: 0, b: 0, c: 0 }, inst: 0 });
+    this.later(30, () => this.walkTo(this.W() * 0.5, () => { this.say('Anything else? Tap around or ask me.'); this.later(1500, () => this.wander()); }));
+  }
+  demoOrder() {
+    this.openPhone('Watch. A customer opens your page.', 'home', true);
+    this.later(1600, () => { this.setState({ screen: 'menu' }); this.say('They pick what they want.', true); });
+    this.later(2500, () => this.setState({ cart: { a: 1, b: 0, c: 0 } }));
+    this.later(3200, () => this.setState({ cart: { a: 1, b: 1, c: 0 } }));
+    this.later(4300, () => { this.setState({ screen: 'paid' }); this.say('They pay right there. No commission.', true); });
+    this.later(5400, () => { this.orderLands(); this.say('You get the ticket. They skip the line.'); });
+  }
+  pay() {
+    const c = this.state.cart; if (c.a + c.b + c.c === 0) { this.say('Add something first. Tap a plus.'); return; }
+    this.setState({ screen: 'paid' }); this.say('Paid. No commission on that.', true);
+    this.later(900, () => { this.orderLands(); this.say('And there\'s your ticket at the truck.'); });
+  }
+  runInstall() {
+    this.stopAll();
+    this.setState({ mode: 'phone', screen: 'install', inst: 0, active: 'install' });
+    if (this.state.mode !== 'phone') this.openPhone(null, 'install');
+    this.say('No app store. They tap Share, then Add to Home Screen. Your truck is an icon on their phone.', true);
+    this.later(1600, () => this.setState({ inst: 1 }));
+    this.later(3300, () => this.setState({ inst: 2, talking: false }));
+  }
+  askNumber() {
+    if (this.state.mode !== 'phone') this.openPhone(null, 'text');
+    this.stopAll();
+    this.setState({ mode: 'phone', screen: 'text', inputMode: 'tel', typed: '', active: 'text', texts: [], textStep: 0 });
+    this.say('Enter your number below and watch. On the live page the text lands on your real phone.', true);
+  }
+  sendText() {
+    const lines = [
+      { text: 'Hey! Your order is up at the window. Come grab it.', say: 'Order ready. That one goes out by itself when you mark it done.' },
+      { text: "We're back at [PLACE] Thursday, 5 to 9. Order ahead and skip the line.", say: 'Coming back to their area. One tap from you, every follower nearby.' },
+      { text: "You're one of our top 20 this month. $5 off tonight, on us.", say: 'Reward your best customers. Shorty knows who they are from the orders.' },
+      { text: 'Tonight: [PLACE] til 9. Birria is back.', say: "Tonight's stop. The same post that hits social, as a text." }
+    ];
+    const i = this.state.textStep;
+    if (i >= lines.length) { this.say('That\'s the set. Texts need Communications, $30 a month.'); return; }
+    this.setState({ texts: this.state.texts.concat([lines[i]]), textStep: i + 1, typed: '', inputMode: 'ask', active: 'text' });
+    this.say(lines[i].say);
+  }
+  sendEmail() {
+    const to = this.state.typed || 'you';
+    this.setState({ screen: 'email', emailTo: to, typed: '', inputMode: 'ask', active: 'email' });
+    this.say('Sent. On the live page that email is real, with your page link in it.');
+  }
+
+  // ---- drag, flick, drop ----
+  rect() { return this.stageEl ? this.stageEl.getBoundingClientRect() : { left: 0, bottom: 0 }; }
+  onDown(e) {
+    if (e.button && e.button !== 0) return;
+    e.preventDefault();
+    const r = this.rect(), s = this.state;
+    const base = this.G() - 20;
+    const px = e.clientX - r.left, py = (r.bottom - e.clientY) - base;
+    this.drag = { ox: px - s.sx, oy: py - s.sy };
+    this.samples = [{ t: performance.now(), x: s.sx, y: s.sy }];
+    this.stopAll();
+    this.setState({ drag: true, walking: false, pose: 'held', talking: false, dur: 0, flying: false, where: '', hint: false, mode: s.mode === 'phone' && s.where === 'roof' ? 'lot' : s.mode });
+  }
+  onMove(e) {
+    if (!this.state.drag) return;
+    const r = this.rect(), base = this.G() - 20, half = this.sw() / 2;
+    let sx = (e.clientX - r.left) - this.drag.ox;
+    let sy = ((r.bottom - e.clientY) - base) - this.drag.oy;
+    sx = Math.max(half * 0.2, Math.min(this.W() - half * 0.2, sx));
+    sy = Math.max(-10, Math.min(this.H() - 60, sy));
+    this.samples.push({ t: performance.now(), x: sx, y: sy });
+    if (this.samples.length > 8) this.samples.shift();
+    this.setState({ sx: sx, sy: sy, faceLeft: e.movementX < -1 ? true : (e.movementX > 1 ? false : this.state.faceLeft) });
+  }
+  onUp() {
+    if (!this.state.drag) return;
+    const s = this.state, g = this.geo();
+    const now = performance.now();
+    const old = this.samples.find((p) => now - p.t < 110) || this.samples[0];
+    const dt = Math.max(0.016, (now - old.t) / 1000);
+    const vx = (s.sx - old.x) / dt, vy = (s.sy - old.y) / dt;
+    this.setState({ drag: false });
+    // drop on the open phone: Shorty becomes the chat on the page
+    if (s.mode === 'phone') {
+      const phW = this.props.compact ? 236 : 290, phX = this.props.compact ? 12 : 36;
+      if (s.sx > phX - 10 && s.sx < phX + phW + 10) { this.intoPhone(); return; }
+    } else {
+      // drop on the crate phone: picks it up, with Shorty inside
+      const px = g.crateX + 10 * g.k, pw = 40 * g.k;
+      if (s.sx > px - 20 && s.sx < px + pw + 20 && s.sy < 90 * g.k && s.sy > -10) { this.setState({ where: 'phone' }); this.openPhone("This is me on your page. I answer your customers 24/7: menu, allergies, where you are tonight, order ahead.", 'home', true); return; }
+      // drop on the truck
+      if (s.sx > g.truckX && s.sx < g.truckX + g.truckW) {
+        if (s.sy > g.roof - 30) { this.landRoof(); return; }
+        if (s.sy > -10) { this.intoWindow(); return; }
+      }
+    }
+    const speed = Math.hypot(vx, vy);
+    if (speed > 260 || s.sy > 8) this.fly(vx * 0.9, vy * 0.9); else this.land(false);
+  }
+  fly(vx, vy) {
+    this.v = { vx: vx, vy: vy };
+    this.setState({ flying: true, pose: 'held', dur: 0, talking: false });
+    this.last = performance.now();
+    this.raf = requestAnimationFrame((t) => this.step(t));
+  }
+  step(t) {
+    if (!this.alive || !this.state.flying) return;
+    const dt = Math.min(0.04, (t - this.last) / 1000); this.last = t;
+    const g = this.geo(), half = this.sw() / 2;
+    let sx = this.state.sx, sy = this.state.sy, vx = this.v.vx, vy = this.v.vy;
+    const wasAbove = sy > g.roof;
+    vy -= 2600 * dt; sx += vx * dt; sy += vy * dt;
+    if (vy < 0 && wasAbove && sy <= g.roof && sx > g.truckX + 20 && sx < g.truckX + g.truckW - 20) { this.setState({ sx: sx, sy: g.roof }); this.landRoof(); return; }
+    if (sx < half * 0.5) { sx = half * 0.5; vx = -vx * 0.5; }
+    if (sx > this.W() - half * 0.5) { sx = this.W() - half * 0.5; vx = -vx * 0.5; }
+    if (sy <= 0) { sy = 0; if (Math.abs(vy) < 320) { this.setState({ sx: sx, sy: 0 }); this.land(true); return; } vy = -vy * 0.42; vx *= 0.72; }
+    this.v = { vx: vx, vy: vy };
+    this.setState({ sx: sx, sy: sy });
+    this.raf = requestAnimationFrame((tt) => this.step(tt));
+  }
+  land(hard) {
+    const lines = ['Oof. Still working.', 'Easy. Customers can see this.', 'I\'ve had worse. Had a park post 30 trucks at once.', 'Okay, okay. Ask me something.'];
+    this.lineI = ((this.lineI || 0) + 1) % lines.length;
+    this.setState({ flying: false, sy: 0, pose: hard ? 'oof' : 'idle', faceLeft: false });
+    if (hard) this.say(lines[this.lineI]);
+    this.idleSoon(hard ? 1700 : 300);
+  }
+  landRoof() {
+    const g = this.geo();
+    this.setState({ flying: false, drag: false, sx: g.truckX + g.truckW * 0.4, sy: g.roof, pose: 'sit', where: 'roof', faceLeft: false, dur: 0, mode: 'lot' });
+    this.say('Nice view. On the live page: [NUMBER] trucks out tonight in Myrtle Beach, and every one of them is a page like yours.');
+  }
+  intoWindow() {
+    this.setState({ flying: false, where: 'window', pose: 'idle', mode: 'lot' });
+    this.say('Order up! Kidding. I don\'t cook. I take the orders, answer the questions, and text your regulars. Tap the truck to let me out.');
+  }
+  intoPhone() {
+    this.setState({ flying: false, where: 'phone', pose: 'idle' });
+    this.say("This is me on your page. Customers ask me anything: what's good, what's gluten free, where you are tonight. I answer, and I take the order.");
+  }
+
+  // ---- chips and the input ----
+  chipLot() {
+    const L = {
+      c2: "Keep Toast for walk-ups. We don't plug into it. Shortlist runs your page, your preorders, your followers, and how Google and AI find you. No commission.",
+      c3: 'A finder is a list. You get your own page: menu, stops, preorders, followers, and me. The finder just sends people to it.',
+      c4: 'Your page is free. Verified is $50 a month: preorders, online ordering, reports, social. Communications is $30 a month: texting and social posting. No commission on orders.',
+      c5: "Where you are, when, what you sell, 24/7. I take the orders, text people when their food's up, bring back the ones who went quiet, send the loyalty deals, email your week, post your stops. Text me and I do it.",
+      c6: "Yep. Text me 'post about the birria today' and it goes to Instagram and Facebook with your photo and tonight's stop. Social comes with Verified.",
+      c7: "People ask ChatGPT where to eat now. Your truck is in the answer, with tonight's stop, and they can start an order right there. Same on Google and the local truck pages."
+    };
+    return [
+      { id: 'phone', label: 'Pick up the phone', play: true, pick: () => this.openPhone("Here's what your customers see. Tap around. Drag me onto it if you want.", 'home') },
+      { id: 'order', label: 'How does a preorder work?', play: true, pick: () => this.demoOrder() },
+      { id: 'text', label: 'How does it text my customers?', play: true, pick: () => this.askNumber() },
+      { id: 'c5', label: 'What do you do all day?', pick: () => this.talk('c5', L.c5) },
+      { id: 'c6', label: 'Can you post to Instagram for me?', pick: () => this.talk('c6', L.c6) },
+      { id: 'c7', label: 'Can customers find me in ChatGPT?', pick: () => this.talk('c7', L.c7) },
+      { id: 'c2', label: 'I already use Toast. Why this?', pick: () => this.talk('c2', L.c2) },
+      { id: 'c3', label: "Why isn't this just another truck finder?", pick: () => this.talk('c3', L.c3) },
+      { id: 'c4', label: 'What does it cost?', pick: () => this.talk('c4', L.c4) }
+    ];
+  }
+  chipPhone() {
+    const s = this.state;
+    const base = [
+      { id: 'order', label: 'How does a preorder work?', play: true, pick: () => this.demoOrder() },
+      { id: 'text', label: 'How does it text my customers?', play: true, pick: () => this.askNumber() },
+      { id: 'install', label: 'How do they get my app?', play: true, pick: () => this.runInstall() },
+      { id: 'follow', label: 'How do customers follow me?', pick: () => { this.setState({ screen: 'follow', active: 'follow' }); this.say("They tap Follow on your page. No app store, no account. With Communications, you can text them when you're out."); } },
+      { id: 'down', label: 'Put the phone down', pick: () => this.closePhone() }
+    ];
+    if (s.screen === 'text' && s.textStep > 0) {
+      return [
+        { id: 'next', label: s.textStep < 4 ? 'Next message' : 'Start over', play: true, pick: () => (s.textStep < 4 ? this.sendText() : this.askNumber()) },
+        { id: 'email', label: 'Email it to me instead', pick: () => { this.setState({ inputMode: 'email', typed: '', active: 'email' }); this.say('Type your email below and send it.', true); } },
+        base[2], base[4]
+      ];
+    }
+    return base;
+  }
+  talk(id, line) {
+    this.stopAll();
+    this.setState({ active: id, pose: 'idle', where: this.state.where === 'roof' ? 'roof' : '' });
+    if (this.state.mode === 'phone') { this.say(line); return; }
+    this.say(line);
+    this.idleSoon(4200);
+  }
+
+  renderVals() {
+    const s = this.state, g = this.geo(), c = !!this.props.compact;
+    const phone = s.mode === 'phone';
+    const sw = this.sw(), sh = this.sh();
+    const base = g.G - 20;
+    const shortyOut = s.where !== 'phone' && s.where !== 'window';
+    // bubble near Shorty
+    let bx, by, bw = c ? 210 : 320;
+    if (phone) { const phW = c ? 236 : 290, phX = c ? 12 : 36; bx = c ? 12 : phX + phW + 16; by = c ? 12 : this.H() - 130; bw = c ? g.W - 24 : Math.min(360, g.W - phX - phW - 40); }
+    else if (c) { bx = 12; by = this.H() - 118; bw = g.W - 24; }
+    else if (!shortyOut) { bx = s.where === 'window' ? g.truckX - bw - 10 : 20; by = base + 90; }
+    else { bx = Math.max(10, Math.min(g.W - bw - 10, s.sx - bw * 0.35)); if (s.orderUp && !c) bx = Math.min(bx, g.truckX - bw - 16); by = base + s.sy + sh + 8; if (by > this.H() - 110) by = this.H() - 110; }
+    const items = [
+      { key: 'a', name: '[ITEM]', color: '#E2A43C' }, { key: 'b', name: '[ITEM]', color: '#34D399' }, { key: 'c', name: '[ITEM]', color: '#7FA8E6' }
+    ].map((it) => ({ name: it.name, color: it.color, bg: s.cart[it.key] ? '#F6F1E4' : 'transparent', btn: s.cart[it.key] ? String(s.cart[it.key]) : '+', aria: 'Add ' + it.name,
+      add: () => { const n = Object.assign({}, this.state.cart); n[it.key] += 1; this.setState({ cart: n }); } }));
+    const count = s.cart.a + s.cart.b + s.cart.c;
+    const chips = (phone ? this.chipPhone() : this.chipLot()).map((ch) => ({ label: ch.label, play: !!ch.play, bg: s.active === ch.id ? '#34D399' : '#FFFFFF', pick: ch.pick }));
+    const hintText = c ? 'Grab Shorty. Tap the phone or the truck.' : 'Grab Shorty and flick him. Tap the phone, the truck, the sign, the megaphone.';
+    return {
+      stageRef: (el) => { this.stageEl = el; },
+      tapPhone: () => this.openPhone("Here's what your customers see. Tap around. Drag me onto it if you want.", 'home'),
+      tapSign: () => this.tapSign(), tapMega: () => this.tapMega(), tapBurger: () => this.tapBurger(), tapTruck: () => this.tapTruck(),
+      H: this.H(), skyH: this.H() - g.G - 60, G: g.G, moonOp: phone ? 0 : 1,
+      lotOp: phone ? 0.22 : 1, lotPE: phone ? 'none' : 'auto',
+      objBottom: g.objBottom,
+      custX: g.W * 0.42, custY: g.G + 26, custW: (c ? 120 : 200), dingCls: s.ding ? 'ding' : '',
+      signX: g.signX, signW: g.signW, signCls: s.signFlip ? 'flip' : '',
+      crateX: g.crateX, crateW: g.crateW,
+      phoneX: g.crateX + 10 * g.k, phoneBottom: g.objBottom + 40 * g.k, phoneW: 40 * g.k, phoneTap: s.hint ? 'tapme' : '',
+      megaX: g.crateX + 60 * g.k, megaBottom: g.objBottom + 40 * g.k, megaW: 60 * g.k,
+      tableX: g.tableX, tableW: g.tableW, burgerX: g.tableX + 28 * g.k, burgerBottom: g.objBottom + 34 * g.k, burgerW: 56 * g.k,
+      truckX: g.truckX, truckW: g.truckW, truckCls: s.shake ? 'shake' : '', winFill: (s.orderUp || s.where === 'window') ? '#E2A43C' : '#2A2E36', inWindow: s.where === 'window',
+      orderX: g.truckX + g.truckW * (c ? 0.34 : 0.18), orderW: c ? 118 : 150, orderY: s.orderUp ? -(g.truckH + 10) : 0, orderOp: s.orderUp ? 1 : 0,
+      postW: c ? 120 : 160, postY: s.postUp ? -(90 * g.k + 10) : 0, postOp: s.postUp ? 1 : 0,
+      phoneOpen: phone, phX: c ? 12 : 36, phTop: c ? 14 : 30, phW: c ? 236 : 290, phH: c ? 430 : 520,
+      scHome: s.screen === 'home', scMenu: s.screen === 'menu', scPaid: s.screen === 'paid', scFollow: s.screen === 'follow', scInstall: s.screen === 'install', scText: s.screen === 'text', scEmail: s.screen === 'email',
+      inPhone: s.where === 'phone', notInPhone: s.where !== 'phone', yes: true,
+      phoneChat: s.where === 'phone' ? "Hey, it's Shorty. Birria's back tonight. Want to order ahead?" : "Birria's back tonight. Order ahead and skip the line?",
+      goMenu: () => this.setState({ screen: 'menu', active: '' }), goHome: () => this.setState({ screen: 'home' }), goFollow: () => this.setState({ screen: 'follow' }), goInstall: () => this.runInstall(),
+      followBg: s.following ? '#34D399' : '#F6F1E4', followLabel: s.following ? 'Following' : 'Follow',
+      followNote: s.following ? "You'll get a text when [YOUR TRUCK] is out near you." : 'One tap. No account, no app store.',
+      toggleFollow: () => { const f = !this.state.following; this.setState({ following: f }); this.say(f ? "Followed. Now they hear from you when you're out, when their order's up, and when you've got a deal." : 'Unfollowed. Easy either way.'); },
+      items: items, pay: () => this.pay(), payLabel: count ? 'Pay · ' + count + (count === 1 ? ' item' : ' items') : 'Pick something', payBg: count ? '#34D399' : '#F6F1E4', payColor: count ? '#0D2B20' : '#8D8A80',
+      inst0: s.inst === 0, inst1: s.inst === 1, inst2: s.inst === 2,
+      texts: s.texts, textNote: s.textStep ? 'Texts need Communications · $30/mo' : 'Enter your number below.',
+      emailTo: s.emailTo,
+      shortyOut: shortyOut, heldCls: s.drag ? 'held' : '',
+      sw: sw, shortyBase: base, tx: s.sx - sw / 2, ty: -s.sy, dur: (s.drag || s.flying) ? 0 : s.dur, face: s.faceLeft ? -1 : 1,
+      pose: s.pose, walking: s.walking, talking: s.talking,
+      onDown: (e) => this.onDown(e),
+      bx: bx, by: by, bw: bw, bfs: c ? 14 : 16, reply: s.reply, replyKey: s.replyKey,
+      hintOn: s.hint, hintText: hintText, hintFs: c ? 20 : 26,
+      inputLabel: s.inputMode === 'tel' ? 'Your phone number' : (s.inputMode === 'email' ? 'Your email' : 'Ask Shorty'),
+      inputType: s.inputMode === 'tel' ? 'tel' : (s.inputMode === 'email' ? 'email' : 'text'),
+      inputBg: s.inputMode === 'ask' ? '#FFFFFF' : '#D7F5E8',
+      placeholder: s.inputMode === 'tel' ? '(843) 555-0199' : (s.inputMode === 'email' ? 'you@yourtruck.com' : (c ? 'Ask Shorty anything' : "Ask Shorty: why isn't this just another truck finder?")),
+      sendLabel: s.inputMode === 'tel' ? 'Text me' : (s.inputMode === 'email' ? 'Email me' : '→'),
+      sendAria: s.inputMode === 'ask' ? 'Send to Shorty' : 'Send', sendPad: s.inputMode === 'ask' ? 0 : 14, sendFs: s.inputMode === 'ask' ? 20 : 14,
+      typed: s.typed, onType: (e) => this.setState({ typed: e.target.value }),
+      submit: (e) => { if (e && e.preventDefault) e.preventDefault(); if (s.inputMode === 'tel') this.sendText(); else if (s.inputMode === 'email') this.sendEmail(); else { this.talk('typed', 'Good question. On the live page I answer this one for real, from what Shortlist actually does. Nothing made up.'); this.setState({ typed: '' }); } },
+      chips: chips, chipFs: c ? 14 : 15, chipJustify: c ? 'flex-start' : 'center'
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Shorty</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+.sh{position:relative;display:block}
+.sh img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:contain;user-select:none;pointer-events:none;-webkit-user-drag:none}
+.sh .fig{position:absolute;inset:0;transform-origin:50% 92%;animation:breathe 3.2s ease-in-out infinite alternate}
+.sh .prop{position:absolute;visibility:hidden;transform-origin:50% 50%}
+.sh .shadow{position:absolute;left:18%;right:18%;bottom:-2%;height:6%;border-radius:50%;background:rgba(0,0,0,.35)}
+
+.sh.walking .fig{animation:stride .32s ease-in-out infinite alternate}
+.sh.talking .fig{animation:talk .36s ease-in-out infinite alternate}
+
+.sh.p-held .fig{animation:swing .9s ease-in-out infinite alternate;transform-origin:50% 10%}
+.sh.p-oof .fig{animation:oof .55s ease-out both}
+.sh.p-sit .fig{animation:none;transform:translateY(8%)}
+.sh.p-wave .fig{animation:wave .7s ease-in-out 4 alternate;transform-origin:50% 92%}
+
+.sh.p-eat .burger{visibility:visible;animation:eat 3.4s ease-in-out both}
+.sh.p-phone .phone{visibility:visible;animation:lift 3.4s ease-in-out both}
+.sh.p-phone .ping{animation:ping 1.1s ease-out .7s infinite}
+.sh.p-phone .ping2{animation-delay:1.25s}
+.sh.p-mega .mega{visibility:visible;animation:lift 3.4s ease-in-out both}
+.sh.p-mega .snd{animation:snd .9s ease-out .5s infinite;transform-origin:0 50%}
+.sh.p-mega .snd2{animation-delay:.72s}
+.sh.p-mega .snd3{animation-delay:.94s}
+.sh.p-mega .fig{animation:shout .42s ease-in-out .5s infinite}
+.sh.p-mail .mail{visibility:visible;animation:send 3.4s ease-out both}
+
+@keyframes breathe{from{transform:translateY(0) rotate(-.4deg)}to{transform:translateY(-2px) rotate(.4deg)}}
+@keyframes stride{from{transform:translateY(0) rotate(-2.5deg)}to{transform:translateY(-7px) rotate(2.5deg)}}
+@keyframes talk{from{transform:translateY(0) scale(1)}to{transform:translateY(-2px) scale(1.015)}}
+@keyframes swing{from{transform:rotate(-9deg)}to{transform:rotate(9deg)}}
+@keyframes oof{0%{transform:scaleY(.72) scaleX(1.18)}60%{transform:scaleY(1.08) scaleX(.96)}100%{transform:none}}
+@keyframes wave{from{transform:rotate(-4deg)}to{transform:rotate(5deg) translateY(-3px)}}
+@keyframes shout{0%,100%{transform:scale(1)}50%{transform:scale(1.035)}}
+@keyframes lift{0%{opacity:0;transform:translateY(14px) scale(.7)}12%,88%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(0) scale(.8)}}
+@keyframes eat{0%{opacity:0;transform:translate(0,14px) scale(.7)}12%{opacity:1;transform:translate(0,0) scale(1)}22%{transform:translate(var(--mx),var(--my)) scale(1)}32%{transform:translate(var(--mx),var(--my)) scale(.82)}42%{transform:translate(0,0) scale(.82)}52%{transform:translate(var(--mx),var(--my)) scale(.82)}62%{transform:translate(var(--mx),var(--my)) scale(.55)}72%{transform:translate(0,0) scale(.55)}82%{transform:translate(var(--mx),var(--my)) scale(.55)}90%,100%{opacity:0;transform:translate(var(--mx),var(--my)) scale(0)}}
+@keyframes send{0%{opacity:0;transform:translate(0,12px) scale(.7)}14%,42%{opacity:1;transform:translate(0,0) scale(1)}78%,100%{opacity:0;transform:translate(90px,-70px) scale(.4)}}
+@keyframes ping{0%{transform:scale(.5);opacity:.9}100%{transform:scale(2.4);opacity:0}}
+@keyframes snd{0%{transform:scale(.6);opacity:0}30%{opacity:1}100%{transform:scale(1.25);opacity:0}}
+@media (prefers-reduced-motion: reduce){.sh,.sh *{animation-duration:.01ms !important;animation-iteration-count:1 !important}}
+</style>
+</helmet>
+<div style="display: flex; justify-content: center; align-items: flex-end; background: {{bg}}; padding: {{pad}}px">
+<div class="sh {{cls}}" role="img" aria-label="Shorty, the Shortlist ticket" style="width: {{w}}px; height: {{h}}px; --mx: {{mx}}px; --my: {{my}}px">
+  <div class="shadow"></div>
+  <div class="fig">
+    <img src="{{src}}" alt="">
+    <svg class="prop burger" viewBox="0 0 56 44" style="left: {{handX}}%; top: {{handY}}%; width: {{propW}}%; height: auto; transform-origin: 50% 50%" aria-hidden="true">
+      <path d="M6 30 H50 V34 Q50 40 44 40 H12 Q6 40 6 34 Z" fill="#E2A43C" stroke="#1A1C20" stroke-width="2.5"></path>
+      <rect x="4" y="20" width="48" height="10" rx="5" fill="#8A5A3C" stroke="#1A1C20" stroke-width="2.5"></rect>
+      <path d="M4 19 Q10 12 16 19 Q22 12 28 19 Q34 12 40 19 Q46 12 52 19" fill="#34D399" stroke="#1A1C20" stroke-width="2.5" stroke-linejoin="round"></path>
+      <path d="M6 18 Q6 2 28 2 Q50 2 50 18 Z" fill="#E2A43C" stroke="#1A1C20" stroke-width="2.5"></path>
+      <circle cx="18" cy="10" r="1.6" fill="#F6F1E4"></circle><circle cx="28" cy="7" r="1.6" fill="#F6F1E4"></circle><circle cx="38" cy="11" r="1.6" fill="#F6F1E4"></circle>
+    </svg>
+    <svg class="prop phone" viewBox="0 0 60 70" style="left: {{handX}}%; top: {{handYUp}}%; width: {{propW}}%; height: auto" aria-hidden="true">
+      <circle class="ping" cx="30" cy="34" r="16" fill="none" stroke="#F6F1E4" stroke-width="3" style="transform-origin: 30px 34px"></circle>
+      <circle class="ping ping2" cx="30" cy="34" r="16" fill="none" stroke="#F6F1E4" stroke-width="3" style="transform-origin: 30px 34px"></circle>
+      <rect x="16" y="6" width="28" height="52" rx="6" fill="#1A1C20"></rect>
+      <rect x="19" y="11" width="22" height="42" rx="3" fill="#34D399"></rect>
+      <path d="M24 33 L29 38 L37 27" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
+      <circle cx="44" cy="9" r="6" fill="#E2A43C" stroke="#1A1C20" stroke-width="2"></circle>
+    </svg>
+    <svg class="prop mega" viewBox="0 0 110 60" style="left: {{handX}}%; top: {{handY}}%; width: {{propWide}}%; height: auto" aria-hidden="true">
+      <rect x="2" y="22" width="14" height="18" rx="3" fill="#1A1C20"></rect>
+      <path d="M14 18 L50 4 L50 56 L14 42 Z" fill="#E2A43C" stroke="#1A1C20" stroke-width="3" stroke-linejoin="round"></path>
+      <ellipse cx="50" cy="30" rx="6" ry="26" fill="#B5742A" stroke="#1A1C20" stroke-width="3"></ellipse>
+      <path class="snd" d="M64 18 Q72 30 64 42" stroke="#34D399" stroke-width="3.5" stroke-linecap="round" fill="none"></path>
+      <path class="snd snd2" d="M74 10 Q88 30 74 50" stroke="#34D399" stroke-width="3.5" stroke-linecap="round" fill="none"></path>
+      <path class="snd snd3" d="M86 2 Q104 30 86 58" stroke="#34D399" stroke-width="3.5" stroke-linecap="round" fill="none"></path>
+    </svg>
+    <svg class="prop mail" viewBox="0 0 60 44" style="left: {{handX}}%; top: {{handYUp}}%; width: {{propW}}%; height: auto" aria-hidden="true">
+      <rect x="4" y="6" width="52" height="34" rx="4" fill="#F6F1E4" stroke="#1A1C20" stroke-width="3"></rect>
+      <path d="M5 8 L30 26 L55 8" stroke="#1A1C20" stroke-width="3" stroke-linejoin="round" fill="none"></path>
+    </svg>
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"pose":{"editor":"enum","default":"idle","options":["idle","wave","eat","phone","mega","truck","mail","point","held","sit","oof"],"section":"Shorty"},"walking":{"editor":"boolean","default":false,"section":"Shorty"},"talking":{"editor":"boolean","default":false,"section":"Shorty"},"w":{"editor":"int","default":200,"min":40,"max":600,"section":"Shorty"},"handX":{"editor":"range","default":72,"min":0,"max":100,"unit":"%","section":"Hand (where props go)"},"handY":{"editor":"range","default":46,"min":0,"max":100,"unit":"%","section":"Hand (where props go)"},"mouthX":{"editor":"range","default":50,"min":0,"max":100,"unit":"%","section":"Hand (where props go)"},"mouthY":{"editor":"range","default":30,"min":0,"max":100,"unit":"%","section":"Hand (where props go)"},"bg":{"editor":"color","default":"#2A2E36","section":"Shorty"},"pad":{"editor":"int","default":24,"min":0,"max":80,"section":"Shorty"},"$preview":{"width":248,"height":262}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const p = this.props;
+    const pose = p.pose || 'idle';
+    const w = p.w == null ? 200 : Number(p.w);
+    const h = Math.round(w * 149 / 140);
+    const IMG = {
+      stand: '/_blob/39976e4dd411d72e7a98347b6e0be321',
+      notepad: '/_blob/ffcb2ed9f33504d844d58335ae4fd02f',
+      idea: '/_blob/030eb088c897db3907fbabb94446cdac',
+      confused: '/_blob/e39b128a2c812aa7e906800ba253ca84'
+    };
+    const src = (pose === 'held' || pose === 'oof') ? IMG.confused : (pose === 'point' ? IMG.idea : (pose === 'truck' ? IMG.notepad : IMG.stand));
+    const hx = p.handX == null ? 72 : Number(p.handX), hy = p.handY == null ? 46 : Number(p.handY);
+    const mx = p.mouthX == null ? 50 : Number(p.mouthX), my = p.mouthY == null ? 30 : Number(p.mouthY);
+    const propW = 26, propWide = 44;
+    return {
+      cls: 'p-' + pose + (p.walking ? ' walking' : '') + (p.talking ? ' talking' : ''),
+      src: src, w: w, h: h,
+      handX: hx - propW / 2, handY: hy - propW * 0.4, handYUp: hy - propW * 1.1,
+      propW: propW, propWide: propWide,
+      mx: Math.round((mx - hx) / 100 * w), my: Math.round((my - hy) / 100 * h),
+      bg: p.bg == null ? '#2A2E36' : p.bg,
+      pad: p.pad == null ? 24 : Number(p.pad)
+    };
+  }
+}
+</script>
+</body>
+</html>

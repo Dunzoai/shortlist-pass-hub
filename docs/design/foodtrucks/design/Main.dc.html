@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Food trucks page, phone</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Schibsted+Grotesk:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FBF8F0}
+a{color:#0B7A50}a:hover{color:#075C3C}
+.sp *{box-sizing:border-box}
+.sp{font-family:'Schibsted Grotesk','Helvetica Neue',Helvetica,sans-serif;color:#1A1C20;background:#FBF8F0;overflow:hidden}
+.serif{font-family:'Instrument Serif',Georgia,'Times New Roman',serif;font-weight:400;letter-spacing:-0.01em}
+.eyebrow{font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#0B7A50}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;text-decoration:none;font-weight:700;font-size:16px;padding:14px 24px;border-radius:999px;transition:transform .15s ease}
+.btn:hover{transform:translateY(-2px)}
+.btn:focus-visible{outline:3px solid #34D399;outline-offset:2px}
+.rig{position:relative}
+.lay{position:absolute;left:0;top:0;width:100%;height:100%;user-select:none;pointer-events:none}
+.breathe{position:absolute;inset:0;transform-origin:50% 70.3%;animation:shBreathe 1.6s ease-in-out infinite alternate}
+.wave{transform-origin:30.2% 39.3%;animation:shWave .9s ease-in-out 1.2s 6 alternate}
+.halo{position:absolute;left:50%;top:48%;width:230%;aspect-ratio:1;transform:translate(-50%,-50%);background:radial-gradient(closest-side,rgba(52,211,153,.16),transparent 72%);pointer-events:none}
+.rise{opacity:0;animation:rise .8s cubic-bezier(.2,.7,.2,1) forwards}
+.d1{animation-delay:.05s}.d2{animation-delay:.18s}.d3{animation-delay:.32s}.d4{animation-delay:.46s}
+@keyframes shBreathe{from{transform:translateY(0) rotate(-.4deg)}to{transform:translateY(-2px) rotate(.4deg)}}
+@keyframes shBob{from{transform:translateY(0) rotate(-1deg)}to{transform:translateY(-6px) rotate(1deg)}}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){.sp *{animation-duration:.01ms !important;animation-iteration-count:1 !important;animation-delay:0s !important}}
+</style>
+</helmet>
+<div class="sp" style="min-height: 7600px">
+<nav aria-label="Main" style="padding: 16px 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px">
+  <a href="https://www.shortlistpass.com/" style="display: flex; align-items: center; gap: 10px; color: #1A1C20; text-decoration: none">
+    <img src="/_blob/bd8afb977e993c3064115ed720ac0c9f" alt="" style="width: 30px; height: auto; display: block">
+    <span class="serif" style="font-size: 22px">Shortlist Pass</span>
+  </a>
+  <a class="btn" href="https://app.shortlistpass.com/add" style="background: #1A1C20; color: #F6F1E4; font-size: 14px; padding: 8px 16px; min-height: 44px">Get a Shorty</a>
+</nav>
+
+<main style="padding: 12px 18px 56px; display: flex; flex-direction: column; gap: 56px">
+
+  <section style="display: flex; flex-direction: column; gap: 0">
+    <div class="eyebrow rise d1">Your newest hire · Food trucks</div>
+    <h1 class="serif rise d2" style="margin: 12px 0 0; font-size: 60px; line-height: .92; text-wrap: balance">You need a Shorty.</h1>
+    <p class="rise d3" style="margin: 18px 0 0; font-size: 17px; line-height: 1.55; color: #45423C; text-wrap: pretty">Want your truck to be the one everybody's talking about? Shorty's the employee who never clocks out. He tells people where you are, when you're there, and what you sell. He takes the orders, texts your regulars, and posts for you.</p>
+    <div class="rise d4" style="margin-top: 22px; display: flex; flex-direction: column; gap: 10px">
+      <a class="btn" href="https://app.shortlistpass.com/add" style="background: #1A1C20; color: #F6F1E4">Get your own Shorty</a>
+      <span style="color: #55524B; font-size: 14px; line-height: 1.45; text-align: center">Free to start. No commission on orders.</span>
+    </div>
+    <div style="display: flex; justify-content: center; margin-top: 26px">
+      <div class="rig" style="width: 170px; aspect-ratio: 140 / 149">
+        <div class="halo"></div>
+        <div class="breathe" style="animation-name: shBob">
+          <img class="lay" src="/_blob/39976e4dd411d72e7a98347b6e0be321" alt="Shorty, your Shortlist assistant">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="display: flex; flex-direction: column; gap: 14px">
+    <div>
+      <div class="eyebrow">Shorty's lot</div>
+      <h2 class="serif" style="margin: 8px 0 0; font-size: 36px; line-height: 1">Go ahead, play with him.</h2>
+      <p style="margin: 8px 0 0; font-size: 15px; line-height: 1.5; color: #6F6B60">Grab him, drop him on the truck, pick up the phone. Everything he says is what he really does.</p>
+    </div>
+    <dc-import name="Stage" compact="{{yes}}" hint-size="100%,880px"></dc-import>
+  </section>
+
+  <dc-import name="Sections" compact="{{yes}}" hint-size="100%,2800px"></dc-import>
+
+  <section aria-label="Tonight's food trucks" style="background: #1A1C20; color: #F6F1E4; border-radius: 22px; padding: 22px 20px; display: flex; flex-direction: column; gap: 16px">
+    <div class="eyebrow" style="color: #34D399">trucks.shortlistpass.com</div>
+    <div style="display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap">
+      <span class="serif" style="font-size: 52px; line-height: 1; color: #34D399">[NUMBER]</span>
+      <span style="font-size: 16px; font-weight: 600">trucks out tonight in Myrtle Beach</span>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 8px">
+      <div style="display: flex; align-items: center; gap: 12px; padding: 10px 12px; background: #FFFFFF; color: #1A1C20; border-radius: 12px">
+        <div style="width: 40px; height: 40px; flex: none; border-radius: 9px; background: #E2A43C"></div>
+        <div style="flex-grow: 1; min-width: 0"><div style="font-size: 14px; font-weight: 800">[TRUCK NAME]</div><div style="font-size: 12px; color: #6F6B60">[PLACE] · until [TIME]</div></div>
+        <span style="flex: none; background: #34D399; color: #0D2B20; border-radius: 999px; padding: 5px 12px; font-size: 12px; font-weight: 800">Preorder</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 10px 12px; background: #FFFFFF; color: #1A1C20; border-radius: 12px">
+        <div style="width: 40px; height: 40px; flex: none; border-radius: 9px; background: #7FA8E6"></div>
+        <div style="flex-grow: 1; min-width: 0"><div style="font-size: 14px; font-weight: 800">[TRUCK NAME]</div><div style="font-size: 12px; color: #6F6B60">[PLACE] · until [TIME]</div></div>
+        <span style="flex: none; border: 1px solid #E6DFCC; border-radius: 999px; padding: 5px 12px; font-size: 12px; font-weight: 800">Follow</span>
+      </div>
+    </div>
+    <a class="btn" href="https://trucks.shortlistpass.com" style="background: #34D399; color: #0D2B20; font-size: 15px">See who's out tonight</a>
+  </section>
+
+  <section style="display: flex; flex-direction: column; gap: 14px; text-align: center; padding: 0 4px">
+    <div class="eyebrow">Free to start</div>
+    <h2 class="serif" style="margin: 0; font-size: 40px; line-height: .98; text-wrap: balance">Your truck. Your page. Your Shorty.</h2>
+    <p style="margin: 0; font-size: 16px; line-height: 1.55; color: #45423C">Set up in a few minutes from your menu and your schedule. Keep your POS for walk-ups. No commission on orders.</p>
+    <a class="btn" href="https://app.shortlistpass.com/add" style="background: #1A1C20; color: #F6F1E4; margin-top: 6px">Get your own Shorty</a>
+    <a href="https://trucks.shortlistpass.com" style="min-height: 44px; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700">Already listed? Claim your truck</a>
+  </section>
+
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":7600}}'>
+class Component extends DCLogic {
+  renderVals() { return { yes: true }; }
+}
+</script>
+</body>
+</html>
