@@ -80,7 +80,15 @@ if (bid && APPLY) {
     const c = await db.from("business_ordering_config").insert({ business_id: bid, ordering_paused: false, tax_rate: demo.taxRate, timezone: demo.timezone });
     if (c.error) fail("business_ordering_config", c.error);
   }
-  out.ordering = "on";
+  /* The app's checkout looks for an active Stripe config row BEFORE it skips Stripe for a demo business, so a demo needs a
+     placeholder row to get that far. The id is not a real Stripe account and is never sent to Stripe: for is_demo the order is
+     marked paid (payment_method 'demo') before any Stripe call. */
+  const { data: pc } = await db.from("smartpage_payment_config").select("id").eq("business_id", bid).eq("provider", "stripe").maybeSingle();
+  if (!pc) {
+    const p = await db.from("smartpage_payment_config").insert({ business_id: bid, provider: "stripe", stripe_account_id: "acct_demo_lowtidetacos_placeholder", is_active: true, config: {} });
+    if (p.error) fail("smartpage_payment_config (placeholder)", p.error);
+  }
+  out.ordering = "on, placeholder payment config (demo skips Stripe)";
 }
 
 /* ── 5. menu ── */

@@ -35,3 +35,14 @@ To re-record a line: edit it in `lines.json`, delete `public/foodtrucks/voice/<i
 **Pricing copy.** Social posting is listed under Communications (matching the app's public Shorty). The spec also lists "social" under Verified; ask Marc which is right.
 
 **Rollback.** `git revert <sha> && git push` (the sha is in the build report).
+
+## Demo truck rows (seeded 2026-10-13)
+- `businesses.id` **9dd13be2-3158-4b67-a230-1f6c2c6cf5ff** (`lowtidetacos`, `is_demo = true`, `source` left empty, `claimed_at` set so the page reads as claimed)
+- `smartpage_profiles` row (food_truck / general_food_truck / mobile), `business_addons.ordering_enabled = true`, `business_ordering_config` (tax 9%, America/New_York)
+- `smartpage_payment_config`: a **placeholder** Stripe row (`acct_demo_lowtidetacos_placeholder`, `config {}`). The app's checkout looks for an active Stripe row before it skips Stripe for a demo business, so a demo needs one to get that far. The id is never sent to Stripe; the order is marked paid with `payment_method: demo`. A preorder on the page is therefore a simulated checkout.
+- `smartpage_offerings`: Birria Tacos b46e7e5a-ca50-4aec-a260-9e921e17b0fd, Street Corn 3c108088-aa59-4df0-9753-cf2e6e7ae71d, Carne Asada Tacos 274ccfc1-d11b-48f6-9794-fda8fa87e178, Baja Fish Taco f169fac8-2360-423b-8362-6107c535c5e6, Birria Quesadilla b723f0ef-ec07-4f36-988d-75bf5524ef3c, Al Pastor Burrito fcd91887-7dc9-479e-bf69-d154361e2d43, Chips & Guac feedd49e-9169-47f8-9151-68f9f938c596, Churros ddc92c7a-da27-43ee-a066-0c1be673a7d6, Horchata 43bca55a-73b1-43ef-8ca5-f85489aaae99, Jarritos 52c666a7-8948-45ae-a5fe-7da472ba1712
+- 36 `smartpage_events` (Tue/Thu/Sat, 12 weeks from 2026-10-13, slug `lowtidetacos-YYYY-MM-DD`) and 360 `smartpage_event_offerings` links. Re-run the seed script around mid-December to add more weeks.
+- Menu pictures and logo uploaded to the app's public storage bucket `event-images` under `demo/lowtidetacos/`.
+- One test order was placed through the phone on 2026-10-13 (1 x Horchata, name "Demo Tester", demo-test@example.com); it is a demo order on a demo business.
+
+Known quirks of the app's demo page, not changed here: it shows a small "Demos" button; its order confirmation prints the pickup time as a raw timestamp; the Text-me button on the page itself is hidden for demo businesses (the order sheet still offers a "Text me updates" switch).
