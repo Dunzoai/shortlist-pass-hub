@@ -10,17 +10,30 @@ export type Chip =
   | { id: string; label: string; kind: "action"; action: ChipAction }
   | { id: string; label: string; kind: "answer"; line: string };
 
-export const LOT_CHIPS: Chip[] = [
-  { id: "phone", label: "Pick up the phone", kind: "action", action: "openPhone" },
-  { id: "order", label: "How does a preorder work?", kind: "action", action: "demoOrder" },
-  { id: "text", label: "How does it text my customers?", kind: "action", action: "askNumber" },
-  { id: "c5", label: "What do you do all day?", kind: "answer", line: L.chipLines.c5 },
-  { id: "c6", label: "Can you post to Instagram for me?", kind: "answer", line: L.chipLines.c6 },
-  { id: "c7", label: "Can customers find me in ChatGPT?", kind: "answer", line: L.chipLines.c7 },
-  { id: "c2", label: "I already use Toast. Why this?", kind: "answer", line: L.chipLines.c2 },
-  { id: "c3", label: "Why isn't this just another truck finder?", kind: "answer", line: L.chipLines.c3 },
-  { id: "c4", label: "What does it cost?", kind: "answer", line: L.chipLines.c4 },
+const ALL: Record<string, Chip> = {
+  phone: { id: "phone", label: "Pick up the phone", kind: "action", action: "openPhone" },
+  order: { id: "order", label: "How does a preorder work?", kind: "action", action: "demoOrder" },
+  text: { id: "text", label: "How does it text my customers?", kind: "action", action: "askNumber" },
+  c5: { id: "c5", label: "What do you do all day?", kind: "answer", line: L.chipLines.c5 },
+  c6: { id: "c6", label: "Can you post to Instagram for me?", kind: "answer", line: L.chipLines.c6 },
+  c7: { id: "c7", label: "Can customers find me in ChatGPT?", kind: "answer", line: L.chipLines.c7 },
+  c2: { id: "c2", label: "I already use Toast. Why this?", kind: "answer", line: L.chipLines.c2 },
+  c3: { id: "c3", label: "Why isn't this just another truck finder?", kind: "answer", line: L.chipLines.c3 },
+  c4: { id: "c4", label: "What does it cost?", kind: "answer", line: L.chipLines.c4 },
+};
+
+/**
+ * The lot starts with a short row of categories (it scrolls sideways on a phone). Tapping one swaps the row for that category's
+ * few questions, with a Back chip first. Re-rank by reordering; add a question by adding its id to a category (and a row to ALL).
+ */
+export type Category = { id: string; label: string; play?: boolean; chips: Chip[] };
+export const CATEGORIES: Category[] = [
+  { id: "try", label: "Try it live", play: true, chips: [ALL.phone, ALL.order, ALL.text] },
+  { id: "does", label: "What he does", chips: [ALL.c5, ALL.c6, ALL.c7] },
+  { id: "why", label: "Why Shortlist", chips: [ALL.c2, ALL.c3, ALL.c4] },
 ];
+/** Every lot chip, flat (for tests and anything that wants the whole list). */
+export const LOT_CHIPS: Chip[] = CATEGORIES.flatMap((c) => c.chips);
 
 export const PHONE_CHIPS: Chip[] = [
   { id: "order", label: "How does a preorder work?", kind: "action", action: "demoOrder" },

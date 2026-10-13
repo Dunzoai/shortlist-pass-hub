@@ -14,9 +14,11 @@ import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties }
 import LiveShorty, { DEFAULT_TUNE, makeBus, type LotEvents, type Pin, type ShortyControl } from "@/components/shorty/live/LiveShorty";
 import { askShorty, sendDemoText, sendPageEmail } from "./api";
 import { useLotAudio } from "./audio";
-import { LOT_CHIPS, PHONE_CHIPS, TEXT_CHIPS, isPlay, type Chip } from "./chips";
+import { CATEGORIES, PHONE_CHIPS, TEXT_CHIPS, isPlay, type Chip } from "./chips";
 import { DEMO_PAGE_URL } from "./config";
+import demo from "./demo-truck.json";
 import { signData } from "./demo-sign";
+import { HeroCard, OrderCardArt, PostCardArt, type CardState } from "./hero-cards";
 import { FLOWS, type TextMsg } from "./explainers";
 import { BurgerObj, Crate, Customers, MegaObj, PhoneObj, Sign, Table, TruckHit, LotBackdrop, WindowGlow, type SignData } from "./lot-art";
 import { figureFor, lotGeo, lotStage, type Geo } from "./lot-geo";
@@ -29,17 +31,27 @@ type S = {
   mode: "lot" | "phone"; overlay: Overlay; where: Where; frameSrc: string; frameKey: number; inst: 0 | 1 | 2;
   texts: TextMsg[]; textStep: number; inputMode: "ask" | "tel" | "email"; typed: string; emailTo: string; emailPreview: boolean;
   shake: boolean; orderUp: boolean; postUp: boolean; ding: boolean; signFlip: boolean; burgerGone: boolean; megaGone: boolean;
-  active: string; hint: boolean; replyKey: number; reply: string; bubbleOn: boolean; talking: boolean; waiting: boolean;
+  active: string; cat: string | null; cardPost: CardState; cardOrder: CardState; hint: boolean; replyKey: number; reply: string; bubbleOn: boolean; talking: boolean; waiting: boolean;
 };
 const INIT: S = {
   mode: "lot", overlay: "none", where: "", frameSrc: DEMO_PAGE_URL, frameKey: 0, inst: 0,
   texts: [], textStep: 0, inputMode: "ask", typed: "", emailTo: "", emailPreview: false,
   shake: false, orderUp: false, postUp: false, ding: false, signFlip: false, burgerGone: false, megaGone: false,
-  active: "", hint: true, replyKey: 0, reply: L.intro, bubbleOn: true, talking: true, waiting: false,
+  active: "", cat: null, cardPost: "tucked", cardOrder: "tucked", hint: true, replyKey: 0, reply: L.intro, bubbleOn: true, talking: true, waiting: false,
 };
 const DEPTH = 0.3;          // how far forward on the lot he usually stands (0 back … 1 front)
 const DEPTH_PHONE = 0.12;
 const bubbleMs = (line: string) => Math.max(9000, line.length * 70);   // fades on its own: 9 s, longer for long lines (~70 ms a character)
+
+const chipBase = (compact: boolean): CSSProperties => ({ flex: "none", whiteSpace: "nowrap", scrollSnapAlign: "start", minHeight: 44, padding: "0 16px", borderRadius: 999, border: "1px solid " + C.hair, color: C.ink, fontSize: compact ? 14 : 15, fontWeight: 700, boxShadow: "0 10px 20px -16px rgba(26,28,32,.35)", textAlign: "left", display: "flex", alignItems: "center", gap: 8 });
+function ChipButton({ c, active, compact, onClick }: { c: Chip; active: boolean; compact: boolean; onClick: () => void }) {
+  return (
+    <button type="button" className="ftl-chip" onClick={onClick} style={{ ...chipBase(compact), background: active ? C.mint : "#fff" }}>
+      {isPlay(c) && <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1 L11 6 L2 11 Z" fill={C.green} stroke={C.ink} strokeWidth="1.5" strokeLinejoin="round" /></svg>}
+      <span>{c.label}</span>
+    </button>
+  );
+}
 
 export default function ShortysLot({ tonightCount }: { tonightCount: number | null }) {
   const sectionRef = useRef<HTMLElement>(null);
@@ -96,7 +108,14 @@ export default function ShortysLot({ tonightCount }: { tonightCount: number | nu
   /* ── timers, speech and walking ── */
   const later = (ms: number, fn: () => void) => { const id = window.setTimeout(() => { if (alive.current) fn(); }, ms); timers.current.push(id); return id; };
   const stopAll = () => { timers.current.forEach(clearTimeout); timers.current = []; arrive.current = null; };
-  const clearFx = () => set({ postUp: false, orderUp: false, ding: false, shake: false, burgerGone: false, megaGone: false });
+  const clearFx = () => set({ postUp: false, orderUp: false, ding: false, shake: false, burgerGone: false, megaGone: false, cardPost: "tucked", cardOrder: "tucked" });
+  /** A card like the homepage hero's: tucked small, rises out with a spring, flies off. */
+  const flyCard = (which: "cardPost" | "cardOrder", hold: number) => {
+    set({ [which]: "tucked" } as Partial<S>);
+    later(40, () => set({ [which]: "out" } as Partial<S>));
+    later(40 + hold, () => set({ [which]: "away" } as Partial<S>));
+    later(40 + hold + 1500, () => set({ [which]: "tucked" } as Partial<S>));
+  };
   /** A line in the bubble: the old one crossfades out, the new one in; it fades away on its own; the voice reads recorded lines when sound is on. */
   const say = (line: string, keep?: boolean) => {
     const cur = sRef.current;
@@ -151,9 +170,9 @@ export default function ShortysLot({ tonightCount }: { tonightCount: number | nu
     set({ active: "mega", where: sRef.current.where === "phone" ? "phone" : "" });
     walkThen(g.crate.x + g.crate.w * 0.5 - 30 * g.k, DEPTH, () => {
       face(1); perform("mega", 3800); set({ megaGone: true }); say(L.mega, true); audioRef.current.sfx("megaphone");
-      later(700, () => set({ postUp: true }));
+      later(700, () => flyCard("cardPost", 4600));
       later(1400, () => set({ ding: true }));
-      later(4600, () => set({ postUp: false, ding: false, talking: false }));
+      later(4600, () => set({ ding: false, talking: false }));
       later(3900, () => set({ megaGone: false }));
       idleSoon(3800);
     });
@@ -168,6 +187,7 @@ export default function ShortysLot({ tonightCount }: { tonightCount: number | nu
   };
   const orderLands = () => {
     set({ shake: true, orderUp: true });
+    flyCard("cardOrder", 4800);
     audioRef.current.sfx("truck_shake"); later(450, () => audioRef.current.sfx("order_card"));
     later(700, () => set({ shake: false }));
     later(5200, () => set({ orderUp: false }));
@@ -308,17 +328,10 @@ export default function ShortysLot({ tonightCount }: { tonightCount: number | nu
   };
 
   /* ── what the live layer tells us ── */
-  const handleDrop = (at: { x: number; depth: number; surface: string | null }, flicked: boolean) => {
-    const g = geoRef.current!, st = sRef.current;
-    if (at.surface) return;                                             // a roof is handled by onSurface
-    if (st.mode === "phone") {
-      const ps = phoneSlot();
-      if (at.x > ps.x - 10 && at.x < ps.x + ps.w + 10) { intoPhone(L.intoPhone); return; }
-    } else {
-      const px = g.crate.x + 10 * g.k, pw = 40 * g.k;
-      if (at.x > px - 20 && at.x < px + pw + 20) { intoPhone(L.cratePhone); return; }
-      if (at.x > g.truck.x && at.x < g.truck.x + g.truck.w) { intoWindow(); return; }
-    }
+  const captured = useRef(false);
+  /** After a drop that was not caught by the window or the phone: a flick gets his "oof" line, a gentle put-down just goes on. */
+  const handleDrop = (flicked: boolean) => {
+    if (captured.current) { captured.current = false; return; }
     if (flicked) {
       landI.current = (landI.current + 1) % L.landHard.length;
       audioRef.current.sfx("land");
@@ -332,20 +345,33 @@ export default function ShortysLot({ tonightCount }: { tonightCount: number | nu
       audioRef.current.sfx("grab");
       set({ hint: false, talking: false, active: "", where: sRef.current.where === "roof" ? "" : sRef.current.where });
     },
+    /* where his chest was when you let go decides if he goes in the window or the phone (being near the truck is not enough) */
+    onRelease: ({ x, y }) => {
+      const g = geoRef.current!, st = sRef.current;
+      captured.current = false;
+      if (st.mode === "phone") {
+        if (x > g.phoneZone.x0 - 10 && x < g.phoneZone.x1 + 10) { captured.current = true; grabbed.current = false; intoPhone(L.intoPhone); }
+        return;
+      }
+      const cp = g.cratePhone;
+      if (x > cp.x - 26 && x < cp.x + cp.w + 26 && y > cp.bottomY - cp.h - 26 && y < cp.bottomY + 30) { captured.current = true; grabbed.current = false; intoPhone(L.cratePhone); return; }
+      const z = g.winZone;
+      if (x > z.x0 && x < z.x1 && y > z.y0 && y < z.y1) { captured.current = true; grabbed.current = false; intoWindow(); }
+    },
     onArrive: () => { const f = arrive.current; arrive.current = null; f?.(); },
     onSurface: (id) => {
-      if (id !== "roof" || sRef.current.where === "roof") return;
+      if (id !== "roof" || sRef.current.where === "roof" || pin.current) return;
       grabbed.current = false;
       /* with the phone open the roof is behind it: a drop over the phone goes into the phone, not onto the roof */
       const x = ctl.current?.state.x ?? 0, ps = phoneSlot();
       if (sRef.current.mode === "phone" && x > ps.x - 10 && x < ps.x + ps.w + 10) { intoPhone(L.intoPhone); return; }
       audioRef.current.sfx("land"); landRoof();
     },
-    onPlaced: (at) => { const f = grabbed.current; grabbed.current = false; if (f) handleDrop(at, false); },
+    onPlaced: () => { const f = grabbed.current; grabbed.current = false; if (f) handleDrop(false); },
     onLand: (_hard, at) => {
       if (at.surface === "roof" || !grabbed.current) return;     // only a landing after YOU let go counts (walking off the roof or a hop does not)
       grabbed.current = false;
-      handleDrop(at, at.flick);
+      handleDrop(at.flick);
     },
   };
 
@@ -365,7 +391,8 @@ export default function ShortysLot({ tonightCount }: { tonightCount: number | nu
   }, [stageW]);
 
   /* ── chips and the input ── */
-  const chips: Chip[] = s.mode === "phone" ? (s.overlay === "text" && s.textStep > 0 ? TEXT_CHIPS(s.textStep) : PHONE_CHIPS) : LOT_CHIPS;
+  const phoneChips: Chip[] = s.overlay === "text" && s.textStep > 0 ? TEXT_CHIPS(s.textStep) : PHONE_CHIPS;
+  const cat = CATEGORIES.find((c) => c.id === s.cat) ?? null;
   const onChip = (c: Chip) => {
     if (c.kind === "answer") { talk(c.id, c.line); return; }
     switch (c.action) {
@@ -421,24 +448,21 @@ export default function ShortysLot({ tonightCount }: { tonightCount: number | nu
 
         <Customers ding={s.ding} style={{ position: "absolute", left: g.custs.x, bottom: g.custs.bottom, width: g.custs.w, height: "auto", pointerEvents: "none" }} />
 
-        {/* the post card rises from behind the crate; the order ticket from behind the truck */}
-        <div className="ftl-lift" aria-hidden="true" style={{ pointerEvents: "none", position: "absolute", left: g.crate.x, bottom: g.crate.bottom, width: compact ? 120 : 160, boxSizing: "border-box", background: C.cream, border: "1px solid " + C.hair, borderRadius: 8, padding: "8px 10px", boxShadow: "0 14px 28px -20px rgba(26,28,32,.5)", transform: `translateY(${s.postUp ? -(90 * g.k + 10) : 0}px) rotate(-3deg)`, opacity: s.postUp ? 1 : 0 }}>
-          <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: ".14em", color: C.green }}>NEW POST · ALL FOLLOWERS</div>
-          <div style={{ fontFamily: SERIF, fontSize: 14, lineHeight: 1.15, marginTop: 3 }}>Tonight at [PLACE] til 9</div>
-        </div>
-        <div className="ftl-lift" aria-hidden="true" style={{ pointerEvents: "none", position: "absolute", left: g.truck.x + g.truck.w * (compact ? 0.3 : 0.55), bottom: g.Hmax - g.truck.y - 36, width: compact ? 118 : 150, boxSizing: "border-box", background: "#fff", border: "1px solid " + C.hair, borderRadius: "6px 6px 2px 2px", padding: "8px 10px", boxShadow: "0 14px 28px -20px rgba(26,28,32,.5)", transform: `translateY(${s.orderUp ? -78 : 0}px) rotate(2deg)`, opacity: s.orderUp ? 1 : 0 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", fontSize: 9, fontWeight: 700, letterSpacing: ".12em" }}><span>ORDER</span><span style={{ color: C.green }}>PAID</span></div>
-          <div style={{ fontSize: 13, fontWeight: 700, marginTop: 3 }}>2 × Birria Tacos</div>
-          <div style={{ fontSize: 11, color: C.body }}>Pickup 6:40 · [CUSTOMER]</div>
-        </div>
+        {/* the cards that come out: drawn and moved like the homepage hero's cards */}
+        <HeroCard state={s.cardPost} icon="megaphone" tint="#f5a46a" label="Posted to social" style={{ left: compact ? 16 : g.crate.x + 330, bottom: compact ? 24 : g.crate.bottom + 90, width: compact ? 172 : 214 }}>
+          <PostCardArt caption={`Tonight: ${demo.weeklyStops[0].title}`} />
+        </HeroCard>
+        <HeroCard state={s.cardOrder} icon="menu" tint="#f2c94c" label="Order in" done="Paid" style={{ left: compact ? g.W - 172 - 16 : g.truck.x + g.truck.w * 0.55, bottom: compact ? 24 : g.Hmax - g.truck.y - 14, width: compact ? 172 : 214 }}>
+          <OrderCardArt item="2 × Birria Tacos" price="$26" pickup="Pickup 6:40 · [CUSTOMER]" />
+        </HeroCard>
 
+        <TruckHit g={g} onClick={tapTruck} />
         <Crate style={{ position: "absolute", left: g.crate.x, bottom: g.crate.bottom, width: g.crate.w, height: "auto", pointerEvents: "none" }} />
         <Table style={{ position: "absolute", left: g.table.x, bottom: g.table.bottom, width: g.table.w, height: "auto", pointerEvents: "none" }} />
         <Sign flip={s.signFlip} label="Tap the sign" data={sign} onClick={tapSign} style={{ position: "absolute", left: g.sign.x, bottom: g.sign.bottom, width: g.sign.w, pointerEvents: lotPE }} />
         <PhoneObj className={s.hint ? "ftl-tapme" : ""} onClick={() => openPhone(L.phoneOpen)} style={{ left: g.crate.x + 10 * g.k, bottom: g.crate.bottom + 40 * g.k, width: 40 * g.k, pointerEvents: lotPE }} />
         <MegaObj onClick={tapMega} style={{ left: g.crate.x + 60 * g.k, bottom: g.crate.bottom + 40 * g.k, width: 60 * g.k, pointerEvents: lotPE, visibility: s.megaGone ? "hidden" : "visible" }} />
         <BurgerObj hidden={s.burgerGone} onClick={tapBurger} style={{ left: g.table.x + 30 * g.k, bottom: g.table.bottom + 33 * g.k, width: 50 * g.k, pointerEvents: lotPE }} />
-        <TruckHit g={g} onClick={tapTruck} />
 
         {/* the dark area behind the phone: a tap on it puts the phone down */}
         {phone && <div aria-hidden="true" onClick={closePhone} style={{ position: "absolute", inset: 0, background: "rgba(20,22,26,.62)", zIndex: 2, cursor: "pointer" }} />}
@@ -500,11 +524,23 @@ export default function ShortysLot({ tonightCount }: { tonightCount: number | nu
         </button>
       </form>
 
-      <div style={{ display: "flex", flexWrap: "wrap", justifyContent: compact ? "flex-start" : "center", gap: 10, padding: "14px 12px 16px", background: C.cream, borderTop: "1px solid #EFE9DA" }}>
-        {chips.map((c) => (
-          <button key={c.id} type="button" className="ftl-chip" onClick={() => onChip(c)} style={{ minHeight: 44, padding: "0 16px", borderRadius: 999, border: "1px solid " + C.hair, background: s.active === c.id ? C.mint : "#fff", color: C.ink, fontSize: compact ? 14 : 15, fontWeight: 700, boxShadow: "0 10px 20px -16px rgba(26,28,32,.35)", textAlign: "left", display: "flex", alignItems: "center", gap: 8 }}>
-            {isPlay(c) && <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1 L11 6 L2 11 Z" fill={C.green} stroke={C.ink} strokeWidth="1.5" strokeLinejoin="round" /></svg>}
+      {/* the questions: a short row of categories (scrolls sideways); a category opens its few questions, with a Back chip */}
+      <div className="ftl-row" role="group" aria-label={phone ? "Ask about the phone" : cat ? cat.label : "Things to ask Shorty"} style={{ display: "flex", gap: 10, padding: "14px 12px 16px", background: C.cream, borderTop: "1px solid #EFE9DA", overflowX: "auto", justifyContent: "safe center", scrollSnapType: "x proximity", WebkitOverflowScrolling: "touch" }}>
+        {phone && phoneChips.map((c) => <ChipButton key={c.id} c={c} active={s.active === c.id} compact={compact} onClick={() => onChip(c)} />)}
+        {!phone && cat && (
+          <>
+            <button type="button" className="ftl-chip" onClick={() => set({ cat: null })} aria-label="Back to the categories" style={{ ...chipBase(compact), background: C.ink, color: C.cream, borderColor: C.ink }}>
+              <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M9 2 L4 7 L9 12" fill="none" stroke={C.cream} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              <span>Back</span>
+            </button>
+            {cat.chips.map((c) => <ChipButton key={c.id} c={c} active={s.active === c.id} compact={compact} onClick={() => onChip(c)} />)}
+          </>
+        )}
+        {!phone && !cat && CATEGORIES.map((c) => (
+          <button key={c.id} type="button" className="ftl-chip" onClick={() => set({ cat: c.id })} style={{ ...chipBase(compact), background: c.play ? C.mintTint : "#fff" }}>
+            {c.play && <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1 L11 6 L2 11 Z" fill={C.green} stroke={C.ink} strokeWidth="1.5" strokeLinejoin="round" /></svg>}
             <span>{c.label}</span>
+            <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M4 2 L8 6 L4 10" fill="none" stroke={C.muted} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </button>
         ))}
       </div>

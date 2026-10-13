@@ -51,6 +51,8 @@ export type LotEvents = Events & {
   onSurface?: (id: string | null) => void;
   /** He was picked up (drag began). */
   onGrab?: () => void;
+  /** He was let go: where his chest was (scene units). The page decides if that was over the window or the phone. */
+  onRelease?: (at: { x: number; y: number }) => void;
   /** A slow release put him down right there (a flick reports through onLand instead). */
   onPlaced?: (at: { x: number; depth: number; surface: string | null }) => void;
 };
@@ -228,6 +230,7 @@ export default function LiveShorty({ stage, tune, bus, talking, waiting, reduced
       if (!down || e.pointerId !== down.id) return;
       const was = down; down = null;
       if (was.dragging) {
+        events0().onRelease?.({ x: s.x, y: feetY(s, stage) - 90 * r * depthScale(visualDepth(s)) });
         grabEnd(s, stage, r, now());
         if (s.mode === 'stand') events0().onPlaced?.({ x: s.x, depth: s.depth, surface: s.surface?.id ?? null });
       } else { tapped(s, r, now()); inputs.current.events.onTapped?.(); }

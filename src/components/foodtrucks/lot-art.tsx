@@ -9,7 +9,7 @@ import { C, SANS, SERIF } from "./tokens";
 export function LotBackdrop({ g, shake }: { g: Geo; shake: boolean }) {
   const Scene = SCENES["Low Tide Tacos"];
   return (
-    <div className={shake ? "ftl-shake" : ""} aria-hidden="true" style={{ position: "absolute", left: g.ox, bottom: 0, width: SCENE.w * g.s, height: SCENE.h * g.s, pointerEvents: "none" }}>
+    <div className={shake ? "ftl-shake" : ""} aria-hidden="true" style={{ position: "absolute", left: g.ox, bottom: g.lift, width: SCENE.w * g.s, height: SCENE.h * g.s, pointerEvents: "none" }}>
       <svg viewBox={`0 0 ${SCENE.w} ${SCENE.h}`} width="100%" height="100%" style={{ overflow: "visible", display: "block" }}>
         <defs>
           {/* the same two filters the hero defines (ShortyScenes.tsx) */}
@@ -28,7 +28,7 @@ export function LotBackdrop({ g, shake }: { g: Geo; shake: boolean }) {
         <rect x={-700} y={-500} width={1820} height={740} fill="#f7cfa4" />
         <path d="M-700 196 H14 V240 H-700 Z M406 196 H1120 V240 H406 Z" fill="#9fbccb" />
         <rect x={-700} y={218} width={1820} height={50} fill="#e2b585" />
-        <rect x={-700} y={242} width={1820} height={30} fill="#d9a876" />
+        <rect x={-700} y={242} width={1820} height={40 + g.lift / g.s + 40} fill="#d9a876" />
         <Scene />
       </svg>
     </div>

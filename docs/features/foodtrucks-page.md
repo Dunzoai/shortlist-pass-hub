@@ -16,7 +16,12 @@
 - **Typed questions:** go to the app's public `POST /api/shorty/demo-chat`. That route's knowledge is written into the route, not read from the Binder yet. If it fails, Shorty says so.
 - **Trucks tonight:** real, from `GET /api/agent/v1/trucks-tonight?city=myrtle-beach`. With no stops posted (or the app unreachable) the card and the roof line show no number.
 
-**Change the chips.** Edit `src/components/foodtrucks/chips.ts`: reorder the arrays to re-rank; add a row (`kind: "answer"` with a `line`, or `kind: "action"` with an action name). Lines live in `lines.ts`.
+**Change the chips.** Edit `src/components/foodtrucks/chips.ts`. The lot shows a short row of **categories** (scrolls sideways on a phone); tapping one swaps the row for its few questions with a Back chip first. Re-rank by reordering `CATEGORIES` or the chips inside one; add a question by adding a row to `ALL` and its id to a category (`kind: "answer"` with a `line`, or `kind: "action"` with an action name). While the phone is open the row shows the phone questions (always including "Put the phone down"). Lines live in `lines.json`.
+
+## Round 3 (phone taps, hero picture, cards, chips)
+- **Phone layout:** on a phone the lot has a foreground strip of sand under the truck drawing; Shorty and the small props (crate with phone and megaphone, sign, table with the burger) stand on it, in front of the truck and not on top of it. The truck's tap area is its body only (above the wheels), and it sits under the props in the stack. A drop only puts Shorty in the window if his chest is over the window when you let go, or in a phone if he is over the crate phone or the open phone; being near the truck is no longer enough (`onRelease` in `LiveShorty.tsx`, zones in `lot-geo.ts`).
+- **Cards:** the post card and order card are drawn and move like the homepage hero's cards (`hero-cards.tsx`, copied from `new-home/ShortyHero.tsx`: cream paper, ink outline with a hard shadow, grain, icon tile and label, a little picture, a green Done pill; tucked small, rise with a spring, fly off).
+- **Hero picture:** `HeroScene.tsx`: the homepage hero's truck scene as a still, with a queue of paper customers at the window and Shorty (the rig, drawn once) off to the side, smiling, phone in his glove. Same composition on desktop and phone.
 
 ## Round 2 (the phone, the scene, the sound)
 

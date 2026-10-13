@@ -43,3 +43,5 @@
 @keyframes ftl-bfade { from { opacity: 1; } to { opacity: 0; transform: translateY(-4px); } }
 .ftl-truckhit { cursor: pointer; }
 .ftl-truckhit:hover { transform: none; }
+.ftl-row { scrollbar-width: none; }
+.ftl-row::-webkit-scrollbar { display: none; }

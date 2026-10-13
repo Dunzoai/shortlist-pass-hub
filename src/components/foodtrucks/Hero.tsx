@@ -1,4 +1,4 @@
-import { ShortyMascot } from "@/components/shorty/ShortyMascot";
+import { HeroScene } from "./HeroScene";
 import { GET_A_SHORTY_URL } from "./config";
 import { C, SERIF } from "./tokens";
 
@@ -20,13 +20,7 @@ export function Hero() {
         </div>
       </div>
       <div className="flex items-end justify-center">
-        {/* the real rig, not a picture of him */}
-        <div style={{ position: "relative", display: "flex", justifyContent: "center", alignItems: "flex-end", minHeight: 300 }}>
-          <div aria-hidden="true" style={{ position: "absolute", left: "50%", top: "48%", width: 460, maxWidth: "120vw", aspectRatio: "1", transform: "translate(-50%,-50%)", background: "radial-gradient(closest-side, rgba(52,211,153,.18), transparent 72%)", pointerEvents: "none" }} />
-          <div role="img" aria-label="Shorty, your Shortlist assistant" style={{ position: "relative" }}>
-            <ShortyMascot mood="hello" size={270} />
-          </div>
-        </div>
+        <HeroScene />
       </div>
     </section>
   );
