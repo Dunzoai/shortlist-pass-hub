@@ -12,3 +12,10 @@ export const CITY = { slug: "myrtle-beach", name: "Myrtle Beach" } as const;
  */
 export const TEXTING_LIVE = false;
 export const EMAIL_LIVE = false;
+
+/**
+ * The demo truck's page, shown inside the phone on the lot. A made-up business flagged is_demo in the app (seeded by
+ * scripts/seed-low-tide-tacos.mjs), so a visitor can really tap through it and preorder without any money moving.
+ * NEXT_PUBLIC_FT_DEMO_URL overrides it for local testing.
+ */
+export const DEMO_PAGE_URL = process.env.NEXT_PUBLIC_FT_DEMO_URL || "https://lowtidetacos.shortlistpass.com";

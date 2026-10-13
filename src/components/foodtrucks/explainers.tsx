@@ -21,17 +21,17 @@ export type Cart = { a: number; b: number; c: number };
 export type TextMsg = { text: string; say: string };
 
 /* ───────────── the shell ───────────── */
-export function PhoneShell({ children, width, height, style }: { children: ReactNode; width: number; height: number; style?: React.CSSProperties }) {
+export function PhoneShell({ children, width, height, style, header = true }: { children: ReactNode; width: number; height: number; style?: React.CSSProperties; header?: boolean }) {
   return (
     <div className="ftl-ph" style={{ width, height, boxSizing: "border-box", background: C.ink, borderRadius: 28, padding: 9, boxShadow: "0 18px 40px rgba(0,0,0,.45)", ...style }}>
       <div style={{ position: "relative", width: "100%", height: "100%", boxSizing: "border-box", background: "#fff", borderRadius: 20, overflow: "hidden", display: "flex", flexDirection: "column", fontSize: 13, fontFamily: SANS, color: C.ink }}>
-        <div style={{ background: C.ink, color: C.cream, padding: "12px 14px 10px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        {header && <div style={{ background: C.ink, color: C.cream, padding: "12px 14px 10px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div>
             <div style={{ fontFamily: SERIF, fontSize: 15, lineHeight: 1 }}>[YOUR TRUCK]</div>
             <div style={{ fontSize: 10, color: "#8D8A80", marginTop: 3 }}>Tonight · [PLACE] · til 9</div>
           </div>
           <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: ".1em", color: C.mint }}>LIVE</span>
-        </div>
+        </div>}
         {children}
       </div>
     </div>
@@ -151,6 +151,45 @@ export function InstallScreen({ step }: { step: 0 | 1 | 2 }) {
         </div>
         <div style={{ fontSize: 10, fontWeight: 700, textAlign: "center", color: C.body, marginLeft: "25%", width: "25%" }}>[YOUR TRUCK]</div>
       </>)}
+    </div>
+  );
+}
+
+/** The install walkthrough played ON TOP of the real page (the page stays visible behind it): iOS Safari's share button, then its
+    share sheet with "Add to Home Screen", then the icon on a home screen. Pointer events pass through to nothing; it only shows. */
+export function InstallOverlay({ step }: { step: 0 | 1 | 2 }) {
+  const cap = (t: string) => (
+    <div className="ftl-msg" style={{ position: "absolute", left: 10, right: 10, top: 10, background: "rgba(26,28,32,.92)", color: "#fff", borderRadius: 12, padding: "8px 10px", fontSize: 12, lineHeight: 1.35, fontFamily: SANS, fontWeight: 600 }}>{t}</div>
+  );
+  if (step === 2) {
+    return (
+      <div className="ftl-msg" style={{ position: "absolute", inset: 0, background: "linear-gradient(#9fbccb, #f7cfa4)", display: "flex", flexDirection: "column", padding: "52px 14px 14px", gap: 10 }}>
+        {cap("Now your truck is an icon on their phone.")}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0, 1fr))", gap: 10, alignContent: "start" }}>
+          {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => i === 5
+            ? <div key={i} className="ftl-tapme" style={{ aspectRatio: "1", borderRadius: 12, background: C.amber, border: "1px solid " + C.hair, display: "flex", alignItems: "center", justifyContent: "center" }}><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12 L10 17 L19 7" /></svg></div>
+            : <div key={i} style={{ aspectRatio: "1", borderRadius: 12, background: "rgba(255,255,255,.55)" }} />)}
+        </div>
+        <div style={{ fontSize: 10, fontWeight: 700, textAlign: "center", color: C.ink, marginLeft: "25%", width: "25%", fontFamily: SANS }}>[YOUR TRUCK]</div>
+      </div>
+    );
+  }
+  return (
+    <div style={{ position: "absolute", inset: 0 }}>
+      {cap(step === 0 ? "No app store. They tap the share button…" : "…then “Add to Home Screen”.")}
+      {step === 1 && <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,.32)" }} />}
+      {step === 1 && (
+        <div className="ftl-msg" style={{ position: "absolute", left: 8, right: 8, bottom: 52, background: "#f2f2f6", borderRadius: 16, overflow: "hidden", fontFamily: SANS }}>
+          <div style={{ padding: "11px 14px", fontSize: 12, borderBottom: "1px solid #dcdce2", background: "#fff" }}>Copy link</div>
+          <div className="ftl-tapme" style={{ padding: "11px 14px", fontSize: 12, fontWeight: 700, background: C.mint, display: "flex", justifyContent: "space-between" }}><span>Add to Home Screen</span><span>+</span></div>
+          <div style={{ padding: "11px 14px", fontSize: 12, background: "#fff" }}>Share…</div>
+        </div>
+      )}
+      <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 44, background: "rgba(246,246,250,.96)", borderTop: "1px solid #dcdce2", display: "flex", justifyContent: "space-around", alignItems: "center" }}>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8D8A80" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M15 18 L9 12 L15 6" /></svg>
+        <svg className={step === 0 ? "ftl-tapme" : ""} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={C.ink} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ borderRadius: 99 }} aria-hidden="true"><path d="M12 3 V15 M8 7 L12 3 L16 7 M5 12 V20 H19 V12" /></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8D8A80" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M4 6 H20 M4 12 H20 M4 18 H20" /></svg>
+      </div>
     </div>
   );
 }

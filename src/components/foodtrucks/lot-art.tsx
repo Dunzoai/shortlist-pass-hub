@@ -1,6 +1,49 @@
+import { SCENES } from "@/components/new-home/ShortyScenes";
+import { BURGER_PARTS } from "@/components/shorty/live/props";
+import { SCENE, type Geo } from "./lot-geo";
 import { C, SANS, SERIF } from "./tokens";
 
-/* The things on the lot, drawn as in docs/design/foodtrucks/design/Stage.dc.html. Positions come from lot-geo.ts. */
+/* The things on the lot. The truck, its string lights and awning, the sky and the water are the homepage hero's cut-paper scene. */
+
+/** The hero's taco-truck scene as the backdrop, with the paper continued to both sides so any stage width works. */
+export function LotBackdrop({ g, shake }: { g: Geo; shake: boolean }) {
+  const Scene = SCENES["Low Tide Tacos"];
+  return (
+    <div className={shake ? "ftl-shake" : ""} aria-hidden="true" style={{ position: "absolute", left: g.ox, bottom: 0, width: SCENE.w * g.s, height: SCENE.h * g.s, pointerEvents: "none" }}>
+      <svg viewBox={`0 0 ${SCENE.w} ${SCENE.h}`} width="100%" height="100%" style={{ overflow: "visible", display: "block" }}>
+        <defs>
+          {/* the same two filters the hero defines (ShortyScenes.tsx) */}
+          <filter id="paper" x="-8%" y="-8%" width="116%" height="120%" colorInterpolationFilters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves={2} seed={7} result="warp" />
+            <feDisplacementMap in="SourceGraphic" in2="warp" scale={3.5} xChannelSelector="R" yChannelSelector="G" result="torn" />
+            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves={2} seed={3} result="fine" />
+            <feColorMatrix in="fine" type="matrix" values="0 0 0 0 0.16  0 0 0 0 0.12  0 0 0 0 0.08  0.32 0 0 0 -0.13" result="specks" />
+            <feComposite in="specks" in2="torn" operator="in" result="grain" />
+            <feMerge result="sheet"><feMergeNode in="torn" /><feMergeNode in="grain" /></feMerge>
+            <feDropShadow in="sheet" dx={1.6} dy={2.6} stdDeviation={1.4} floodColor="#3a2a12" floodOpacity={0.22} />
+          </filter>
+          <filter id="glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation={4} /></filter>
+        </defs>
+        {/* paper beyond the drawing's own edges (same colors as its layers) */}
+        <rect x={-700} y={-500} width={1820} height={740} fill="#f7cfa4" />
+        <path d="M-700 196 H14 V240 H-700 Z M406 196 H1120 V240 H406 Z" fill="#9fbccb" />
+        <rect x={-700} y={218} width={1820} height={50} fill="#e2b585" />
+        <rect x={-700} y={242} width={1820} height={30} fill="#d9a876" />
+        <Scene />
+      </svg>
+    </div>
+  );
+}
+
+/** The invisible tap target over the scene's truck. */
+export function TruckHit({ g, onClick }: { g: Geo; onClick: () => void }) {
+  return <button type="button" className="ftl-obj ftl-truckhit" aria-label="Tap the truck" onClick={onClick} style={{ left: g.truck.x, bottom: g.Hmax - (g.truck.y + g.truck.h), width: g.truck.w, height: g.truck.h, background: "transparent" }} />;
+}
+
+/** Amber glow in the serving window while an order is up or Shorty is inside. */
+export function WindowGlow({ g, on }: { g: Geo; on: boolean }) {
+  return <div aria-hidden="true" style={{ position: "absolute", left: g.win.x, bottom: g.Hmax - (g.win.y + g.win.h), width: g.win.w, height: g.win.h, background: "rgba(226,164,60,.55)", opacity: on ? 1 : 0, transition: "opacity .3s", pointerEvents: "none" }} />;
+}
 
 export function Customers({ ding, style }: { ding: boolean; style: React.CSSProperties }) {
   const person = (cx: number, head: number, bodyY: number, bodyH: number, fill: string, phoneX: number, phoneY: number) => (
@@ -20,25 +63,30 @@ export function Customers({ ding, style }: { ding: boolean; style: React.CSSProp
   );
 }
 
-export function Sign({ flip, label, style, onClick }: { flip: boolean; label: string; style: React.CSSProperties; onClick: () => void }) {
+/** 8px of invisible tap area around the small props, without moving what you see. */
+const HIT: React.CSSProperties = { boxSizing: "content-box", padding: 8, margin: -8 };
+
+export type SignData = { tonight: { title: string; time: string } | null; nextStop: { day: string; title: string } | null; week: { day: string; title: string }[] };
+
+/** The A-frame sign, drawn over the scene's own little sign. Front: tonight. Back: this week. The words come from the truck's real stops. */
+export function Sign({ flip, label, data, style, onClick }: { flip: boolean; label: string; data: SignData; style: React.CSSProperties; onClick: () => void }) {
   const face = { backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", position: "absolute", inset: 0, width: "100%", height: "100%" } as React.CSSProperties;
+  const clip = (t: string, n: number) => (t.length > n ? t.slice(0, n - 1) + "…" : t);
   return (
     <button type="button" className="ftl-obj" aria-label={label} onClick={onClick} style={{ ...style, perspective: 400 }}>
       <div className={"ftl-sign" + (flip ? " flip" : "")} style={{ position: "relative", width: "100%", aspectRatio: "1 / 1.25" }}>
         <svg viewBox="0 0 90 112" style={face} aria-hidden="true">
           <path d="M14 10 L4 104 M76 10 L86 104" stroke={C.ink} strokeWidth="4" strokeLinecap="round" />
           <rect x="10" y="8" width="70" height="78" rx="4" fill={C.cream} stroke={C.ink} strokeWidth="3" />
-          <text x="45" y="34" textAnchor="middle" fontFamily={SERIF} fontStyle="italic" fontSize="18" fill={C.green}>Tonight</text>
-          <text x="45" y="54" textAnchor="middle" fontFamily={SANS} fontSize="11" fontWeight="700" fill={C.ink}>[PLACE]</text>
-          <text x="45" y="70" textAnchor="middle" fontFamily={SANS} fontSize="11" fontWeight="700" fill={C.ink}>5 – 9</text>
+          <text x="45" y="30" textAnchor="middle" fontFamily={SERIF} fontStyle="italic" fontSize="17" fill={C.green}>{data.tonight ? "Tonight" : "Next up"}</text>
+          <text x="45" y="50" textAnchor="middle" fontFamily={SANS} fontSize="9.5" fontWeight="700" fill={C.ink}>{clip(data.tonight?.title ?? data.nextStop?.title ?? "See this week", 14)}</text>
+          <text x="45" y="66" textAnchor="middle" fontFamily={SANS} fontSize="9.5" fontWeight="700" fill={C.ink}>{data.tonight?.time ?? data.nextStop?.day ?? ""}</text>
         </svg>
         <svg viewBox="0 0 90 112" style={{ ...face, transform: "rotateY(180deg)" }} aria-hidden="true">
           <path d="M14 10 L4 104 M76 10 L86 104" stroke={C.ink} strokeWidth="4" strokeLinecap="round" />
           <rect x="10" y="8" width="70" height="78" rx="4" fill={C.mint} stroke={C.ink} strokeWidth="3" />
-          <text x="45" y="26" textAnchor="middle" fontFamily={SANS} fontSize="9" fontWeight="700" letterSpacing="1.5" fill={C.ink}>THIS WEEK</text>
-          <text x="16" y="44" fontFamily={SANS} fontSize="10" fontWeight="700" fill={C.ink}>TUE  [PLACE]</text>
-          <text x="16" y="60" fontFamily={SANS} fontSize="10" fontWeight="700" fill={C.ink}>THU  [PLACE]</text>
-          <text x="16" y="76" fontFamily={SANS} fontSize="10" fontWeight="700" fill={C.ink}>SAT  [PARK]</text>
+          <text x="45" y="24" textAnchor="middle" fontFamily={SANS} fontSize="8" fontWeight="700" letterSpacing="1.5" fill={C.ink}>THIS WEEK</text>
+          {data.week.slice(0, 3).map((w, i) => <text key={w.day + i} x="15" y={42 + i * 16} fontFamily={SANS} fontSize="8.4" fontWeight="700" fill={C.ink}>{w.day.toUpperCase()}  {clip(w.title, 11)}</text>)}
         </svg>
       </div>
     </button>
@@ -56,7 +104,7 @@ export function Crate({ style }: { style: React.CSSProperties }) {
 
 export function PhoneObj({ className, style, onClick }: { className: string; style: React.CSSProperties; onClick: () => void }) {
   return (
-    <button type="button" className={"ftl-obj " + className} aria-label="Pick up the phone" onClick={onClick} style={{ ...style, borderRadius: 10 }}>
+    <button type="button" className={"ftl-obj " + className} aria-label="Pick up the phone" onClick={onClick} style={{ ...style, borderRadius: 10, ...HIT }}>
       <svg viewBox="0 0 40 70" style={{ display: "block", width: "100%", height: "auto" }} aria-hidden="true">
         <rect x="3" y="3" width="34" height="64" rx="7" fill={C.ink} />
         <rect x="6" y="9" width="28" height="52" rx="4" fill={C.mint} />
@@ -68,7 +116,7 @@ export function PhoneObj({ className, style, onClick }: { className: string; sty
 
 export function MegaObj({ style, onClick }: { style: React.CSSProperties; onClick: () => void }) {
   return (
-    <button type="button" className="ftl-obj" aria-label="Tap the megaphone" onClick={onClick} style={style}>
+    <button type="button" className="ftl-obj" aria-label="Tap the megaphone" onClick={onClick} style={{ ...style, ...HIT }}>
       <svg viewBox="0 0 70 50" style={{ display: "block", width: "100%", height: "auto", transform: "rotate(-28deg)" }} aria-hidden="true">
         <rect x="4" y="18" width="14" height="16" rx="3" fill={C.ink} />
         <path d="M16 14 L54 2 L54 46 L16 34 Z" fill={C.amber} stroke={C.ink} strokeWidth="3" strokeLinejoin="round" />
@@ -89,33 +137,14 @@ export function Table({ style }: { style: React.CSSProperties }) {
 
 export function BurgerObj({ hidden, style, onClick }: { hidden: boolean; style: React.CSSProperties; onClick: () => void }) {
   return (
-    <button type="button" className="ftl-obj" aria-label="Tap the burger" onClick={onClick} style={{ ...style, visibility: hidden ? "hidden" : "visible" }}>
-      <svg viewBox="0 0 56 44" style={{ display: "block", width: "100%", height: "auto" }} aria-hidden="true">
-        <path d="M6 30 H50 V34 Q50 40 44 40 H12 Q6 40 6 34 Z" fill={C.mint} stroke={C.ink} strokeWidth="2.5" />
-        <rect x="4" y="20" width="48" height="10" rx="5" fill="#8A5A3C" stroke={C.ink} strokeWidth="2.5" />
-        <path d="M4 19 Q10 12 16 19 Q22 12 28 19 Q34 12 40 19 Q46 12 52 19" fill={C.mint} stroke={C.ink} strokeWidth="2.5" strokeLinejoin="round" />
-        <path d="M6 18 Q6 2 28 2 Q50 2 50 18 Z" fill={C.mint} stroke={C.ink} strokeWidth="2.5" />
-        <circle cx="18" cy="10" r="1.6" fill={C.cream} /><circle cx="28" cy="7" r="1.6" fill={C.cream} /><circle cx="38" cy="11" r="1.6" fill={C.cream} />
-      </svg>
-    </button>
-  );
-}
-
-export function Truck({ shake, winFill, style, onClick }: { shake: boolean; winFill: string; style: React.CSSProperties; onClick: () => void }) {
-  return (
-    <button type="button" className={"ftl-obj " + (shake ? "ftl-shake" : "")} aria-label="Tap the truck" onClick={onClick} style={style}>
-      <svg viewBox="0 0 170 124" style={{ display: "block", width: "100%", height: "auto" }} aria-hidden="true">
-        <rect x="6" y="14" width="114" height="84" rx="5" fill={C.amber} stroke={C.ink} strokeWidth="4" />
-        <path d="M120 40 H140 L160 68 V98 H120 Z" fill={C.amber} stroke={C.ink} strokeWidth="4" strokeLinejoin="round" />
-        <path d="M127 47 H138 L148 66 H127 Z" fill="#fff" stroke={C.ink} strokeWidth="2.5" strokeLinejoin="round" />
-        <rect x="20" y="36" width="82" height="40" rx="3" fill={C.ink} />
-        <rect x="23" y="39" width="76" height="34" fill={winFill} style={{ transition: "fill .3s" }} />
-        <rect x="20" y="76" width="82" height="6" fill={C.ink} />
-        <rect x="12" y="22" width="98" height="14" fill={C.cream} stroke={C.ink} strokeWidth="3" />
-        <path d="M26 22 v14 M40 22 v14 M54 22 v14 M68 22 v14 M82 22 v14 M96 22 v14" stroke={C.ink} strokeWidth="3" />
-        <text x="87" y="93" textAnchor="middle" fontFamily={SANS} fontSize="7" fontWeight="700" letterSpacing="1" fill={C.cream}>[YOUR TRUCK]</text>
-        <circle cx="38" cy="100" r="13" fill={C.ink} /><circle cx="38" cy="100" r="4.5" fill="#8D8A80" />
-        <circle cx="136" cy="100" r="13" fill={C.ink} /><circle cx="136" cy="100" r="4.5" fill="#8D8A80" />
+    <button type="button" className="ftl-obj" aria-label="Tap the burger" onClick={onClick} style={{ ...style, visibility: hidden ? "hidden" : "visible", ...HIT }}>
+      <svg viewBox="0 0 100 80" style={{ display: "block", width: "100%", height: "auto" }} aria-hidden="true">
+        <g stroke={C.ink} strokeWidth="3" strokeLinejoin="round">
+          {BURGER_PARTS.map((p, i) => {
+            const Tag = p.tag as "path";
+            return <Tag key={i} {...(p.a as object)} />;
+          })}
+        </g>
       </svg>
     </button>
   );

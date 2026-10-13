@@ -1,0 +1,30 @@
+{
+  "note": "The demo food truck behind shortlistpass.com/foodtrucks. Single source for the seed script (scripts/seed-low-tide-tacos.mjs) and for the sign on the lot, so the two always match. A made-up business, flagged is_demo in the app's database; nothing here is a real business.",
+  "name": "Low Tide Tacos",
+  "subdomain": "lowtidetacos",
+  "city": "Myrtle Beach",
+  "state": "SC",
+  "postalCode": "29577",
+  "timezone": "America/New_York",
+  "taxRate": 0.09,
+  "headline": "Tacos by the tide.",
+  "about": "A demo truck from Shortlist Pass: a made-up page with a real menu, real weekly stops and working preorders, so you can see what your own page would do. Nothing here is a real business, and no real money moves.",
+  "menu": [
+    { "title": "Birria Tacos", "price": 13, "category": "Tacos", "featured": true, "image": "birria-tacos.png", "description": "Three tacos of slow-braised beef with melted cheese, and a cup of consomé for dipping." },
+    { "title": "Street Corn", "price": 6, "category": "Sides", "featured": true, "image": "street-corn.png", "description": "Grilled corn on the cob with crema, cotija, chili and lime." },
+    { "title": "Carne Asada Tacos", "price": 12.5, "category": "Tacos", "featured": false, "image": "carne-asada-tacos.png", "description": "Three tacos of grilled steak with onion, cilantro and salsa roja." },
+    { "title": "Baja Fish Taco", "price": 5.5, "category": "Tacos", "featured": false, "image": "baja-fish-taco.png", "description": "Crispy fish, purple cabbage, lime crema. Priced each." },
+    { "title": "Birria Quesadilla", "price": 11, "category": "Handhelds", "featured": false, "image": "birria-quesadilla.png", "description": "Griddled tortilla, birria, stretchy cheese, consomé on the side." },
+    { "title": "Al Pastor Burrito", "price": 12, "category": "Handhelds", "featured": false, "image": "al-pastor-burrito.png", "description": "Marinated pork, pineapple, rice and beans, wrapped tight." },
+    { "title": "Chips & Guac", "price": 7, "category": "Sides", "featured": false, "image": "chips-and-guac.png", "description": "Fresh-fried chips with guacamole made this morning." },
+    { "title": "Churros", "price": 6.5, "category": "Sweets", "featured": false, "image": "churros.png", "description": "Cinnamon sugar churros with a chocolate dip." },
+    { "title": "Horchata", "price": 4.5, "category": "Drinks", "featured": false, "image": "horchata.png", "description": "Cold rice-cinnamon drink over ice." },
+    { "title": "Jarritos", "price": 3, "category": "Drinks", "featured": false, "image": "jarritos.png", "description": "Mandarin or lime soda, in the bottle." }
+  ],
+  "weeklyStops": [
+    { "dow": 2, "day": "Tue", "title": "Pier View Park", "street": "Ocean Blvd", "start": "17:00", "end": "21:00" },
+    { "dow": 4, "day": "Thu", "title": "Marsh Walk Brewing lot", "street": "Marsh Walk", "start": "16:00", "end": "21:00" },
+    { "dow": 6, "day": "Sat", "title": "Saturday Market lot", "street": "Market St", "start": "11:00", "end": "15:00" }
+  ],
+  "weeksSeeded": 12
+}

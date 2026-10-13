@@ -10,6 +10,7 @@ import { useEffect, useRef } from 'react';
 import { bodyMatrix, makeRig, type RigUpdate } from '@/lib/shorty/mascot/rig';
 import { SHOULDER } from '@/lib/shorty/mascot/poses';
 import { MASCOT_VIEWBOX } from '@/lib/shorty/mascot/frame';
+import { BURGER_PARTS } from './props';
 import {
   DEFAULT_TUNE, burst, cheer, depthScale, endPerform, feetY, grabEnd, grabMove, grabStart, initState, itemGrab, itemMove, itemRelease, perform, poseOf, showOffSpin, step, tapped, visualDepth, walkTo, walkToDoor,
   type Events, type PerfKind, type Stage, type State, type Tune,
@@ -129,10 +130,8 @@ const SHAPES: Record<string, ShapeFn> = {
     el('ellipse', { cx: 48, cy: -2, rx: 7, ry: 24, fill: '#0B7A50', stroke: '#1A1C20', 'stroke-width': 3 }, g);
   },
   burger(g) {
-    el('path', { d: 'M-18 6 H18 V10 Q18 17 12 17 H-12 Q-18 17 -18 10 Z', fill: '#34D399', stroke: '#1A1C20', 'stroke-width': 2.5 }, g);
-    el('rect', { x: -20, y: -4, width: 40, height: 10, rx: 5, fill: '#8A5A3C', stroke: '#1A1C20', 'stroke-width': 2.5 }, g);
-    el('path', { d: 'M-18 -5 Q-18 -22 0 -22 Q18 -22 18 -5 Z', fill: '#34D399', stroke: '#1A1C20', 'stroke-width': 2.5 }, g);
-    el('circle', { cx: -7, cy: -14, r: 1.6, fill: '#F6F1E4' }, g); el('circle', { cx: 4, cy: -17, r: 1.6, fill: '#F6F1E4' }, g); el('circle', { cx: 10, cy: -12, r: 1.6, fill: '#F6F1E4' }, g);
+    const inner = el('g', { transform: 'translate(-50 -40) scale(0.62) translate(50 40) translate(-50 -40)', stroke: '#1A1C20', 'stroke-width': 3, 'stroke-linejoin': 'round' }, g);
+    for (const p of BURGER_PARTS) el(p.tag, p.a, inner);
   },
   envelope(g) {
     el('rect', { x: -22, y: -15, width: 44, height: 30, rx: 4, fill: '#FFFFFF', stroke: '#1A1C20', 'stroke-width': 3 }, g);
