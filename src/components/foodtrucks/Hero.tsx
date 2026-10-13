@@ -1,4 +1,4 @@
-import { HeroScene } from "./HeroScene";
+import { FOODTRUCK_EXCHANGES, ShortyStage } from "@/components/new-home/ShortyHero";
 import { GET_A_SHORTY_URL } from "./config";
 import { C, SERIF } from "./tokens";
 
@@ -6,8 +6,8 @@ const eyebrow = { fontWeight: 700, letterSpacing: ".14em", textTransform: "upper
 
 export function Hero() {
   return (
-    <section className="grid items-center gap-8 md:grid-cols-[1.1fr_.9fr] md:gap-12">
-      <div>
+    <section className="grid grid-cols-1 items-center gap-2 [grid-template-areas:'stage''copy'] lg:grid-cols-[minmax(0,1fr)_460px] lg:gap-x-12 lg:[grid-template-areas:'copy_stage']">
+      <div className="max-w-[560px] [grid-area:copy]">
         <div style={{ ...eyebrow, fontSize: 13 }}>Your newest hire · Food trucks</div>
         <h1 className="text-[60px] leading-[.92] md:text-[96px]" style={{ fontFamily: SERIF, fontWeight: 400, letterSpacing: "-0.01em", margin: "14px 0 0", textWrap: "balance" }}>You need a Shorty.</h1>
         <p className="text-[17px] md:text-[20px]" style={{ margin: "20px 0 0", lineHeight: 1.6, color: C.body, maxWidth: 560, textWrap: "pretty" }}>
@@ -19,8 +19,8 @@ export function Hero() {
           <span className="text-center text-[14px] md:text-left md:text-[14.5px]" style={{ color: "#55524B", lineHeight: 1.45 }}>Free to start. No commission on orders.</span>
         </div>
       </div>
-      <div className="flex items-end justify-center">
-        <HeroScene />
+      <div className="relative mx-auto flex w-full max-w-[400px] flex-col [grid-area:stage] lg:max-w-none">
+        <ShortyStage list={FOODTRUCK_EXCHANGES} scenes={["Low Tide Tacos"]} resetKey="foodtrucks" />
       </div>
     </section>
   );

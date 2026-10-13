@@ -683,7 +683,7 @@ const GROUPS = {
 };
 
 /** The current version's scenes stacked; the one for this text fades in, the rest fade out. */
-export function ShortyScenes({ scene, group, show }: { scene: string; group: "business" | "hoa"; show: boolean }) {
+export function ShortyScenes({ scene, group, show, scenes }: { scene: string; group: "business" | "hoa"; show: boolean; scenes?: string[] }) {
   return (
     <div
       aria-hidden="true"
@@ -707,7 +707,7 @@ export function ShortyScenes({ scene, group, show }: { scene: string; group: "bu
         </defs>
       </svg>
       {/* Each scene is its own layer: drawn once, then the cross-fade is just compositing. */}
-      {GROUPS[group].map((name) => {
+      {(scenes ?? GROUPS[group]).map((name) => {
         const Scene = SCENES[name];
         return (
           <svg

@@ -222,9 +222,9 @@ function ContestArt() {
 
 /* ── One owner at a time texts Shorty; he does it on his phone and answers ────
    Nito's Empanadas is a real client; the other business names are made up. */
-type Exchange = { biz: string; scene?: string; tint: string; ask: string; reply: string; card: { icon: Icon; label: string; art: ReactNode } };
+export type Exchange = { biz: string; scene?: string; tint: string; ask: string; reply: string; card: { icon: Icon; label: string; art: ReactNode } };
 
-const EXCHANGES: Exchange[] = [
+export const EXCHANGES: Exchange[] = [
   { biz: "Nito's Empanadas", tint: "#f2c94c", ask: "Add the Meatball Parm Empanada to the menu. $6.", reply: "On the menu. Smells great from here.",
     card: { icon: "menu", label: "Menu item added", art: <PriceTagArt name="Meatball Parm Empanada" price="$6" tint="#f2c94c" /> } },
   { biz: "Coastal Plumbing", tint: "#8fb8e0", ask: "Move my 2pm to Thursday and let her know.", reply: "Moved. She's got the new time.",
@@ -259,6 +259,15 @@ const HOA_EXCHANGES: Exchange[] = [
     card: { icon: "clipboard", label: "Sign-ups open", art: <YardSaleArt /> } },
   { scene: "hoa-halloween", biz: "Willow Creek HOA", tint: "#7fd0d6", ask: "Start the Halloween decorating contest. Voting closes the 31st.", reply: "Live. My money's on the house with the 12-foot skeleton.",
     card: { icon: "trophy", label: "Contest live", art: <ContestArt /> } },
+];
+
+/* The food trucks page plays only the taco truck: same scene, same animation, truck-sized jobs. */
+export const FOODTRUCK_EXCHANGES: Exchange[] = [
+  EXCHANGES.find((e) => e.biz === "Low Tide Tacos")!,
+  { biz: "Low Tide Tacos", tint: "#f5a46a", ask: "Post to social media: birria is back tonight.", reply: "Posted. The line starts forming now.",
+    card: { icon: "megaphone", label: "Posted to social", art: <PostArt caption="Birria is back tonight" tint="#f5a46a" likes={42} emoji="🌮" /> } },
+  { biz: "Low Tide Tacos", tint: "#f5a46a", ask: "Text everyone we're at the brewery at 5.", reply: "Texted 212 regulars. Tacos incoming.",
+    card: { icon: "message", label: "Text sent", art: <TextBlastArt count={212} note="At the brewery, 5 PM" /> } },
 ];
 
 const COPY = {
@@ -362,8 +371,9 @@ function ResultCard({ state, ex }: { state: CardState; ex: Exchange }) {
   );
 }
 
-export function ShortyHero() {
-  const { audience } = useAudience();
+/** The animated stage: a text comes in, Shorty works his phone, the result unfolds out of it, he answers.
+    The homepage hero and the food trucks page both use it; they differ only in which exchanges play. */
+export function ShortyStage({ list, group = "business", scenes, resetKey = "" }: { list: Exchange[]; group?: "business" | "hoa"; scenes?: string[]; resetKey?: string }) {
   const [phase, setPhase] = useState<"hello" | "pocket" | "texts">("hello");
   const [n, setN] = useState(0);
   const [step, setStep] = useState(0);
@@ -378,7 +388,7 @@ export function ShortyHero() {
   useEffect(() => {
     setN(0);
     setStep(reduce.current ? 6 : 0);
-  }, [audience]);
+  }, [resetKey]);
 
   useEffect(() => {
     if (reduce.current) return;
@@ -393,9 +403,7 @@ export function ShortyHero() {
     return () => clearTimeout(id);
   }, [phase, step]);
 
-  const list = audience === "hoa" ? HOA_EXCHANGES : EXCHANGES;
-  const ex = list[n % list.length];
-  const copy = COPY[audience];
+    const ex = list[n % list.length];
   const live = phase === "texts";
   const mood: MascotMood =
     phase === "hello" ? "hello"
@@ -410,7 +418,7 @@ export function ShortyHero() {
   const card: CardState = !live || step < 4 ? "tucked" : step >= 7 ? "away" : "out";
 
   return (
-    <section className="relative flex min-h-[calc(100svh-60px)] items-center overflow-x-clip lg:min-h-[calc(100svh-76px)]">
+    <>
       <style
         dangerouslySetInnerHTML={{
           __html: `@keyframes slp-land{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:none}}
@@ -420,12 +428,11 @@ export function ShortyHero() {
 @media (prefers-reduced-motion: reduce){.slp-land,.slp-flash{animation:none}}`,
         }}
       />
-      <div className="mx-auto grid w-full max-w-[1180px] grid-cols-1 px-4 pt-3 pb-10 [grid-template-areas:'stage''copy'] sm:px-8 lg:grid-cols-[minmax(0,1fr)_460px] lg:items-center lg:gap-x-12 lg:pt-10 lg:pb-24 lg:[grid-template-areas:'copy_stage']">
         {/* The stage: a text comes in, Shorty works his phone, the result unfolds out of it, he answers. */}
         <div className="relative mx-auto flex w-full max-w-[400px] flex-col [grid-area:stage] lg:max-w-none" aria-live="polite">
           {/* Whoever texted, he's standing in their world; scenes crossfade, never empty. */}
           <div className="absolute inset-x-0 bottom-0 h-[230px] lg:h-[400px]">
-            <ShortyScenes scene={ex.scene ?? ex.biz} group={audience} show />
+            <ShortyScenes scene={ex.scene ?? ex.biz} group={group} scenes={scenes} show />
           </div>
           {/* Each bubble has its own fixed spot, so nothing shifts when the other lands: the owner's
               grows down from the top right, Shorty's grows up from just over his head. */}
@@ -443,6 +450,19 @@ export function ShortyHero() {
             <ResultCard state={card} ex={ex} />
           </div>
         </div>
+
+    </>
+  );
+}
+
+export function ShortyHero() {
+  const { audience } = useAudience();
+  const list = audience === "hoa" ? HOA_EXCHANGES : EXCHANGES;
+  const copy = COPY[audience];
+  return (
+    <section className="relative flex min-h-[calc(100svh-60px)] items-center overflow-x-clip lg:min-h-[calc(100svh-76px)]">
+      <div className="mx-auto grid w-full max-w-[1180px] grid-cols-1 px-4 pt-3 pb-10 [grid-template-areas:'stage''copy'] sm:px-8 lg:grid-cols-[minmax(0,1fr)_460px] lg:items-center lg:gap-x-12 lg:pt-10 lg:pb-24 lg:[grid-template-areas:'copy_stage']">
+        <ShortyStage list={list} group={audience} resetKey={audience} />
 
         <div className="mt-2 max-w-[480px] [grid-area:copy] sm:mt-4 lg:mt-0">
           <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#2f7a50] sm:text-[12px]">{copy.eyebrow}</p>
