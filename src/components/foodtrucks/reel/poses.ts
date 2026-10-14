@@ -39,7 +39,7 @@ export function shortyPose(t: number): Pose {
   /* ── shot 1: he's on the other side of the glass, knocking, then leans in ── */
   if (t < CUT2) {
     for (let i = 0; i < HITS.length; i++) {
-      const side: Side = i === 0 ? "R" : "L", sg = side === "R" ? 1 : -1;
+      const side: Side = i === 0 ? "L" : "R", sg = side === "R" ? 1 : -1;
       const th = HITS[i];
       const reach = i === 0 ? seg(t, th - 0.2, th) : seg(t, th - 0.14, th);
       const away = seg(t, th + 0.16, th + 0.42);

@@ -15,7 +15,7 @@ import {
   CAPS, CUES, CUT2, CUT3, CUT4, END_CARD_AT, FADE_OUT_AT, H, HITS, SLIDE_AT, TOTAL, W, X_STROKES,
 } from "./timeline";
 
-const INK = "#1A1C20", IVORY = "#FBF8F0", MINT = "#34D399", AMBER = "#E2A43C", RED = "#E2574C";
+const PAPER = "#F4EFE3", INK = "#1A1C20", IVORY = "#FBF8F0", MINT = "#34D399", AMBER = "#E2A43C", RED = "#E2574C";
 const SANS = "'Schibsted Grotesk', 'Inter', sans-serif", SERIF = "'Instrument Serif', Georgia, serif";
 const clamp01 = (k: number) => Math.max(0, Math.min(1, k));
 const seg = (t: number, a: number, b: number) => clamp01((t - a) / (b - a));
@@ -26,14 +26,14 @@ const mix = (a: number, b: number, k: number) => a + (b - a) * k;
 
 /* ── where he stands, per shot (px per rig unit, body-centre x, and the screen y of rig y = 0) ── */
 function stageFor(t: number) {
-  if (t < CUT2) { const s = mix(7.2, 9.2, easeInOut(seg(t, 1.0, 2.2))); return { s, cx: 540, top: 760 - 45 * s }; }
+  if (t < CUT2) { const k = easeInOut(seg(t, 1.0, 2.2)), s = mix(7.0, 8.6, k); return { s, cx: mix(610, 590, k), top: 800 - 45 * s, rot: mix(9, 6, k) }; }
   const pop = 1 + 0.07 * (1 - easeOutBack(seg(t, t < CUT3 ? CUT2 : t < CUT4 ? CUT3 : CUT4, (t < CUT3 ? CUT2 : t < CUT4 ? CUT3 : CUT4) + 0.28), 2));
-  if (t < CUT3) { const s = 3.3 * pop; return { s, cx: 540, top: 1340 - 228 * s }; }
-  if (t < CUT4) { const s = 3.2 * pop; return { s, cx: 540, top: 1325 - 228 * s }; }
-  const s = 3.1 * pop; return { s, cx: 790, top: 1340 - 228 * s };
+  if (t < CUT3) { const s = 3.3 * pop; return { s, cx: 540, top: 1340 - 228 * s, rot: 0 }; }
+  if (t < CUT4) { const s = 3.2 * pop; return { s, cx: 540, top: 1325 - 228 * s, rot: 0 }; }
+  const s = 3.1 * pop; return { s, cx: 790, top: 1340 - 228 * s, rot: 0 };
 }
 
-function Shorty({ t, s, cx, top }: { t: number; s: number; cx: number; top: number }) {
+function Shorty({ t, s, cx, top, rot }: { t: number; s: number; cx: number; top: number; rot: number }) {
   const ref = useRef<SVGSVGElement>(null);
   const upd = useRef<RigUpdate | null>(null);
   useLayoutEffect(() => {
@@ -46,51 +46,38 @@ function Shorty({ t, s, cx, top }: { t: number; s: number; cx: number; top: numb
   const m = bodyMatrix(p);
   const box = { position: "absolute" as const, left: cx - (63 + 95) * s, top: top - 66 * s, width: 316 * s, height: 318 * s, overflow: "visible" as const };
   return (
-    <>
+    <div style={{ position: "absolute", inset: 0, transform: rot ? `rotate(${rot}deg)` : undefined, transformOrigin: `${cx}px ${top + 110 * s}px` }}>
       <svg ref={ref} viewBox="-95 -66 316 318" style={box} aria-hidden />
       <svg viewBox="-95 -66 316 318" style={box} aria-hidden>
         <g transform={`translate(${p.fx.shake.toFixed(2)} 0)`}>
           <g transform={`matrix(${m.map((v) => v.toFixed(4)).join(" ")})`}><ExtraArms t={t} /></g>
         </g>
       </svg>
-    </>
+    </div>
   );
 }
 
 /* ── backgrounds ── */
 const Grain = ({ o = 0.35 }: { o?: number }) => <div style={{ position: "absolute", inset: 0, backgroundImage: `url("${GRAIN_URL}")`, opacity: o, mixBlendMode: "multiply", pointerEvents: "none" }} />;
 
-function GlassShot() {
-  return (
-    <>
-      <div style={{ position: "absolute", inset: 0, background: `radial-gradient(ellipse 70% 48% at 50% 40%, #3a3326 0%, #1f2127 45%, #0b0c0e 100%)` }} />
-      <div style={{ position: "absolute", left: 120, right: 120, top: 420, height: 700, borderRadius: "50%", background: "radial-gradient(closest-side, rgba(226,164,60,.34), rgba(226,164,60,0))" }} />
-    </>
-  );
-}
-function GlassOver({ t }: { t: number }) {
-  const flash = HITS.reduce((m, h) => Math.max(m, t >= h ? Math.exp(-(t - h) * 12) : 0), 0);
-  return (
-    <>
-      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(112deg, rgba(255,255,255,0) 28%, rgba(255,255,255,.075) 34%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 58%, rgba(255,255,255,.05) 62%, rgba(255,255,255,0) 66%)" }} />
-      <div style={{ position: "absolute", inset: 0, boxShadow: "inset 0 0 0 26px #090a0c, inset 0 0 0 31px rgba(255,255,255,.1), inset 0 0 160px 40px rgba(0,0,0,.55)" }} />
-      <div style={{ position: "absolute", inset: 0, background: "#fff", opacity: 0.09 * flash }} />
-    </>
-  );
-}
 /** the smack: a burst around the hand, a ring that runs out across the glass, a few cracks */
-function Impact({ t, s, cx, top }: { t: number; s: number; cx: number; top: number }) {
-  const spots: Array<[number, number]> = [[108, 68], [18, 68]];
+function Impact({ t, s, cx, top, rot }: { t: number; s: number; cx: number; top: number; rot: number }) {
+  const spots: Array<[number, number]> = [[18, 66], [108, 66]];
+  const pv: [number, number] = [cx, top + 110 * s], rr = (rot * Math.PI) / 180;
+  const place = (rx: number, ry: number): [number, number] => {
+    const x = cx + (rx - 63) * s, y = top + ry * s, dx = x - pv[0], dy = y - pv[1];
+    return [pv[0] + dx * Math.cos(rr) - dy * Math.sin(rr), pv[1] + dx * Math.sin(rr) + dy * Math.cos(rr)];
+  };
   return (
     <svg viewBox={`0 0 ${W} ${H}`} style={{ position: "absolute", inset: 0, width: W, height: H }} aria-hidden>
       {HITS.map((h, i) => {
         const d = t - h;
         if (d < 0 || d > 0.6) return null;
-        const x = cx + (spots[i][0] - 63) * s, y = top + spots[i][1] * s;
+        const [x, y] = place(spots[i][0], spots[i][1]);
         const fade = 1 - d / 0.6, r = 70 + d * 520;
         return (
           <g key={i}>
-          <g opacity={fade} stroke="#fbf6e6" strokeLinecap="round" fill="none">
+          <g opacity={fade} stroke={INK} strokeLinecap="round" fill="none">
             <ellipse cx={x} cy={y} rx={r} ry={r * 0.82} strokeWidth={6 * fade + 1} opacity={0.7} />
             <ellipse cx={x} cy={y} rx={r * 0.62} ry={r * 0.5} strokeWidth={3} opacity={0.5} />
             {Array.from({ length: 11 }, (_, k) => {
@@ -108,10 +95,61 @@ function Impact({ t, s, cx, top }: { t: number; s: number; cx: number; top: numb
       {HITS.map((h, i) => {
         const reach = seg(t, h - 0.14, h), away = seg(t, h + 0.16, h + 0.42), k = reach * (1 - away);
         if (k <= 0) return null;
-        const x = cx + (spots[i][0] - 63) * s, y = top + spots[i][1] * s, sc = s * (1 + 0.6 * easeOutCubic(k));
-        return <g key={"g" + i} transform={`translate(${x.toFixed(1)} ${(y + 70).toFixed(1)}) rotate(${i === 0 ? -86 : -94}) scale(${sc.toFixed(2)} ${(i === 0 ? sc : -sc).toFixed(2)})`}><Glove fist={false} /></g>;
+        const [x, y] = place(spots[i][0], spots[i][1]), sc = s * (1 + 0.6 * easeOutCubic(k));
+        return <g key={"g" + i} transform={`translate(${x.toFixed(1)} ${(y + 70).toFixed(1)}) rotate(${(i === 0 ? -94 : -86) + rot}) scale(${sc.toFixed(2)} ${(i === 0 ? -sc : sc).toFixed(2)})`}><Glove fist={false} /></g>;
       })}
     </svg>
+  );
+}
+
+/* ── the chalk-and-pastel paper every shot sits on (off-white, textured; soft ragged smudges of colour, like pastel on paper) ── */
+type Smudge = { d: string; fill: string; o?: number };
+const blob = (cx: number, cy: number, rx: number, ry: number, k = 0) => `M${cx - rx} ${cy} C${cx - rx} ${cy - ry * (1.1 + k)} ${cx + rx * 0.1} ${cy - ry * 1.25} ${cx + rx} ${cy - ry * 0.2} C${cx + rx * 1.1} ${cy + ry * 0.9} ${cx - rx * 0.2} ${cy + ry * 1.2} ${cx - rx} ${cy} Z`;
+const SMUDGES: Record<number, Smudge[]> = {
+  1: [{ d: blob(560, 900, 470, 560, 0.1), fill: "#8fbfbd", o: 0.85 }, { d: blob(300, 1700, 420, 150), fill: "#9ccf8e", o: 0.8 }, { d: blob(930, 1760, 330, 120), fill: "#9ccf8e", o: 0.7 }],
+  2: [{ d: blob(540, 1320, 620, 330, 0.1), fill: "#9fd8bd", o: 0.8 }, { d: blob(900, 420, 230, 150), fill: "#f0cf86", o: 0.7 }],
+  3: [{ d: blob(540, 950, 520, 600, 0.1), fill: "#7fd1ae", o: 0.9 }, { d: blob(880, 330, 160, 160), fill: "#f0cf86", o: 0.85 }, { d: blob(220, 1500, 300, 130), fill: "#9ccf8e", o: 0.75 }],
+  4: [{ d: blob(520, 760, 560, 480, 0.1), fill: "#8fbfbd", o: 0.8 }, { d: blob(540, 1560, 640, 220), fill: "#9ccf8e", o: 0.85 }, { d: blob(930, 380, 140, 140), fill: "#f0cf86", o: 0.9 }],
+};
+function Chalk({ shot, t }: { shot: number; t: number }) {
+  const seed = 3 + (Math.floor(t * 6) % 3) * 5;    // the grain re-rolls a few times a second, like redrawn frames
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} style={{ position: "absolute", inset: 0, width: W, height: H }} aria-hidden>
+      <defs>
+        <filter id="chalk" x="-20%" y="-20%" width="140%" height="140%" colorInterpolationFilters="sRGB">
+          <feTurbulence type="fractalNoise" baseFrequency="0.011" numOctaves={3} seed={shot * 7} result="w" />
+          <feDisplacementMap in="SourceGraphic" in2="w" scale={110} xChannelSelector="R" yChannelSelector="G" result="d" />
+          <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves={2} seed={seed} result="g" />
+          <feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 3.2 -0.95" result="ga" />
+          <feComposite in="d" in2="ga" operator="in" />
+        </filter>
+      </defs>
+      <rect width={W} height={H} fill={PAPER} />
+      <g filter="url(#chalk)">{SMUDGES[shot].map((m, i) => <path key={i} d={m.d} fill={m.fill} opacity={m.o ?? 1} />)}</g>
+      {shot === 1 && <ChalkMarks />}
+    </svg>
+  );
+}
+/** a chalk sun with short dashes and a few birds, like the reference */
+function ChalkMarks() {
+  return (
+    <g fill="none" stroke={INK} strokeLinecap="round">
+      <circle cx={190} cy={430} r={62} fill="#f0cf86" strokeWidth={6} />
+      {Array.from({ length: 9 }, (_, i) => { const a = (i / 9) * Math.PI * 2; return <path key={i} d={`M${(190 + Math.cos(a) * 92).toFixed(0)} ${(430 + Math.sin(a) * 92).toFixed(0)} L${(190 + Math.cos(a) * 118).toFixed(0)} ${(430 + Math.sin(a) * 118).toFixed(0)}`} strokeWidth={7} />; })}
+      <path d="M860 360 q22 -26 44 0 q22 -26 44 0" strokeWidth={6} /><path d="M930 440 q16 -18 32 0 q16 -18 32 0" strokeWidth={5} />
+    </g>
+  );
+}
+function Glass() {
+  return <div style={{ position: "absolute", inset: 0, boxShadow: `inset 0 0 0 16px #EEE8D8, inset 0 0 0 21px ${INK}`, background: "linear-gradient(112deg, rgba(255,255,255,0) 30%, rgba(255,255,255,.32) 35%, rgba(255,255,255,0) 41%, rgba(255,255,255,0) 60%, rgba(255,255,255,.22) 63%, rgba(255,255,255,0) 67%)", pointerEvents: "none" }} />;
+}
+function Lot() {
+  /* only the truck (the site's own paper pieces); the sky and ground are chalk */
+  return (
+    <>
+      <div style={{ position: "absolute", left: -520, top: 534, width: 1500, height: 844 }}><TruckFront /></div>
+      <PaperDefs />
+    </>
   );
 }
 
@@ -121,7 +159,7 @@ function Listing({ t }: { t: number }) {
   const k = easeOutCubic(seg(t, SLIDE_AT, SLIDE_AT + 0.38));
   const y = (1 - k) * 1500;
   return (
-    <div style={{ position: "absolute", left: 100, top: 270 + y, width: 880, height: 900, background: "#F1EEE4", border: `5px solid ${INK}`, borderRadius: 18, boxShadow: `14px 16px 0 rgba(40,28,14,.35)`, overflow: "hidden" }}>
+    <div style={{ position: "absolute", left: 100, top: 270 + y, width: 880, height: 900, background: "#FBFAF5", border: `5px solid ${INK}`, borderRadius: 18, boxShadow: `14px 16px 0 rgba(40,28,14,.35)`, overflow: "hidden" }}>
       <div style={{ height: 78, background: "#DAD6C9", borderBottom: `4px solid ${INK}`, display: "flex", alignItems: "center", gap: 14, padding: "0 28px" }}>
         {["#c9c4b4", "#c9c4b4", "#c9c4b4"].map((c, i) => <span key={i} style={{ width: 20, height: 20, borderRadius: 20, background: c, border: `3px solid ${INK}` }} />)}
         <span style={{ flex: 1, marginLeft: 16, height: 38, borderRadius: 20, background: "#F1EEE4", border: `3px solid ${INK}` }} />
@@ -164,37 +202,7 @@ function MarkerX({ t }: { t: number }) {
   );
 }
 
-function Rays({ t }: { t: number }) {
-  const n = 22;
-  return (
-    <svg viewBox={`0 0 ${W} ${H}`} style={{ position: "absolute", inset: 0, width: W, height: H }} aria-hidden>
-      <rect width={W} height={H} fill={MINT} />
-      <g transform={`translate(540 960) rotate(${t * 3})`}>
-        {Array.from({ length: n }, (_, i) => {
-          const a0 = (i / n) * 360, a1 = a0 + 360 / n / 2;
-          const p = (a: number, r: number) => `${(Math.cos((a * Math.PI) / 180) * r).toFixed(1)} ${(Math.sin((a * Math.PI) / 180) * r).toFixed(1)}`;
-          return <path key={i} d={`M0 0 L${p(a0, 1500)} L${p(a1, 1500)} Z`} fill="#fbf8f0" opacity={0.2} />;
-        })}
-      </g>
-      <circle cx={540} cy={960} r={470} fill="#2fc38d" opacity={0.55} />
-    </svg>
-  );
-}
 
-function Lot() {
-  /* the site's own truck scene (the same paper pieces as the explainer), sized so the wheels sit on the ground Shorty stands on */
-  return (
-    <>
-      <div style={{ position: "absolute", inset: 0, background: "#f9d6a8" }} />
-      <div style={{ position: "absolute", left: -700, top: 319, width: 1900, height: 1070 }}>
-        <LotBack />
-        <TruckFront />
-      </div>
-      <div style={{ position: "absolute", left: 0, right: 0, top: 1385, bottom: 0, background: "#e2b585" }} />
-      <PaperDefs />
-    </>
-  );
-}
 
 /* ── captions: 2 to 4 words, big, just above the bottom safe band ── */
 const STOP = new Set("a an and are be but by do for from get hey i i'm i'll in is it me my of on or so that the they to we what when where while with you you'll you're your all this at".split(" "));
@@ -267,22 +275,21 @@ export function Reel() {
   const shot = t < CUT2 ? 1 : t < CUT3 ? 2 : t < CUT4 ? 3 : 4;
   const fade = cover ? 0 : seg(t, FADE_OUT_AT, TOTAL);
   return (
-    <div style={{ position: "fixed", left: 0, top: 0, width: W, height: H, overflow: "hidden", background: INK, zIndex: 2147483000 }} data-shot={shot}>
+    <div style={{ position: "fixed", left: 0, top: 0, width: W, height: H, overflow: "hidden", background: PAPER, zIndex: 2147483000 }} data-shot={shot}>
       {/* eslint-disable-next-line @next/next/no-page-custom-font */}
       <link rel="stylesheet" precedence="default" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Schibsted+Grotesk:wght@600;700;800;900&display=swap" />
       <div style={{ position: "absolute", inset: 0, transform: shot === 1 ? `translate(${(rattle * 11).toFixed(2)}px, ${(rattle * 7).toFixed(2)}px) rotate(${(rattle * 0.35).toFixed(3)}deg) scale(1.035)` : undefined }}>
-        {shot === 1 && <GlassShot />}
-        {shot === 2 && (<><div style={{ position: "absolute", inset: 0, background: IVORY }} /><Listing t={t} /><MarkerX t={t} /></>)}
-        {shot === 3 && <Rays t={t} />}
-        {shot === 4 && <Lot />}
+        <Chalk shot={shot} t={t} />
+        {shot === 2 && (<><Listing t={t} /><MarkerX t={t} /></>)}
+                {shot === 4 && <Lot />}
         <Shorty t={t} {...st} />
-        {shot === 1 && (<><Impact t={t} {...st} /><GlassOver t={t} /></>)}
+        {shot === 1 && (<><Impact t={t} {...st} /><Glass /></>)}
       </div>
-      <Grain o={shot === 1 ? 0.22 : 0.3} />
+      <Grain o={0.38} />
       {!bare && !cover && <Caption t={t} />}
       {!bare && !cover && <EndCard t={t} />}
       {cover && <CoverText />}
-      <div style={{ position: "absolute", inset: 0, background: INK, opacity: fade, pointerEvents: "none" }} />
+      <div style={{ position: "absolute", inset: 0, background: PAPER, opacity: fade, pointerEvents: "none" }} />
     </div>
   );
 }
