@@ -7,6 +7,7 @@ import { useAudience, type Audience } from "./audience";
 
 export const APP_SIGNUP_URL = "https://app.shortlistpass.com/signup";
 export const EVENTS_URL = "https://events.shortlistpass.com";
+const FOOD_TRUCKS_URL = "https://shortlistpass.com/foodtrucks";
 export const APP_VERIFIED_URL = "https://app.shortlistpass.com/go"; // the $50 Verified Shorty checkout
 export const APP_FREE_URL = "https://app.shortlistpass.com/freeshorty";
 const APP_URL = "https://app.shortlistpass.com";
@@ -51,10 +52,14 @@ function Pumpkin({ className = "h-6 w-6" }: { className?: string }) {
 
 /** The Events link: sits right after the For Businesses / For HOAs toggle on wide screens (on narrower ones it lives in the menu). */
 function EventsLink() {
+  const cls = "hidden items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-2 text-[14px] font-semibold text-[#f6f1e4] transition-colors hover:bg-[#2a2e36] lg:inline-flex";
   return (
-    <a href={EVENTS_URL} className="hidden items-center gap-1.5 rounded-full px-3.5 py-2 text-[14px] font-semibold text-[#f6f1e4] transition-colors hover:bg-[#2a2e36] lg:inline-flex">
-      Events <Pumpkin />
-    </a>
+    <>
+      <a href={FOOD_TRUCKS_URL} className={cls}>Find Food Trucks</a>
+      <a href={EVENTS_URL} className={cls}>
+        Create Events <Pumpkin />
+      </a>
+    </>
   );
 }
 
@@ -86,8 +91,9 @@ function MoreMenu() {
         </svg>
       </button>
       {open && (
-        <div role="menu" className="absolute right-0 top-[calc(100%+10px)] w-44 rounded-xl border border-[#f6f1e4]/10 bg-[#14161a] p-1.5 shadow-[0_10px_30px_rgba(0,0,0,.45)]">
-          <a role="menuitem" href={EVENTS_URL} className={`${item} hidden items-center gap-2 sm:flex lg:hidden`} onClick={() => setOpen(false)}>Events <Pumpkin className="h-[18px] w-[18px]" /></a>
+        <div role="menu" className="absolute right-0 top-[calc(100%+10px)] w-52 rounded-xl border border-[#f6f1e4]/10 bg-[#14161a] p-1.5 shadow-[0_10px_30px_rgba(0,0,0,.45)]">
+          <a role="menuitem" href={EVENTS_URL} className={`${item} hidden items-center gap-2 sm:flex lg:hidden`} onClick={() => setOpen(false)}>Create Events <Pumpkin className="h-[18px] w-[18px]" /></a>
+          <a role="menuitem" href={FOOD_TRUCKS_URL} className={`${item} sm:hidden lg:hidden`} onClick={() => setOpen(false)}>Find Food Trucks</a>
           <Link role="menuitem" href="/social" className={item} onClick={() => setOpen(false)}>Social</Link>
           <Link role="menuitem" href="/digital" className={item} onClick={() => setOpen(false)}>Digital</Link>
           <a role="menuitem" href={APP_URL} className={`${item} mt-1 border-t border-[#f6f1e4]/10 sm:hidden`} onClick={() => setOpen(false)}>Sign in</a>
