@@ -27,42 +27,68 @@ const chapterAt = (t: number) => { let c = CHAPTERS[0]; for (const x of CHAPTERS
 
 type Cue = { key: string; src: string; start: number; end: number; vol: number; loop?: boolean };
 const CUES: Cue[] = [
-  { key: "music", src: "/foodtrucks/video/bg.mp3", start: 0, end: TOTAL, vol: MUSIC_VOL, loop: true },
+  { key: "music", src: "/foodtrucks/video/music.mp3", start: 0, end: TOTAL, vol: MUSIC_VOL, loop: true },
   ...(Object.keys(voice) as VoiceId[]).map((id) => ({ key: "v-" + id, src: `/foodtrucks/video/voice/${id}.mp3`, start: VOICE_AT[id], end: VOICE_AT[id] + voice[id].duration + 0.1, vol: 1 })),
   ...SFX.map((s) => ({ key: s.id, src: `/foodtrucks/video/sfx/${s.src}.mp3`, start: s.at, end: s.at + s.len, vol: s.vol, loop: s.loop })),
 ];
 
-/** Voice, effects and music, scheduled against the video clock. Nothing is created until the visitor turns sound on. */
+/**
+ * Voice, effects and music, scheduled against the video clock with the Web Audio API (decoded once, started on the audio clock),
+ * so it stays smooth on phones; ~45 separate <audio> elements stuttered there. Nothing is fetched or created until the visitor
+ * turns sound on.
+ */
+type WebkitWindow = Window & { webkitAudioContext?: typeof AudioContext };
 function useVideoAudio() {
   return useMemo(() => {
-    const els = new Map<string, HTMLAudioElement>();
-    const armed = new Set<string>();   // cues already placed at the right point of their file this time through
-    /** Called inside the tap that turns sound on: starts every element once so iOS lets them play later, silent. */
+    const st: { ctx: AudioContext | null; loading: Promise<unknown> | null } = { ctx: null, loading: null };
+    const bufs = new Map<string, AudioBuffer>();
+    type Live = { src: AudioBufferSourceNode; gain: GainNode; at: number; off: number };
+    const live = new Map<string, Live>();
+    const done = new Set<string>();   // one-shot cues that already played out this time through the window
+    /** Called inside the tap that turns sound on (iOS only lets audio start from a tap). */
     const unlock = () => {
-      if (!els.size) for (const c of CUES) { const a = new Audio(c.src); a.preload = "auto"; a.loop = !!c.loop; els.set(c.key, a); }
-      els.forEach((a) => { a.volume = 0; void a.play().catch(() => {}); });
+      const AC = window.AudioContext || (window as WebkitWindow).webkitAudioContext;
+      if (!AC) return;
+      if (!st.ctx) st.ctx = new AC();
+      void st.ctx.resume();
+      try { (navigator as unknown as { audioSession?: { type: string } }).audioSession!.type = "playback"; } catch { /* not in this browser */ }
+      if (st.loading) return;
+      const c = st.ctx;
+      st.loading = Promise.all([...new Set(CUES.map((q) => q.src))].map(async (src) => {
+        try {
+          const raw = await (await fetch(src)).arrayBuffer();
+          bufs.set(src, await new Promise<AudioBuffer>((res, rej) => { c.decodeAudioData(raw, res, rej); }));
+        } catch { /* that one effect is simply missing */ }
+      }));
     };
+    const kill = (key: string) => { const l = live.get(key); if (!l) return; l.src.onended = null; try { l.src.stop(); } catch { /* already stopped */ } l.src.disconnect(); l.gain.disconnect(); live.delete(key); };
     const sync = (t: number, active: boolean) => {
-      if (!els.size) return;
-      const speaking = CUES.some((c) => c.key.startsWith("v-") && t >= c.start && t < c.end);
-      for (const c of CUES) {
-        const a = els.get(c.key); if (!a) continue;
-        const inside = active && t >= c.start && t < c.end;
-        if (!inside) { if (!a.paused) a.pause(); armed.delete(c.key); continue; }
-        const want = c.loop ? (t - c.start) % (a.duration || 60) : t - c.start;
-        a.volume = c.key === "music" && speaking ? c.vol * 0.7 : c.vol;
-        if (!armed.has(c.key)) {
-          if (a.readyState >= 1) {   // metadata is in: put it at the matching point (music joins mid-song, not from zero)
-            try { a.currentTime = want; armed.add(c.key); } catch { /* try again next frame */ }
-          }
-          if (a.paused) void a.play().catch(() => {});
-        } else {
-          if (a.paused) void a.play().catch(() => {});
-          else if (!c.loop && Math.abs(a.currentTime - want) > 0.35) { try { a.currentTime = want; } catch { /* ignore */ } }
-        }
+      const c = st.ctx; if (!c) return;
+      if (active && c.state === "suspended") void c.resume();
+      const speaking = CUES.some((q) => q.key.startsWith("v-") && t >= q.start && t < q.end);
+      const fade = Math.max(0, Math.min(1, (TOTAL - t) / 2.5));   // music and the bed fade out at the very end
+      for (const q of CUES) {
+        const buf = bufs.get(q.src);
+        const inside = active && t >= q.start && t < q.end;
+        if (!inside) { kill(q.key); done.delete(q.key); continue; }
+        if (!buf || done.has(q.key)) continue;
+        const want = q.loop ? (t - q.start) % buf.duration : t - q.start;
+        const vol = (q.key === "music" && speaking ? q.vol * 0.7 : q.vol) * (q.key === "music" || q.key === "ambience" ? fade : 1);
+        let l = live.get(q.key);
+        if (l && !q.loop && Math.abs(l.off + (c.currentTime - l.at) - want) > 0.3) { kill(q.key); l = undefined; }   // drifted: put it back
+        if (!l) {
+          if (want >= buf.duration - 0.02) { done.add(q.key); continue; }
+          const src = c.createBufferSource(), gain = c.createGain();
+          src.buffer = buf; src.loop = !!q.loop; gain.gain.value = vol;
+          src.connect(gain); gain.connect(c.destination);
+          src.onended = () => { if (live.get(q.key)?.src === src) { live.delete(q.key); done.add(q.key); } };
+          src.start(0, want);
+          l = { src, gain, at: c.currentTime, off: want };
+          live.set(q.key, l);
+        } else l.gain.gain.setTargetAtTime(vol, c.currentTime, 0.12);
       }
     };
-    const stop = () => { els.forEach((a) => a.pause()); armed.clear(); };
+    const stop = () => { [...live.keys()].forEach(kill); done.clear(); };
     return { unlock, sync, stop };
   }, []);
 }

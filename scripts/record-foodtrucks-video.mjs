@@ -53,7 +53,8 @@ function mixAudio(meta, wav) {
     const k = add(c.src, c.loop);
     const len = Math.min(c.end, meta.total) - c.start;
     const vol = c.key === "music" ? `volume='${c.vol}*(1-0.3*min(1,${duck}))':eval=frame` : `volume=${c.vol}`;
-    chains.push(`[${k}:a]atrim=0:${len.toFixed(3)},asetpts=PTS-STARTPTS,${vol},adelay=${Math.round(c.start * 1000)}|${Math.round(c.start * 1000)}[a${k}]`);
+    const fade = c.key === "music" || c.key === "ambience" ? `,afade=t=out:st=${Math.max(0, len - 2.5).toFixed(2)}:d=2.5` : "";
+    chains.push(`[${k}:a]atrim=0:${len.toFixed(3)},asetpts=PTS-STARTPTS,${vol}${fade},adelay=${Math.round(c.start * 1000)}|${Math.round(c.start * 1000)}[a${k}]`);
     labels.push(`[a${k}]`);
   });
   const filter = chains.join(";") + `;${labels.join("")}amix=inputs=${labels.length}:normalize=0:duration=longest,alimiter=limit=0.95,atrim=0:${meta.total.toFixed(3)}[out]`;

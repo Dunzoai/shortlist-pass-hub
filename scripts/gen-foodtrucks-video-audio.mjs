@@ -5,7 +5,7 @@
  *      src/components/foodtrucks/video/voice.json (duration, words, caption chunks).
  *   2. Sound effects (whoosh, envelope flutter, push ding, cash register, crowd murmur) -> public/foodtrucks/video/sfx/.
  * Same voice ("Fughedaboutit"), model and mp3_44100_128 format as the earlier foodtrucks audio. The music loop is
- * public/foodtrucks/video/bg.mp3 (the loop recorded earlier, kept). Existing files are skipped; delete one (or pass its id) to re-record.
+ * public/foodtrucks/video/music.mp3 (upbeat track, generated here; bg.mp3 is the older slow loop, kept but unused). Existing files are skipped; delete one (or pass its id) to re-record.
  * The API key is passed in as the ELEVENLABS_API_KEY environment variable and is never printed.
  * Usage: ELEVENLABS_API_KEY=... node scripts/gen-foodtrucks-video-audio.mjs [ids]   (or `rechunk` to rebuild caption groups from the saved timings)
  */
@@ -107,5 +107,14 @@ for (const [name, [text, ask, keep]] of Object.entries(SFX)) {
       fs.renameSync(tmp, out);
     }
   } catch (e) { console.log("FAILED sfx", name, String(e.message || e)); failed.push(name); }
+}
+/* the music: upbeat and driving (round 5 replaced the slow loop), 65 s so it covers the whole video */
+const musicOut = path.join(ROOT, "public/foodtrucks/video/music.mp3");
+if (!fs.existsSync(musicOut) || only.includes("music")) {
+  try {
+    const r = await fetch(`${BASE}/music?${FMT}`, { method: "POST", headers: { "xi-api-key": KEY, "content-type": "application/json" }, body: JSON.stringify({ prompt: "Upbeat, energetic, feel-good funk-pop instrumental for a promo about a food truck app: 126 BPM, punchy kick and snare, handclaps, bouncy slap bass, bright plucky guitar riffs, sunny brass stabs, a driving groove that keeps building, confident and fun, makes you want to move, no vocals, ends on a clean hit.", music_length_ms: 65000, model_id: "music_v1", force_instrumental: true }) });
+    if (!r.ok) throw new Error(`${r.status} ${(await r.text()).slice(0, 160)}`);
+    fs.writeFileSync(musicOut, Buffer.from(await r.arrayBuffer())); console.log("ok music");
+  } catch (e) { console.log("FAILED music", String(e.message || e)); failed.push("music"); }
 }
 console.log(failed.length ? "FAILED: " + failed.join(", ") : "all done");

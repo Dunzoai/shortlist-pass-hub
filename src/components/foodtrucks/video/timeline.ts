@@ -20,12 +20,13 @@ const dur = (id: VoiceId) => voice[id].duration;
 
 /** Scene 2 is five beats, one per voice line, so the voice never stops. Each beat is as long as its picture needs
     (every prop that flies out is held still, readable, for 2 s+ before it moves), at least as long as its line. */
-let cursor = 10.5;
+const S1_LEN = 8.7;   // scene 1 ends shortly after "...never miss you." (the icon lands, one beat, cut)
+let cursor = S1_LEN;
 const mk = (len: number) => { const r = { a: cursor, b: cursor + len, len }; cursor += len; return r; };
 export const BEAT = { open: mk(3.7), text: mk(5.9), email: mk(5.3), push: mk(4.5), line: mk(5.9) };
 const S3_LEN = 10.4, S4_LEN = 16;
 /** Scene starts. The beats inside a scene are in scenes.tsx. */
-export const SCENE = { s1: 0, s2: 10.5, s3: cursor, s4: cursor + S3_LEN } as const;
+export const SCENE = { s1: 0, s2: S1_LEN, s3: cursor, s4: cursor + S3_LEN } as const;
 export const TOTAL = SCENE.s4 + S4_LEN;
 export const END_CARD_AT = SCENE.s4 + 9;
 /** The chapters on the progress bar. */
@@ -84,7 +85,7 @@ export const SFX: SfxCue[] = [
   { id: "register", src: "register", at: s4 + 4.4, vol: 0.5, len: 1.1 },
   { id: "bell", src: "bell", at: s4 + 4.9, vol: 0.5, len: 0.9 },
 ];
-export const MUSIC_VOL = 0.15;
+export const MUSIC_VOL = 0.17;
 
 export type Chunk = { words: string[]; key: number; s: number; e: number };
 /** The caption chunk showing at time t, if any. */

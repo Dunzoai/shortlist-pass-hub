@@ -71,7 +71,7 @@ function scene1(t: number): Frame {
   const to = { x: HS.x + HS.k * (sx * Math.cos(rad) - sy * Math.sin(rad)), y: HS.y + HS.k * (sx * Math.sin(rad) + sy * Math.cos(rad)) };
   const pos = arc(easeInOut(p), from, to, 46);
   return {
-    bg: "lot", cam: { s: 1 + 0.04 * prog(t, 0, 10.5), cx: 240, cy: 140 },
+    bg: "lot", cam: { s: 1 + 0.04 * prog(t, 0, SCENE.s2), cx: 240, cy: 140 },
     behind: <Kitchen t={t} />,
     front: (
       <>
