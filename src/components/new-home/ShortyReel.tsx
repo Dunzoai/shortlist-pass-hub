@@ -18,7 +18,7 @@ const CREAM = "#FBF6E6";
 const MINT = "#5FDDAE";
 const SANS = "var(--font-sora), system-ui, sans-serif";
 const SERIF = "var(--font-fraunces), Georgia, serif";
-const GRAIN_URL =
+export const GRAIN_URL =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .11 0 0 0 0 .1 0 0 0 0 .08 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E";
 
 /** Where the film lives. It's in /public for now; point this at a bucket URL to move it out of the repo. */
@@ -43,7 +43,7 @@ const fmt = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).p
    Slow, quiet life: clouds drift, a plane crosses now and then, a bird lands on a roof and flies off. */
 const rnd = (seed: number) => () => ((seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296);
 /** A rectangle whose corners and edges are a little off, like it was cut with scissors. */
-function cut(x: number, y: number, w: number, h: number, seed: number, j = 2.4) {
+export function cut(x: number, y: number, w: number, h: number, seed: number, j = 2.4) {
   const r = rnd(seed), pts: [number, number][] = [];
   const side = (x0: number, y0: number, x1: number, y1: number) => {
     const n = Math.max(2, Math.round(Math.hypot(x1 - x0, y1 - y0) / 70));
@@ -52,8 +52,8 @@ function cut(x: number, y: number, w: number, h: number, seed: number, j = 2.4) 
   side(x, y, x + w, y); side(x + w, y, x + w, y + h); side(x + w, y + h, x, y + h); side(x, y + h, x, y);
   return "M" + pts.map(([a, b]) => `${a.toFixed(1)} ${b.toFixed(1)}`).join(" L") + " Z";
 }
-const SHADOW = "rgba(60,40,20,.28)";
-function Paper({ d, fill, seed, dx = 6, dy = 7 }: { d: string; fill: string; seed?: number; dx?: number; dy?: number }) {
+export const SHADOW = "rgba(60,40,20,.28)";
+export function Paper({ d, fill, seed, dx = 6, dy = 7 }: { d: string; fill: string; seed?: number; dx?: number; dy?: number }) {
   void seed;
   return (
     <g>
@@ -78,7 +78,7 @@ function Building({ x, w, h, fill, cols, rows, seed, door, awning }: { x: number
     </g>
   );
 }
-function Tree({ x, s = 1 }: { x: number; s?: number }) {
+export function Tree({ x, s = 1 }: { x: number; s?: number }) {
   return (
     <g transform={`translate(${x} 412) scale(${s})`}>
       <Paper d="M-6 0 V-72 H6 V0 Z" fill="#9C6A42" dx={3} dy={3} />
@@ -87,7 +87,7 @@ function Tree({ x, s = 1 }: { x: number; s?: number }) {
     </g>
   );
 }
-function Cloud({ y, s, className }: { y: number; s: number; className: string }) {
+export function Cloud({ y, s, className }: { y: number; s: number; className: string }) {
   return (
     <g className={`reel-anim ${className}`} style={{ transform: `translate(0px, ${y}px) scale(${s})` }}>
       <Paper d="M0 40 Q-6 14 22 14 Q30 -8 58 4 Q82 -10 98 14 Q128 12 126 40 Z" fill="#FFFAEC" dx={4} dy={5} />

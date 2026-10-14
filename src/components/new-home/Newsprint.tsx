@@ -22,11 +22,108 @@ const H = ({ children, size = 20 }: { children: string; size?: number }) => (
 const By = ({ children }: { children: string }) => <p className="mb-1 text-[8.5px] font-bold uppercase tracking-[0.1em]" style={{ fontFamily: BODY }}>{children}</p>;
 const P = ({ children }: { children: string }) => <p className="mb-1.5 text-justify text-[11.5px] leading-[1.3]" style={{ fontFamily: BODY, hyphens: "auto", textIndent: "1em" }}>{children}</p>;
 
-export function NewsBackdrop({ clip }: { clip?: string }) {
+
+/** The food-truck edition of the front page, for the food trucks film band. Same faded newsprint, truck stories. */
+function TruckPage() {
+  return (
+    <>
+      <div className="flex items-end justify-between gap-6 border-b-2 border-[#33291d] pb-1">
+        <div className="w-[190px] text-[8px] leading-[1.3]" style={{ fontFamily: BODY }}>
+          <p className="font-bold">The Weather</p>
+          <p>Warm and breezy at the park, perfect truck weather. Windows open at eleven. Low tonight, 68.</p>
+        </div>
+        <p className={`${blackletter.className} text-center leading-none`} style={{ fontSize: 72, letterSpacing: "0.01em" }}>The Food Truck Gazette</p>
+        <div className="w-[190px] text-right text-[8px] leading-[1.3]" style={{ fontFamily: BODY }}>
+          <p className="font-bold">Established 2026</p>
+          <p>Published wherever there is a truck, a line, and a customer wondering what is on the menu.</p>
+        </div>
+      </div>
+      <div className="flex items-center justify-between border-b border-[#33291d] py-0.5 text-[8.5px] font-bold uppercase tracking-[0.08em]" style={{ fontFamily: BODY }}>
+        <span>Vol. 1, No. 1 — First Season</span><span>The Truck Park · Friday, October 2, 2026</span><span>16 Pages</span><span>Free to Every Truck</span>
+      </div>
+      <h2 className="whitespace-nowrap border-b-2 border-[#33291d] pb-1 pt-1 text-center font-black leading-[0.95] tracking-[-0.03em]" style={{ fontFamily: SERIF, fontSize: 68 }}>Shorty Takes Over the Food Truck Park</h2>
+      <p className="border-b border-[#33291d] py-0.5 text-center text-[11px] italic" style={{ fontFamily: BODY }}>New hire texts the regulars, posts the stops and takes the orders before the window opens, cooks say</p>
+
+      <div className="mt-2" style={{ columnCount: 6, columnGap: 20, columnRuleStyle: "solid", columnRuleWidth: 1, columnRuleColor: "rgba(51,41,29,.5)", height: 620 }}>
+        <H>Taco Truck Sells Out Before Lunch Rush Ends</H>
+        <By>By the Gazette Staff</By>
+        <P>THE TRUCK PARK — The birria was gone by one o’clock on Friday, and nobody had to ask whether there was any left. A small green ticket named Shorty had already told the line, and the order window never once had to shout a name.</P>
+        <P>“I just cook,” said the owner, flipping tortillas without looking up. “He tells people where I am, what is on the menu and when the next batch is ready.”</P>
+        <P>Customers say the wait feels shorter when the order is placed before arriving. The bag is ready, the name is on it, and the only thing left to do is say thank you.</P>
+
+        <figure className="m-0 mb-2 mt-3 break-inside-avoid">
+          <div className="relative h-[170px] overflow-hidden border border-[#33291d]" style={{ background: "#cdbf9c" }}>
+            <svg viewBox="0 0 220 170" className="absolute inset-0 h-full w-full" fill="none" stroke={PRINT} strokeWidth={2.2}>
+              <rect x="22" y="58" width="150" height="82" rx="6" fill="#bfae86" />
+              <path d="M172 78 H196 Q206 78 206 92 V140 H172 Z" fill="#a8976f" />
+              <rect x="38" y="74" width="92" height="40" fill="#5a4a32" />
+              <path d="M30 74 L40 52 H128 L138 74 Z" fill="#8f7f5c" />
+              {[0, 1, 2, 3, 4].map((i) => <path key={i} d={`M${44 + i * 18} 52 V74`} />)}
+              <circle cx="58" cy="142" r="14" fill="#6f5f3f" /><circle cx="168" cy="142" r="14" fill="#6f5f3f" />
+              <path d="M10 156 H210" />
+            </svg>
+            <span className="absolute inset-0 opacity-40 mix-blend-multiply" style={{ background: HALFTONE }} />
+          </div>
+          <figcaption className="mt-0.5 text-[7.5px] font-bold leading-tight" style={{ fontFamily: BODY }}>A truck at the park, window open, line forming.</figcaption>
+        </figure>
+
+        <H size={22}>Lines Move Faster as Orders Come In Early</H>
+        <By>Special to the Gazette</By>
+        <P>Truck owners report that the crowd at the window is thinner and happier now that regulars order ahead from the truck’s own page. Payment is made up front, the pickup time is on the ticket, and a no-show is a rare thing.</P>
+        <P>Walk-ups are welcome as always and stay with the truck’s own register. Shorty, the owners are careful to say, only handles what is sent through the page.</P>
+
+        <H>Whole List Hears About the New Menu Item</H>
+        <P>When a truck adds a flavor, its regulars now get a text and an email before the first one is plated. A push notification does the rest for anyone who has saved the truck to their phone.</P>
+        <P>“They pulled up already knowing what they wanted,” one owner said.</P>
+
+        <H size={22}>Evenings Belong to the Cook Again</H>
+        <By>By Our Local Correspondent</By>
+        <P>Posting the day’s stop used to mean standing at the flat-top with a phone in one hand. Owners now text Shorty where they will be and what is cooking, and the post goes up ahead of the event.</P>
+        <P>“My marketing is done before I get busy,” said a crepe truck owner, folding a crepe.</P>
+
+        <figure className="m-0 mb-2 mt-3 break-inside-avoid">
+          <div className="relative h-[150px] overflow-hidden border border-[#33291d]" style={{ background: "#cdbf9c" }}>
+            <svg viewBox="0 0 200 150" className="absolute inset-0 h-full w-full" fill="none" stroke={PRINT} strokeWidth={2.2}>
+              <ellipse cx="100" cy="92" rx="76" ry="40" fill="#e6dcc0" />
+              <path d="M52 92 Q70 56 100 70 Q130 56 148 92 Q130 112 100 106 Q70 112 52 92 Z" fill="#bfae86" />
+              <path d="M70 84 q10 -10 20 0 M100 80 q10 -10 20 0 M120 90 q6 -8 14 0" />
+              <circle cx="166" cy="50" r="14" fill="#bfae86" />
+            </svg>
+            <span className="absolute inset-0 opacity-40 mix-blend-multiply" style={{ background: HALFTONE }} />
+          </div>
+          <figcaption className="mt-0.5 text-[7.5px] font-bold leading-tight" style={{ fontFamily: BODY }}>Tonight’s special, served hot.</figcaption>
+        </figure>
+
+        <H>Park Hosts Friday Truck Rally</H>
+        <P>Trucks will line up along the lawn again this Friday from four to nine. Bring a chair, bring a friend, and bring an appetite. Orders may be placed from the phone while still in the parking lot.</P>
+        <H size={18}>Classifieds</H>
+        <P>WANTED — One reliable front of house. Must work weekends, holidays and every lunch rush. Apply to Shorty.</P>
+        <P>FOR SALE — Flat-top griddle, gently used, well seasoned. Owner has upgraded.</P>
+        <P>LOST — One order ticket, last seen Friday. If found, it has already been filled.</P>
+        <H size={22}>Nobody Standing Around at the Pickup Window</H>
+        <By>By the Gazette Staff</By>
+        <P>The old ritual of shouting names across the lot has quietly ended. A text goes out when the order is ready, and customers walk up, take the bag and walk away smiling.</P>
+        <H>Catering Requests Arrive by Themselves</H>
+        <P>Bookings now land on the truck’s own page, with the date, the place and the headcount already filled in. The owner’s only job, the paper reports, is to say yes and keep cooking.</P>
+        <P>A neighborhood association was said to be especially pleased.</P>
+        <H size={18}>Notices</H>
+        <P>The Truck Park Association will meet Thursday after close. Questions may be sent to Shorty, who is expected to answer, even when slammed.</P>
+        <P>Lost and found: one hat, one reusable cup, one very patient dog. Inquire at the lemonade truck.</P>
+        <H size={22}>Every Truck Gets a Page of Its Own</H>
+        <P>A free page lists the menu and the stops. Trucks that want orders, bookings and the talking handled can upgrade at any time. No commission is taken on orders.</P>
+        <H size={18}>Weather</H>
+        <P>Warm skies over the park, a gentle breeze, and not a customer left on read.</P>
+      </div>
+    </>
+  );
+}
+
+export function NewsBackdrop({ clip, edition = "main" }: { clip?: string; edition?: "main" | "trucks" }) {
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 isolate select-none overflow-hidden" style={{ background: NEWSPRINT, clipPath: clip }}>
       {/* the page itself, washed out */}
       <div className="absolute left-1/2 top-0 w-[1280px] -translate-x-1/2 px-6 pt-16" style={{ color: PRINT, opacity: 0.3, filter: "sepia(.6) contrast(.85) blur(.3px)" }}>
+        {edition === "trucks" ? <TruckPage /> : (<>
         {/* top line: weather, masthead, price */}
         <div className="flex items-end justify-between gap-6 border-b-2 border-[#33291d] pb-1">
           <div className="w-[190px] text-[8px] leading-[1.3]" style={{ fontFamily: BODY }}>
@@ -112,6 +209,7 @@ export function NewsBackdrop({ clip }: { clip?: string }) {
           <H size={18}>Weather</H>
           <P>Fair skies over the city, a gentle breeze, and not a customer left on read.</P>
         </div>
+        </>)}
       </div>
 
       {/* age: yellowed, foxed and creased; edges darkened left, right and top only (nothing at the bottom, so the torn edge below matches) */}

@@ -96,7 +96,7 @@ function useVideoAudio() {
 const reducedQuery = "(prefers-reduced-motion: reduce)";
 const subReduced = (cb: () => void) => { const m = window.matchMedia(reducedQuery); m.addEventListener("change", cb); return () => m.removeEventListener("change", cb); };
 
-export default function ShortyVideo() {
+export default function ShortyVideo({ startWithSound = false }: { startWithSound?: boolean } = {}) {
   const outerRef = useRef<HTMLDivElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const [t, setT] = useState(0);
@@ -141,6 +141,7 @@ export default function ShortyVideo() {
     if (params.has("ftvBare")) window.requestAnimationFrame(() => setBare(true));
     const q = params.get("ftvT");
     if (!cap && q !== null && !Number.isNaN(parseFloat(q))) { pending.current = parseFloat(q); held.current = params.has("ftvHold"); }
+    if (startWithSound) { soundRef.current = true; audio.unlock(); window.requestAnimationFrame(() => setSound(true)); }   // opened by a tap: sound on
     const el = rootRef.current; if (!el) return;
     const ro = new ResizeObserver(() => setW(el.getBoundingClientRect().width || 390)); ro.observe(el);
     const io = new IntersectionObserver(([e]) => { visible.current = e.isIntersecting; syncPlaying(); }, { threshold: 0.4 });
@@ -177,7 +178,7 @@ export default function ShortyVideo() {
       window.removeEventListener("hashchange", watch); document.removeEventListener("fullscreenchange", onFs);
       window.clearTimeout(hideTimer.current); window.clearTimeout(hoverTimer.current); window.clearTimeout(toastTimer.current);
     };
-  }, [syncPlaying, audio]);
+  }, [syncPlaying, audio, startWithSound]);
 
   const toggleSound = useCallback(() => {
     const on = !soundRef.current;
@@ -260,7 +261,7 @@ export default function ShortyVideo() {
 
   const stage = (
     <div
-      ref={rootRef} id="watch" role="group" aria-label="Shorty explains what he does for a food truck, in four short scenes" tabIndex={0}
+      ref={rootRef} role="group" aria-label="Shorty explains what he does for a food truck, in four short scenes" tabIndex={0}
       onKeyDown={onKey} onPointerMove={(e) => { if (showUi && e.pointerType === "mouse") showControls(); }}
       onPointerDown={(e) => { if (!showUi) return; if (e.pointerType === "mouse") { if ((e.target as HTMLElement).closest("button,a,[data-ftv-bar]")) return; togglePlay(); } showControls(); }}
       onFocus={() => showUi && showControls()}

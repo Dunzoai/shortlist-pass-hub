@@ -2,7 +2,7 @@
 
 `shortlistpass.com/foodtrucks`: a sell-and-educate page for food truck owners. Reference designs: `docs/design/foodtrucks/`.
 
-**Page order:** header, hero, the narrated video, feature sections, "trucks out tonight" card (live count from the app's trucks-tonight endpoint, re-fetched every 60 s), final CTA.
+**Page order:** header, hero, the "Play to see Shorty in action" newspaper band (opens the narrated video), feature sections, "trucks out tonight" card (live count from the app's trucks-tonight endpoint, re-fetched every 60 s), final CTA.
 
 **Where things are**
 - `src/app/foodtrucks/` the page and its layout (hides the site-wide agency bar here only).
@@ -38,3 +38,6 @@
 **mp4 files for posting:** `docs/features/foodtrucks-video/shorty-foodtrucks-1920x1080.mp4` and `shorty-foodtrucks-1080x1350.mp4` (vertical, for Instagram: the picture over a peach background with big captions underneath). Captions are burned in. Made by `scripts/record-foodtrucks-video.mjs`: Playwright steps the page frame by frame (1/30 s) in a recording layout (`?ftvCapture=wide|tall`), and because headless Chromium can't capture sound, the audio is mixed with ffmpeg from the page's own cue list. Re-run it after any change: `node scripts/record-foodtrucks-video.mjs https://www.shortlistpass.com both`.
 
 **Reusable pieces:** `art.tsx` (LotBack, TruckFront, Kitchen, Shutter, Person, Bubble, Envelope, MiniPhone, InfoCard, Bag, Heart, ThumbsUp) and `frameAt(t)` in `scenes.tsx`, so a dashboard tutorial can mount a scene with its own clock.
+
+## The "Play to see Shorty in action" band (round 6)
+`video/FoodTruckReel.tsx`: the same teaser as the homepage (`new-home/ShortyReel.tsx`): faded newspaper behind, a taped paper card, a pulsing play button, Shorty with his coffee. Here the street is a food truck park: four trucks (TACOS, BURGERS, COFFEE, CREPES) with their windows open and a cook inside, bunting, trees, and paper people queuing at the windows and walking up, picking up and walking off (CSS keyframes in the component, `WALKERS`). The newspaper is the Food Truck Gazette (`NewsBackdrop edition="trucks"` in `new-home/Newsprint.tsx`; the homepage still gets the default edition). Tapping the card opens the narrated video (`ShortyVideo`) in a window with sound on (the tap lets it play); `/foodtrucks#watch` opens it too, muted. The helpers `cut`, `Paper`, `Cloud`, `Tree`, `GRAIN_URL` are now exported from `ShortyReel.tsx` for this.
