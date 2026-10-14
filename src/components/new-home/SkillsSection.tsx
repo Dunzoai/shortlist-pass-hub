@@ -55,7 +55,23 @@ const HOA: Card[] = [
   { icon: "mail", title: "Newsletters", line: "Tell him what happened and he writes it.", how: "Tell him what happened this month and he writes the newsletter for every resident. You say yes and he sends it." },
 ];
 
-const SETS: Record<Audience, Card[]> = { business: BUSINESS, hoa: HOA };
+type Mode = Audience | "trucks";   // "trucks" is the /foodtrucks version
+const TRUCKS: Card[] = [
+  { icon: "app", title: "Your truck's own app", line: "Regulars download an app with your truck's name on it.", how: "Your regulars can download an app with your truck's name on it. Once it's on their phone, you can send them push notifications: tonight's stop, a new flavor, a change of plans." },
+  { icon: "answers", title: "Answers 24/7", line: "Knows your menu and tonight's stop. Answers at 11pm.", how: "Shorty knows your menu, your hours and where you'll be. He answers customers at any hour the way you would, and points them to the right thing to order." },
+  { icon: "book", title: "Learns your menu", line: "Upload a menu or just chat with him. He learns it.", how: "Upload your menu and he pulls out the items and prices for you. Or just chat with him and tell him about your truck. You can add to what he knows any time." },
+  { icon: "events", title: "Your stops", line: "Tell him where you'll be. He posts it ahead of every event.", how: "Tell him the when and where of a stop, a rally, a private gig, anything. He posts it ahead of time and lets your regulars know." },
+  { icon: "menu", title: "Menu changes", line: "Sold out of birria? Text him and it's off the menu.", how: "Add a new item, change a price, or take something off with a text. Sold out? Tell him and he stops taking orders for it." },
+  { icon: "bag", title: "Preorders and checkout", line: "Takes the order and the payment. The money goes to your Stripe or Square, never through us.", how: "Customers build their order in the chat and pay through your Stripe or Square, so the ticket is waiting when they pull up. The money lands in your bank and we never touch it." },
+  { icon: "bookings", title: "Catering and bookings", line: "Customers pick a date and it lands on your calendar.", how: "Event organizers and neighbors send a booking request through your page with the date, the place and the headcount. You say yes or no. No phone tag." },
+  { icon: "chart", title: "Reports", line: "Ask how the week went and he tells you.", how: "Ask how the week went and he tells you in plain words: what sold, who came back. You also get a sales report every month." },
+  { icon: "mail", title: "Emails and newsletters", line: "New flavor? Tell him and he writes it.", how: "Tell him what's new and he writes the email, or your weekly schedule. You say yes and he sends it to your list." },
+  { icon: "bell", title: "Push notifications", line: "Reach everyone who has your app.", how: "Send a message straight to the phones of customers who have your app: tonight's stop, a flavor that just dropped, news about an event." },
+  { icon: "loyalty", title: "Loyalty rewards", line: "Punch cards and discounts that bring regulars back.", how: "Give customers digital punch cards and discounts that bring them back to your window." },
+  { icon: "post", title: "Social posting", line: "Say 'post this' and it's posted.", how: "Say 'post about the birria' and he writes the post and lines it up, with tonight's stop. You say yes before it goes out." },
+  { icon: "sms", title: "Text messages", line: "Order's ready? They get a text. Deals to regulars who said yes.", how: "Order's ready, we're back in your area, tonight's stop. He texts the customers who said yes to hearing from you." },
+];
+const SETS: Record<Mode, Card[]> = { business: BUSINESS, hoa: HOA, trucks: TRUCKS };
 /* Loose, uneven tilts, between -3 and +3 degrees. */
 const TILTS = [-2.4, 1.6, -0.8, 2.6, -1.8, 0.9, -2.9, 2.1, -1.1, 1.3, -2.2, 2.8, -0.6];
 const PINS = [AMBER, MINT, CREAM];
@@ -426,14 +442,15 @@ function CardDialog({ card, from, tilt, pin, onClosed }: { card: Card; from: DOM
   );
 }
 
-export function SkillsSection() {
-  const { audience } = useAudience();
+export function SkillsSection({ mode }: { mode?: Mode } = {}) {
+  const { audience: siteAudience } = useAudience();
+  const audience: Mode = mode ?? siteAudience;
   const root = useRef<HTMLElement | null>(null);
   const cards = SETS[audience];
 
   /* Which card is open (at most one), where it sat, and the button to hand focus back to. The set it belongs to is
      remembered, so switching the toggle simply means it no longer matches and it closes. */
-  const [open, setOpen] = useState<{ i: number; aud: Audience; from: DOMRect } | null>(null);
+  const [open, setOpen] = useState<{ i: number; aud: Mode; from: DOMRect } | null>(null);
   const trigger = useRef<HTMLButtonElement | null>(null);
   if (open && open.aud !== audience) setOpen(null);   // the toggle changed: close it (adjusting state while rendering, the sanctioned way)
   const shown = open && open.aud === audience ? open : null;

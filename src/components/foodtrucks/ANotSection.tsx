@@ -1,13 +1,12 @@
 "use client";
 
 /**
- * "A few things I'm not." (design: docs/design/foodtrucks/design/AFewThingsImNot.dc.html). A full-width ink band: four tappable
+ * "A few things I'm not." (design: docs/design/foodtrucks/design/AFewThingsImNot.dc.html; the closing line moved to its own section, NothingReplaces.tsx). A full-width ink band: four tappable
  * rows, each a grey claim; tap one and two rough red marker strokes draw across it, the correction stamps in underneath in mint,
  * the explanation fades in, and the label flips to "Here's what I am". Rows open and close independently. Copy is verbatim from the
  * design. Strike and stamp animations are skipped under prefers-reduced-motion (the struck line and correction just appear).
  */
 import { useState } from "react";
-import { ShortyMascot } from "@/components/shorty/ShortyMascot";
 import { SERIF } from "./tokens";
 
 const ROWS = [
@@ -34,8 +33,8 @@ const ROWS = [
 ];
 
 const CSS = `
-.fn { background:#14161A; color:#F6F1E4; position:relative; overflow:hidden; padding:104px 56px; --h2:86px; --sub:15px; --gap:56px; --rowgap:48px; --claim:50px; --fix:42px; --why:17.5px; --close:46px; --shorty:230px }
-@media (max-width: 720px) { .fn-close { flex-direction:column; align-items:flex-end !important; gap:8px !important } .fn-close p { width:100% } .fn { padding:56px 20px; --h2:48px; --sub:14px; --gap:36px; --rowgap:34px; --claim:30px; --fix:26px; --why:15.5px; --close:30px; --shorty:150px } }
+.fn { background:#14161A; color:#F6F1E4; position:relative; overflow:hidden; padding:64px 56px 72px; --h2:64px; --sub:15px; --gap:38px; --rowgap:30px; --claim:38px; --fix:32px; --why:16px }
+@media (max-width: 720px) { .fn { padding:44px 20px 52px; --h2:42px; --sub:14px; --gap:28px; --rowgap:26px; --claim:27px; --fix:23px; --why:15px } }
 .fn *, .fn *::before, .fn *::after { box-sizing:border-box }
 .fn-grid { position:absolute; inset:0; background-image:repeating-linear-gradient(0deg, rgba(246,241,228,.035) 0 1px, transparent 1px 34px); pointer-events:none }
 .fn-serif { font-family:${SERIF}; font-weight:400; letter-spacing:-0.015em }
@@ -93,14 +92,6 @@ export default function ANotSection() {
           })}
         </div>
 
-        <div style={{ marginTop: "var(--gap)", paddingTop: "var(--gap)", borderTop: "1px solid #2A2E36", display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 24 }} className="fn-close">
-          <p className="fn-serif" style={{ margin: 0, flex: "1 1 0", minWidth: 0, fontSize: "var(--close)", lineHeight: 1.04, textWrap: "balance" }}>
-            Nothing here replaces your register.<br />It replaces <span style={{ color: "#34D399" }}>the person you can&apos;t afford to hire.</span>
-          </p>
-          <div aria-hidden="true" style={{ width: "var(--shorty)", flex: "none", marginBottom: "-3%", marginRight: "-2%" }}>
-            <ShortyMascot mood="pleased" size={190} style={{ width: "100%", height: "auto", display: "block" }} />
-          </div>
-        </div>
       </div>
     </section>
   );

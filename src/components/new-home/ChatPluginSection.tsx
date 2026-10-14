@@ -320,7 +320,7 @@ export function ChatPluginSection({ trucks = false }: { trucks?: boolean } = {})
         </div>
       </section>
       {/* dark room under the torn cream, so it hangs over charcoal like the other seams */}
-      <div aria-hidden="true" className={`h-14 sm:h-16 ${trucks ? "bg-[#FBF8F0]" : "bg-[#14161A]"}`} />
+      <div aria-hidden="true" className="h-14 bg-[#14161A] sm:h-16" />
     </>
   );
 }
