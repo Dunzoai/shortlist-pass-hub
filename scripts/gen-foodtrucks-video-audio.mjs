@@ -75,6 +75,20 @@ const SFX = {
   flutter: ["A bundle of paper envelopes fluttering and splitting into many, light paper flutter and tiny pops, gentle, no music", 2.0, 1.8],
   ding: ["A soft friendly phone push notification ding, two gentle chime notes, clean, no music", 1.0, 0.9],
   register: ["A vintage cash register ka-ching with a bell, short, friendly, no music", 1.2, 1.1],
+  ambience: ["A very soft outdoor ambience of a light sea breeze and far-off waves and distant gulls at a seaside park, calm, steady, no music, no voices", 20.0, 20.0],
+  footsteps: ["Soft footsteps of a small character walking on sand and gravel, six gentle steady steps, no music", 3.2, 3.2],
+  shutter: ["A food truck serving window metal shutter sliding open with a soft rattle and a small clunk, no music", 1.4, 1.2],
+  sizzle: ["A flat-top grill sizzling softly with a light spatula scrape, food cooking, steady, no music", 8.0, 8.0],
+  pop: ["A single soft bubble pop with a tiny sparkle, cute app icon landing, no music", 0.6, 0.5],
+  bag: ["A paper take-out bag being handed over, soft paper rustle, quick", 0.8, 0.8],
+  chime: ["A small happy two-note chime, bright and friendly, short, no music", 0.8, 0.8],
+  flurry: ["A flurry of many soft quick airy whooshes and tiny paper flicks, light, fast, no music", 1.6, 1.5],
+  tap: ["A person quickly tapping and typing on a phone screen, a few soft taps, then one swipe, quiet", 1.2, 1.1],
+  buzz: ["A phone vibrating on a table, a short double buzz, soft, no music", 1.0, 0.9],
+  camera: ["A camera shutter click, single crisp soft click, phone camera", 0.6, 0.5],
+  likes: ["A series of tiny soft bubble pops ticking upward in pitch, like likes counting up, gentle, no music", 2.4, 2.3],
+  printer: ["A small receipt ticket printer chattering for a moment and tearing off a ticket, soft, no music", 1.4, 1.3],
+  bell: ["One bright clear service bell ding, single, cheerful, no music", 1.0, 0.9],
   crowd: ["A soft quiet crowd murmur of people waiting in a line outside, low friendly chatter, steady, no music, no distinct words", 8.0, 8.0],
 };
 for (const [name, [text, ask, keep]] of Object.entries(SFX)) {
@@ -87,6 +101,11 @@ for (const [name, [text, ask, keep]] of Object.entries(SFX)) {
     const raw = out + ".raw.mp3"; fs.writeFileSync(raw, Buffer.from(await r.arrayBuffer()));
     execFileSync("ffmpeg", ["-y", "-v", "error", "-i", raw, "-t", String(keep), "-af", `afade=t=out:st=${(keep - 0.05).toFixed(2)}:d=0.05`, "-ar", "44100", "-b:a", "128k", out]);
     fs.unlinkSync(raw); console.log("ok sfx", name);
+    if (name === "ambience") {   // make it loop without a seam: the last 2 s are crossfaded into the first 2 s
+      const tmp = out + ".loop.mp3";
+      execFileSync("ffmpeg", ["-y", "-v", "error", "-i", out, "-filter_complex", "[0]atrim=18:20,asetpts=PTS-STARTPTS[t];[0]atrim=0:2,asetpts=PTS-STARTPTS[h];[t][h]acrossfade=d=2[x];[0]atrim=2:18,asetpts=PTS-STARTPTS[m];[x][m]concat=n=2:v=0:a=1", "-ar", "44100", "-b:a", "128k", tmp]);
+      fs.renameSync(tmp, out);
+    }
   } catch (e) { console.log("FAILED sfx", name, String(e.message || e)); failed.push(name); }
 }
 console.log(failed.length ? "FAILED: " + failed.join(", ") : "all done");

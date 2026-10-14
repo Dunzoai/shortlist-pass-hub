@@ -10,7 +10,7 @@ export const INK = "#2a2219";
 const STROKE = { stroke: INK, strokeWidth: 1.3, strokeLinejoin: "round" as const, strokeLinecap: "round" as const };
 export const TX = 30, TY = 14;                       // where the hero's 420x260 truck sits in the 480x270 frame
 export const WINDOW = { x: 135, y: 126, w: 150, h: 58 };  // the serving window, in frame units
-export const GROUND = 246;                           // feet line for people in front of the truck
+export const GROUND = 258;                           // the ground line: the wheels' bottom edge. Shorty and people stand here, in front of the truck
 export const SANS_STACK = "var(--font-sans-inter), 'Helvetica Neue', Helvetica, sans-serif";
 export const SERIF_STACK = "var(--font-fraunces), Georgia, serif";
 
@@ -45,6 +45,7 @@ export function LotBack() {
       <rect width={480} height={270} fill="#f9d6a8" />
       <Paper rot={-1}><path d="M14 262 C-14 160 40 40 190 28 C330 18 472 52 466 160 C462 215 450 262 450 262 Z" fill="#f7cfa4" /></Paper>
       <Paper rot={1}><circle cx={348} cy={112} r={50} fill="#f19a63" /></Paper>
+      <Paper rot={-0.8} at={[250, 160]}><g transform={`translate(${TX} ${TY})`}><path d="M150 82 Q150 58 180 58 Q210 58 210 82 Z" fill="#f2c94c" /></g></Paper>
       <Paper rot={-0.6}><path d="M-10 222 Q80 176 160 206 T300 194 T440 210 T500 200 V262 H-10 Z" fill="#9fbccb" /></Paper>
       <Paper rot={0.3}><path d="M-8 238 Q240 226 488 238 V280 H-8 Z" fill="#e2b585" /></Paper>
     </svg>
@@ -54,7 +55,7 @@ export function LotBack() {
 /** The truck: body with the serving window cut out, awning, wheels, string lights. Static. */
 export function TruckFront() {
   const q = (a: number, c: number, b: number, t: number) => (1 - t) ** 2 * a + 2 * t * (1 - t) * c + t * t * b;
-  const lightY = (x: number) => (x < 240 ? q(26, 58, 32, x / 240) : q(32, 58, 26, (x - 240) / 240));
+  const lightY = (x: number) => (x < 240 ? q(6, 22, 10, x / 240) : q(10, 22, 6, (x - 240) / 240));
   const bulbs = [14, 56, 98, 140, 182, 224, 266, 308, 350, 392, 434, 470];
   const scallops = Array.from({ length: 10 }, () => "q-8.5 11 -17 0").join(" ");
   const W = WINDOW;
@@ -65,7 +66,6 @@ export function TruckFront() {
           <path fillRule="evenodd" d={`M70 224 V96 Q70 82 85 82 H298 Q316 82 328 100 L364 150 Q372 160 372 172 V224 Z M${W.x - TX} ${W.y - TY} H${W.x - TX + W.w} V${W.y - TY + W.h} H${W.x - TX} Z`} fill="#df7458" />
           <path d="M304 100 L334 146 H304 Z" fill="#fbf3dc" />
           <path d={`M${W.x - TX - 8} ${W.y - TY + W.h} H${W.x - TX + W.w + 8} V${W.y - TY + W.h + 8} H${W.x - TX - 8} Z`} fill="#b9523b" />
-          <path d="M150 82 Q150 58 180 58 Q210 58 210 82 Z" fill="#f2c94c" />
         </Paper>
         <Paper rot={0.6} at={[180, 100]}>
           <path d={`M95 110 L106 92 H254 L265 110 ${scallops} Z`} fill="#f2c94c" transform="translate(0 0)" />
@@ -77,7 +77,7 @@ export function TruckFront() {
         </Paper>
       </g>
       <g fill="none" {...STROKE} strokeWidth={1.6}>
-        <path d="M-6 26 Q117 58 240 32 Q363 58 486 26" />
+        <path d="M-6 6 Q117 22 240 10 Q363 22 486 6" />
       </g>
       {bulbs.map((x) => (
         <g key={x}>
@@ -208,21 +208,21 @@ export function MiniPhone({ x, y, w = 16, lit = 0, rot = 0, children }: { x: num
   );
 }
 
-/** The paper cards that rise out of the truck: order in / booking. */
-export function InfoCard({ x, y, w = 64, h = 26, label, lines, tint, pill, rot = 0, scale = 1, opacity = 1 }: {
+/** The paper cards that rise out of the truck: order in / booking. Text sizes are in frame units (13 = readable on a phone). */
+export function InfoCard({ x, y, w = 116, h = 40, label, lines, tint, pill, rot = 0, scale = 1, opacity = 1 }: {
   x: number; y: number; w?: number; h?: number; label: string; lines: string[]; tint: string; pill?: string; rot?: number; scale?: number; opacity?: number;
 }) {
   return (
     <g transform={`translate(${x} ${y}) rotate(${rot}) scale(${scale})`} opacity={opacity}>
-      <rect x={-w / 2 + 2} y={-h / 2 + 2.4} width={w} height={h} rx={5} fill={INK} />
-      <rect x={-w / 2} y={-h / 2} width={w} height={h} rx={5} fill="#fbf6e6" stroke={INK} strokeWidth={1.3} />
-      <rect x={-w / 2 + 4} y={-h / 2 + 4} width={5.5} height={5.5} rx={1.4} fill={tint} stroke={INK} strokeWidth={0.8} />
-      <text x={-w / 2 + 12} y={-h / 2 + 9} fontSize={4.6} fontWeight={800} letterSpacing={0.6} fill={INK} style={{ fontFamily: SANS_STACK }}>{label}</text>
+      <rect x={-w / 2 + 2.4} y={-h / 2 + 3} width={w} height={h} rx={6} fill={INK} />
+      <rect x={-w / 2} y={-h / 2} width={w} height={h} rx={6} fill="#fbf6e6" stroke={INK} strokeWidth={1.5} />
+      <rect x={-w / 2 + 5} y={-h / 2 + 5} width={7} height={7} rx={1.8} fill={tint} stroke={INK} strokeWidth={0.9} />
+      <text x={-w / 2 + 15} y={-h / 2 + 11.4} fontSize={6.6} fontWeight={800} letterSpacing={0.8} fill={INK} style={{ fontFamily: SANS_STACK }}>{label}</text>
       {lines.map((l, i) => (
-        <text key={i} x={-w / 2 + 5} y={-h / 2 + 16.5 + i * 7.4} fontSize={i === 0 ? 6.6 : 5.8} fontWeight={i === 0 ? 700 : 500} fill={INK} style={{ fontFamily: SANS_STACK }}>{l}</text>
+        <text key={i} x={-w / 2 + 6} y={-h / 2 + 26 + i * 12.5} fontSize={i === 0 ? 13 : 11.5} fontWeight={i === 0 ? 700 : 500} fill={INK} style={{ fontFamily: SANS_STACK }}>{l}</text>
       ))}
       {pill && (
-        <g><rect x={w / 2 - 22} y={h / 2 - 9.5} width={18} height={6.5} rx={3.2} fill="#2f7a50" /><text x={w / 2 - 13} y={h / 2 - 4.9} fontSize={4.2} fontWeight={800} textAnchor="middle" fill="#fbf6e6" style={{ fontFamily: SANS_STACK }}>{pill}</text></g>
+        <g><rect x={w / 2 - 29} y={-h / 2 + 4.5} width={24} height={9} rx={4.5} fill="#2f7a50" /><text x={w / 2 - 17} y={-h / 2 + 11.2} fontSize={5.8} fontWeight={800} textAnchor="middle" fill="#fbf6e6" style={{ fontFamily: SANS_STACK }}>{pill}</text></g>
       )}
     </g>
   );

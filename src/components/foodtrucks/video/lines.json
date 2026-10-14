@@ -1,7 +1,11 @@
 {
   "s1a": "Hey, I'm Shorty. I'm your front of house, and I never close.",
   "s1b": "I give your customers your own app, so they never miss you.",
-  "s2": "I talk to your customers for you. Text, email, push notification, all day, all night.",
+  "s2a": "I talk to your customers for you. All day, all night.",
+  "s2b": "Order's ready? They get a text. No shouting names, nobody standing around.",
+  "s2c": "New item on the menu? Your whole list hears about it before they pull up.",
+  "s2d": "A push notification lands right on their phone, wherever they are.",
+  "s2e": "Somebody asks if you've got the birria today? I answer. Even when you're slammed.",
   "s3": "Tell me where you'll be and what you're selling. I post it ahead of every event, so your marketing's done before you get busy.",
   "s4a": "And I take the orders and the bookings while you're running the show.",
   "s4b": "Share your menu and your stops for free. Get Verified and I'll handle the orders, the bookings, and all the talking."
