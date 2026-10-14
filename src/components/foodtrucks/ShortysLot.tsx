@@ -41,7 +41,22 @@ const INIT: S = {
 };
 const DEPTH = 0.3;          // how far forward on the lot he usually stands (0 back … 1 front)
 const DEPTH_PHONE = 0.12;
-const bubbleMs = (line: string) => Math.max(9000, line.length * 70);   // fades on its own: 9 s, longer for long lines (~70 ms a character)
+const bubbleMs = (line: string) => Math.max(7000, line.length * 70);   // fades on its own: 7 s, longer for long lines (~70 ms a character)
+/** Long answers arrive as a few short texts, one after another, like a thread; each is at most ~85 characters. */
+function chunkLine(line: string, max = 85): string[] {
+  const out: string[] = [];
+  let cur = "";
+  const push = (t: string) => { if (cur && (cur + " " + t).length > max) { out.push(cur); cur = t; } else cur = cur ? cur + " " + t : t; };
+  for (const sent of line.replace(/\s+/g, " ").trim().split(/(?<=[.!?])\s+/)) {
+    if (sent.length <= max) { push(sent); continue; }
+    for (const part of sent.split(/(?<=[,;:—–-])\s+/)) {
+      if (part.length <= max) { push(part); continue; }
+      for (const w of part.split(" ")) push(w);
+    }
+  }
+  if (cur) out.push(cur);
+  return out.length ? out : [line];
+}
 
 const chipBase = (compact: boolean): CSSProperties => ({ flex: "none", whiteSpace: "nowrap", scrollSnapAlign: "start", minHeight: 44, padding: "0 16px", borderRadius: 999, border: "1px solid " + C.hair, color: C.ink, fontSize: compact ? 14 : 15, fontWeight: 700, boxShadow: "0 10px 20px -16px rgba(26,28,32,.35)", textAlign: "left", display: "flex", alignItems: "center", gap: 8 });
 function ChipButton({ c, active, compact, onClick }: { c: Chip; active: boolean; compact: boolean; onClick: () => void }) {
@@ -79,7 +94,6 @@ export default function ShortysLot({ tonightCount }: { tonightCount: number | nu
   const alive = useRef(true);
   const grabbed = useRef(false);
   const landI = useRef(0);
-  const spot = useRef(0);
   const askSeq = useRef(0);
   const tonightRef = useRef(tonightCount); tonightRef.current = tonightCount;
 
@@ -102,7 +116,7 @@ export default function ShortysLot({ tonightCount }: { tonightCount: number | nu
     setReduced(mq.matches);
     const onMq = () => setReduced(mq.matches);
     mq.addEventListener("change", onMq);
-    return () => { alive.current = false; ro.disconnect(); mq.removeEventListener("change", onMq); window.clearTimeout(t); window.clearTimeout(bubbleTimer.current); timers.current.forEach(clearTimeout); };
+    return () => { alive.current = false; ro.disconnect(); mq.removeEventListener("change", onMq); window.clearTimeout(t); window.clearTimeout(bubbleTimer.current); chunkTimers.current.forEach(clearTimeout); timers.current.forEach(clearTimeout); };
   }, []);
 
   /* ── timers, speech and walking ── */
@@ -117,16 +131,29 @@ export default function ShortysLot({ tonightCount }: { tonightCount: number | nu
     later(40 + hold + 1500, () => set({ [which]: "tucked" } as Partial<S>));
   };
   /** A line in the bubble: the old one crossfades out, the new one in; it fades away on its own; the voice reads recorded lines when sound is on. */
-  const say = (line: string, keep?: boolean) => {
+  const chunkTimers = useRef<number[]>([]);
+  const clearChunks = () => { chunkTimers.current.splice(0).forEach(clearTimeout); };
+  const showChunk = (text: string) => {
     const cur = sRef.current;
-    if (cur.bubbleOn && cur.reply !== line) { setPrev({ text: cur.reply, key: cur.replyKey }); later(260, () => setPrev(null)); }
-    set({ reply: line, replyKey: cur.replyKey + 1, bubbleOn: true, talking: true, hint: false });
-    audioRef.current.speak(voiceIdFor(line));
+    if (cur.bubbleOn && cur.reply !== text) { setPrev({ text: cur.reply, key: cur.replyKey }); later(260, () => setPrev(null)); }
+    set({ reply: text, replyKey: cur.replyKey + 1, bubbleOn: true, talking: true, hint: false });
     window.clearTimeout(bubbleTimer.current);
-    bubbleTimer.current = window.setTimeout(() => { if (alive.current) set({ bubbleOn: false }); }, bubbleMs(line));
-    if (!keep) later(Math.max(2600, Math.min(6000, line.length * 38)), () => set({ talking: false }));
+    bubbleTimer.current = window.setTimeout(() => { if (alive.current) set({ bubbleOn: false }); }, bubbleMs(text));
   };
-  const dismissBubble = () => { window.clearTimeout(bubbleTimer.current); audioRef.current.stopVoice(); set({ bubbleOn: false, talking: false }); };
+  /** A line in the bubble: short texts one after another, the old one crossfading out; the last fades away on its own; the voice reads recorded lines when sound is on. */
+  const say = (line: string, keep?: boolean) => {
+    clearChunks();
+    const chunks = chunkLine(line);
+    showChunk(chunks[0]);
+    audioRef.current.speak(voiceIdFor(line));
+    let at = 0;
+    chunks.slice(1).forEach((c, i) => {
+      at += Math.max(2200, chunks[i].length * 62);
+      chunkTimers.current.push(window.setTimeout(() => { if (alive.current) showChunk(c); }, at));
+    });
+    if (!keep) later(at + Math.max(2600, Math.min(6000, chunks[chunks.length - 1].length * 38)), () => set({ talking: false }));
+  };
+  const dismissBubble = () => { clearChunks(); window.clearTimeout(bubbleTimer.current); audioRef.current.stopVoice(); set({ bubbleOn: false, talking: false }); };
   const sw = () => figureFor(geoRef.current!.compact) * 0.83 * 0.9;
   const face = (d: 1 | -1) => { if (ctl.current) ctl.current.state.face = d; };
   const perform = (kind: Parameters<ShortyControl["perform"]>[0], ms?: number) => { if (!pin.current) ctl.current?.perform(kind, ms); };
@@ -141,13 +168,8 @@ export default function ShortysLot({ tonightCount }: { tonightCount: number | nu
     later(ms, () => { if (sRef.current.where !== "roof") ctl.current?.stop(); set({ talking: false, active: "" }); });
     later(ms + 1500, wander);
   };
-  function wander() {
-    const st = sRef.current, c = ctl.current, g = geoRef.current;
-    if (!c || !g || st.mode !== "lot" || st.where || pin.current || c.state.mode !== "stand" || c.state.perf || c.state.held) { later(1500, wander); return; }
-    const spots = g.compact ? [0.5, 0.4, 0.56, 0.46] : [0.46, 0.55, 0.66, 0.5, 0.6, 0.4, 0.56];
-    spot.current = (spot.current + 1) % spots.length;
-    walkThen(spots[spot.current] * g.W, DEPTH, () => later(1600 + Math.random() * 1600, wander));
-  }
+  /* He no longer wanders on his own: he goes where the mouse is, or where you tap (see `followPointer`). */
+  function wander() {}
   /** Bring him out of the serving window (he stands beside the truck). */
   const leaveWindow = () => {
     if (sRef.current.where !== "window") return;
@@ -414,13 +436,44 @@ export default function ShortysLot({ tonightCount }: { tonightCount: number | nu
     else if (st.typed.trim()) void askTyped(st.typed.trim());
   };
 
+  /** He goes where the mouse is, or where you tap on the lot (on a phone). Only while he is free: not mid-job, held, inside something. */
+  const lastFollow = useRef({ t: 0, x: -999 });
+  const followPointer = (e: React.PointerEvent<HTMLElement>) => {
+    const c = ctl.current, g = geoRef.current, st = sRef.current;
+    if (!c || !g || st.mode !== "lot" || st.where || pin.current || arrive.current || c.state.perf || c.state.held) return;
+    if (c.state.mode !== "stand" && c.state.mode !== "walk") return;
+    const touch = e.pointerType !== "mouse";
+    if (touch && (e.type !== "pointerdown" || e.target !== e.currentTarget)) return;
+    if (!touch && e.type !== "pointermove") return;
+    const now = performance.now(), lf = lastFollow.current;
+    const r = e.currentTarget.getBoundingClientRect();
+    const x = Math.max(g.W * 0.08, Math.min(g.W * 0.92, ((e.clientX - r.left) / r.width) * g.W));
+    if (!touch && (now - lf.t < 140 || Math.abs(x - lf.x) < 28)) return;
+    lastFollow.current = { t: now, x };
+    c.walkTo(x, DEPTH);
+  };
+
+  /* Where the bubble goes: above him, unless he is up high (on the truck); then below him. */
+  const [below, setBelow] = useState(false);
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      const g = geoRef.current, el = overlayRef.current;
+      if (!g || !el) return;
+      const top = parseFloat(el.style.getPropertyValue("--lsl-head-top"));
+      if (Number.isNaN(top)) return;
+      const H = g.H(sRef.current.mode === "phone"), rel = top - (g.Hmax - H);
+      setBelow((b) => (b ? rel < H * 0.5 : rel < H * 0.4));
+    }, 200);
+    return () => window.clearInterval(id);
+  }, []);
+
   /* ── drawing ── */
   if (!geo || !stage || !sign) {
     return <div className="ftl" ref={(n) => { sectionRef.current = n as HTMLElement | null; }} style={{ minHeight: 560, background: "#f7cfa4", borderRadius: 24 }} aria-hidden="true" />;
   }
   const g = geo, phone = s.mode === "phone", compact = g.compact;
   const H = g.H(phone);
-  const bw = compact ? 210 : 320;
+  const bw = compact ? 200 : 236;
   const lotPE = phone ? "none" : "auto";
   const inWindow = s.where === "window";
   const win = g.win;
@@ -429,20 +482,24 @@ export default function ShortysLot({ tonightCount }: { tonightCount: number | nu
   let bubble: CSSProperties;
   const ph = g.phoneBig;
   if (phone) bubble = compact ? { left: 12, bottom: 12, width: g.W - 24 } : { left: ph.x + ph.w + 16, bottom: H - 130, width: Math.min(360, g.W - ph.x - ph.w - 40) };
-  else if (compact) bubble = { left: 12, bottom: H - 118, width: g.W - 24 - 44 };
   else if (s.where === "window") bubble = { left: Math.max(10, g.truck.x - bw - 10), bottom: g.B(150), width: bw };
   else {
-    const left = `clamp(10px, calc(var(--lsl-head-x, 50%) - ${bw * 0.35}px), ${g.W - bw - 10}px)`;
-    bubble = { left: s.orderUp ? `min(${left}, ${Math.max(10, g.truck.x - bw - 16)}px)` : left, bottom: `min(calc(${g.Hmax}px - var(--lsl-head-top, ${g.Hmax - 200}px) + 8px), ${H - 110}px)`, width: bw };
+    const left = `clamp(10px, calc(var(--lsl-head-x, 50%) - 22px), ${g.W - bw - 10}px)`;
+    const bodyH = figureFor(compact) * 1.2;
+    bubble = { left: s.orderUp ? `min(${left}, ${Math.max(10, g.truck.x - bw - 16)}px)` : left, width: bw };
+    if (below) bubble = { ...bubble, top: `min(calc(var(--lsl-head-top, ${g.Hmax - 200}px) + ${bodyH}px), ${g.Hmax - 70}px)` };
+    else bubble = { ...bubble, bottom: `min(calc(${g.Hmax}px - var(--lsl-head-top, ${g.Hmax - 200}px) + 6px), ${H - 70}px)` };
   }
-  const bfs = compact ? 14 : 16;
+  const bfs = compact ? 13 : 14;
   const hintText = compact ? "Grab Shorty. Tap the phone or the truck." : "Grab Shorty and flick him. Tap the phone, the truck, the sign, the megaphone.";
   const inputMode = s.inputMode;
-  const bubbleBase: CSSProperties = { position: "absolute", boxSizing: "border-box", background: "#fff", border: "1px solid " + C.hair, borderRadius: 18, padding: "10px 14px 12px", boxShadow: "0 18px 36px -24px rgba(0,0,0,.7)", zIndex: 8, transition: "left .35s ease-out, bottom .35s ease-out, opacity .4s", ...bubble };
+  /* an iPhone message in the site's paper style: cream, thick ink outline, hard shadow, one small corner where the tail would be */
+  const tailRadius = below && !phone && !inWindow ? "4px 16px 16px 16px" : "16px 16px 16px 4px";
+  const bubbleBase: CSSProperties = { position: "absolute", boxSizing: "border-box", width: "fit-content", maxWidth: bw, background: "#fbf6e6", border: "1.5px solid #1d1a16", borderRadius: tailRadius, padding: "7px 26px 8px 12px", boxShadow: "2px 2px 0 #1d1a16", zIndex: 8, transition: "left .35s ease-out, top .35s ease-out, bottom .35s ease-out, opacity .4s", ...bubble };
 
   return (
     <div className="ftl" style={{ width: "100%", boxSizing: "border-box", background: C.cream, border: "1px solid " + C.hair, borderRadius: 24, overflow: "hidden", boxShadow: "0 24px 48px -30px rgba(26,28,32,.55)", fontFamily: SANS, color: C.ink }}>
-      <section ref={sectionRef} aria-label="Shorty's lot" style={{ position: "relative", height: H, background: "linear-gradient(#f2b185 0%, #f7cfa4 55%, #f0c697 100%)", overflow: "hidden", transition: "height .3s" }}>
+      <section ref={sectionRef} aria-label="Shorty's lot" onPointerMove={followPointer} onPointerDown={followPointer} style={{ position: "relative", height: H, background: "linear-gradient(#f2b185 0%, #f7cfa4 55%, #f0c697 100%)", overflow: "hidden", transition: "height .3s" }}>
         <LotBackdrop g={g} shake={s.shake} />
         <WindowGlow g={g} on={s.orderUp || inWindow} />
 
@@ -485,16 +542,14 @@ export default function ShortysLot({ tonightCount }: { tonightCount: number | nu
           </div>
           {prev && (
             <div key={"p" + prev.key} aria-hidden="true" className="ftl-bfade" style={{ ...bubbleBase, pointerEvents: "none", zIndex: 7 }}>
-              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: ".12em", textTransform: "uppercase", color: C.green }}>Shorty</div>
-              <div style={{ fontSize: bfs, lineHeight: 1.35, marginTop: 2 }}>{prev.text}</div>
+              <div style={{ fontSize: bfs, lineHeight: 1.3, fontWeight: 500 }}>{prev.text}</div>
             </div>
           )}
-          <div key={s.replyKey} className="ftl-bubble" aria-hidden={!s.bubbleOn} style={{ ...bubbleBase, opacity: s.bubbleOn ? 1 : 0, pointerEvents: "none", paddingRight: 34 }}>
-            <button type="button" aria-label="Close this message" onClick={dismissBubble} style={{ position: "absolute", top: 4, right: 4, width: 28, height: 28, borderRadius: 99, border: 0, background: "transparent", cursor: "pointer", padding: 0, display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: s.bubbleOn ? "auto" : "none" }}>
+          <div key={s.replyKey} className="ftl-bubble" aria-hidden={!s.bubbleOn} style={{ ...bubbleBase, opacity: s.bubbleOn ? 1 : 0, pointerEvents: "none", paddingRight: 26 }}>
+            <button type="button" aria-label="Close this message" onClick={dismissBubble} style={{ position: "absolute", top: 0, right: 0, width: 28, height: 28, borderRadius: 99, border: 0, background: "transparent", cursor: "pointer", padding: 0, display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: s.bubbleOn ? "auto" : "none" }}>
               <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 1 L9 9 M9 1 L1 9" stroke={C.muted} strokeWidth="1.8" strokeLinecap="round" /></svg>
             </button>
-            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: ".12em", textTransform: "uppercase", color: C.green }}>Shorty</div>
-            <div aria-live="polite" style={{ fontSize: bfs, lineHeight: 1.35, marginTop: 2 }}>{s.reply}</div>
+            <div aria-live="polite" style={{ fontSize: bfs, lineHeight: 1.3, fontWeight: 500 }}>{s.reply}</div>
           </div>
         </div>
 

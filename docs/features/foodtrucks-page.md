@@ -21,6 +21,7 @@
 ## Round 3 (phone taps, hero picture, cards, chips)
 - **Phone layout:** on a phone the lot has a foreground strip of sand under the truck drawing; Shorty and the small props (crate with phone and megaphone, sign, table with the burger) stand on it, in front of the truck and not on top of it. The truck's tap area is its body only (above the wheels), and it sits under the props in the stack. A drop only puts Shorty in the window if his chest is over the window when you let go, or in a phone if he is over the crate phone or the open phone; being near the truck is no longer enough (`onRelease` in `LiveShorty.tsx`, zones in `lot-geo.ts`).
 - **Cards:** the post card and order card are drawn and move like the homepage hero's cards (`hero-cards.tsx`, copied from `new-home/ShortyHero.tsx`: cream paper, ink outline with a hard shadow, grain, icon tile and label, a little picture, a green Done pill; tucked small, rise with a spring, fly off).
+- **Bubbles (round 4):** small paper iMessage-style texts, long answers arrive as a few short texts; above Shorty, below him when he is up high. He no longer wanders: he follows the mouse (desktop) or goes where you tap the empty lot (phone).
 - **Hero:** the homepage hero stage itself (`ShortyStage` in `new-home/ShortyHero.tsx`), same spot and animation, playing only the Low Tide Tacos scene (`FOODTRUCK_EXCHANGES`). Stage on top on a phone, beside the copy on desktop.
 
 ## Round 2 (the phone, the scene, the sound)
