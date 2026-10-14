@@ -52,8 +52,8 @@ function limb(s: [number, number], h: [number, number], bend: number, side: numb
 const loop = (a: number, every: number) => (a % every) / every;
 
 function Envelope({ a }: { a: number }) {
-  const open = 0.5 + 0.5 * Math.sin(a * 5.2), apex = -2 - 22 * open;
-  const f = loop(a, 1.1), g = loop(a + 0.5, 1.1);
+  const open = 0.5 + 0.5 * Math.sin(a * 2.2), apex = -2 - 22 * open;
+  const f = loop(a, 2.2), g = loop(a + 1.1, 2.2);
   const mini = (k: number, key: string) => (
     <g key={key} transform={`translate(${f1(14 + k * 26)} ${f1(-26 - k * 34)}) rotate(${f1(-10 + k * 25)}) scale(0.45)`} opacity={Math.sin(Math.PI * k)}>
       <rect x={-18} y={-12} width={36} height={24} rx={3} fill={C.white} {...ink(3)} /><path d="M-18 -12 L0 4 L18 -12" fill="none" {...ink(3)} />
@@ -70,8 +70,8 @@ function Envelope({ a }: { a: number }) {
   );
 }
 function Camera({ a }: { a: number }) {
-  const f = loop(a + 0.2, 0.95), burst = f < 0.28 ? Math.sin((Math.PI * f) / 0.28) : 0;
-  const h = loop(a + 0.1, 0.95);
+  const f = loop(a + 0.2, 1.6), burst = f < 0.28 ? Math.sin((Math.PI * f) / 0.28) : 0;
+  const h = loop(a + 0.1, 1.6);
   return (
     <g transform="translate(0 -17)">
       <circle cx={-16} cy={-22} r={30 * burst} fill="#fff7d6" opacity={0.65 * burst} />
@@ -89,9 +89,9 @@ function Camera({ a }: { a: number }) {
   );
 }
 function Ticket({ a }: { a: number }) {
-  const feed = 8 * Math.abs(Math.sin(a * 3.2)), n = Math.floor(a * 1.6) % 3;
+  const feed = 8 * Math.abs(Math.sin(a * 1.4)), n = Math.floor(a * 0.8) % 3;
   return (
-    <g transform={`translate(0 ${f1(-14 + feed * 0.3)}) rotate(${f1(Math.sin(a * 4) * 3)})`}>
+    <g transform={`translate(0 ${f1(-14 + feed * 0.3)}) rotate(${f1(Math.sin(a * 1.8) * 2.5)})`}>
       <path d={`M-15 -38 H15 V${f1(14 + feed)} L11 ${f1(19 + feed)} L7 ${f1(14 + feed)} L3 ${f1(19 + feed)} L-1 ${f1(14 + feed)} L-5 ${f1(19 + feed)} L-9 ${f1(14 + feed)} L-13 ${f1(19 + feed)} L-15 ${f1(16 + feed)} Z`} fill={C.white} {...ink(2.2)} />
       <rect x={-15} y={-38} width={30} height={9} fill={C.red} {...ink(2)} />
       <path d="M-9 -34 H3" stroke={C.white} strokeWidth={2.2} strokeLinecap="round" />
@@ -106,8 +106,8 @@ function Ticket({ a }: { a: number }) {
   );
 }
 function Calendar({ a }: { a: number }) {
-  const cell = Math.floor(a * 2.4) % 9, cx = -12 + (cell % 3) * 12, cy = -13 + Math.floor(cell / 3) * 11;
-  const pop = 1 - (a * 2.4 - Math.floor(a * 2.4));
+  const cell = Math.floor(a * 1.0) % 9, cx = -12 + (cell % 3) * 12, cy = -13 + Math.floor(cell / 3) * 11;
+  const pop = 1 - (a * 1.0 - Math.floor(a * 1.0));
   return (
     <g transform="translate(0 -20)">
       <rect x={-22} y={-22} width={44} height={42} rx={3} fill={C.white} {...ink(2.2)} />
@@ -123,7 +123,7 @@ function Calendar({ a }: { a: number }) {
 }
 function Sign({ a }: { a: number }) {
   return (
-    <g transform={`rotate(${f1(Math.sin(a * 4.2) * 7)})`}>
+    <g transform={`rotate(${f1(Math.sin(a * 1.7) * 3.5)})`}>
       <rect x={-2.5} y={-16} width={5} height={34} fill="#9c6a42" {...ink(2)} />
       <g transform="translate(0 -40)">
         <rect x={-28} y={-18} width={56} height={34} rx={3} fill={C.cream} {...ink(2.4)} />
@@ -143,8 +143,8 @@ function Bubble({ a }: { a: number }) {
   return (
     <g transform="translate(0 -14)">
       <path d="M-26 -46 H26 Q32 -46 32 -40 V-20 Q32 -14 26 -14 H-4 L-16 -2 L-14 -14 H-26 Q-32 -14 -32 -20 V-40 Q-32 -46 -26 -46 Z" fill={C.green} {...ink(2.4)} />
-      {[0, 1, 2].map((i) => <circle key={i} cx={-12 + i * 12} cy={f1(-30 + Math.sin(a * 7 - i * 0.9) * -3)} r={3.4} fill={C.white} {...ink(1.3)} />)}
-      <g transform={`translate(30 -54) rotate(${f1(Math.sin(a * 2) * 5)})`}>
+      {[0, 1, 2].map((i) => <circle key={i} cx={-12 + i * 12} cy={f1(-30 + Math.sin(a * 4 - i * 0.9) * -3)} r={3.4} fill={C.white} {...ink(1.3)} />)}
+      <g transform={`translate(30 -54) rotate(${f1(Math.sin(a * 1.2) * 4)})`}>
         <path d="M0 -10 A10 10 0 1 0 9 6 A8 8 0 1 1 0 -10 Z" fill={C.yellow} {...ink(1.8)} />
         <path d="M-14 -3 L-12.5 0 L-9 0.5 L-12 3 L-11 6.5 L-14 4.5 L-17 6.5 L-16 3 L-19 0.5 L-15.5 0 Z" fill={C.yellow} {...ink(1.2)} transform="translate(-6 -10) scale(0.7)" />
       </g>
@@ -159,19 +159,14 @@ function DrawnArm({ spec, i, t }: { spec: ArmSpec; i: number; t: number }) {
   const ext = armExt(i, t);
   if (ext <= 0.002) return null;
   const a = Math.max(0, t - popAt(spec)), side = spec.side === "L" ? -1 : 1, e = Math.min(ext, 1.25);
-  const w = 6.2 + i * 0.9;
+  const w = 1.6 + i * 0.12;
   const S = spec.shoulder;
-  const H: [number, number] = [S[0] + (spec.hand[0] - S[0]) * ext + Math.sin(t * w + spec.ph) * 4.5 * Math.min(1, ext), S[1] + (spec.hand[1] - S[1]) * ext + Math.cos(t * w * 0.85 + spec.ph) * 4.5 * Math.min(1, ext)];
+  const H: [number, number] = [S[0] + (spec.hand[0] - S[0]) * ext + Math.sin(t * w + spec.ph) * 2.4 * Math.min(1, ext), S[1] + (spec.hand[1] - S[1]) * ext + Math.cos(t * w * 0.85 + spec.ph) * 2.4 * Math.min(1, ext)];
   const L = limb(S, H, 16, side);
   const Item = ITEM[spec.id];
-  const bump = Math.min(1, ext);
-  return (
+    return (
     <g>
       <path d={L.d} fill="none" stroke={C.ink} strokeWidth={6} strokeLinecap="round" />
-      <g transform={`translate(${f1(L.mx)} ${f1(L.my)}) scale(${bump.toFixed(3)})`}>
-        <circle r={10.5} fill={C.ink} />
-        <path d="M-5 -5.6 Q0 -8.6 5 -5.6" fill="none" stroke={C.white} strokeWidth={1.6} strokeLinecap="round" opacity={0.75} />
-      </g>
       <g transform={`translate(${f1(H[0])} ${f1(H[1])})`}>
         {Item && <g transform={`scale(${e.toFixed(3)})`}><Item a={a} /></g>}
         <g transform={`rotate(${f1(L.ang)}) scale(1 ${spec.side === "L" ? -1 : 1})`}><Glove fist /></g>

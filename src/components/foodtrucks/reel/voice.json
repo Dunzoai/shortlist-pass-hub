@@ -1,367 +1,236 @@
 {
  "v1": {
-  "text": "Hey. How many times you answering 'where y'all at today' this week?",
-  "chars": 67,
-  "duration": 3.437,
+  "text": "Hey. Anybody here?",
+  "chars": 18,
+  "duration": 1.161,
   "words": [
    {
     "w": "Hey.",
     "s": 0,
-    "e": 0.244
+    "e": 0.279
    },
    {
-    "w": "How",
+    "w": "Anybody",
     "s": 0.313,
-    "e": 0.453
+    "e": 0.685
    },
    {
-    "w": "many",
-    "s": 0.499,
-    "e": 0.662
-   },
-   {
-    "w": "times",
-    "s": 0.72,
-    "e": 1.01
-   },
-   {
-    "w": "you",
-    "s": 1.045,
-    "e": 1.138
-   },
-   {
-    "w": "answering",
-    "s": 1.219,
-    "e": 1.625
-   },
-   {
-    "w": "'where",
-    "s": 1.66,
-    "e": 1.904
-   },
-   {
-    "w": "y'all",
-    "s": 1.939,
-    "e": 2.183
-   },
-   {
-    "w": "at",
-    "s": 2.252,
-    "e": 2.357
-   },
-   {
-    "w": "today'",
-    "s": 2.392,
-    "e": 2.705
-   },
-   {
-    "w": "this",
-    "s": 2.751,
-    "e": 2.902
-   },
-   {
-    "w": "week?",
-    "s": 2.972,
-    "e": 3.436
+    "w": "here?",
+    "s": 0.743,
+    "e": 1.161
    }
   ]
  },
  "v2": {
-  "text": "Forty? Fifty? Give 'em to me.",
-  "chars": 29,
-  "duration": 1.672,
+  "text": "Listen. I'm not just a food truck finder.",
+  "chars": 41,
+  "duration": 2.136,
   "words": [
    {
-    "w": "Forty?",
+    "w": "Listen.",
     "s": 0,
-    "e": 0.418
+    "e": 0.36
    },
    {
-    "w": "Fifty?",
-    "s": 0.464,
-    "e": 0.824
+    "w": "I'm",
+    "s": 0.383,
+    "e": 0.499
    },
    {
-    "w": "Give",
-    "s": 0.848,
-    "e": 1.022
+    "w": "not",
+    "s": 0.534,
+    "e": 0.65
    },
    {
-    "w": "'em",
-    "s": 1.057,
-    "e": 1.149
+    "w": "just",
+    "s": 0.697,
+    "e": 0.859
    },
    {
-    "w": "to",
-    "s": 1.196,
-    "e": 1.254
+    "w": "a",
+    "s": 0.929,
+    "e": 0.964
    },
    {
-    "w": "me.",
-    "s": 1.335,
-    "e": 1.672
+    "w": "food",
+    "s": 1.022,
+    "e": 1.231
+   },
+   {
+    "w": "truck",
+    "s": 1.266,
+    "e": 1.486
+   },
+   {
+    "w": "finder.",
+    "s": 1.533,
+    "e": 2.136
    }
   ]
  },
  "v3": {
-  "text": "No. I'm not a food truck listing site.",
-  "chars": 38,
-  "duration": 2.09,
-  "words": [
-   {
-    "w": "No.",
-    "s": 0,
-    "e": 0.255
-   },
-   {
-    "w": "I'm",
-    "s": 0.279,
-    "e": 0.395
-   },
-   {
-    "w": "not",
-    "s": 0.43,
-    "e": 0.557
-   },
-   {
-    "w": "a",
-    "s": 0.592,
-    "e": 0.615
-   },
-   {
-    "w": "food",
-    "s": 0.673,
-    "e": 0.894
-   },
-   {
-    "w": "truck",
-    "s": 0.929,
-    "e": 1.161
-   },
-   {
-    "w": "listing",
-    "s": 1.219,
-    "e": 1.521
-   },
-   {
-    "w": "site.",
-    "s": 1.591,
-    "e": 2.09
-   }
-  ]
- },
- "v4": {
-  "text": "Those list you and forget you.",
-  "chars": 30,
-  "duration": 1.718,
-  "words": [
-   {
-    "w": "Those",
-    "s": 0,
-    "e": 0.313
-   },
-   {
-    "w": "list",
-    "s": 0.372,
-    "e": 0.592
-   },
-   {
-    "w": "you",
-    "s": 0.639,
-    "e": 0.731
-   },
-   {
-    "w": "and",
-    "s": 0.789,
-    "e": 0.871
-   },
-   {
-    "w": "forget",
-    "s": 0.929,
-    "e": 1.289
-   },
-   {
-    "w": "you.",
-    "s": 1.347,
-    "e": 1.718
-   }
-  ]
- },
- "v5": {
-  "text": "I don't.",
-  "chars": 8,
-  "duration": 0.789,
+  "text": "I do a lot more. I'm your coworker. Outreach, communication, sales, bookings, emails, texts, social media.",
+  "chars": 106,
+  "duration": 7.291,
   "words": [
    {
     "w": "I",
     "s": 0,
-    "e": 0.116
+    "e": 0.058
    },
    {
-    "w": "don't.",
-    "s": 0.209,
-    "e": 0.789
-   }
-  ]
- },
- "v6": {
-  "text": "Texts. Emails. Social posts. Orders. Bookings. Your schedule. Your regulars. Questions at midnight.",
-  "chars": 99,
-  "duration": 6.409,
-  "words": [
-   {
-    "w": "Texts.",
-    "s": 0,
-    "e": 0.639
+    "w": "do",
+    "s": 0.174,
+    "e": 0.279
    },
    {
-    "w": "Emails.",
-    "s": 0.813,
-    "e": 1.475
+    "w": "a",
+    "s": 0.337,
+    "e": 0.36
    },
    {
-    "w": "Social",
-    "s": 1.591,
-    "e": 1.997
+    "w": "lot",
+    "s": 0.418,
+    "e": 0.65
    },
    {
-    "w": "posts.",
-    "s": 2.067,
-    "e": 2.543
+    "w": "more.",
+    "s": 0.708,
+    "e": 1.068
    },
    {
-    "w": "Orders.",
-    "s": 2.613,
-    "e": 3.042
-   },
-   {
-    "w": "Bookings.",
-    "s": 3.123,
-    "e": 3.611
-   },
-   {
-    "w": "Your",
-    "s": 3.634,
-    "e": 3.774
-   },
-   {
-    "w": "schedule.",
-    "s": 3.808,
-    "e": 4.319
-   },
-   {
-    "w": "Your",
-    "s": 4.366,
-    "e": 4.54
-   },
-   {
-    "w": "regulars.",
-    "s": 4.61,
-    "e": 5.062
-   },
-   {
-    "w": "Questions",
-    "s": 5.097,
-    "e": 5.585
-   },
-   {
-    "w": "at",
-    "s": 5.62,
-    "e": 5.701
-   },
-   {
-    "w": "midnight.",
-    "s": 5.747,
-    "e": 6.409
-   }
-  ]
- },
- "v7": {
-  "text": "You upload your menu, tell me where you'll be, and cook.",
-  "chars": 56,
-  "duration": 3.158,
-  "words": [
-   {
-    "w": "You",
-    "s": 0,
-    "e": 0.116
-   },
-   {
-    "w": "upload",
-    "s": 0.197,
-    "e": 0.569
+    "w": "I'm",
+    "s": 1.138,
+    "e": 1.301
    },
    {
     "w": "your",
-    "s": 0.615,
-    "e": 0.731
+    "s": 1.347,
+    "e": 1.463
    },
    {
-    "w": "menu,",
-    "s": 0.789,
-    "e": 1.254
+    "w": "coworker.",
+    "s": 1.533,
+    "e": 2.287
    },
    {
-    "w": "tell",
-    "s": 1.335,
-    "e": 1.532
+    "w": "Outreach,",
+    "s": 2.462,
+    "e": 3.088
    },
    {
-    "w": "me",
-    "s": 1.59,
-    "e": 1.649
+    "w": "communication,",
+    "s": 3.147,
+    "e": 3.994
    },
    {
-    "w": "where",
-    "s": 1.683,
-    "e": 1.846
+    "w": "sales,",
+    "s": 4.04,
+    "e": 4.47
    },
    {
-    "w": "you'll",
-    "s": 1.881,
-    "e": 2.055
+    "w": "bookings,",
+    "s": 4.516,
+    "e": 4.981
    },
    {
-    "w": "be,",
-    "s": 2.101,
-    "e": 2.334
+    "w": "emails,",
+    "s": 5.027,
+    "e": 5.492
    },
    {
-    "w": "and",
-    "s": 2.38,
-    "e": 2.531
+    "w": "texts,",
+    "s": 5.527,
+    "e": 6.037
    },
    {
-    "w": "cook.",
-    "s": 2.601,
-    "e": 3.158
+    "w": "social",
+    "s": 6.107,
+    "e": 6.525
+   },
+   {
+    "w": "media.",
+    "s": 6.595,
+    "e": 7.291
    }
   ]
  },
- "v8": {
-  "text": "I'll handle the rest.",
-  "chars": 21,
-  "duration": 1.207,
+ "v4": {
+  "text": "Don't sell me short. Or your food truck either.",
+  "chars": 47,
+  "duration": 2.415,
   "words": [
    {
-    "w": "I'll",
+    "w": "Don't",
     "s": 0,
-    "e": 0.221
+    "e": 0.232
    },
    {
-    "w": "handle",
+    "w": "sell",
+    "s": 0.267,
+    "e": 0.453
+   },
+   {
+    "w": "me",
+    "s": 0.511,
+    "e": 0.604
+   },
+   {
+    "w": "short.",
+    "s": 0.662,
+    "e": 1.022
+   },
+   {
+    "w": "Or",
+    "s": 1.115,
+    "e": 1.231
+   },
+   {
+    "w": "your",
+    "s": 1.277,
+    "e": 1.382
+   },
+   {
+    "w": "food",
+    "s": 1.428,
+    "e": 1.626
+   },
+   {
+    "w": "truck",
+    "s": 1.661,
+    "e": 1.893
+   },
+   {
+    "w": "either.",
+    "s": 1.962,
+    "e": 2.415
+   }
+  ]
+ },
+ "v5": {
+  "text": "Get on the Shortlist.",
+  "chars": 21,
+  "duration": 1.347,
+  "words": [
+   {
+    "w": "Get",
+    "s": 0,
+    "e": 0.197
+   },
+   {
+    "w": "on",
     "s": 0.255,
-    "e": 0.522
+    "e": 0.337
    },
    {
     "w": "the",
-    "s": 0.546,
-    "e": 0.615
+    "s": 0.372,
+    "e": 0.441
    },
    {
-    "w": "rest.",
-    "s": 0.673,
-    "e": 1.207
+    "w": "Shortlist.",
+    "s": 0.488,
+    "e": 1.347
    }
   ]
  }

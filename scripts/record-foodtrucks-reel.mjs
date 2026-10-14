@@ -1,5 +1,5 @@
 /**
- * Renders the 25 s Instagram Reel (dev route /dev/foodtrucks-reel) to docs/features/foodtrucks-reel/:
+ * Renders the 19.5 s Instagram Reel (dev route /dev/foodtrucks-reel) to docs/features/foodtrucks-reel/:
  *   shorty-foodtrucks-reel-1080x1920.mp4 (H.264 + AAC, 30 fps) and shorty-foodtrucks-reel-cover.jpg
  *   node scripts/record-foodtrucks-reel.mjs [baseUrl]      (baseUrl: a running `next dev`, default http://localhost:3000)
  * Deterministic: the page draws frame t on demand (window.__reelSeek), one screenshot per 1/30 s, then ffmpeg encodes.
@@ -32,10 +32,10 @@ for (let i = 0; i < n; i++) {
 }
 /* the cover: his knock pose with the hook line on it */
 const cp = await (await b.newContext({ viewport: { width: 1080, height: 1920 }, deviceScaleFactor: 1 })).newPage();
-await cp.goto(`${base}/dev/foodtrucks-reel?cover=0.2`, { waitUntil: "load" });
+await cp.goto(`${base}/dev/foodtrucks-reel?cover=0.75`, { waitUntil: "load" });
 await cp.waitForFunction(() => window.__reelReady === true, null, { timeout: 60000 });
 await cp.addStyleTag({ content: "nextjs-portal{display:none!important}" });
-await cp.evaluate(() => { for (const d of [0.4, 0.25, 0.1, 0]) window.__reelSeek(0.2 - d * 0.2); window.__reelSeek(0.2); });
+await cp.evaluate(() => { for (const x of [0.3, 0.5, 0.65]) window.__reelSeek(x); window.__reelSeek(0.75); });
 await cp.waitForTimeout(500);
 await cp.screenshot({ path: path.join(dir, "cover.png") });
 await b.close();
