@@ -18,7 +18,7 @@
 
 **Player:** autoplays muted with captions when 40% in view, pauses when scrolled out. Controls (show on hover/tap, always while paused): play/pause, scrubber (click, drag, touch) with one chapter per scene and a label on hover/tap, time, CC, speaker, fullscreen (in-page fill on iPhone, where Safari has no element fullscreen). Keys: Space/K play-pause, ←/→ ±5 s, Home/End, 1–4 jump to a chapter, M sound, C captions, F fullscreen. End screen: Replay and Share. Share copies `https://www.shortlistpass.com/foodtrucks#watch` (the native share sheet on phones that have one); opening that link scrolls to the video and plays it from the start. URL options for checking: `?ftvT=12` start at 12 s, `&ftvHold=1` hold, `&ftvBare=1` hide the controls.
 
-**Chapters:** Meet Shorty (0:00) · He talks to your customers (0:09) · He posts for you (0:34) · He takes the orders (0:45). Total about 60 s (scene 1 cuts about a second after "…never miss you.").
+**Chapters:** Meet Shorty (0:00) · He talks to your customers (0:09) · He posts for you (0:34) · He takes the orders (0:41). Total about 58 s (scene 1 cuts about a second after "…never miss you.").
 
 **Script (verbatim, as shipped; `video/lines.json`)**
 - Scene 1: "Hey, I'm Shorty. I'm your front of house, and I never close." / "I give your customers your own app, so they never miss you."

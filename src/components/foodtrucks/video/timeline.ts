@@ -24,7 +24,7 @@ const S1_LEN = 8.7;   // scene 1 ends shortly after "...never miss you." (the ic
 let cursor = S1_LEN;
 const mk = (len: number) => { const r = { a: cursor, b: cursor + len, len }; cursor += len; return r; };
 export const BEAT = { open: mk(3.7), text: mk(5.9), email: mk(5.3), push: mk(4.5), line: mk(5.9) };
-const S3_LEN = 10.4, S4_LEN = 16;
+const S3_LEN = 7.6, S4_LEN = 16;   // scene 3 is the owner text (4.2 s) + the post (3.4 s); it cuts to scene 4 right after "...before you get busy."
 /** Scene starts. The beats inside a scene are in scenes.tsx. */
 export const SCENE = { s1: 0, s2: S1_LEN, s3: cursor, s4: cursor + S3_LEN } as const;
 export const TOTAL = SCENE.s4 + S4_LEN;

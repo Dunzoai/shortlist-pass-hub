@@ -224,8 +224,8 @@ function scene2(t: number): Frame {
   return beatLine(t);
 }
 
-/* ── Scene 3: the owner texts, the post goes up, people turn toward the truck ───────────────────── */
-const E1 = SCENE.s3, E2 = E1 + 4.2, E3 = E2 + 3.4;
+/* ── Scene 3: the owner texts, the post goes up (then straight to scene 4) ───────────────────── */
+const E1 = SCENE.s3, E2 = E1 + 4.2;
 function scene3(t: number): Frame {
   if (t < E2) {
     const y = t - E1, out = easeOut(prog(y, 0.8, 1.5)), from = { x: 181, y: 172 }, to = { x: 168, y: 206 };
@@ -236,7 +236,7 @@ function scene3(t: number): Frame {
       shorty: shorty(SX, y < 2.2 ? "nod" : "tapping"), endcard: 0,
     };
   }
-  if (t < E3) {
+  {
     const z = t - E2, pop = easeBack(prog(z, 0, 0.5)), likes = Math.floor(prog(z, 0.7, 3.0) * 128);
     return {
       bg: "social", cam: { s: 1 + 0.04 * prog(z, 0, 3.4), cx: 240, cy: 135 }, shorty: null, endcard: 0,
@@ -261,22 +261,6 @@ function scene3(t: number): Frame {
       ),
     };
   }
-  const q = t - E3, flipAt = 1.2;
-  const aX = q < 0.8 ? lerp(110, 250, easeOut(prog(q, 0, 0.8))) : q < flipAt ? 250 : lerp(250, 205, easeInOut(prog(q, flipAt, 2.2)));
-  const face: 1 | -1 = q < flipAt ? 1 : -1;
-  const walking = q < 0.8 || q > flipAt;
-  const bob = walking ? q * 12 : 0;
-  return {
-    bg: "lot", cam: { s: 1, cx: 240, cy: 140 }, behind: <Kitchen t={t} />,
-    front: (
-      <>
-        <Shutter open={1} />
-        <Person x={aX - 24} h={38} {...PEOPLE[4]} bob={bob + 1} face={face} look={q > 0.9 && q < flipAt ? 0.8 : 0} />
-        <Person x={aX} h={40} {...PEOPLE[0]} phone={q > 0.4 && q < flipAt + 0.2} bob={bob} face={face} look={q > 0.9 && q < flipAt ? 0.8 : 0} />
-      </>
-    ),
-    shorty: shorty(SX, "pleased"), endcard: 0,
-  };
 }
 
 /* ── Scene 4: orders and bookings rise from behind the truck; the owner never looks up ──────────── */
