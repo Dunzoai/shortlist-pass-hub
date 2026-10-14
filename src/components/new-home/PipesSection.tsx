@@ -32,13 +32,21 @@ const MINT_BG =
 
 /* ── Words, by mode. Bubble lines are [desktop, phone]. ───────────────────── */
 type Lines = [string[], string[]];
-const MODES: Record<Audience, { headline: [string, string]; sign: [string, string]; agentBubble: Lines; shopBubble: Lines; socialBubble: string[] }> = {
+type Mode = Audience | "trucks";   // "trucks" is the /foodtrucks version; the homepage never passes it
+const MODES: Record<Mode, { headline: [string, string]; sign: [string, string]; agentBubble: Lines; shopBubble: Lines; socialBubble: string[] }> = {
   business: {
     headline: ["AI agents are here.", "Your business can’t reach them."],
     sign: ["RISE", "BAKERY"],
     agentBubble: [["Can you find me a plumber", "for Saturday at 7pm?"], ["Can you find me", "a plumber for", "Saturday at 7pm?"]],
     shopBubble: [["Can you order me a dozen", "bagels for pickup?"], ["Can you order me", "a dozen bagels", "for pickup?"]],
     socialBubble: ["Which brewery", "has music bingo", "this week?"],   // phones only: there's room bottom right of Shorty
+  },
+  trucks: {
+    headline: ["AI agents are here.", "Your truck can’t reach them."],
+    sign: ["LOW TIDE", "TACOS"],
+    agentBubble: [["Which food trucks are open", "near me tonight?"], ["Which food trucks", "are open near", "me tonight?"]],
+    shopBubble: [["Can you order me two birria", "tacos for pickup?"], ["Can you order me", "two birria tacos", "for pickup?"]],
+    socialBubble: ["Is there a truck", "at the brewery", "Friday?"],
   },
   hoa: {
     headline: ["Your residents are about to ask an AI.", "Does it know your rules?"],
@@ -186,7 +194,7 @@ function Bubble({ x, y, lines, font, charW, tail, tilt, mark, tailLen = 12, note
 }
 
 /** A small shop with the business's name on its sign: paler, smaller and higher than Shorty, so it sits further back. */
-function SmallShop({ cx, g, sign }: { cx: number; g: Geo; sign: [string, string] }) {
+function SmallShop({ cx, g, sign, truck }: { cx: number; g: Geo; sign: [string, string]; truck?: boolean }) {
   const { bodyW: w, bodyH: h, signW, signH, signFont, flaps, awn, post } = g.shop;
   const x0 = cx - w / 2, top = SHOP_GROUND - h, seg = w / (flaps * 2);
   const boardBottom = top - 6 - post, boardTop = boardBottom - signH, bx = cx - signW / 2;
@@ -196,6 +204,7 @@ function SmallShop({ cx, g, sign }: { cx: number; g: Geo; sign: [string, string]
   return (
     <g>
       <ellipse cx={cx} cy={SHOP_GROUND + 1.5} rx={w * 0.62} ry={3} fill="#0A2A1D" fillOpacity={0.14} />
+      {truck && [x0 + w * 0.2, x0 + w * 0.8].map((wx2) => <g key={wx2}><circle cx={wx2} cy={SHOP_GROUND - 1} r={w * 0.11} fill="#14161A" /><circle cx={wx2} cy={SHOP_GROUND - 1} r={w * 0.045} fill="#E9DCC4" /></g>)}
       <g filter="url(#mc-paper-far)">
         <rect x={cx - w * 0.3} y={boardBottom} width={3.4} height={post + 8} fill="#7E9C8E" />
         <rect x={cx + w * 0.3 - 3.4} y={boardBottom} width={3.4} height={post + 8} fill="#7E9C8E" />
@@ -223,7 +232,7 @@ function SmallShop({ cx, g, sign }: { cx: number; g: Geo; sign: [string, string]
   );
 }
 
-function Scene({ g, mode }: { g: Geo; mode: Audience }) {
+function Scene({ g, mode }: { g: Geo; mode: Mode }) {
   const [vx, vy, vw, vh] = g.vb;
   const box = useRef<HTMLDivElement | null>(null);
   const clock = useRef(0);                                     // set by Shorty when his animation begins
@@ -304,7 +313,7 @@ function Scene({ g, mode }: { g: Geo; mode: Audience }) {
             <feDropShadow in="sheet" dx="2" dy="2.8" stdDeviation="0" floodColor="#0A2A1D" floodOpacity="0.3" />
           </filter>
         </defs>
-        <SmallShop cx={shopCx} g={g} sign={M.sign} />
+        <SmallShop cx={shopCx} g={g} sign={M.sign} truck={mode === "trucks"} />
       </svg>
 
       {/* the cream glow, and Shorty (the shared rig, drawn once) */}
@@ -383,7 +392,7 @@ const REVEAL_CSS = `
 @media (prefers-reduced-motion: reduce){[data-armed] [data-rv]{opacity:1 !important;transform:none !important;transition:none !important}}
 `;
 
-export function PipesSection() {
+export function PipesSection({ mode }: { mode?: Mode } = {}) {
   const desk = useSyncExternalStore(DESK.subscribe, DESK.get, () => true);
   const root = useRef<HTMLElement | null>(null);
   useEffect(() => {
@@ -396,7 +405,8 @@ export function PipesSection() {
     el.querySelectorAll("[data-rv]").forEach((n) => io.observe(n));
     return () => io.disconnect();
   }, []);
-  const { audience } = useAudience();
+  const { audience: siteAudience } = useAudience();
+  const audience: Mode = mode ?? siteAudience;   // /foodtrucks passes "trucks"; the homepage follows its Businesses/HOAs switch
   const M = MODES[audience];
   return (
     <section ref={root} aria-labelledby="pipes-h">
@@ -432,6 +442,23 @@ export function PipesSection() {
             className="mx-auto mt-7 max-w-[1000px] text-center leading-[1.2] [text-wrap:balance] min-[900px]:mt-8 min-[900px]:leading-[1.22]"
             style={{ fontFamily: SERIF, fontSize: "clamp(26px, 3vw, 42px)", fontWeight: 400 }}
           >
+            {audience === "trucks" ? (
+              <>
+                <span data-rv="l" className="pp-pill block text-[27px] leading-[1.15] min-[900px]:inline min-[900px]:text-[length:inherit] min-[900px]:leading-[inherit]">
+                  Right now your Instagram and your truck-finder listing are <em className="italic">outdated.</em>
+                </span>{" "}
+                <span data-rv="r" className="pp-pill mt-3.5 block text-[22px] leading-[1.2] min-[900px]:mt-0 min-[900px]:inline min-[900px]:text-[length:inherit]">
+                  They get read by agents, but can’t do anything.
+                </span>{" "}
+                <span data-rv="l" className="pp-pill mt-3.5 block text-[22px] leading-[1.2] min-[900px]:mt-0 min-[900px]:inline min-[900px]:text-[length:inherit]">
+                  Shorty builds the pipes that let your customers’ AI agents{" "}
+                  <span className="mt-2.5 block text-[27px] leading-[1.15] min-[900px]:mt-0 min-[900px]:inline min-[900px]:text-[length:inherit]">
+                    <strong className="font-bold">find</strong> your stop, <strong className="font-bold">order</strong> off your menu, and <strong className="font-bold">book</strong> your truck.
+                  </span>
+                </span>
+              </>
+            ) : (
+              <>
             <span data-rv="l" className="pp-pill block text-[27px] leading-[1.15] min-[900px]:inline min-[900px]:text-[length:inherit] min-[900px]:leading-[inherit]">
               Right now your website and socials are <em className="italic">outdated.</em>
             </span>{" "}
@@ -444,6 +471,8 @@ export function PipesSection() {
                 <strong className="font-bold">transact</strong>, <strong className="font-bold">book</strong>, and <strong className="font-bold">interact</strong>.
               </span>
             </span>
+              </>
+            )}
           </p>
         </div>
       </div>

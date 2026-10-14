@@ -59,7 +59,7 @@ function FoodTruck({ x, w = 250, body, dark, awning, name, seed }: { x: number; 
 }
 
 /* ── a paper person; origin is the feet, he is about 78 units tall. eat: his right hand brings food to his mouth now and then ── */
-function Guy({ body, skin, hair, phone, eat }: { body: string; skin: string; hair: string; phone?: boolean; eat?: "taco" | "burger" | "crepe" }) {
+function Guy({ body, skin, hair, phone, eat, eatEvery = 3.4, eatAt = 0 }: { body: string; skin: string; hair: string; phone?: boolean; eat?: "taco" | "burger" | "crepe"; eatEvery?: number; eatAt?: number }) {
   return (
     <g>
       <ellipse cx={0} cy={2} rx={17} ry={4.5} fill="rgba(60,40,20,.25)" />
@@ -68,7 +68,7 @@ function Guy({ body, skin, hair, phone, eat }: { body: string; skin: string; hai
         <Paper d={cut(-14, -58, 28, 40, 9, 1.2)} fill={body} dx={2.5} dy={3} />
         <path d="M-14 -50 L-22 -34" stroke={skin} strokeWidth={6} strokeLinecap="round" />
         {eat ? (
-          <g className="reel-eat" style={{ transformOrigin: "14px -50px" }}>
+          <g className="reel-eat" style={{ transformOrigin: "14px -50px", animationDuration: `${eatEvery}s`, animationDelay: `${eatAt}s` }}>
             <path d="M14 -50 L24 -36" stroke={skin} strokeWidth={6} strokeLinecap="round" />
             {eat === "taco" && <path d="M18 -34 a8 8 0 0 1 16 0 Z" fill="#F2C45C" stroke={INK} strokeWidth={1.2} strokeLinejoin="round" />}
             {eat === "burger" && <g><path d="M17 -37 a8 6 0 0 1 16 0 Z" fill="#D9A15B" stroke={INK} strokeWidth={1.1} /><rect x={17} y={-37} width={16} height={3} fill="#7A4A2A" /><path d="M17 -34 h16 a8 4 0 0 1 -16 0 Z" fill="#D9A15B" stroke={INK} strokeWidth={1.1} /></g>}
@@ -117,13 +117,14 @@ function ParkScene() {
   const flagColors = ["#E58B5A", "#F2C45C", "#7FB5A8", "#B7A3D8", "#C8624A"];
   const sag = (x: number) => 64 + 22 * Math.sin((x / 1200) * Math.PI);
   return (
-    <svg viewBox="0 0 1200 520" preserveAspectRatio="xMidYMax slice" className="absolute inset-0 h-full w-full" aria-hidden="true">
+    <svg viewBox="0 0 1200 640" preserveAspectRatio="xMidYMax slice" className="absolute inset-0 h-full w-full" aria-hidden="true">
       <defs>
         <pattern id="reelGrain" width="160" height="160" patternUnits="userSpaceOnUse"><image href={GRAIN_URL} width="160" height="160" /></pattern>
         <linearGradient id="reelWash" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#fff" stopOpacity=".16" /><stop offset=".55" stopColor="#fff" stopOpacity="0" /><stop offset="1" stopColor="#3a2410" stopOpacity=".14" /></linearGradient>
         <linearGradient id="reelSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#CFE6E1" /><stop offset=".55" stopColor="#F4E7B9" /><stop offset="1" stopColor="#F6D9A8" /></linearGradient>
       </defs>
-      <rect width="1200" height="520" fill="url(#reelSky)" />
+      <g transform="translate(0 120)">{/* 120 extra units of sky on top: a phone's square crop then shows the two middle trucks whole (signs included) */}
+      <rect y={-120} width="1200" height="640" fill="url(#reelSky)" />
       <circle cx="930" cy="150" r="82" fill="#F2B84B" opacity={0.9} />
       <circle cx="930" cy="150" r="82" fill="url(#reelGrain)" opacity={0.2} style={{ mixBlendMode: "multiply" }} />
       <Cloud y={40} s={1.1} className="reel-cloud-a" />
@@ -144,9 +145,9 @@ function ParkScene() {
       <FoodTruck x={670} body="#F0C95C" dark="#C99A35" awning="#7FB5A8" name="COFFEE" seed={37} />
       <FoodTruck x={934} body="#B7A3D8" dark="#8A74B5" awning="#C8624A" name="CREPES" seed={51} />
       {/* a few people, each doing something different, none sharing a spot */}
-      <g transform="translate(366 440)"><g className="reel-idle"><Guy {...PALETTE[2]} eat="burger" /></g></g>
+      <g transform="translate(366 440)"><g className="reel-idle"><Guy {...PALETTE[2]} eat="burger" eatEvery={4.7} eatAt={-0.6} /></g></g>
       <g transform="translate(756 440)"><g className="reel-idle reel-idle-2"><Guy {...PALETTE[5]} phone /></g></g>
-      <g transform="translate(273 478)"><g className="reel-idle reel-idle-2"><Guy {...PALETTE[6]} eat="taco" /></g></g>
+      <g transform="translate(273 478)"><g className="reel-idle reel-idle-2"><Guy {...PALETTE[6]} eat="taco" eatEvery={6.3} eatAt={-3.9} /></g></g>
       <Table x={273} y={446} />
       <g className="reel-walker reel-w1"><Guy {...PALETTE[0]} phone /></g>
       <g className="reel-walker reel-w2"><Guy {...PALETTE[1]} /></g>
@@ -154,6 +155,7 @@ function ParkScene() {
       <Paper d="M-20 520 Q-10 474 40 474 Q92 476 100 520 Z" fill="#7FB08E" dx={4} dy={4} />
       <Paper d="M1100 520 Q1108 478 1156 476 Q1210 478 1224 520 Z" fill="#7FB08E" dx={4} dy={4} />
       {[[20, 494], [52, 486], [76, 500], [1130, 492], [1166, 486], [1192, 500]].map(([cx, cy], i) => <circle key={i} cx={cx} cy={cy} r={5} fill={["#F2C45C", "#E58B8B", "#FBF6E6"][i % 3]} />)}
+      </g>
     </svg>
   );
 }
@@ -267,7 +269,7 @@ export default function FoodTruckReel() {
         `}</style>
       </section>
       {/* page-colored room under the newspaper for its torn edge to hang over, so it never touches the section below */}
-      <div aria-hidden="true" className="h-14 sm:h-16" style={{ background: "#FBF8F0" }} />
+      <div aria-hidden="true" className="h-14 bg-[#14161A] sm:h-16" />
     </>
   );
 }

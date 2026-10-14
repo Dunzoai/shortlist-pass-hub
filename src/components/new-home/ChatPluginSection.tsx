@@ -59,10 +59,22 @@ const BUBBLES: { text: string; dx: number; fill: string }[] = [
   { text: "Oil change Tuesday", dx: 18, fill: "#D7F5E8" },
   { text: "Tacos ordered", dx: -16, fill: "#FBF6E6" },
 ];
+const TRUCK_BUBBLES: { text: string; dx: number; fill: string }[] = [
+  { text: "Birria tacos ordered", dx: -17, fill: "#FBF6E6" },
+  { text: "Pickup at 12:30", dx: 17, fill: "#D7F5E8" },
+  { text: "Found you at Pier View", dx: -19, fill: "#FBF6E6" },
+  { text: "Catering booked Sat", dx: 16, fill: "#F5E7B6" },
+  { text: "Churros added", dx: -15, fill: "#D7F5E8" },
+  { text: "Stop saved to calendar", dx: 19, fill: "#FBF6E6" },
+  { text: "Horchata x2 ordered", dx: -18, fill: "#F5E7B6" },
+  { text: "Preorder paid", dx: 15, fill: "#FBF6E6" },
+  { text: "Order ready, text sent", dx: 18, fill: "#D7F5E8" },
+  { text: "Line spot saved", dx: -16, fill: "#FBF6E6" },
+];
 const STEP = 1.7;
 
 /** The stage: Shorty behind a paper desk, a laptop with the Shortlist mark in front of him, the two AI cards plugged into its sides, confirmations rising out of it. */
-function PlugScene() {
+function PlugScene({ bubbles = BUBBLES }: { bubbles?: typeof BUBBLES }) {
   const root = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     const el = root.current;
@@ -79,8 +91,8 @@ function PlugScene() {
         <ShortyMascot mood="typing" size={170} style={{ position: "absolute", left: "50%", bottom: 0, transform: "translateX(-50%)", height: "100%", width: "auto" }} />
       </div>
       {/* confirmations, rising from behind the laptop */}
-      {BUBBLES.map((b, i) => (
-        <span key={b.text} aria-hidden="true" className={`plug-bubble absolute left-1/2 z-[2] whitespace-nowrap rounded-full border-2 border-[#14161A] font-bold ${i > 5 ? "max-sm:hidden" : ""}`} style={{ bottom: "34%", background: b.fill, color: INK, fontFamily: BODY, fontSize: "clamp(10px, 1.9cqw, 18px)", padding: "0.5cqw 1.6cqw", boxShadow: `2px 3px 0 ${INK}`, ["--dx" as string]: `${b.dx}cqw`, animationDelay: `${(i * STEP).toFixed(1)}s`, animationDuration: `${(BUBBLES.length * STEP).toFixed(1)}s` }}>
+      {bubbles.map((b, i) => (
+        <span key={b.text} aria-hidden="true" className={`plug-bubble absolute left-1/2 z-[2] whitespace-nowrap rounded-full border-2 border-[#14161A] font-bold ${i > 5 ? "max-sm:hidden" : ""}`} style={{ bottom: "34%", background: b.fill, color: INK, fontFamily: BODY, fontSize: "clamp(10px, 1.9cqw, 18px)", padding: "0.5cqw 1.6cqw", boxShadow: `2px 3px 0 ${INK}`, ["--dx" as string]: `${b.dx}cqw`, animationDelay: `${(i * STEP).toFixed(1)}s`, animationDuration: `${(bubbles.length * STEP).toFixed(1)}s` }}>
           {b.text} <span style={{ color: "#1f9d74" }}>✓</span>
         </span>
       ))}
@@ -122,6 +134,11 @@ function PlugScene() {
   );
 }
 
+const TRUCK_ASKS: { ask: string; done: string }[] = [
+  { ask: "Order me two birria tacos.", done: "Ordered. Pickup at 12:30." },
+  { ask: "Where’s the taco truck tonight?", done: "Pier View Park, 5 to 9." },
+  { ask: "Book a food truck for Saturday, 200 people.", done: "Booked. Clear Pond, 1 to 5." },
+];
 const ASKS: { ask: string; done: string }[] = [
   { ask: "Order me empanadas.", done: "Ordered. Pickup at 12:30." },
   { ask: "Book me the plumber.", done: "Booked. Saturday, 7pm." },
@@ -170,7 +187,7 @@ function Piece({ d, x = 0, y = 0, rot = 0, ox = 0, oy = 0, fill, sh = 8, tex = 0
   );
 }
 const WOOD = "#B58A5B";
-function Poster({ kind, tilt }: { kind: "billboard" | "door"; tilt: number }) {
+function Poster({ kind, tilt, trucks }: { kind: "billboard" | "door"; tilt: number; trucks?: boolean }) {
   const id = `po-${kind}`;
   const door = kind === "door";
   return (
@@ -221,9 +238,9 @@ function Poster({ kind, tilt }: { kind: "billboard" | "door"; tilt: number }) {
         </div>
       ) : (
         <div className="absolute left-[12%] right-[12%] top-[21%] text-[#4a463a]">
-          <p className="font-extrabold text-[#6b6558]" style={{ fontFamily: SANS, fontSize: "clamp(10px, 3.1cqw, 14px)", letterSpacing: "0.14em" }}>THEIR WEBSITE</p>
+          <p className="font-extrabold text-[#6b6558]" style={{ fontFamily: SANS, fontSize: "clamp(10px, 3.1cqw, 14px)", letterSpacing: "0.14em" }}>{trucks ? "YOUR INSTAGRAM" : "THEIR WEBSITE"}</p>
           <p className="mt-1 font-extrabold leading-[1] text-[#5d5848]" style={{ fontFamily: SANS, fontSize: "clamp(28px, 10cqw, 52px)" }}>A billboard.</p>
-          <p className="mt-2 leading-[1.25]" style={{ fontFamily: BODY, fontSize: "clamp(12px, 3.9cqw, 18px)" }}>Agents can read it. Nobody can order, book or buy. It just sits there.</p>
+          <p className="mt-2 leading-[1.25]" style={{ fontFamily: BODY, fontSize: "clamp(12px, 3.9cqw, 18px)" }}>{trucks ? "Agents can read it. Nobody can preorder, book catering or find tonight’s stop. It just sits there." : "Agents can read it. Nobody can order, book or buy. It just sits there."}</p>
           <p className="mt-3 italic font-semibold leading-[1.22]" style={{ fontFamily: SERIF, color: BRICK, fontSize: "clamp(12px, 4cqw, 19px)" }}>When’s the last time <u>you</u> took action from a billboard? Yeah. Never.</p>
         </div>
       )}
@@ -244,9 +261,9 @@ const LOGO_CSS = `
 @media (prefers-reduced-motion: reduce){.logo-card,.logo-card .pc-sheet{transition:none}}
 `;
 
-export function ChatPluginSection() {
+export function ChatPluginSection({ trucks = false }: { trucks?: boolean } = {}) {
   const { audience } = useAudience();
-  if (audience === "hoa") return null;
+  if (!trucks && audience === "hoa") return null;   // /foodtrucks passes trucks and always shows it
   return (
     <>
       <section aria-labelledby="chat-h" className="relative px-5 pb-20 pt-24 min-[900px]:px-10 min-[900px]:pb-28 min-[900px]:pt-32" style={{ background: CREAM }}>
@@ -269,14 +286,14 @@ export function ChatPluginSection() {
               Your customers are living inside <span style={{ color: BRICK }}>ChatGPT.</span>
             </h2>
             <p className="mx-auto mt-4 max-w-[820px] font-semibold italic leading-[1.2] [text-wrap:balance]" style={{ fontFamily: SERIF, color: BRICK, fontSize: "clamp(20px, 2.3vw, 30px)" }}>
-              Dinner. Directions. Doctors. Dresses. They ask it everything they want to know.
+              {trucks ? "Lunch. Tonight’s stop. The menu. Is the line long? They ask it everything before they pull up." : "Dinner. Directions. Doctors. Dresses. They ask it everything they want to know."}
             </p>
             <p className="mx-auto mt-5 max-w-[780px] leading-[1.28] [text-wrap:balance]" style={{ fontFamily: SERIF, color: "#2f2a22", fontSize: "clamp(19px, 2.2vw, 28px)" }}>
-              Shorty is plugged into both ChatGPT and Claude to meet them where they are. He makes sure they can do more than just ask about your business. <strong className="font-semibold">He gets things done.</strong>
+              Shorty is plugged into both ChatGPT and Claude to meet them where they are. He makes sure they can do more than just ask about your {trucks ? "truck" : "business"}. <strong className="font-semibold">He gets things done.</strong>
             </p>
           </div>
 
-          <PlugScene />
+          <PlugScene bubbles={trucks ? TRUCK_BUBBLES : BUBBLES} />
 
           {/* what they can now just ask for */}
           <div className="mt-14 text-center sm:mt-20">
@@ -285,25 +302,25 @@ export function ChatPluginSection() {
             </h3>
           </div>
           <div className="mt-8 grid gap-7 sm:mt-10 sm:grid-cols-3 sm:gap-8">
-            {ASKS.map((a, i) => <Ask key={a.ask} {...a} seed={81 + i} tilt={[-1, 0.8, -0.6][i]} />)}
+            {(trucks ? TRUCK_ASKS : ASKS).map((a, i) => <Ask key={a.ask} {...a} seed={81 + i} tilt={[-1, 0.8, -0.6][i]} />)}
           </div>
 
           {/* billboard vs door */}
           <div className="mt-16 grid gap-10 sm:mt-24 sm:grid-cols-2 sm:gap-14">
-            <Poster kind="billboard" tilt={-1} />
+            <Poster kind="billboard" tilt={-1} trucks={trucks} />
             <Poster kind="door" tilt={1} />
           </div>
 
           {/* the links */}
           <div className="mt-14 text-center sm:mt-20">
             <p className="mx-auto max-w-[760px] font-bold leading-[1.15] [text-wrap:balance]" style={{ fontFamily: SANS, color: INK, fontSize: "clamp(22px, 2.8vw, 36px)" }}>
-              While they’re a billboard, you’re open for business.
+              {trucks ? "While they’re a billboard, your window’s open." : "While they’re a billboard, you’re open for business."}
             </p>
           </div>
         </div>
       </section>
       {/* dark room under the torn cream, so it hangs over charcoal like the other seams */}
-      <div aria-hidden="true" className="h-14 bg-[#14161A] sm:h-16" />
+      <div aria-hidden="true" className={`h-14 sm:h-16 ${trucks ? "bg-[#FBF8F0]" : "bg-[#14161A]"}`} />
     </>
   );
 }
