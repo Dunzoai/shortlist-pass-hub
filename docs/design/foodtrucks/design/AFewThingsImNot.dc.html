@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>A few things I am not</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Schibsted+Grotesk:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FBF8F0}
+.nt *{box-sizing:border-box}
+.nt{font-family:'Schibsted Grotesk','Helvetica Neue',Helvetica,sans-serif;background:#14161A;color:#F6F1E4;position:relative;overflow:hidden}
+.serif{font-family:'Instrument Serif',Georgia,'Times New Roman',serif;font-weight:400;letter-spacing:-0.015em}
+.eyebrow{font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#34D399}
+.grid{position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,rgba(246,241,228,.035) 0 1px,transparent 1px 34px);pointer-events:none}
+
+.row{display:block;width:100%;text-align:left;background:transparent;border:0;padding:0;margin:0;font-family:inherit;color:inherit;cursor:pointer}
+.row:focus-visible{outline:3px solid #34D399;outline-offset:6px}
+.claim{position:relative;display:inline-block;color:#6F6B60;transition:color .3s ease}
+.row:hover .claim{color:#8D8A80}
+.open .claim{color:#4A4740}
+.slash{position:absolute;left:-1%;top:6%;width:102%;height:88%;overflow:visible;pointer-events:none}
+.slash path{stroke:#E2574C;stroke-width:5;stroke-linecap:round;fill:none;stroke-dasharray:1000;stroke-dashoffset:1000;vector-effect:non-scaling-stroke}
+.open .slash path{animation:slash .42s cubic-bezier(.3,.7,.3,1) forwards}
+.open .slash .s2{animation-delay:.1s}
+
+.fix{display:block;opacity:0;transform:translateY(10px) rotate(-1.4deg) scale(.96);transform-origin:0 50%;transition:opacity .01s linear .5s,transform .01s linear .5s;color:#34D399;height:0;overflow:hidden}
+.open .fix{height:auto;overflow:visible;animation:stamp .45s cubic-bezier(.2,1.5,.4,1) .28s forwards}
+.why{display:block;opacity:0;height:0;overflow:hidden;color:#8D8A80;transition:opacity .3s ease}
+.open .why{height:auto;overflow:visible;opacity:1;transition-delay:.55s}
+
+.tag{align-items:center;gap:8px;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#4A4740;transition:color .3s}
+.open .tag{color:#E2574C}
+.dot{width:7px;height:7px;border-radius:999px;background:#3A3F49;transition:background .3s}
+.open .dot{background:#E2574C}
+
+@keyframes slash{to{stroke-dashoffset:0}}
+@keyframes stamp{to{opacity:1;transform:translateY(0) rotate(-1.4deg) scale(1)}}
+@media (prefers-reduced-motion: reduce){
+.open .slash path{animation:none;stroke-dashoffset:0}
+.open .fix{animation:none;opacity:1;transform:rotate(-1.4deg)}
+}
+</style>
+</helmet>
+<div class="nt" style="width: 100%; padding: {{padY}}px {{padX}}px">
+<div class="grid" aria-hidden="true"></div>
+<div style="position: relative; max-width: 1060px; margin: 0 auto">
+
+  <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap">
+    <div>
+      <div class="eyebrow">Straight from Shorty</div>
+      <h2 class="serif" style="margin: 12px 0 0; font-size: {{h2}}px; line-height: .9; text-wrap: balance">A few things<br>I&rsquo;m not.</h2>
+    </div>
+    <div style="font-size: {{sub}}px; color: #6F6B60; padding-bottom: 10px">Tap one.</div>
+  </div>
+
+  <div style="margin-top: {{gap}}px; display: flex; flex-direction: column; gap: {{rowGap}}px">
+    <sc-for list="{{rows}}" as="r" hint-placeholder-count="4">
+      <button type="button" class="row {{r.cls}}" aria-expanded="{{r.open}}" onClick="{{r.pick}}">
+        <span class="tag" style="display: flex; margin-bottom: 12px">{{r.tag}}</span>
+        <span class="serif claim" style="display: inline-block; font-size: {{claimFs}}px; line-height: 1.04">{{r.claim}}
+          <svg class="slash" viewBox="0 0 100 20" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M1 15 C 22 9, 44 16, 66 10 S 92 6, 99 9"></path>
+            <path class="s2" d="M2 11 C 26 16, 48 7, 70 13 S 94 14, 98 12"></path>
+          </svg>
+        </span>
+        <span class="serif fix" style="font-size: {{fixFs}}px; line-height: 1.04; margin-top: 14px">{{r.fix}}</span>
+        <span class="why" style="font-size: {{whyFs}}px; line-height: 1.55; margin-top: 14px; max-width: 640px">{{r.why}}</span>
+      </button>
+    </sc-for>
+  </div>
+
+  <div style="margin-top: {{gap}}px; padding-top: {{gap}}px; border-top: 1px solid #2A2E36; display: flex; align-items: flex-end; gap: 24px; flex-wrap: wrap">
+    <p class="serif" style="margin: 0; flex-grow: 1; min-width: 260px; font-size: {{closeFs}}px; line-height: 1.04; text-wrap: balance">Nothing here replaces your register.<br>It replaces <span style="color: #34D399">the person you can't afford to hire.</span></p>
+    <img src="/_blob/39976e4dd411d72e7a98347b6e0be321" alt="" style="width: {{shorty}}px; height: auto; display: block; flex: none">
+  </div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"compact":{"editor":"boolean","default":false,"section":"Section"},"$preview":{"width":1184,"height":1100}}'>
+class Component extends DCLogic {
+  state = { open: {} };
+  renderVals() {
+    const c = !!this.props.compact;
+    const defs = [
+      {
+        claim: 'Another food truck finder.',
+        fix: "That's a list. I'm a coworker.",
+        why: "A finder page sits there and waits for somebody to look. I go get them: outreach, bringing back the ones who haven't come by in a while, your social posts. Finder pages wait for action. I bring the action."
+      },
+      {
+        claim: 'A reason to switch registers.',
+        fix: 'Keep what you use. I work alongside it.',
+        why: "Your register checks out the people already standing in front of you. I bring in the ones who just found you, and turn them into regulars. Nothing to rip out, nothing to learn."
+      },
+      {
+        claim: 'A middleman taking a cut.',
+        fix: 'Your money never touches our hands.',
+        why: 'We partner with the industry leaders, Stripe and Square. We pass them the cart, they handle your money and deposit it in your bank. No commission, ever.'
+      },
+      {
+        claim: "Another flyer you'll forget to post.",
+        fix: 'I never forget, and I never skip a day.',
+        why: "Keep making the flyers you like. I put them out consistently: every date, every menu item you need in front of customers, without you lifting a finger."
+      }
+    ];
+    const rows = defs.map((d, i) => {
+      const on = !!this.state.open[i];
+      return {
+        tag: on ? "Here's what I am" : "I'm not",
+        claim: d.claim, fix: d.fix, why: d.why,
+        open: on, cls: on ? 'open' : '',
+        pick: () => {
+          const n = Object.assign({}, this.state.open);
+          n[i] = !n[i];
+          this.setState({ open: n });
+        }
+      };
+    });
+    return {
+      rows: rows,
+      padY: c ? 56 : 104, padX: c ? 20 : 56,
+      h2: c ? 48 : 86, sub: c ? 14 : 15,
+      gap: c ? 36 : 56, rowGap: c ? 34 : 48,
+      claimFs: c ? 30 : 50, fixFs: c ? 26 : 42, whyFs: c ? 15.5 : 17.5,
+      closeFs: c ? 30 : 46, shorty: c ? 90 : 150
+    };
+  }
+}
+</script>
+</body>
+</html>
