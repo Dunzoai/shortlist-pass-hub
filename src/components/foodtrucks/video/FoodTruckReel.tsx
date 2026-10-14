@@ -2,7 +2,7 @@
 
 /**
  * "Play to see Shorty in action", the food trucks version: the same teaser band as the homepage (faded newspaper, taped paper card,
- * pulsing play button, Shorty with his coffee) but the street is a food truck park: four trucks with their windows open, people
+ * pulsing play button, Shorty) but the street is a food truck park: four trucks with their windows open, people
  * walking up, queueing and walking off with their food. The newspaper behind is the Food Truck Gazette. Tapping the card opens the
  * narrated explainer (ShortyVideo) in a window, with sound (the tap lets it play). /foodtrucks#watch opens it too (muted).
  * Cut paper like the rest of the site: flat shapes, hard offset shadow, grain, no SVG filters.
@@ -58,21 +58,40 @@ function FoodTruck({ x, w = 250, body, dark, awning, name, seed }: { x: number; 
   );
 }
 
-/* ── a paper person; origin is the feet, he is about 78 units tall ──────────────── */
-function Guy({ body, skin, hair, phone, small = 1 }: { body: string; skin: string; hair: string; phone?: boolean; small?: number }) {
+/* ── a paper person; origin is the feet, he is about 78 units tall. eat: his right hand brings food to his mouth now and then ── */
+function Guy({ body, skin, hair, phone, eat }: { body: string; skin: string; hair: string; phone?: boolean; eat?: "taco" | "burger" | "crepe" }) {
   return (
-    <g transform={`scale(${small})`}>
+    <g>
       <ellipse cx={0} cy={2} rx={17} ry={4.5} fill="rgba(60,40,20,.25)" />
       <g className="reel-bob">
         <path d="M-8 0 V-24 M8 0 V-24" stroke="#33404E" strokeWidth={7} strokeLinecap="round" />
         <Paper d={cut(-14, -58, 28, 40, 9, 1.2)} fill={body} dx={2.5} dy={3} />
-        <path d="M-14 -50 L-22 -34 M14 -50 L22 -34" stroke={skin} strokeWidth={6} strokeLinecap="round" />
+        <path d="M-14 -50 L-22 -34" stroke={skin} strokeWidth={6} strokeLinecap="round" />
+        {eat ? (
+          <g className="reel-eat" style={{ transformOrigin: "14px -50px" }}>
+            <path d="M14 -50 L24 -36" stroke={skin} strokeWidth={6} strokeLinecap="round" />
+            {eat === "taco" && <path d="M18 -34 a8 8 0 0 1 16 0 Z" fill="#F2C45C" stroke={INK} strokeWidth={1.2} strokeLinejoin="round" />}
+            {eat === "burger" && <g><path d="M17 -37 a8 6 0 0 1 16 0 Z" fill="#D9A15B" stroke={INK} strokeWidth={1.1} /><rect x={17} y={-37} width={16} height={3} fill="#7A4A2A" /><path d="M17 -34 h16 a8 4 0 0 1 -16 0 Z" fill="#D9A15B" stroke={INK} strokeWidth={1.1} /></g>}
+            {eat === "crepe" && <path d="M18 -30 L30 -42 L34 -34 Z" fill="#F4D9A0" stroke={INK} strokeWidth={1.2} strokeLinejoin="round" />}
+          </g>
+        ) : <path d="M14 -50 L22 -34" stroke={skin} strokeWidth={6} strokeLinecap="round" />}
         <Paper d="M-11 -68 a11 11 0 1 0 22 0 a11 11 0 1 0 -22 0 Z" fill={skin} dx={2} dy={2.5} />
         <path d="M-12 -72 Q-10 -84 0 -84 Q11 -84 12 -72 Q4 -77 -12 -72 Z" fill={hair} />
         <circle cx={4} cy={-69} r={1.5} fill={INK} /><circle cx={-3} cy={-69} r={1.5} fill={INK} />
         <path d="M-3 -63 Q1 -60 5 -63" fill="none" stroke={INK} strokeWidth={1.3} strokeLinecap="round" />
         {phone && <rect x={14} y={-46} width={8} height={13} rx={2} fill={MINT} stroke={INK} strokeWidth={1.2} />}
       </g>
+    </g>
+  );
+}
+/** A picnic table with a plate on it; whoever sits at it is drawn first, so the table hides his legs. */
+function Table({ x, y }: { x: number; y: number }) {
+  return (
+    <g>
+      <Paper d={`M${x - 40} ${y + 8} L${x - 52} ${y + 40} H${x - 44} L${x - 32} ${y + 8} Z M${x + 40} ${y + 8} L${x + 52} ${y + 40} H${x + 44} L${x + 32} ${y + 8} Z`} fill="#8A5A3A" dx={2} dy={3} />
+      <Paper d={cut(x - 48, y, 96, 10, 77, 1)} fill="#C98F5B" dx={3} dy={4} />
+      <ellipse cx={x + 4} cy={y - 2} rx={13} ry={3.4} fill="#FBF6E6" stroke={INK} strokeWidth={1} />
+      <path d={`M${x - 3} ${y - 4} a7 6 0 0 1 14 0 Z`} fill="#F2C45C" stroke={INK} strokeWidth={1} />
     </g>
   );
 }
@@ -85,11 +104,10 @@ const PALETTE = [
 ];
 /** Keyframes for a walker: each step is [percent, x, y, facing]; a facing change happens at the same spot. */
 const WALKERS: { name: string; delay: number; dur: number; steps: [number, number, number, 1 | -1][] }[] = [
-  { name: "w1", delay: -7, dur: 38, steps: [[0, -90, 446, 1], [13, 100, 438, 1], [38, 100, 438, 1], [39, 100, 438, 1], [60, 1300, 452, 1], [100, 1300, 452, 1]] },
-  { name: "w2", delay: -20, dur: 40, steps: [[0, 1310, 452, -1], [12, 1042, 438, -1], [32, 1042, 438, -1], [33, 1042, 438, 1], [52, 1310, 452, 1], [100, 1310, 452, 1]] },
-  { name: "w3", delay: -3, dur: 34, steps: [[0, 352, 438, 1], [42, 352, 438, 1], [43, 352, 438, -1], [56, 470, 458, -1], [57, 470, 458, 1], [88, 470, 458, 1], [89, 470, 458, -1], [100, 352, 438, -1]] },
-  { name: "w5", delay: -12, dur: 30, steps: [[0, -70, 476, 1], [100, 1270, 476, 1]] },
-  { name: "w6", delay: -5, dur: 36, steps: [[0, 600, 454, 1], [12, 756, 438, 1], [42, 756, 438, 1], [43, 756, 438, -1], [60, 560, 458, -1], [100, -100, 460, -1]] },
+  /* walks in from the left, waits at the TACOS window, walks back out */
+  { name: "w1", delay: -9, dur: 34, steps: [[0, -90, 440, 1], [16, 96, 438, 1], [52, 96, 438, 1], [53, 96, 438, -1], [100, -100, 440, -1]] },
+  /* walks in from the right, waits at the CREPES window, walks back out */
+  { name: "w2", delay: -22, dur: 38, steps: [[0, 1310, 440, -1], [15, 1040, 438, -1], [50, 1040, 438, -1], [51, 1040, 438, 1], [100, 1310, 440, 1]] },
 ];
 const walkCss = WALKERS.map((w) => `@keyframes ${w.name} { ${w.steps.map(([p, x, y, f]) => `${p}% { transform: translate(${x}px, ${y}px) scale(${f}, 1) }`).join(" ")} }
 .reel-${w.name} { animation: ${w.name} ${w.dur}s linear infinite; animation-delay: ${w.delay}s; transform: translate(${w.steps[0][1]}px, ${w.steps[0][2]}px) scale(${w.steps[0][3]}, 1) }`).join("\n");
@@ -125,17 +143,13 @@ function ParkScene() {
       <FoodTruck x={280} body="#7FB5A8" dark="#4E8A7C" awning="#E2A43C" name="BURGERS" seed={23} />
       <FoodTruck x={670} body="#F0C95C" dark="#C99A35" awning="#7FB5A8" name="COFFEE" seed={37} />
       <FoodTruck x={934} body="#B7A3D8" dark="#8A74B5" awning="#C8624A" name="CREPES" seed={51} />
-      {/* people: waiting in line at the windows... */}
-      <g transform="translate(66 440)"><g className="reel-idle"><Guy {...PALETTE[4]} /></g></g>
-      <g transform="translate(326 441)"><g className="reel-idle reel-idle-2"><Guy {...PALETTE[5]} phone /></g></g>
-      <g transform="translate(796 441)"><g className="reel-idle"><Guy {...PALETTE[6]} small={0.95} /></g></g>
-      <g transform="translate(1078 440)"><g className="reel-idle reel-idle-2"><Guy {...PALETTE[7]} phone /></g></g>
-      {/* ...and walking up, picking up, walking off */}
+      {/* a few people, each doing something different, none sharing a spot */}
+      <g transform="translate(366 440)"><g className="reel-idle"><Guy {...PALETTE[2]} eat="burger" /></g></g>
+      <g transform="translate(756 440)"><g className="reel-idle reel-idle-2"><Guy {...PALETTE[5]} phone /></g></g>
+      <g transform="translate(273 478)"><g className="reel-idle reel-idle-2"><Guy {...PALETTE[6]} eat="taco" /></g></g>
+      <Table x={273} y={446} />
       <g className="reel-walker reel-w1"><Guy {...PALETTE[0]} phone /></g>
       <g className="reel-walker reel-w2"><Guy {...PALETTE[1]} /></g>
-      <g className="reel-walker reel-w3"><Guy {...PALETTE[2]} /></g>
-      <g className="reel-walker reel-w5"><Guy {...PALETTE[3]} small={0.7} /></g>
-      <g className="reel-walker reel-w6"><Guy {...PALETTE[4]} phone /></g>
       {/* shrubs with flowers, front corners */}
       <Paper d="M-20 520 Q-10 474 40 474 Q92 476 100 520 Z" fill="#7FB08E" dx={4} dy={4} />
       <Paper d="M1100 520 Q1108 478 1156 476 Q1210 478 1224 520 Z" fill="#7FB08E" dx={4} dy={4} />
@@ -203,13 +217,13 @@ export default function FoodTruckReel() {
               >
                 <span className="absolute inset-0 overflow-hidden rounded-[28px]">
                   <ParkScene />
-                  <span aria-hidden="true" className="absolute bottom-[4%] left-1/2 block h-[50%] w-[26%] -translate-x-1/2 md:bottom-[3%] md:h-[62%] md:w-[20%]">
+                  <span aria-hidden="true" className="absolute bottom-[2%] left-1/2 block h-[56%] w-[30%] -translate-x-1/2 md:bottom-[2%] md:h-[72%] md:w-[24%]">
                     <span className="absolute inset-x-0 bottom-0 flex justify-center">
-                      <ShortyMascot mood="coffee" size={170} style={{ height: "100%", width: "auto" }} />
+                      <ShortyMascot mood="pleased" holdPhone size={190} style={{ height: "100%", width: "auto" }} />
                     </span>
                   </span>
                 </span>
-                <span className="absolute left-1/2 top-[27%] -translate-x-1/2 -translate-y-1/2">
+                <span className="absolute left-1/2 top-[19%] -translate-x-1/2 -translate-y-1/2">
                   <span className="relative grid h-[84px] w-[84px] place-items-center md:h-[96px] md:w-[96px]">
                     <span className="reel-pulse absolute inset-0 rounded-full" style={{ border: `4px solid ${MINT}` }} />
                     <span className="reel-pulse reel-pulse-2 absolute inset-0 rounded-full" style={{ border: `4px solid ${MINT}` }} />
@@ -218,7 +232,7 @@ export default function FoodTruckReel() {
                     </span>
                   </span>
                 </span>
-                <span className="absolute -right-3 -top-3 z-10 max-w-[150px] rotate-[7deg] rounded-xl px-3 py-2 text-center text-[15px] font-bold leading-tight md:left-1/2 md:right-auto md:top-[calc(27%+60px)] md:max-w-none md:-translate-x-1/2 md:rotate-0 md:px-4 sm:text-[17px]" style={{ background: CREAM, border: `2.5px solid ${INK}`, boxShadow: `3px 4px 0 ${INK}`, fontFamily: SERIF, color: INK }}>
+                <span className="absolute -right-3 -top-3 z-10 max-w-[150px] rotate-[7deg] rounded-xl px-3 py-2 text-center text-[15px] font-bold leading-tight md:left-1/2 md:right-auto md:top-[calc(19%+58px)] md:max-w-none md:-translate-x-1/2 md:rotate-0 md:px-3 md:text-[15px] sm:text-[17px]" style={{ background: CREAM, border: `2.5px solid ${INK}`, boxShadow: `3px 4px 0 ${INK}`, fontFamily: SERIF, color: INK }}>
                   Play to see Shorty in action
                   <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-[.2] mix-blend-multiply" style={{ backgroundImage: `url("${GRAIN_URL}")` }} />
                 </span>
@@ -246,8 +260,10 @@ export default function FoodTruckReel() {
           .reel-idle-2 { animation-delay: -1.3s }
           @keyframes reelCook { 0%, 100% { transform: translateY(0) rotate(0) } 50% { transform: translateY(-1.5px) rotate(1.2deg) } }
           .reel-cook { animation: reelCook 1.3s ease-in-out infinite }
+          @keyframes reelEat { 0%, 30% { transform: rotate(0deg) } 42%, 58% { transform: rotate(-150deg) } 70%, 100% { transform: rotate(0deg) } }
+          .reel-eat { animation: reelEat 3.4s ease-in-out infinite }
           ${walkCss}
-          @media (prefers-reduced-motion: reduce) { .reel-pulse { animation: none; opacity: 0 } .reel-walker, .reel-walker .reel-bob, .reel-idle, .reel-cook, .reel-cloud-a, .reel-cloud-b, .reel-cloud-c { animation: none } }
+          @media (prefers-reduced-motion: reduce) { .reel-pulse { animation: none; opacity: 0 } .reel-walker, .reel-walker .reel-bob, .reel-idle, .reel-cook, .reel-eat, .reel-cloud-a, .reel-cloud-b, .reel-cloud-c { animation: none } }
         `}</style>
       </section>
       {/* page-colored room under the newspaper for its torn edge to hang over, so it never touches the section below */}
