@@ -47,8 +47,8 @@ fs.writeFileSync(jsonPath, JSON.stringify(have, null, 1));
 
 /* sound effects: ElevenLabs minimum is 0.5 s, so trim to the wanted length */
 const SFX = {
-  knock: ["One single sharp knuckle knock on a thick glass window pane, one knock only, solid and dry, close, then silence, no music", 0.6, 0.5],
-  smack: ["A loud heavy flat palm slap hitting a glass window with a deep thud, big impact, close, no music", 0.8, 0.7],
+  knock: ["A heavy solid knock of a fist on a thick wooden door, one single knock with real weight, deep woody body and a low thump underneath, close, dry, then silence, no music", 0.8, 0.6],
+  smack: ["A deep low sub-bass thud impact, a heavy boom hit with weight, short, round and low, no music", 1.0, 0.8],
   rattle: ["A low rattle and shudder of a glass pane and its frame shaking after being hit, short, decaying, no music", 1.6, 1.4],
   slide: ["A quick papery whoosh of a flat card sliding up into place, swift, soft, no music", 0.9, 0.8],
   squeak: ["A fat felt marker squeaking and scribbling hard across a whiteboard, two quick rough strokes, no music", 1.4, 1.2],

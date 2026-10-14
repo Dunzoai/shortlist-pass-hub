@@ -59,7 +59,12 @@ export function pipeEnds(p: Pose): { L: [number, number]; R: [number, number] } 
 }
 
 /* ── Parts ──────────────────────────────────────────────────────────────── */
-function glove(parent: Element) {                                 // fingers along +x, wrist at 0,0
+function glove(parent: Element, plain = false) {
+  if (plain) {   // the Reel: a plain solid ink circle at the end of the arm, a touch wider than the stroke, like his shoes
+    const g = el('g', {}, parent), parts = [0, 1, 2, 3].map(() => el('g', {}, g));
+    parts.forEach(q => el('circle', { cx: 0, cy: 0, r: 7, fill: C.ink }, q));
+    return { g, open: parts[0], fist: parts[1], point: parts[2], thumb: parts[3] };
+  }                                 // fingers along +x, wrist at 0,0
   const g = el('g', {}, parent), open = el('g', {}, g), fist = el('g', {}, g), point = el('g', {}, g), thumb = el('g', {}, g);
   const w = { fill: C.white, ...ink(2.3) };
   el('ellipse', { cx: 6, cy: -9.4, rx: 3.6, ry: 4.2, transform: 'rotate(-25 6 -9.4)', ...w }, open);
@@ -188,7 +193,7 @@ let rigN = 0;
 export type RigUpdate = (p: Pose, swaps?: Partial<Record<PropName, PropName>>) => void;
 
 /** Build Shorty into `svg`. `small` = header size: thicker lines, fine detail skipped. */
-export function makeRig(svg: SVGSVGElement, opts: { small?: boolean; boil?: boolean; reduce?: boolean } = {}): RigUpdate {
+export function makeRig(svg: SVGSVGElement, opts: { small?: boolean; boil?: boolean; reduce?: boolean; plainHands?: boolean } = {}): RigUpdate {
   const small = opts.small ?? false, boil = opts.boil ?? !small, reduce = opts.reduce ?? false;
   const id = `m${rigN++}${Math.random().toString(36).slice(2, 6)}`, W = small ? 1.45 : 1;
   const defs = el('defs', {}, svg);
@@ -267,7 +272,7 @@ export function makeRig(svg: SVGSVGElement, opts: { small?: boolean; boil?: bool
     bumps[s] = el('g', {}, frontArms);
     el('circle', { r: 10.5, fill: C.ink }, bumps[s]);
     el('path', { d: 'M-5 -5.6 Q0 -8.6 5 -5.6', fill: 'none', stroke: C.white, 'stroke-width': 1.6, 'stroke-linecap': 'round', opacity: 0.75 }, bumps[s]);
-    gloves[s] = glove(gloveLayer);
+    gloves[s] = glove(gloveLayer, opts.plainHands);
   }
   const phone: Partial<PhoneParts> = {};
   const held = Object.fromEntries(PROP_NAMES.map(k => [k, PROPS[k](propLayer, phone)])) as Record<PropName, SVGGElement>;

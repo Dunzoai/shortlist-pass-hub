@@ -11,7 +11,7 @@ import { makeRig, bodyMatrix, type RigUpdate } from "@/lib/shorty/mascot/rig";
 import { GRAIN_URL } from "@/components/new-home/ShortyReel";
 import { shortyPose, KNOCK_HAND } from "./poses";
 import { ExtraArms } from "./Arms";
-import { CAPS, CUES, CUT2, CUT3, CUT4, END_CARD_AT, FADE_OUT_AT, H, HITS, SLIDE_AT, TOTAL, W, X_STROKES } from "./timeline";
+import { BURST_END, CAPS, CUES, CUT2, CUT3, CUT4, END_CARD_AT, FADE_OUT_AT, H, HITS, SLIDE_AT, TOTAL, W, X_STROKES } from "./timeline";
 
 const PAPER = "#F6F2E8", INK = "#1A1C20", IVORY = "#FBF8F0", MINT = "#34D399", RED = "#E2574C";
 const SANS = "'Schibsted Grotesk', 'Inter', sans-serif", SERIF = "'Instrument Serif', Georgia, serif";
@@ -32,7 +32,7 @@ function stageFor(t: number): Stage {
   const from = t < CUT3 ? CUT2 : t < CUT4 ? CUT3 : CUT4;
   const pop = 1 + 0.06 * (1 - easeOutBack(seg(t, from, from + 0.28), 2));
   if (t < CUT3) { const s = 2.0 * pop; return { s, cx: 540, top: 1430 - 228 * s, rot: 0, dx: 0, dy: 0 }; }
-  if (t < CUT4) { const s = 3.2 * pop; return { s, cx: 540, top: 1325 - 228 * s, rot: 0, dx: 0, dy: 0 }; }
+  if (t < CUT4) { const s = 2.75 * pop; return { s, cx: 540 + 6 * s, top: 1320 - 228 * s, rot: 0, dx: 0, dy: 0 }; }
   const s = 3.5 * pop; return { s, cx: 540, top: 1350 - 228 * s, rot: 0, dx: 0, dy: 0 };
 }
 
@@ -42,7 +42,10 @@ function Shorty({ t, st }: { t: number; st: Stage }) {
   const upd = useRef<RigUpdate | null>(null);
   useLayoutEffect(() => {
     const svg = ref.current!;
-    upd.current = makeRig(svg, { boil: true });
+    upd.current = makeRig(svg, { boil: true, plainHands: true });
+    /* the reel holds its palette to ink, mint and paper: the rig's red and yellow props go ink and mint */
+    svg.querySelectorAll('[fill="#c8473d"]').forEach((n) => n.setAttribute("fill", INK));
+    svg.querySelectorAll('[fill="#f2c94c"]').forEach((n) => n.setAttribute("fill", "#8cc3a1"));
     return () => { while (svg.firstChild) svg.removeChild(svg.firstChild); upd.current = null; };
   }, []);
   const p = useMemo(() => shortyPose(t), [t]);
@@ -61,30 +64,106 @@ function Shorty({ t, st }: { t: number; st: Stage }) {
   );
 }
 
-const Grain = ({ o = 0.4 }: { o?: number }) => <div style={{ position: "absolute", inset: 0, backgroundImage: `url("${GRAIN_URL}")`, opacity: o, mixBlendMode: "multiply", pointerEvents: "none" }} />;
 
-/** a few short ink lines where the knuckles land (his hand stays on his arm; these are just the knock) */
-function Knock({ t, st }: { t: number; st: Stage }) {
+/** where his fist lands, in screen px (his hand is on the end of his arm; this just follows it for the effects) */
+function hitPoint(st: Stage): [number, number] {
   const { s, rot } = st, cx = st.cx + st.dx, top = st.top + st.dy;
   const pv: [number, number] = [cx, top + 110 * s], rr = (rot * Math.PI) / 180;
-  const rx = 15 + KNOCK_HAND[0] - 14, ry = 100 + KNOCK_HAND[1] - 12;
+  const rx = 15 + KNOCK_HAND[0] - 8, ry = 100 + KNOCK_HAND[1] - 14;
   const x0 = cx + (rx - 63) * s - pv[0], y0 = top + ry * s - pv[1];
-  const X = pv[0] + x0 * Math.cos(rr) - y0 * Math.sin(rr), Y = pv[1] + x0 * Math.sin(rr) + y0 * Math.cos(rr);
+  return [pv[0] + x0 * Math.cos(rr) - y0 * Math.sin(rr), pv[1] + x0 * Math.sin(rr) + y0 * Math.cos(rr)];
+}
+const rnd = (n: number) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+
+/** heavy, slightly crooked ink lines flying out from the hit */
+function Impact({ t, st }: { t: number; st: Stage }) {
+  const [X, Y] = hitPoint(st);
   return (
     <svg viewBox={`0 0 ${W} ${H}`} style={{ position: "absolute", inset: 0, width: W, height: H }} aria-hidden>
       {HITS.map((h, i) => {
         const d = t - h;
-        if (d < 0 || d > 0.32) return null;
-        const f = 1 - d / 0.32;
+        if (d < 0 || d > 0.4) return null;
+        const f = 1 - d / 0.4, grow = easeOutCubic(seg(d, 0, 0.12));
         return (
-          <g key={i} opacity={f} stroke={INK} strokeLinecap="round" strokeWidth={9}>
-            {[-70, -28, 14].map((a, k) => {
-              const ar = ((a + rot - 90) * Math.PI) / 180, r0 = 120 + d * 120, r1 = r0 + 55;
-              return <path key={k} d={`M${(X + Math.cos(ar) * r0).toFixed(1)} ${(Y + Math.sin(ar) * r0).toFixed(1)} L${(X + Math.cos(ar) * r1).toFixed(1)} ${(Y + Math.sin(ar) * r1).toFixed(1)}`} />;
+          <g key={i} opacity={Math.min(1, f * 1.6)} stroke={INK} strokeLinecap="round" fill="none">
+            {Array.from({ length: 15 }, (_, k) => {
+              const a = ((k / 15) * 360 + rnd(k + i * 9) * 14) * Math.PI / 180, r0 = 95 + rnd(k * 3 + i) * 40 + grow * 40, r1 = r0 + (70 + rnd(k * 7 + i * 2) * 120) * grow;
+              const mx = (r0 + r1) / 2, wob = (rnd(k + 40) - 0.5) * 16;
+              return <path key={k} d={`M${(X + Math.cos(a) * r0).toFixed(1)} ${(Y + Math.sin(a) * r0).toFixed(1)} Q${(X + Math.cos(a) * mx + wob).toFixed(1)} ${(Y + Math.sin(a) * mx - wob).toFixed(1)} ${(X + Math.cos(a) * r1).toFixed(1)} ${(Y + Math.sin(a) * r1).toFixed(1)}`} strokeWidth={9 + rnd(k) * 9} />;
             })}
           </g>
         );
       })}
+    </svg>
+  );
+}
+
+/* ── a pattern of ink dots, for fills ── */
+const DOTS_INK = "data:image/svg+xml;utf8," + encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12'><circle cx='3' cy='3' r='2.4' fill='#1A1C20'/><circle cx='9' cy='9' r='2.4' fill='#1A1C20'/></svg>");
+function Defs() {
+  const DOT_MINT = "data:image/svg+xml;utf8," + encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12'><circle cx='3' cy='3' r='2.3' fill='#2f6a52'/><circle cx='9' cy='9' r='2.3' fill='#2f6a52'/></svg>");
+  return (
+    <svg width={0} height={0} style={{ position: "absolute" }} aria-hidden>
+      <defs>
+        {/* the screenprint finish on Shorty and everything he holds: crooked outlines, ink lines a touch heavier, halftone dots in the mint fills */}
+        <filter id="print" x="0" y="0" width="100%" height="100%" colorInterpolationFilters="sRGB">
+          <feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves={2} seed={5} result="warp" />
+          <feDisplacementMap in="SourceGraphic" in2="warp" scale={5} xChannelSelector="R" yChannelSelector="G" result="rough" />
+          <feFlood floodColor={PAPER} result="paper" />
+          <feComposite in="rough" in2="paper" operator="over" result="flat" />
+          <feMorphology in="flat" operator="erode" radius={1.2} result="thick" />
+          <feColorMatrix in="thick" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -8 8 0 0 -0.8" result="mint" />
+          <feImage href={DOT_MINT} x={0} y={0} width={12} height={12} result="tile" />
+          <feTile in="tile" result="dots" />
+          <feComposite in="dots" in2="mint" operator="in" result="dotsOn" />
+          <feBlend in="dotsOn" in2="thick" mode="multiply" />
+        </filter>
+        {/* hand-drawn lettering: a little wobble in the edges */}
+        <filter id="hand" x="-5%" y="-5%" width="110%" height="110%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves={2} seed={8} result="n" />
+          <feDisplacementMap in="SourceGraphic" in2="n" scale={7} xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+        <pattern id="inkDots" width={12} height={12} patternUnits="userSpaceOnUse" patternTransform="rotate(0)">
+          <rect width={12} height={12} fill={IVORY} />
+          <circle cx={3} cy={3} r={2.9} fill={INK} /><circle cx={9} cy={9} r={2.9} fill={INK} />
+        </pattern>
+        <pattern id="redDots" width={11} height={11} patternUnits="userSpaceOnUse">
+          <rect width={11} height={11} fill={RED} />
+          <circle cx={2.8} cy={2.8} r={1.9} fill="#a93a30" /><circle cx={8.3} cy={8.3} r={1.9} fill="#a93a30" />
+        </pattern>
+      </defs>
+    </svg>
+  );
+}
+void DOTS_INK;
+
+/** the hand-lettered KNOCK KNOCK burst, screenprint style: a crooked red starburst with halftone, heavy ink outline, ink-and-dot letters */
+function Burst({ t, st }: { t: number; st: Stage }) {
+  void st;
+  if (t < HITS[0] || t > BURST_END + 0.2) return null;
+  const grow = (h: number) => Math.max(0, easeOutBack(seg(t, h, h + 0.14), 2.3));
+  const out = 1 - easeInOut(seg(t, BURST_END, BURST_END + 0.2));
+  const k0 = grow(HITS[0]), k1 = grow(HITS[1]), k2 = grow(HITS[2]);
+  const star = Array.from({ length: 28 }, (_, i) => {
+    const a = (i / 28) * Math.PI * 2, r = i % 2 ? 215 + rnd(i) * 30 : 295 + rnd(i + 9) * 50;
+    return `${(Math.cos(a) * r).toFixed(1)},${(Math.sin(a) * r * 0.78).toFixed(1)}`;
+  }).join(" ");
+  const word = (y: number, kk: number, key: string) => kk > 0.01 && (
+    <g key={key} transform={`translate(0 ${y}) scale(${kk.toFixed(3)})`} filter="url(#hand)">
+      <text x={9} y={10} textAnchor="middle" fontFamily="'Bowlby One', 'Rubik Mono One', Impact, sans-serif" fontSize={132} fill={INK} stroke={INK} strokeWidth={22} strokeLinejoin="round" paintOrder="stroke">KNOCK</text>
+      <text x={0} y={0} textAnchor="middle" fontFamily="'Bowlby One', 'Rubik Mono One', Impact, sans-serif" fontSize={132} fill="url(#inkDots)" stroke={INK} strokeWidth={9} strokeLinejoin="round" paintOrder="stroke">KNOCK</text>
+    </g>
+  );
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} style={{ position: "absolute", inset: 0, width: W, height: H }} aria-hidden>
+      <g transform={`translate(500 520) rotate(-8) scale(${(out * (1 + 0.1 * Math.max(0, k2 - 1) + 0.06 * (k2 > 0 ? 1 : 0))).toFixed(3)})`}>
+        <g transform={`scale(${Math.max(0.001, k0).toFixed(3)})`} filter="url(#hand)">
+          <polygon points={star} fill="#1A1C20" transform="translate(12 14) scale(1.02)" />
+          <polygon points={star} fill="url(#redDots)" stroke={INK} strokeWidth={13} strokeLinejoin="round" />
+        </g>
+        {word(-44, k0, "w0")}
+        {word(96, k1, "w1")}
+      </g>
     </svg>
   );
 }
@@ -186,7 +265,7 @@ export function Reel() {
   /* eslint-disable react-hooks/set-state-in-effect -- reads the URL once on mount */
   useEffect(() => {
     const q = new URLSearchParams(location.search);
-    if (q.get("cover")) { setCover(true); setT(parseFloat(q.get("cover")!) || 0.9); }
+    if (q.get("cover")) { setCover(true); setT(parseFloat(q.get("cover")!) || 1.4); }
     else if (q.get("t")) setT(parseFloat(q.get("t")!));
     setBare(!!q.get("bare"));
     window.__reelSeek = (x: number) => flushSync(() => setT(x));
@@ -202,19 +281,29 @@ export function Reel() {
   }, []);
   /* eslint-enable react-hooks/set-state-in-effect */
   const st = stageFor(t);
-  const rattle = HITS.reduce((m, h) => (t >= h ? m + Math.exp(-(t - h) * 9) * Math.sin((t - h) * 75) : m), 0);
   const shot = t < CUT2 ? 1 : t < CUT3 ? 2 : t < CUT4 ? 3 : 4;
+  /* every hit jolts the whole frame (background texture included): 10-14 px of travel, snapping back fast, with a tiny twist */
+  let jx = 0, jy = 0, jr = 0;
+  HITS.forEach((h, i) => {
+    const d = t - h;
+    if (d < 0 || d > 0.5) return;
+    const a = Math.exp(-d * 17), ph = i * 2.1;
+    jx += 13 * a * Math.cos(d * 72 + ph); jy += 10 * a * Math.sin(d * 84 + ph * 1.3); jr += 0.75 * a * Math.sin(d * 66 + ph);
+  });
   const fade = cover ? 0 : seg(t, FADE_OUT_AT, TOTAL);
   return (
     <div style={{ position: "fixed", left: 0, top: 0, width: W, height: H, overflow: "hidden", background: PAPER, zIndex: 2147483000 }} data-shot={shot}>
       {/* eslint-disable-next-line @next/next/no-page-custom-font */}
-      <link rel="stylesheet" precedence="default" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Schibsted+Grotesk:wght@600;700;800;900&display=swap" />
-      <div style={{ position: "absolute", inset: 0, transform: shot === 1 ? `translate(${(rattle * 5).toFixed(2)}px, ${(rattle * 3).toFixed(2)}px)` : undefined }}>
+      <link rel="stylesheet" precedence="default" href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Instrument+Serif:ital@0;1&family=Schibsted+Grotesk:wght@600;700;800;900&display=swap" />
+      <Defs />
+      <div style={{ position: "absolute", inset: 0, transform: `translate(${jx.toFixed(2)}px, ${jy.toFixed(2)}px) rotate(${jr.toFixed(3)}deg)` }}>
+        <div style={{ position: "absolute", inset: -90, background: PAPER }} />
         {shot === 2 && (<><Listing t={t} /><MarkerX t={t} /></>)}
-        <Shorty t={t} st={st} />
-        {shot === 1 && <Knock t={t} st={st} />}
+        <div style={{ position: "absolute", inset: 0, filter: "url(#print)", mixBlendMode: "multiply" }}><Shorty t={t} st={st} /></div>
+        {shot === 1 && <Impact t={t} st={st} />}
+        {(shot === 1 || cover) && <Burst t={t} st={st} />}
+        <div style={{ position: "absolute", inset: -90, backgroundImage: `url("${GRAIN_URL}")`, opacity: 0.4, mixBlendMode: "multiply", pointerEvents: "none" }} />
       </div>
-      <Grain />
       {!bare && !cover && <Caption t={t} />}
       {!bare && !cover && <EndCard t={t} />}
       {cover && <CoverText />}

@@ -4,7 +4,10 @@
  * (plain strokes with a glove on the end: no joints, no bumps, never crossed).
  */
 import { base, arm, seg, easeOutBack, easeInOutSoft, SHOULDER, type Pose, type Side, type PropState } from "@/lib/shorty/mascot/poses";
-import { ARMS, CUT2, CUT3, CUT4, HITS, VOICE_AT, armExt, armIndex, mouthAt, popAt } from "./timeline";
+import { ARMS, CUT2, CUT3, CUT4, HITS, VOICE_AT, armExt, armIndex, mouthAt, popAt, wordStart } from "./timeline";
+
+/** "I go get 'em." starts at word 9 of the second ending line */
+const WORD_GO = wordStart("v5", 9) - VOICE_AT.v5;
 
 const rel = (s: Side, x: number, y: number): [number, number] => [x - SHOULDER[s][0], y - SHOULDER[s][1]];
 const hang = (s: Side, sway = 0) => arm(s === "L" ? -10 - sway : 10 - sway, 52, 14, 0, s === "L" ? -6 : 6);
@@ -53,7 +56,7 @@ export function shortyPose(t: number): Pose {
     const lift = knockLift(t);
     p.L = arm(KNOCK_HAND[0] + lift * 0.4, KNOCK_HAND[1] - lift, 10, 1, 0, 0, 1);
     p.R = hang("R", Math.sin(t * 2) * 1.5);
-    p.face = { ...p.face, mouth: m ?? "none", gx: 0, gy: 0.6, eo: 1.1, bl: -3, br: -3, blr: -3, brr: -3 };
+    p.face = { ...p.face, mouth: m ?? "none", gx: 0, gy: 0.2, eo: 0.95, bl: 1.2, br: 1.2, blr: -8, brr: -8 };
     return p;
   }
 
@@ -64,7 +67,7 @@ export function shortyPose(t: number): Pose {
     p.sy = 1 + 0.02 * (1 - landed);
     p.L = hang("L", Math.sin(t * 1.8) * 1.5); p.R = hang("R", Math.sin(t * 1.8) * 1.5);
     p.rot = Math.sin(t * 1.6) * 0.6;
-    p.face = { ...p.face, mouth: m ?? "none", gx: 0, gy: 0.4, eo: 1, bl: 1, br: 1, blr: -8, brr: -8 };
+    p.face = { ...p.face, mouth: m ?? "none", gx: 0, gy: 0.2, eo: 0.95, bl: 1.2, br: 1.2, blr: -8, brr: -8 };
     return p;
   }
 
@@ -86,21 +89,27 @@ export function shortyPose(t: number): Pose {
     }
     for (const a of ARMS) { const d = t - popAt(a); if (d >= 0 && d < 0.4) p.by += Math.sin(Math.PI * d / 0.4) * 1.6; }
     p.rot = Math.sin(t * 1.3) * 0.8;
-    p.face = { ...p.face, mouth: m ?? "none", gx: Math.sin(t * 1.0) * 1.2, gy: 0, bl: -2, br: -2 };
+    p.face = { ...p.face, mouth: m ?? "none", gx: Math.sin(t * 1.0) * 0.8, gy: 0.1, eo: 0.95, bl: 1.2, br: 1.2, blr: -8, brr: -8 };
     return p;
   }
 
-  /* ── shot 4: just him. Hands on hips for "don't sell me short", a thumbs-up for "get on the Shortlist" ── */
-  const v5 = VOICE_AT.v5;
+  /* ── shot 4: just him, flat and hard. Arms down for the finder line, hands on hips for "quit selling your truck short",
+        a finger out for "I go get 'em", then the same finger down toward the end card for "Get on the Shortlist. Free." ── */
+  const v5 = VOICE_AT.v5, v6 = VOICE_AT.v6, goAt = v5 + wordTimeV5Go();
   const k = easeOutBack(seg(t, CUT4, CUT4 + 0.3), 1.4);
   p.by += Math.sin(Math.PI * seg(t, CUT4, CUT4 + 0.3)) * 4;
-  p.L = hip("L");
-  p.R = hip("R");
-  const up = easeOutBack(seg(t, v5 + 0.45, v5 + 0.8), 1.6) * (1 - seg(t, v5 + 1.4, v5 + 1.7));
-  if (up > 0.01) p.R = arm(mix(10, 28, up), mix(52, -24, up), 12, 3, -10 * up, 0, 0);
-  p.rot = -1.5 * k + Math.sin(t * 1.9) * 0.6;
-  p.sy = 1 + 0.02 * k;
-  p.face = { ...p.face, mouth: m ?? "none", gx: 0, gy: -0.6, bl: -2.5 * k, br: -2.5 * k, blr: -3, brr: -3 };
-  if (t > v5 - 0.1) p.face = { ...p.face, mouth: m ?? "grin", bl: -2, br: -2, blr: 0, brr: 0 };
+  const hipsK = easeInOutSoft(seg(t, v5 - 0.1, v5 + 0.2));
+  const sway = Math.sin(t * 1.8) * 1.2;
+  const mixArm = (a: ReturnType<typeof arm>, b: ReturnType<typeof arm>, kk: number) => ({ hx: mix(a.hx, b.hx, kk), hy: mix(a.hy, b.hy, kk), bend: mix(a.bend, b.bend, kk), fist: kk > 0.5 ? b.fist : a.fist, rot: mix(a.rot, b.rot, kk), bump: 0, front: kk > 0.5 ? b.front : a.front });
+  p.L = mixArm(hang("L", sway), hip("L"), hipsK);
+  p.R = mixArm(hang("R", sway), hip("R"), hipsK);
+  const pointK = easeOutBack(seg(t, goAt - 0.05, goAt + 0.25), 1.3);
+  const pointDown = easeInOutSoft(seg(t, v6 + 0.3, v6 + 0.6));
+  if (pointK > 0.01) p.R = mixArm(p.R as ReturnType<typeof arm>, arm(mix(32, 26, pointDown), mix(18, 62, pointDown), 10, 2, mix(-8, 38, pointDown), 0, 0), Math.min(1, pointK));
+  const shakeNo = t > v5 + 1.6 && t < v5 + 2.15 ? Math.sin((t - v5 - 1.6) * 24) * 2.2 : 0;
+  p.rot = -1 * k + shakeNo + Math.sin(t * 1.9) * 0.4;
+  p.sy = 1 + 0.015 * k;
+  p.face = { ...p.face, mouth: m ?? "none", gx: 0, gy: 0.1, eo: 0.95, bl: 1.6, br: 1.6, blr: -10, brr: -10 };
   return p;
 }
+function wordTimeV5Go() { return WORD_GO; }

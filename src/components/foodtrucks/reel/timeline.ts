@@ -5,21 +5,23 @@
  */
 import voice from "./voice.json";
 
-export const FPS = 30, W = 1080, H = 1920, TOTAL = 19.5;
+export const FPS = 30, W = 1080, H = 1920, TOTAL = 24.2;
 /** Instagram covers the top ~220px and the bottom ~320px: everything that matters lives between these two lines. */
 export const SAFE_TOP = 220, SAFE_BOTTOM = H - 320;
 
 type VoiceId = keyof typeof voice;
-export const VOICE_AT: Record<VoiceId, number> = { v1: 1.4, v2: 3.1, v3: 6.1, v4: 13.9, v5: 16.7 };
+export const VOICE_AT: Record<VoiceId, number> = { v1: 1.4, v2: 3.1, v3: 6.1, v4: 13.9, v5: 17.3, v6: 21.0 };
 /** shot boundaries */
 export const CUT2 = 2.9, CUT3 = 5.9, CUT4 = 13.7;
 /** the three knocks, one hand */
 export const HITS = [0.25, 0.65, 1.05];
+/** the hand-lettered KNOCK KNOCK burst: pops on the hits, gone by here */
+export const BURST_END = 1.95;
 export const SLIDE_AT = 3.0;
 /** the red marker: two strokes, while he says "food truck finder" */
 export const X_STROKES: Array<[number, number]> = [[4.55, 4.9], [5.0, 5.4]];
-export const END_CARD_AT = 18.15;
-export const FADE_OUT_AT = 19.2;   // a short dip to the opening's white, so the loop doesn't jar
+export const END_CARD_AT = 22.95;
+export const FADE_OUT_AT = 23.9;   // a short dip to the opening's white, so the loop doesn't jar
 
 const words = (id: VoiceId) => voice[id].words as Array<{ w: string; s: number; e: number }>;
 export const wordStart = (id: VoiceId, i: number) => VOICE_AT[id] + words(id)[i].s;
@@ -27,11 +29,11 @@ export const wordEnd = (id: VoiceId, i: number) => VOICE_AT[id] + words(id)[i].e
 export const voiceEnd = (id: VoiceId) => VOICE_AT[id] + voice[id].duration;
 
 /** Is he mid-word? Returns which mouth to show (changes at word boundaries, like the site's other talking). */
-export function mouthAt(t: number): "o" | "grin" | null {
+export function mouthAt(t: number): "o" | "shout" | null {
   for (const id of Object.keys(VOICE_AT) as VoiceId[]) {
     const ws = words(id);
     for (let i = 0; i < ws.length; i++) {
-      if (t >= VOICE_AT[id] + ws[i].s - 0.02 && t <= VOICE_AT[id] + ws[i].e + 0.05) return (i + id.charCodeAt(1)) % 2 ? "o" : "grin";
+      if (t >= VOICE_AT[id] + ws[i].s - 0.02 && t <= VOICE_AT[id] + ws[i].e + 0.05) return (i + id.charCodeAt(1)) % 2 ? "o" : "shout";
     }
   }
   return null;
@@ -43,8 +45,9 @@ const GROUPS: Array<[VoiceId, number, number]> = [
   ["v1", 0, 0], ["v1", 1, 2],
   ["v2", 0, 0], ["v2", 1, 3], ["v2", 4, 7],
   ["v3", 0, 1], ["v3", 2, 4], ["v3", 5, 7], ["v3", 8, 8], ["v3", 9, 9], ["v3", 10, 10], ["v3", 11, 11], ["v3", 12, 12], ["v3", 13, 13], ["v3", 14, 15],
-  ["v4", 0, 3], ["v4", 4, 5], ["v4", 6, 8],
-  ["v5", 0, 1], ["v5", 2, 3],
+  ["v4", 0, 2], ["v4", 3, 4], ["v4", 5, 6], ["v4", 7, 8],
+  ["v5", 0, 1], ["v5", 2, 5], ["v5", 6, 8], ["v5", 9, 12],
+  ["v6", 0, 1], ["v6", 2, 3], ["v6", 4, 4],
 ];
 export const CAPS: Cap[] = GROUPS.map(([id, from, to], i) => {
   const ws = words(id);
@@ -83,14 +86,14 @@ export function armExt(i: number, t: number): number {
 }
 
 /* ── sound: one list, read by the page (and so by the ffmpeg mix) ─────────────────────────────────── */
-export type Cue = { src: string; at: number; vol: number; dur?: number; kind: "voice" | "sfx" | "music" };
+export type Cue = { src: string; at: number; vol: number; dur?: number; kind: "voice" | "sfx" | "music"; fx?: string };
 const flashes = (from: number, to: number, every: number) => { const r: number[] = []; for (let x = from; x < to; x += every) r.push(x); return r; };
 export const CUES: Cue[] = [
   ...(Object.keys(VOICE_AT) as VoiceId[]).map((id): Cue => ({ src: `voice/${id}.mp3`, at: VOICE_AT[id], vol: 1.0, kind: "voice" })),
   /* shot 1: three knocks on the glass */
   ...HITS.flatMap((h): Cue[] => [
-    { src: "sfx/knock.mp3", at: h - 0.01, vol: 1.1, kind: "sfx" },
-    { src: "sfx/smack.mp3", at: h - 0.01, vol: 2.0, kind: "sfx" },
+    { src: "sfx/knock.mp3", at: h - 0.01, vol: 1.5, kind: "sfx", fx: "bass=g=7:f=110" },
+    { src: "sfx/smack.mp3", at: h - 0.01, vol: 5.5, kind: "sfx", fx: "bass=g=10:f=70" },
   ]),
   { src: "sfx/rattle.mp3", at: HITS[2] + 0.03, vol: 0.5, kind: "sfx" },
   /* shot 2: whoosh as the listing slides in, marker squeak on the X */

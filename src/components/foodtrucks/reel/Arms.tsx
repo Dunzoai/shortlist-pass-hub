@@ -9,33 +9,14 @@ import type { ReactNode } from "react";
 import { ARMS, armExt, popAt, type ArmId, type ArmSpec } from "./timeline";
 import { SHOULDER } from "@/lib/shorty/mascot/poses";
 
-const C = { green: "#8cc3a1", ink: "#1d1a16", white: "#fbf6e6", pink: "#e8747a", yellow: "#f2c94c", red: "#c8473d", cream: "#fbf3dc" };
+/* the reel holds its palette to ink, mint and paper: no red, yellow or pink in anything he holds */
+const C = { green: "#8cc3a1", ink: "#1d1a16", white: "#fbf6e6", pink: "#1d1a16", yellow: "#8cc3a1", red: "#1d1a16", cream: "#fbf6e6" };
 const ink = (w = 2.2) => ({ stroke: C.ink, strokeWidth: w, strokeLinejoin: "round" as const, strokeLinecap: "round" as const });
 const f1 = (v: number) => +v.toFixed(1);
 
-/** the rig's glove: wrist at the origin, fingers along +x; fist and open variants, with the rolled cuff */
-export function Glove({ fist = true }: { fist?: boolean }) {
-  const w = { fill: C.white, ...ink(2.3) };
-  return (
-    <g>
-      {fist ? (
-        <g>
-          <ellipse cx={6.5} cy={-8.6} rx={3.4} ry={3.8} {...w} />
-          <circle cx={9} cy={0} r={9.2} {...w} />
-          <path d="M15 -5.4 Q13 -3.4 15.3 -1.5 M15.9 -1.1 Q13.4 0.8 15.9 2.8 M15.1 3.4 Q13 5.2 14.8 6.8" fill="none" {...ink(1.3)} />
-          <path d="M3.8 -3 Q7 -3.3 10 -3 M3.8 0.2 H10 M3.8 3.4 Q7 3.7 10 3.4" fill="none" {...ink(1.3)} />
-        </g>
-      ) : (
-        <g>
-          <ellipse cx={6} cy={-9.4} rx={3.6} ry={4.2} transform="rotate(-25 6 -9.4)" {...w} />
-          {[[15, -6.2], [18, -2.1], [18, 2.2], [15, 6.3]].map(([x, y]) => <circle key={x + "," + y} cx={x} cy={y} r={3.9} {...w} />)}
-          <ellipse cx={8.5} cy={0} rx={8.8} ry={8.4} {...w} />
-        </g>
-      )}
-      <path d="M-7.5 -8.4 Q-3.4 -9.4 0.4 -7.4 V7.4 Q-3.4 9.4 -7.5 8.4 Q-9 0 -7.5 -8.4 Z" {...w} />
-      <path d="M-3.6 -8.2 Q-5 0 -3.6 8.2" fill="none" {...ink(1.3)} />
-    </g>
-  );
+/** his hand: a plain solid ink circle at the end of the arm, a touch wider than the stroke (like his shoes). Props sit against it. */
+export function Glove() {
+  return <circle cx={0} cy={0} r={7} fill={C.ink} />;
 }
 
 /** the rig's limb geometry: a quadratic from shoulder to hand that always bows away from the body */
@@ -63,7 +44,7 @@ function Envelope({ a }: { a: number }) {
     <g transform="translate(0 -17)">
       {mini(f, "m1")}{mini(g, "m2")}
       <rect x={-22} y={-13} width={44} height={28} rx={3} fill={C.white} {...ink(2.2)} />
-      <path d={`M-22 -13 L0 ${f1(apex + 14)} L22 -13 Z`} fill={open > 0.5 ? "#efe6cc" : C.white} {...ink(2)} />
+      <path d={`M-22 -13 L0 ${f1(apex + 14)} L22 -13 Z`} fill={open > 0.5 ? "#e9e2cd" : C.white} {...ink(2)} />
       <path d="M-18 11 L-6 1 M18 11 L6 1" fill="none" {...ink(1.3)} />
       <path d="M0 -4 C-5 -8 -4 -13 0 -10 C4 -13 5 -8 0 -4 Z" fill={C.red} {...ink(1.2)} transform={`translate(0 ${f1(open > 0.5 ? -3 : 3)})`} />
     </g>
@@ -74,7 +55,7 @@ function Camera({ a }: { a: number }) {
   const h = loop(a + 0.1, 1.6);
   return (
     <g transform="translate(0 -17)">
-      <circle cx={-16} cy={-22} r={30 * burst} fill="#fff7d6" opacity={0.65 * burst} />
+      <circle cx={-16} cy={-22} r={30 * burst} fill="#fbf6e6" opacity={0.65 * burst} />
       <path d="M-14 -16 L-20 -30 M-16 -17 L-8 -33 M-20 -22 L-34 -24" stroke={C.yellow} strokeWidth={3} strokeLinecap="round" opacity={burst} />
       <rect x={-24} y={-14} width={48} height={30} rx={5} fill={C.white} {...ink(2.2)} />
       <path d="M-24 -6 H24" {...ink(1.4)} />
@@ -97,7 +78,7 @@ function Ticket({ a }: { a: number }) {
       <path d="M-9 -34 H3" stroke={C.white} strokeWidth={2.2} strokeLinecap="round" />
       {[0, 1, 2].map((i) => (
         <g key={i} transform={`translate(0 ${-20 + i * 11})`}>
-          <rect x={-10} y={-3.5} width={7} height={7} rx={1} fill={i <= n ? "#bfe0cb" : "none"} {...ink(1.4)} />
+          <rect x={-10} y={-3.5} width={7} height={7} rx={1} fill={i <= n ? "#8cc3a1" : "none"} {...ink(1.4)} />
           {i <= n && <path d="M-9 0 L-7 2.4 L-4 -2.4" fill="none" {...ink(1.6)} />}
           <path d="M0 0 H10" {...ink(1.5)} />
         </g>
@@ -115,7 +96,7 @@ function Calendar({ a }: { a: number }) {
       {[-12, 12].map((x) => <rect key={x} x={x - 2} y={-27} width={4} height={9} rx={2} fill={C.ink} />)}
       {Array.from({ length: 9 }, (_, i) => <circle key={i} cx={-12 + (i % 3) * 12} cy={-13 + Math.floor(i / 3) * 11 + 11} r={1.7} fill={C.ink} opacity={0.55} />)}
       <g transform={`translate(${cx} ${cy + 11})`}>
-        <circle r={5.6 + 1.5 * pop} fill="#bfe0cb" {...ink(1.6)} />
+        <circle r={5.6 + 1.5 * pop} fill="#8cc3a1" {...ink(1.6)} />
         <path d="M-2.6 0.4 L-0.6 2.6 L3 -2.4" fill="none" {...ink(1.8)} />
       </g>
     </g>
@@ -124,10 +105,10 @@ function Calendar({ a }: { a: number }) {
 function Sign({ a }: { a: number }) {
   return (
     <g transform={`rotate(${f1(Math.sin(a * 1.7) * 3.5)})`}>
-      <rect x={-2.5} y={-16} width={5} height={34} fill="#9c6a42" {...ink(2)} />
+      <rect x={-2.5} y={-16} width={5} height={34} fill="#1d1a16" {...ink(2)} />
       <g transform="translate(0 -40)">
         <rect x={-28} y={-18} width={56} height={34} rx={3} fill={C.cream} {...ink(2.4)} />
-        <rect x={-28} y={-18} width={56} height={9} rx={3} fill="#9c6a42" {...ink(2.2)} />
+        <rect x={-28} y={-18} width={56} height={9} rx={3} fill="#1d1a16" {...ink(2.2)} />
         {["THU", "FRI", "SAT"].map((d, i) => (
           <g key={d}>
             <text x={-22} y={-1 + i * 8.5} fontSize={6.6} fontWeight={900} fill={C.ink} fontFamily="'Schibsted Grotesk',sans-serif">{d}</text>
@@ -169,7 +150,7 @@ function DrawnArm({ spec, i, t }: { spec: ArmSpec; i: number; t: number }) {
       <path d={L.d} fill="none" stroke={C.ink} strokeWidth={6} strokeLinecap="round" />
       <g transform={`translate(${f1(H[0])} ${f1(H[1])})`}>
         {Item && <g transform={`scale(${e.toFixed(3)})`}><Item a={a} /></g>}
-        <g transform={`rotate(${f1(L.ang)}) scale(1 ${spec.side === "L" ? -1 : 1})`}><Glove fist /></g>
+        <g transform={`rotate(${f1(L.ang)}) scale(1 ${spec.side === "L" ? -1 : 1})`}><Glove /></g>
       </g>
     </g>
   );
