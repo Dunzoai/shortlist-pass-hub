@@ -67,6 +67,11 @@ function Guy({ body, skin, hair, phone, eat, eatEvery = 3.4, eatAt = 0 }: { body
         <path d="M-8 0 V-24 M8 0 V-24" stroke="#33404E" strokeWidth={7} strokeLinecap="round" />
         <Paper d={cut(-14, -58, 28, 40, 9, 1.2)} fill={body} dx={2.5} dy={3} />
         <path d="M-14 -50 L-22 -34" stroke={skin} strokeWidth={6} strokeLinecap="round" />
+        <Paper d="M-11 -68 a11 11 0 1 0 22 0 a11 11 0 1 0 -22 0 Z" fill={skin} dx={2} dy={2.5} />
+        <path d="M-12 -72 Q-10 -84 0 -84 Q11 -84 12 -72 Q4 -77 -12 -72 Z" fill={hair} />
+        <circle cx={4} cy={-69} r={1.5} fill={INK} /><circle cx={-3} cy={-69} r={1.5} fill={INK} />
+        <path d="M-3 -63 Q1 -60 5 -63" fill="none" stroke={INK} strokeWidth={1.3} strokeLinecap="round" />
+        {phone && <rect x={14} y={-46} width={8} height={13} rx={2} fill={MINT} stroke={INK} strokeWidth={1.2} />}
         {eat ? (
           <g className="reel-eat" style={{ transformOrigin: "14px -50px", animationDuration: `${eatEvery}s`, animationDelay: `${eatAt}s` }}>
             <path d="M14 -50 L24 -36" stroke={skin} strokeWidth={6} strokeLinecap="round" />
@@ -75,11 +80,6 @@ function Guy({ body, skin, hair, phone, eat, eatEvery = 3.4, eatAt = 0 }: { body
             {eat === "crepe" && <path d="M18 -30 L30 -42 L34 -34 Z" fill="#F4D9A0" stroke={INK} strokeWidth={1.2} strokeLinejoin="round" />}
           </g>
         ) : <path d="M14 -50 L22 -34" stroke={skin} strokeWidth={6} strokeLinecap="round" />}
-        <Paper d="M-11 -68 a11 11 0 1 0 22 0 a11 11 0 1 0 -22 0 Z" fill={skin} dx={2} dy={2.5} />
-        <path d="M-12 -72 Q-10 -84 0 -84 Q11 -84 12 -72 Q4 -77 -12 -72 Z" fill={hair} />
-        <circle cx={4} cy={-69} r={1.5} fill={INK} /><circle cx={-3} cy={-69} r={1.5} fill={INK} />
-        <path d="M-3 -63 Q1 -60 5 -63" fill="none" stroke={INK} strokeWidth={1.3} strokeLinecap="round" />
-        {phone && <rect x={14} y={-46} width={8} height={13} rx={2} fill={MINT} stroke={INK} strokeWidth={1.2} />}
       </g>
     </g>
   );
@@ -262,7 +262,7 @@ export default function FoodTruckReel() {
           .reel-idle-2 { animation-delay: -1.3s }
           @keyframes reelCook { 0%, 100% { transform: translateY(0) rotate(0) } 50% { transform: translateY(-1.5px) rotate(1.2deg) } }
           .reel-cook { animation: reelCook 1.3s ease-in-out infinite }
-          @keyframes reelEat { 0%, 30% { transform: rotate(0deg) } 42%, 58% { transform: rotate(-150deg) } 70%, 100% { transform: rotate(0deg) } }
+          @keyframes reelEat { 0%, 30% { transform: rotate(0deg) } 42%, 58% { transform: rotate(-165deg) } 70%, 100% { transform: rotate(0deg) } }
           .reel-eat { animation: reelEat 3.4s ease-in-out infinite }
           ${walkCss}
           @media (prefers-reduced-motion: reduce) { .reel-pulse { animation: none; opacity: 0 } .reel-walker, .reel-walker .reel-bob, .reel-idle, .reel-cook, .reel-eat, .reel-cloud-a, .reel-cloud-b, .reel-cloud-c { animation: none } }
