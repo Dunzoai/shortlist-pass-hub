@@ -45,6 +45,10 @@ function useVideoAudio() {
     type Live = { src: AudioBufferSourceNode; gain: GainNode; at: number; off: number };
     const live = new Map<string, Live>();
     const done = new Set<string>();   // one-shot cues that already played out this time through the window
+    /* Once sound is on, the audio clock is the master: the picture follows it (see now()). Before, the picture ran on frame time and the
+       audio on its own clock; on a phone the two drifted, and every >0.3 s drift killed and restarted the voice: the stutter. */
+    let anchor: { c: number; t: number } | null = null;
+    const now = () => (st.ctx && st.ctx.state === "running" && anchor ? anchor.t + (st.ctx.currentTime - anchor.c) : null);
     /** Called inside the tap that turns sound on (iOS only lets audio start from a tap). */
     const unlock = () => {
       const AC = window.AudioContext || (window as WebkitWindow).webkitAudioContext;
@@ -65,6 +69,8 @@ function useVideoAudio() {
     const sync = (t: number, active: boolean) => {
       const c = st.ctx; if (!c) return;
       if (active && c.state === "suspended") void c.resume();
+      if (!active) anchor = null;
+      else if (c.state === "running" && (!anchor || Math.abs(anchor.t + (c.currentTime - anchor.c) - t) > 0.25)) anchor = { c: c.currentTime, t };   // first frame, or a seek
       const speaking = CUES.some((q) => q.key.startsWith("v-") && t >= q.start && t < q.end);
       const fade = Math.max(0, Math.min(1, (TOTAL - t) / 2.5));   // music and the bed fade out at the very end
       for (const q of CUES) {
@@ -88,8 +94,8 @@ function useVideoAudio() {
         } else l.gain.gain.setTargetAtTime(vol, c.currentTime, 0.12);
       }
     };
-    const stop = () => { [...live.keys()].forEach(kill); done.clear(); };
-    return { unlock, sync, stop };
+    const stop = () => { [...live.keys()].forEach(kill); done.clear(); anchor = null; };
+    return { unlock, sync, stop, now };
   }, []);
 }
 
@@ -152,7 +158,8 @@ export default function ShortyVideo({ startWithSound = false }: { startWithSound
       const dt = Math.min(0.1, (now - last) / 1000); last = now;
       if (pending.current !== null) { const p = pending.current; pending.current = null; tRef.current = p; setT(p); }
       if (playing.current && !document.hidden) {
-        tRef.current = Math.min(TOTAL, tRef.current + dt);
+        const ac = soundRef.current ? audio.now() : null;
+        tRef.current = Math.min(TOTAL, ac ?? tRef.current + dt);
         setT(tRef.current);
         if (tRef.current >= TOTAL) { playing.current = false; setIsPlaying(false); setEnded(true); }
       }
