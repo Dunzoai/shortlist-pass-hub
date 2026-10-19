@@ -8,12 +8,8 @@ export const SERIF = "var(--font-instrument), Georgia, 'Times New Roman', serif"
 export const SANS = "var(--font-schibsted), 'Helvetica Neue', Helvetica, sans-serif";
 /**
  * THE ONE PLACE TO CHANGE when the real rentals sign-up exists: every button on /rentals (header, hero, pricing) reads this.
- * Until then it opens an email to the sales inbox the home page footer already lists, with the lead labelled as a Shortlist Stay (rentals) lead.
- * (The app's /freeshorty form can't take a rental yet: it only knows park, truck and event, so it would make the wrong kind of page.)
  */
-export const SIGNUP_HREF =
-  "mailto:connect@shortlistpass.com?subject=" + encodeURIComponent("Shortlist Stay (rentals) lead: get started") +
-  "&body=" + encodeURIComponent("Shortlist Stay (rentals) lead.\n\nYour name:\nHow many rentals you host:\nBest phone number:\n\nI'd like to get started.");
+export const SIGNUP_HREF = "https://app.shortlistpass.com/go/rental";
 export const PRICE_LINE = "$50/month per property. Pay and go.";
-/** "Try the demo house": there is no playable demo house yet, so this scrolls to the on-page Shorty demo (#shorty). Swap for the real demo link when it exists. */
-export const DEMO_HREF = "#shorty";
+/** "Try the demo house": the live demo listing. */
+export const DEMO_HREF = "https://thebeachhouse-demo.shortlistpass.com";
