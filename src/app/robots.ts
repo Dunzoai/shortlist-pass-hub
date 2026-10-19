@@ -8,7 +8,9 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       { userAgent: "*", allow: "/", disallow: PRIVATE },
-      { userAgent: AI_BOTS, allow: ["/", "/AGENTS.md", "/llms.txt", "/llms-full.txt", "/agents"], disallow: PRIVATE },
+      // Search engines: same rules as everyone else, stated explicitly so /rentals is clearly open to them.
+      { userAgent: ["Googlebot", "Bingbot"], allow: ["/", "/rentals", "/rentals.md"], disallow: PRIVATE },
+      { userAgent: AI_BOTS, allow: ["/", "/AGENTS.md", "/llms.txt", "/llms-full.txt", "/agents", "/rentals", "/rentals.md"], disallow: PRIVATE },
     ],
     sitemap: "https://www.shortlistpass.com/sitemap.xml",
     host: "https://www.shortlistpass.com",

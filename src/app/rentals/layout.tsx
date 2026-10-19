@@ -2,10 +2,18 @@ import type { Metadata } from "next";
 import { fraunces } from "@/lib/fonts";
 import { instrumentSerif, schibsted } from "@/lib/fonts-rentals";
 
+const PAGE_URL = "https://www.shortlistpass.com/rentals";
+const TITLE = "Shortlist Stay: your rental has its own app";
+const DESCRIPTION = "Give your vacation rental its own app. Shorty answers guests, shares your local picks, and keeps in touch after checkout, so they book with you directly. No booking fees. $50 a month per property.";
+const IMAGE = "https://www.shortlistpass.com/rentals/og-rentals.png";
+const IMAGE_ALT = "Shortlist Stay: your rental has its own app. Book direct, no booking fees.";
+
 export const metadata: Metadata = {
-  title: "Shortlist Stay: a house app for short-term rentals | Shortlist Pass",
-  description: "Every rental gets its own house app, opened from a QR card on the fridge. No download, no login. Shorty answers your guests 24/7 and texts you when it matters.",
-  alternates: { canonical: "https://www.shortlistpass.com/rentals" },
+  title: { absolute: TITLE },
+  description: DESCRIPTION,
+  alternates: { canonical: PAGE_URL },
+  openGraph: { title: TITLE, description: DESCRIPTION, url: PAGE_URL, type: "website", siteName: "The Shortlist", images: [{ url: IMAGE, width: 1200, height: 630, alt: IMAGE_ALT }] },
+  twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION, images: [{ url: IMAGE, alt: IMAGE_ALT }] },
 };
 
 /** The target type pair, ivory, and no site-wide agency bar or chat widget (same approach as /foodtrucks). The components borrowed from the home page and /foodtrucks read --font-fraunces, --font-sora and --font-sans-inter; on this route those names point at Instrument Serif and Schibsted Grotesk. */
