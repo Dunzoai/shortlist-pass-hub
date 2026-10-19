@@ -262,7 +262,8 @@ export default function RentalsV3() {
       </div>
       <div className="bcg" style={{ "display": "grid", "gridTemplateColumns": "repeat(2, minmax(0, 1fr))", "gap": "14px" }}>
         <div className="bk" style={{ "borderRadius": "18px", "background": "#ffffff", "overflow": "hidden", "boxShadow": "0 18px 36px -26px rgba(26,28,32,0.5)", "transform": "rotate(-1.5deg)" }}>
-          <div className="bkp" aria-hidden="true" style={{ "height": "120px", "background": "#e9c98f", "padding": "10px", "boxSizing": "border-box", "fontSize": "10px", "fontWeight": "700", "letterSpacing": "0.12em", "color": "#45423c" }}></div>
+          <div className="bkp" style={{ "overflow": "hidden", "position": "relative", "height": "120px", "background": "#e9c98f", "padding": "10px", "boxSizing": "border-box", "fontSize": "10px", "fontWeight": "700", "letterSpacing": "0.12em", "color": "#45423c" }}>
+        <Image src="/rentals/rentals-pick-grill.jpg" alt="Fried shrimp basket on a wooden table" fill sizes="(max-width: 700px) 50vw, 300px" style={{ objectFit: "cover" }} /></div>
           <div className="bkb" style={{ "padding": "12px 14px 16px", "display": "flex", "flexDirection": "column", "gap": "6px" }}>
             <span style={{ "fontSize": "15px", "fontWeight": "700" }}>Harborside Grill</span>
             <span style={{ "fontSize": "13px", "lineHeight": "1.45", "color": "#45423c" }}>"Shrimp basket on the deck at sunset."</span>
