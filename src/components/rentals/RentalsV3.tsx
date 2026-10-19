@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { SIGNUP_HREF, DEMO_HREF } from "./tokens";
+import { FAQ } from "./faq";
 
 /** The v3 design for shortlistpass.com/rentals. The markup is the design file's, word for word, with its inline SVG drawings and the two filters (rough, grain) defined once at the top. The CSS below is the design's two animations plus the phone-width rules from the phone design file. */
 const CSS = `.rs,.rs *{-webkit-font-smoothing:auto}
@@ -23,8 +24,8 @@ const CSS = `.rs,.rs *{-webkit-font-smoothing:auto}
 .rs .lg{flex-direction:column;align-items:flex-start!important;gap:0!important}
 .rs .lg span:first-child{font-size:24px!important;line-height:1}
 .rs .lg span:last-child{font-size:12px!important}
-.rs .s1,.rs .s3,.rs .s4,.rs .s5,.rs .s9,.rs .s6 .in,.rs .s7 .in,.rs .s10 .in,.rs .s11 .pc{flex-direction:column!important;flex-wrap:nowrap!important;align-items:stretch!important}
-.rs .s1>*,.rs .s3>*,.rs .s4>*,.rs .s5>*,.rs .s9>*,.rs .s6 .in>*,.rs .s7 .in>*,.rs .s10 .in>*,.rs .s11 .pc>*{flex:none!important;min-width:0}
+.rs .s1,.rs .s3,.rs .s4,.rs .s5,.rs .s9,.rs .faq,.rs .s6 .in,.rs .s7 .in,.rs .s10 .in,.rs .s11 .pc{flex-direction:column!important;flex-wrap:nowrap!important;align-items:stretch!important}
+.rs .faq>*,.rs .s1>*,.rs .s3>*,.rs .s4>*,.rs .s5>*,.rs .s9>*,.rs .s6 .in>*,.rs .s7 .in>*,.rs .s10 .in>*,.rs .s11 .pc>*{flex:none!important;min-width:0}
 .rs .ey{font-size:12px!important}
 .rs h2,.rs h3{letter-spacing:normal!important}
 .rs .s2 h2{letter-spacing:-.015em!important}
@@ -122,6 +123,10 @@ const CSS = `.rs,.rs *{-webkit-font-smoothing:auto}
 .rs .pl>span:last-child{font-size:15px!important}
 .rs .pu{font-size:15px!important;line-height:1.45;gap:10px!important}
 .rs .pb{min-height:56px;justify-content:center;padding:0!important}
+.rs .faq{padding:40px 16px 64px!important;gap:20px!important}
+.rs .faq h2{font-size:38px!important;line-height:1!important}
+.rs .faq h3{font-size:24px!important;line-height:1.15!important}
+.rs .faq p{font-size:16px!important}
 .rs .s12{padding:24px 16px 72px!important}
 .rs .s12 p{font-size:40px!important;line-height:1!important}
 .rs .fi{padding:48px 16px 28px!important}
@@ -453,7 +458,22 @@ export default function RentalsV3() {
     </div>
   </section>
 
-  <section className="s12" style={{ "maxWidth": "1280px", "margin": "0 auto", "padding": "48px 48px 120px", "textAlign": "center" }}>
+  <section id="faq" className="faq" style={{ "maxWidth": "1280px", "margin": "0 auto", "padding": "48px 48px 96px", "display": "flex", "flexWrap": "wrap", "gap": "48px", "alignItems": "flex-start" }}>
+        <div className="faqh" style={{ "flex": "1 1 280px", "minWidth": "0", "display": "flex", "flexDirection": "column", "gap": "12px" }}>
+          <div className="ey" style={{ "fontSize": "13px", "fontWeight": "700", "letterSpacing": "0.14em", "textTransform": "uppercase", "color": "#0b7a50" }}>Good questions</div>
+          <h2 style={{ "margin": "0", "fontFamily": "var(--font-instrument), Georgia, serif", "fontWeight": "400", "fontSize": "54px", "lineHeight": "1", "letterSpacing": "-0.01em", "textWrap": "balance" }}>What hosts ask us.</h2>
+        </div>
+        <div className="faql" style={{ "flex": "2 1 560px", "minWidth": "0", "borderBottom": "1px solid #e6dfcc" }}>
+          {FAQ.map(([q, a]) => (
+            <div key={q} className="faqi" style={{ "borderTop": "1px solid #e6dfcc", "padding": "24px 0" }}>
+              <h3 style={{ "margin": "0 0 8px", "fontFamily": "var(--font-instrument), Georgia, serif", "fontWeight": "400", "fontSize": "28px", "lineHeight": "1.15" }}>{q}</h3>
+              <p style={{ "margin": "0", "fontSize": "17px", "lineHeight": "1.55", "color": "#45423c" }}>{a}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="s12" style={{ "maxWidth": "1280px", "margin": "0 auto", "padding": "48px 48px 120px", "textAlign": "center" }}>
     <p style={{ "margin": "0 auto", "maxWidth": "980px", "fontFamily": "var(--font-instrument), Georgia, serif", "fontSize": "64px", "lineHeight": "0.98", "letterSpacing": "-0.015em", "textWrap": "balance" }}>Make them love your place, enjoy the area, and come back through your own app.</p>
   </section>
 

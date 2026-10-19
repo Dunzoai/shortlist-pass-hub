@@ -84,7 +84,7 @@ A guest requests dates, you confirm, they pay through your own Stripe or Square.
 
 Get started: https://app.shortlistpass.com/go/rental
 
-## Questions
+## Good questions: what hosts ask us
 
 **How much does Shortlist Stay cost?**
 $50 a month per property. Pay and go, cancel anytime.
