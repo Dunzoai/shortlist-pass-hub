@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { SIGNUP_HREF, DEMO_HREF } from "./tokens";
 
 /** The v3 design for shortlistpass.com/rentals. The markup is the design file's, word for word, with its inline SVG drawings and the two filters (rough, grain) defined once at the top. The CSS below is the design's two animations plus the phone-width rules from the phone design file. */
@@ -165,11 +166,13 @@ export default function RentalsV3() {
       <div className="hn" style={{ "fontSize": "14px", "color": "#6f6b60" }}>$50 a month per property. No download for guests.</div>
     </div>
     <div className="hv" style={{ "flex": "1 1 520px", "minWidth": "0", "position": "relative", "minHeight": "560px" }}>
-      <div className="hph" aria-hidden="true" style={{ "position": "absolute", "inset": "0 80px 0 0", "borderRadius": "28px", "background": "#d9cfb8", "display": "flex", "alignItems": "flex-end", "padding": "20px", "boxSizing": "border-box" }}>
+      <div className="hph" style={{ "overflow": "hidden", "position": "absolute", "inset": "0 80px 0 0", "borderRadius": "28px", "background": "#d9cfb8", "display": "flex", "alignItems": "flex-end", "padding": "20px", "boxSizing": "border-box" }}>
+        <Image src="/rentals/rentals-hero-porch.jpg" alt="Beach house porch at golden hour" fill sizes="(max-width: 700px) 100vw, 600px" priority style={{ objectFit: "cover" }} />
       </div>
       <div className="hp" style={{ "position": "absolute", "right": "0", "bottom": "-24px", "width": "270px", "height": "540px", "borderRadius": "40px", "background": "#14161a", "padding": "10px", "boxSizing": "border-box", "boxShadow": "0 24px 48px -28px rgba(26,28,32,0.55)" }}>
         <div className="hps" style={{ "width": "100%", "height": "100%", "borderRadius": "32px", "background": "#fbf8f0", "overflow": "hidden", "display": "flex", "flexDirection": "column" }}>
-          <div className="hpi" style={{ "height": "120px", "background": "#e9c98f" }}></div>
+          <div className="hpi" style={{ "overflow": "hidden", "position": "relative", "height": "120px", "background": "#e9c98f" }}>
+        <Image src="/rentals/rentals-phone-house.jpg" alt="Raised beach house at sunrise" fill sizes="270px" style={{ objectFit: "cover" }} /></div>
           <div className="hpt" style={{ "padding": "14px 14px 0", "display": "flex", "flexDirection": "column", "gap": "4px" }}>
             <span style={{ "fontSize": "9px", "fontWeight": "700", "letterSpacing": "0.14em", "color": "#0b7a50" }}>WELCOME IN</span>
             <span style={{ "fontFamily": "var(--font-instrument), Georgia, serif", "fontSize": "24px", "lineHeight": "1" }}>The Beach House</span>
@@ -182,8 +185,10 @@ export default function RentalsV3() {
             <span className="hpw" style={{ "fontSize": "10px", "color": "#c9c3b3" }}>Wi-Fi: BeachHouse_Guest</span>
           </div>
           <div className="hpg" style={{ "margin": "12px 14px 0", "display": "grid", "gridTemplateColumns": "repeat(2, minmax(0, 1fr))", "gap": "8px" }}>
-            <div className="hpgt" style={{ "height": "56px", "borderRadius": "12px", "background": "#e9c98f" }}></div>
-            <div className="hpgt" style={{ "height": "56px", "borderRadius": "12px", "background": "#c9d3d8" }}></div>
+            <div className="hpgt" style={{ "overflow": "hidden", "position": "relative", "height": "56px", "borderRadius": "12px", "background": "#e9c98f" }}>
+        <Image src="/rentals/rentals-phone-tile-1.jpg" alt="Fried shrimp basket" fill sizes="120px" style={{ objectFit: "cover" }} /></div>
+            <div className="hpgt" style={{ "overflow": "hidden", "position": "relative", "height": "56px", "borderRadius": "12px", "background": "#c9d3d8" }}>
+        <Image src="/rentals/rentals-phone-tile-2.jpg" alt="Boardwalk over the dunes to the ocean" fill sizes="120px" style={{ objectFit: "cover" }} /></div>
           </div>
         </div>
       </div>
@@ -265,7 +270,8 @@ export default function RentalsV3() {
           </div>
         </div>
         <div className="bk" style={{ "borderRadius": "18px", "background": "#ffffff", "overflow": "hidden", "boxShadow": "0 18px 36px -26px rgba(26,28,32,0.5)", "transform": "rotate(1.5deg) translateY(12px)" }}>
-          <div className="bkp" aria-hidden="true" style={{ "height": "120px", "background": "#c9d3d8", "padding": "10px", "boxSizing": "border-box", "fontSize": "10px", "fontWeight": "700", "letterSpacing": "0.12em", "color": "#45423c" }}></div>
+          <div className="bkp" style={{ "overflow": "hidden", "position": "relative", "height": "120px", "background": "#c9d3d8", "padding": "10px", "boxSizing": "border-box", "fontSize": "10px", "fontWeight": "700", "letterSpacing": "0.12em", "color": "#45423c" }}>
+        <Image src="/rentals/rentals-pick-aquarium.jpg" alt="Sea turtle swimming in an aquarium" fill sizes="(max-width: 700px) 50vw, 300px" style={{ objectFit: "cover" }} /></div>
           <div className="bkb" style={{ "padding": "12px 14px 16px", "display": "flex", "flexDirection": "column", "gap": "6px" }}>
             <span style={{ "fontSize": "15px", "fontWeight": "700" }}>The aquarium</span>
             <span style={{ "fontSize": "13px", "lineHeight": "1.45", "color": "#45423c" }}>"Our go-to when it rains. Go early."</span>
@@ -399,10 +405,12 @@ export default function RentalsV3() {
     <div className="sk" style={{ "flex": "1 1 560px", "minWidth": "0", "borderRadius": "28px", "background": "#e9c98f", "padding": "40px", "boxSizing": "border-box", "display": "flex", "justifyContent": "center" }}>
       <div className="skc" style={{ "width": "100%", "maxWidth": "380px", "borderRadius": "20px", "background": "#ffffff", "overflow": "hidden", "boxShadow": "0 24px 48px -28px rgba(26,28,32,0.55)" }}>
         <div className="skh" style={{ "padding": "12px 14px", "display": "flex", "alignItems": "center", "gap": "10px" }}>
-          <span aria-hidden="true" style={{ "width": "32px", "height": "32px", "borderRadius": "999px", "background": "#d9cfb8" }}></span>
+          <span aria-hidden="true" style={{ "overflow": "hidden", "position": "relative", "width": "32px", "height": "32px", "borderRadius": "999px", "background": "#d9cfb8" }}>
+        <Image src="/rentals/rentals-social-avatar.jpg" alt="Beach house front door" fill sizes="32px" style={{ objectFit: "cover" }} /></span>
           <span style={{ "fontSize": "14px", "fontWeight": "700" }}>thebeachhouse</span>
         </div>
-        <div className="skp" aria-hidden="true" style={{ "height": "200px", "background": "#d9cfb8", "padding": "12px", "boxSizing": "border-box", "fontSize": "10px", "fontWeight": "700", "letterSpacing": "0.12em", "color": "#45423c" }}></div>
+        <div className="skp" style={{ "overflow": "hidden", "position": "relative", "height": "200px", "background": "#d9cfb8", "padding": "12px", "boxSizing": "border-box", "fontSize": "10px", "fontWeight": "700", "letterSpacing": "0.12em", "color": "#45423c" }}>
+        <Image src="/rentals/rentals-social-deck.jpg" alt="Beach house deck at sunset" fill sizes="(max-width: 700px) 100vw, 380px" style={{ objectFit: "cover" }} /></div>
         <div className="skt" style={{ "padding": "14px", "display": "flex", "flexDirection": "column", "gap": "10px", "fontSize": "14px", "lineHeight": "1.45" }}>
           <span><strong>thebeachhouse</strong> Golden hour from the deck. November weekends just opened.</span>
           <span><strong>sarah.k</strong> Is it pet friendly??</span>
