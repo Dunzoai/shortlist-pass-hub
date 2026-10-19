@@ -15,3 +15,5 @@ export const SIGNUP_HREF =
   "mailto:connect@shortlistpass.com?subject=" + encodeURIComponent("Shortlist Stay (rentals) lead: get started") +
   "&body=" + encodeURIComponent("Shortlist Stay (rentals) lead.\n\nYour name:\nHow many rentals you host:\nBest phone number:\n\nI'd like to get started.");
 export const PRICE_LINE = "$50/month per property. Pay and go.";
+/** "Try the demo house": there is no playable demo house yet, so this scrolls to the on-page Shorty demo (#shorty). Swap for the real demo link when it exists. */
+export const DEMO_HREF = "#shorty";
