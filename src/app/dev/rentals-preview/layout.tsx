@@ -1,4 +1,5 @@
-import { fraunces, instrumentSerif, schibsted } from "@/lib/fonts";
+import { fraunces } from "@/lib/fonts";
+import { instrumentSerif, schibsted } from "@/lib/fonts-rentals";
 
 /** Dev preview: the target type pair, ivory, and no site-wide agency bar or chat widget. Components borrowed from /new and /foodtrucks read --font-fraunces and --font-sora; here those names point at the target pair. */
 export default function Layout({ children }: { children: React.ReactNode }) {

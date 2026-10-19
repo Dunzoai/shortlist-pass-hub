@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { fraunces, instrumentSerif, schibsted } from "@/lib/fonts";
+import { fraunces } from "@/lib/fonts";
+import { instrumentSerif, schibsted } from "@/lib/fonts-rentals";
 
 export const metadata: Metadata = {
   title: "Shortlist Stay: a house app for short-term rentals | Shortlist Pass",

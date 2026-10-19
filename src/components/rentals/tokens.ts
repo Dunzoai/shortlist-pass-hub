@@ -12,6 +12,6 @@ export const SANS = "var(--font-schibsted), 'Helvetica Neue', Helvetica, sans-se
  * (The app's /freeshorty form can't take a rental yet: it only knows park, truck and event, so it would make the wrong kind of page.)
  */
 export const SIGNUP_HREF =
-  "mailto:connect@shortlistpass.com?subject=" + encodeURIComponent("Shortlist Stay (rentals) lead: start my free trial") +
-  "&body=" + encodeURIComponent("Shortlist Stay (rentals) lead.\n\nYour name:\nHow many rentals you host:\nBest phone number:\n\nI'd like to start the 14-day free trial.");
-export const TRIAL_LINE = "14-day free trial on your first property. Then $50/month per property.";
+  "mailto:connect@shortlistpass.com?subject=" + encodeURIComponent("Shortlist Stay (rentals) lead: get started") +
+  "&body=" + encodeURIComponent("Shortlist Stay (rentals) lead.\n\nYour name:\nHow many rentals you host:\nBest phone number:\n\nI'd like to get started.");
+export const PRICE_LINE = "$50/month per property. Pay and go.";

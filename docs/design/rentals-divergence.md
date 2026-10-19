@@ -8,7 +8,7 @@ Live at `/rentals` (`src/app/rentals/`). `/dev/rentals-preview` still exists and
 | Display font | Fraunces (`--font-fraunces`) | Instrument Serif (`--font-instrument`) |
 | Body font | Inter (`--font-sans-inter`), Sora for the pipes headline | Schibsted Grotesk (`--font-schibsted`) |
 | Page background | `#f5eddc` (forced in the old `/new` layout) | Ivory `#FBF8F0` |
-| Fonts load from | `src/app/layout.tsx` and `src/lib/fonts.ts` (Fraunces) | `src/lib/fonts.ts`, two new exports: `instrumentSerif`, `schibsted` |
+| Fonts load from | `src/app/layout.tsx` and `src/lib/fonts.ts` (Fraunces) | `src/lib/fonts-rentals.ts` (only /rentals loads them) |
 
 How the borrowed components got the new type without being rewritten: `src/app/dev/rentals-preview/layout.tsx` points `--font-fraunces`, `--font-sora` and `--font-sans-inter` at the target pair for this route only. The wall (`ANotSection`, `NothingReplaces`) and the pipes scene therefore render in Instrument Serif and Schibsted here, and in Fraunces and Sora everywhere else. A real migration should rename those variables in the components, not alias them.
 

@@ -13,7 +13,7 @@ import { ShortyMascot } from "@/components/shorty/ShortyMascot";
 import { FridgeCard } from "./FridgeCard";
 import { MovieSlot } from "./MovieSlot";
 import { ChatScreen, HomeScreen, Phone, RequestScreen } from "./screens";
-import { R, SERIF, SIGNUP_HREF, TRIAL_LINE } from "./tokens";
+import { R, SERIF, SIGNUP_HREF, PRICE_LINE } from "./tokens";
 import { Btn, Card, DemoChip, Eyebrow, IconSquare, PAGE_CSS } from "./ui";
 
 const ROWS: NotRow[] = [
@@ -35,10 +35,10 @@ function Hero() {
           <h1 className="rp-hd rp-h1">Your guests stop texting you. Shorty answers.</h1>
           <p className="rp-lead">Every rental gets its own house app, opened from a QR card on the fridge. No download, no login.</p>
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-            <Btn kind="ink" href={SIGNUP_HREF}>Start your free trial</Btn>
+            <Btn kind="ink" href={SIGNUP_HREF}>Get started</Btn>
             <Btn kind="quiet" href="#movie">Watch the movie</Btn>
           </div>
-          <div style={{ fontSize: 14, color: R.greyText }}>{TRIAL_LINE}</div>
+          <div style={{ fontSize: 14, color: R.greyText }}>{PRICE_LINE}</div>
         </div>
         <div className="rp-hero-vis">
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
@@ -209,12 +209,11 @@ function Pricing() {
             {line("Shorty answers your guests 24/7")}
             {line("Requests text you right away")}
             {line("Your own guest list")}
-            {line("14-day free trial on your first property")}
             {line("No commission, ever")}
           </ul>
           <div style={{ display: "flex", flexDirection: "column", gap: 10, alignItems: "flex-start" }}>
-            <Btn kind="ink" href={SIGNUP_HREF}>Start your free trial</Btn>
-            <div style={{ fontSize: 14, color: R.greyText }}>{TRIAL_LINE}</div>
+            <Btn kind="ink" href={SIGNUP_HREF}>Get started</Btn>
+            <div style={{ fontSize: 14, color: R.greyText }}>{PRICE_LINE}</div>
           </div>
         </Card>
       </div>
@@ -236,7 +235,7 @@ export default function RentalsPreview() {
   return (
     <div className="rp">
       <style dangerouslySetInnerHTML={{ __html: PAGE_CSS + LAYOUT_CSS }} />
-      <SiteHeader plain={{ ctaLabel: "Free trial", ctaHref: SIGNUP_HREF }} />
+      <SiteHeader plain={{ ctaLabel: "Get started", ctaHref: SIGNUP_HREF }} />
       <main>
         <Hero />
         <Movie />
