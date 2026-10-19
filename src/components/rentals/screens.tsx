@@ -21,6 +21,8 @@ const I = {
   cross: <><rect x="4" y="4" width="16" height="16" rx="3" /><path d="M12 8v8M8 12h8" /></>,
   camera: <><path d="M4 8h3l2-3h6l2 3h3v11H4z" /><circle cx="12" cy="13" r="3.5" /></>,
   close: <path d="M6 6l12 12M18 6L6 18" />,
+  truck: <><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7" /><circle cx="7" cy="17" r="1.8" /><circle cx="17" cy="17" r="1.8" /></>,
+  chevron: <path d="M9 6l6 6-6 6" />,
 };
 const Eb = ({ children, color = R.green }: { children: ReactNode; color?: string }) => (
   <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color }}>{children}</div>
@@ -66,7 +68,7 @@ export function HomeScreen() {
       <span style={{ height: 110, background: R.cream, display: "flex", alignItems: "flex-end", padding: 10 }}><span style={{ fontSize: 11, fontWeight: 700, color: R.greyText, letterSpacing: ".08em", textTransform: "uppercase" }}>Host photo</span></span>
       <span style={{ padding: "10px 12px 12px", display: "flex", flexDirection: "column", gap: 2 }}>
         <span style={{ fontSize: 16, fontWeight: 700 }}>{name}</span>
-        <span style={{ fontSize: 13, color: R.greyText }}>{n} picks</span>
+        <span style={{ fontSize: 13, color: R.greyText }}>Photos and notes</span>
       </span>
     </div>
   );
@@ -123,7 +125,7 @@ export function HomeScreen() {
       <div style={{ padding: "32px 20px 0" }}>
         <Eb>Around here</Eb>
         <div style={{ margin: "6px 0 14px", fontFamily: SERIF, fontSize: 30, lineHeight: 1.05 }}>Your host&rsquo;s favorite spots</div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>{list("Top restaurants", 6)}{list("Rainy day", 4)}</div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>{list("Top restaurants", 0)}{list("Rainy day", 0)}</div>
       </div>
     </div>
   );
@@ -190,7 +192,7 @@ export function RequestScreen() {
       </div>
       <div style={{ padding: "20px 0 0" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, minHeight: 56, padding: "0 16px", borderRadius: R.radius, background: R.cream, fontSize: 16, fontWeight: 700 }}>
-          <span style={{ display: "flex", flexDirection: "column", gap: 2 }}><span>It&rsquo;s urgent</span><span style={{ fontSize: 13, fontWeight: 400, color: R.greyText }}>Jenna also gets a call</span></span>
+          <span style={{ display: "flex", flexDirection: "column", gap: 2 }}><span>It&rsquo;s urgent</span><span style={{ fontSize: 13, fontWeight: 400, color: R.greyText }}>Jenna gets a second text marked URGENT</span></span>
           <span style={{ width: 22, height: 22, borderRadius: 5, border: `2px solid ${R.ink}` }} />
         </div>
       </div>
@@ -198,6 +200,43 @@ export function RequestScreen() {
         <span style={{ minHeight: 52, borderRadius: 999, background: R.ink, color: R.cream, fontSize: 16, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center" }}>Send to Jenna</span>
         <span style={{ minHeight: 48, borderRadius: 999, border: `1px solid ${R.ink}`, fontSize: 16, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center" }}>Call instead</span>
         <span style={{ textAlign: "center", fontSize: 13, color: R.greyText }}>Fire, medical or danger? Call 911 first.</span>
+      </div>
+    </div>
+  );
+}
+
+/* ── 4. the home page further down: "Around here" (the host's picks), the trucks card, and the chips (HouseApp "home", Rest) ── */
+export function AroundScreen() {
+  const card = (name: string) => (
+    <div style={{ ...cardStyle, overflow: "hidden", display: "flex", flexDirection: "column" }}>
+      <span style={{ height: 110, background: R.cream, display: "flex", alignItems: "flex-end", padding: 10 }}><span style={{ fontSize: 11, fontWeight: 700, color: R.greyText, letterSpacing: ".08em", textTransform: "uppercase" }}>Host photo</span></span>
+      <span style={{ padding: "10px 12px 12px", display: "flex", flexDirection: "column", gap: 2 }}>
+        <span style={{ fontSize: 16, fontWeight: 700 }}>{name}</span>
+        <span style={{ fontSize: 13, color: R.greyText }}>Photos and notes</span>
+      </span>
+    </div>
+  );
+  return (
+    <div style={{ padding: "28px 20px 0" }}>
+      <Eb>Around here</Eb>
+      <div style={{ margin: "6px 0 14px", fontFamily: SERIF, fontSize: 30, lineHeight: 1.05 }}>Your host&rsquo;s favorite spots</div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        {card("Top restaurants")}{card("Rainy day")}{card("Beach & outdoors")}{card("With kids")}
+      </div>
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", paddingTop: 12 }}>
+        {["Coffee & breakfast", "Groceries", "Nightlife", "Golf"].map((c) => (
+          <span key={c} style={{ minHeight: 44, padding: "0 16px", borderRadius: 999, background: R.tint, fontSize: 14, fontWeight: 700, display: "inline-flex", alignItems: "center" }}>{c}</span>
+        ))}
+      </div>
+      <div style={{ paddingTop: 16 }}>
+        <div style={{ ...cardStyle, display: "flex", alignItems: "center", gap: 12, padding: "14px 16px" }}>
+          <span style={{ flex: "0 0 auto", width: 38, height: 38, borderRadius: 11, background: R.amber, display: "flex", alignItems: "center", justifyContent: "center" }}><Ico d={I.truck} /></span>
+          <span style={{ flex: 1, display: "flex", flexDirection: "column", gap: 2 }}>
+            <span style={{ fontSize: 16, fontWeight: 700 }}>Food trucks out tonight</span>
+            <span style={{ fontSize: 13, color: R.greyText }}>Near you, menus and preorder</span>
+          </span>
+          <Ico d={I.chevron} />
+        </div>
       </div>
     </div>
   );

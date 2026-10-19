@@ -19,6 +19,10 @@ How the borrowed components got the new type without being rewritten: `src/app/d
 - **Pipes.** `PipesSection` got a `"rentals"` mode (data, a paragraph, and one layout change). In that mode the headline sits on the mint instead of in its own black strip, so the page has two dark bands (the wall, "Trained by you") and never two in a row, as the design doc requires. The home page and `/foodtrucks` are unchanged. The pipes scene still draws the cut-paper "screenprint" bubbles and the "AI agents" card with its existing logos and the "LIVE NOW" tag on one of them.
 - **Phones.** `src/components/rentals/screens.tsx` draws three screens from `app/smartpage/v2/house/HouseApp.tsx` in the app repo (home, Ask Shorty sheet, Need something?) with that file's tokens, structure and default words. They are static copies, not the real component. They need re-syncing if HouseApp changes.
 
+## Copy notes
+- Urgent requests send a second text marked URGENT. They do not call. The app's own string in `HouseApp.tsx` (`requestUrgentSub`, "{host} also gets a call") says otherwise, so the phone mockup on /rentals deliberately does not copy it. Fix it in the app.
+- Page order: hero, movie slot, everything they'd ask, a better stay, peace of mind, local perks, they found you somewhere else, bring them back, found in ChatGPT, a few things I'm not, trained by you, price, closing line.
+
 ## Not yet decided
 - **Sign-up link.** Every button reads `SIGNUP_HREF` in `src/components/rentals/tokens.ts`. Today it opens an email to connect@shortlistpass.com (the sales address in the home-page footer) labelled "Shortlist Stay (rentals) lead". The app's `/freeshorty` form only knows park, truck and event, so it can't take a rental yet. When the real sign-up exists, change that one constant.
 - **The movie.** The slot still shows `[MOVIE PLACEHOLDER]` and a play button that does nothing. Swap `MovieSlot.tsx` when the film exists.
