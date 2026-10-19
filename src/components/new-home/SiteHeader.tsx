@@ -101,7 +101,27 @@ function MoreMenu() {
 
 /** A plain black bar that stays at the top of the screen. No scroll listeners, nothing that fades:
     it's the same bar everywhere, so it can't flicker or lag while you scroll. */
-export function SiteHeader() {
+export function SiteHeader({ plain }: { plain?: { ctaLabel: string; ctaHref: string } } = {}) {
+  if (plain) {
+    /* The variant with no audience toggle and no page menu: the mark, Sign in, one button. Used by /rentals. */
+    return (
+      <>
+        <header className="fixed inset-x-0 top-0 z-40 border-b border-[#f6f1e4]/10 bg-[#14161a]">
+          <div className="mx-auto flex max-w-[1180px] items-center justify-between gap-3 px-4 py-3 sm:px-8 lg:py-4">
+            <Link href="/" className="flex shrink-0 items-center gap-2.5">
+              <Image src="/shortlist-mint-mark.png" alt="" width={36} height={36} priority className="h-8 w-8 sm:h-9 sm:w-9" />
+              <span className="font-[family-name:var(--font-instrument)] text-[20px] tracking-[-0.01em] text-[#f6f1e4]">Shortlist Pass</span>
+            </Link>
+            <div className="flex shrink-0 items-center gap-3 sm:gap-5">
+              <a href={APP_URL} className="inline-flex min-h-[44px] items-center text-[14px] font-medium text-[#f6f1e4]/80 hover:text-[#f6f1e4] hover:underline">Sign in</a>
+              <a href={plain.ctaHref} className="inline-flex min-h-[44px] items-center whitespace-nowrap rounded-full bg-[#34D399] px-5 text-[14px] font-bold text-[#0D2B20] transition-transform hover:-translate-y-0.5">{plain.ctaLabel}</a>
+            </div>
+          </div>
+        </header>
+        <div aria-hidden="true" className="h-[60px] lg:h-[76px]" />
+      </>
+    );
+  }
   return (
     <>
       <header className="fixed inset-x-0 top-0 z-40 border-b border-[#f6f1e4]/10 bg-[#14161a]">

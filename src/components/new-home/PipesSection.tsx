@@ -32,7 +32,7 @@ const MINT_BG =
 
 /* ── Words, by mode. Bubble lines are [desktop, phone]. ───────────────────── */
 type Lines = [string[], string[]];
-type Mode = Audience | "trucks";   // "trucks" is the /foodtrucks version; the homepage never passes it
+type Mode = Audience | "trucks" | "rentals";   // "trucks" is the /foodtrucks version, "rentals" the /rentals preview; the homepage never passes either
 const MODES: Record<Mode, { headline: [string, string]; sign: [string, string]; agentBubble: Lines; shopBubble: Lines; socialBubble: string[] }> = {
   business: {
     headline: ["AI agents are here.", "Your business can’t reach them."],
@@ -47,6 +47,13 @@ const MODES: Record<Mode, { headline: [string, string]; sign: [string, string]; 
     agentBubble: [["Which food trucks are open", "near me tonight?"], ["Which food trucks", "are open near", "me tonight?"]],
     shopBubble: [["Can you order me two birria", "tacos for pickup?"], ["Can you order me", "two birria tacos", "for pickup?"]],
     socialBubble: ["Is there a truck", "at the brewery", "Friday?"],
+  },
+  rentals: {
+    headline: ["People ask an AI where to stay.", "Your property can be the answer."],
+    sign: ["BEACH", "HOUSE"],
+    agentBubble: [["Where should we stay in", "Myrtle Beach with two kids?"], ["Where should we stay", "in Myrtle Beach", "with two kids?"]],
+    shopBubble: [["Find us a house near", "the beach for June."], ["Find us a house", "near the beach", "for June."]],
+    socialBubble: ["Is there a place", "with a fenced", "yard?"],
   },
   hoa: {
     headline: ["Your residents are about to ask an AI.", "Does it know your rules?"],
@@ -361,7 +368,7 @@ function Scene({ g, mode }: { g: Geo; mode: Mode }) {
                 {K.name > 0 && (
                   <text x={tx + K.tile[0] / 2} y={ty + K.tile[1] - 9} textAnchor="middle" fontSize={K.name} fontWeight={700} fill={INK} style={{ fontFamily: SANS }}>{a.name}</text>
                 )}
-                {"live" in a && (
+                {"live" in a && mode !== "rentals" && (
                   <g data-agents="live">
                     <rect x={tx + K.tile[0] - pw + 6} y={ty - ph / 2 - 1} width={pw} height={ph} rx={ph / 2} fill={AMBER} stroke={INK} strokeWidth={1.2} />
                     <text x={tx + K.tile[0] - pw / 2 + 6} y={ty - ph / 2 - 1 + ph * 0.7} textAnchor="middle" fontSize={pf} fontWeight={800} letterSpacing="0.06em" fill={INK} style={{ fontFamily: SANS }}>LIVE NOW</text>
@@ -411,29 +418,40 @@ export function PipesSection({ mode }: { mode?: Mode } = {}) {
   return (
     <section ref={root} aria-labelledby="pipes-h">
       <style dangerouslySetInnerHTML={{ __html: REVEAL_CSS }} />
-      {/* The headline: its own black strip, the lead-in to the scene below. */}
-      <div className="overflow-x-clip bg-[#14161A] px-5 pt-7 pb-9 min-[900px]:px-10 min-[900px]:pt-20 min-[900px]:pb-14">
-        <div className="mx-auto max-w-[1180px]">
-          <div data-agents="head" className="relative z-10 text-center">
-            <h2
-              id="pipes-h"
-              className="font-extrabold leading-[1.02] tracking-[-0.03em] text-[#F6F1E4]"
-              style={{ fontFamily: SANS, fontSize: "clamp(25px, 4.4vw, 64px)" }}
-            >
-              {M.headline.map((line) => <span key={line} className="block [text-wrap:balance]">{line}</span>)}
-            </h2>
-            <p className="mt-2 font-bold leading-[1.15] text-[#5FDDAE] min-[900px]:mt-3" style={{ fontFamily: SANS, fontSize: "clamp(16px, 1.9vw, 27px)" }}>
-              Shorty builds the pipe.
-            </p>
+      {/* /rentals puts its headline on the mint instead: the page already has two dark bands, and the design doc allows no more. */}
+      {audience !== "rentals" && (
+        <div className="overflow-x-clip bg-[#14161A] px-5 pt-7 pb-9 min-[900px]:px-10 min-[900px]:pt-20 min-[900px]:pb-14">
+          <div className="mx-auto max-w-[1180px]">
+            <div data-agents="head" className="relative z-10 text-center">
+              <h2
+                id="pipes-h"
+                className="font-extrabold leading-[1.02] tracking-[-0.03em] text-[#F6F1E4]"
+                style={{ fontFamily: SANS, fontSize: "clamp(25px, 4.4vw, 64px)" }}
+              >
+                {M.headline.map((line) => <span key={line} className="block [text-wrap:balance]">{line}</span>)}
+              </h2>
+              <p className="mt-2 font-bold leading-[1.15] text-[#5FDDAE] min-[900px]:mt-3" style={{ fontFamily: SANS, fontSize: "clamp(16px, 1.9vw, 27px)" }}>
+                Shorty builds the pipe.
+              </p>
+            </div>
           </div>
         </div>
-      </div>
+
+      )}
 
       {/* The scene, on mint. On phones the agents card tucks up over the strip's edge, so it reads as part of the headline group. */}
       <div className="relative flow-root overflow-x-clip px-5 pb-16 text-[#0D2B20] min-[900px]:px-10 min-[900px]:pt-16 min-[900px]:pb-24" style={{ background: MINT_BG }}>
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-[.4] mix-blend-multiply" style={{ backgroundImage: `url("${GRAIN_URL}")` }} />
         <div className="relative mx-auto max-w-[1180px]">
-          <div className="relative z-10 -mt-[28px] min-[900px]:mt-0">
+          {audience === "rentals" && (
+            <div data-agents="head" className="relative z-10 pt-12 text-center min-[900px]:pt-0">
+              <h2 id="pipes-h" className="font-extrabold leading-[1.02] tracking-[-0.03em] text-[#0D2B20]" style={{ fontFamily: SANS, fontSize: "clamp(25px, 4.4vw, 64px)" }}>
+                {M.headline.map((line) => <span key={line} className="block [text-wrap:balance]">{line}</span>)}
+              </h2>
+              <p className="mt-2 font-bold leading-[1.15] text-[#0D2B20]/80 min-[900px]:mt-3" style={{ fontFamily: SANS, fontSize: "clamp(16px, 1.9vw, 27px)" }}>Shorty builds the pipe.</p>
+            </div>
+          )}
+          <div className={`relative z-10 ${audience === "rentals" ? "mt-6 min-[900px]:mt-32" : "-mt-[28px] min-[900px]:mt-0"}`}>
             <Scene key={`${desk ? "d" : "m"}-${audience}`} g={desk ? DESKTOP : MOBILE} mode={audience} />
           </div>
           {/* One paragraph on desktop; on phones each idea sits on its own paper pill and slides in from alternating sides. */}
@@ -442,7 +460,19 @@ export function PipesSection({ mode }: { mode?: Mode } = {}) {
             className="mx-auto mt-7 max-w-[1000px] text-center leading-[1.2] [text-wrap:balance] min-[900px]:mt-8 min-[900px]:leading-[1.22]"
             style={{ fontFamily: SERIF, fontSize: "clamp(26px, 3vw, 42px)", fontWeight: 400 }}
           >
-            {audience === "trucks" ? (
+            {audience === "rentals" ? (
+              <>
+                <span data-rv="l" className="pp-pill block text-[27px] leading-[1.15] min-[900px]:inline min-[900px]:text-[length:inherit] min-[900px]:leading-[inherit]">
+                  Each rental gets a public listing that AI assistants like ChatGPT <em className="italic">can find.</em>
+                </span>{" "}
+                <span data-rv="r" className="pp-pill mt-3.5 block text-[22px] leading-[1.2] min-[900px]:mt-0 min-[900px]:inline min-[900px]:text-[length:inherit]">
+                  Photos, area, beds, amenities and your favorite spots. <strong className="font-bold">Never the address or the codes.</strong>
+                </span>{" "}
+                <span data-rv="l" className="pp-pill mt-3.5 block text-[22px] leading-[1.2] min-[900px]:mt-0 min-[900px]:inline min-[900px]:text-[length:inherit]">
+                  A traveler finds it, taps <strong className="font-bold">&ldquo;Ask about dates&rdquo;</strong>, and you get a text. No commission on this channel. Nobody can promise you get picked.
+                </span>
+              </>
+            ) : audience === "trucks" ? (
               <>
                 <span data-rv="l" className="pp-pill block text-[27px] leading-[1.15] min-[900px]:inline min-[900px]:text-[length:inherit] min-[900px]:leading-[inherit]">
                   Right now your Instagram and your truck-finder listing are <em className="italic">outdated.</em>

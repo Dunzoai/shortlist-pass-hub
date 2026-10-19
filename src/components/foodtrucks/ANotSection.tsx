@@ -9,7 +9,8 @@
 import { useState } from "react";
 import { SERIF } from "./tokens";
 
-const ROWS = [
+export type NotRow = { claim: string; fix: string; why: string };
+const ROWS: NotRow[] = [
   {
     claim: "Another food truck finder.",
     fix: "That's a list. I'm a coworker.",
@@ -61,7 +62,8 @@ const CSS = `
 }
 `;
 
-export default function ANotSection() {
+/** `rows` is optional: /foodtrucks passes nothing and gets the truck claims; /rentals passes its own. */
+export default function ANotSection({ rows = ROWS }: { rows?: NotRow[] } = {}) {
   const [open, setOpen] = useState<Record<number, boolean>>({});
   return (
     <section aria-labelledby="fn-h" className="fn">
@@ -77,7 +79,7 @@ export default function ANotSection() {
         </div>
 
         <div style={{ marginTop: "var(--gap)", display: "flex", flexDirection: "column", gap: "var(--rowgap)" }}>
-          {ROWS.map((r, i) => {
+          {rows.map((r, i) => {
             const on = !!open[i];
             return (
               <button key={r.claim} type="button" className={`fn-row${on ? " fn-open" : ""}`} aria-expanded={on} onClick={() => setOpen((o) => ({ ...o, [i]: !o[i] }))}>
