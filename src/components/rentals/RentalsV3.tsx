@@ -135,7 +135,7 @@ const CSS = `.rs,.rs *{-webkit-font-smoothing:auto}
 .rs .faq h2{font-size:38px!important;line-height:1!important}
 .rs .faq h3{font-size:24px!important;line-height:1.15!important}
 .rs .faq p{font-size:16px!important}
-.rs .s12{padding:24px 16px 72px!important}
+.rs .s12{padding:64px 16px!important}
 .rs .s12 p{font-size:40px!important;line-height:1!important}
 .rs .fi{padding:48px 16px 28px!important}
 .rs .ft{align-items:flex-start!important}
@@ -160,7 +160,7 @@ export default function RentalsV3() {
     </div>
     <nav aria-label="Page" style={{ "display": "flex", "alignItems": "center", "gap": "24px", "flexWrap": "wrap" }}>
       <a href="#shorty" style={{ "color": "#1a1c20", "textDecoration": "none", "fontSize": "15px", "fontWeight": "600" }}>What it does</a>
-      <a href="#ai" style={{ "color": "#1a1c20", "textDecoration": "none", "fontSize": "15px", "fontWeight": "600" }}>Found in AI</a>
+      <a href="#ai" style={{ "color": "#1a1c20", "textDecoration": "none", "fontSize": "15px", "fontWeight": "600" }}>Found by ChatGPT</a>
       <a href="#price" style={{ "color": "#1a1c20", "textDecoration": "none", "fontSize": "15px", "fontWeight": "600" }}>Price</a>
       <a href={SIGNUP_HREF} style={{ "minHeight": "44px", "padding": "0 22px", "borderRadius": "999px", "background": "#1a1c20", "color": "#f6f1e4", "textDecoration": "none", "display": "inline-flex", "alignItems": "center", "fontSize": "15px", "fontWeight": "700" }}>Get started</a>
     </nav>
@@ -576,7 +576,7 @@ export default function RentalsV3() {
         </div>
       </section>
 
-      <section className="s12" style={{ "maxWidth": "1280px", "margin": "0 auto", "padding": "48px 48px 120px", "textAlign": "center" }}>
+      <section className="s12" style={{ "background": "#d7f5e8", "padding": "112px 48px", "textAlign": "center" }}>
     <p style={{ "margin": "0 auto", "maxWidth": "980px", "fontFamily": "var(--font-instrument), Georgia, serif", "fontSize": "64px", "lineHeight": "0.98", "letterSpacing": "-0.015em", "textWrap": "balance" }}>Make them love your place, enjoy the area, and come back through your own app.</p>
   </section>
 
