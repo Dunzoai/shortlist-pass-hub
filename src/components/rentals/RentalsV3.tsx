@@ -17,6 +17,7 @@ const CSS = `.rs,.rs *{-webkit-font-smoothing:auto}
 .rs .ht{transform-box:fill-box;transform-origin:center;animation:rise 4.4s ease-in-out infinite}
 @keyframes rise{0%{opacity:0;transform:translateY(16px)}25%,75%{opacity:1}100%{opacity:0;transform:translateY(-12px)}}
 .rs .hsw{position:absolute;inset:0}
+.rs .hkM{display:none!important}
 .rs .hs{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;animation:hcyc 14s infinite}
 .rs .hs2{animation-delay:3.5s}.rs .hs3{animation-delay:7s}.rs .hs4{animation-delay:10.5s}
 @keyframes hcyc{0%{opacity:0;transform:translateY(8px)}4%,22%{opacity:1;transform:none}26%,100%{opacity:0;transform:none}}
@@ -49,15 +50,19 @@ const CSS = `.rs,.rs *{-webkit-font-smoothing:auto}
 .rs .hp{right:16px!important;bottom:0!important;width:190px!important;height:360px!important;border-radius:32px!important;padding:8px!important}
 .rs .hps{border-radius:25px!important}
 .rs .hsw{right:auto;bottom:auto;width:250px;height:494px;transform:scale(.696);transform-origin:0 0}
-.rs .hk{padding:8px 16px 40px!important;gap:20px!important}
-.rs .hk h2{font-size:42px!important;line-height:.98!important}
-.rs .hkr{flex-direction:column!important;gap:28px!important}
-.rs .hkc{flex:none!important}
-.rs .hkn{font-size:72px!important}
-.rs .hkc p{font-size:16px!important}
-.rs .hkc h3{font-size:22px!important;line-height:1.15!important}
-.rs .hk>p{font-size:15px!important}
-.rs .s2{padding:0 16px 24px!important;gap:10px!important}
+.rs .hki{padding:56px 16px!important;gap:22px!important}
+.rs .hkh{gap:12px!important}
+.rs .hk h2{font-size:38px!important;line-height:1!important;letter-spacing:normal!important}
+.rs .hkD{display:none!important}
+.rs .hkM{display:flex!important}
+.rs .hkr2{padding-top:12px!important}
+.rs .hkrr{flex-direction:column!important;flex-wrap:nowrap!important;align-items:center;gap:22px!important}
+.rs .hkrc{flex:0 0 auto!important;width:100%;max-width:340px}
+.rs .hkrc>div{font-size:14px!important}
+.rs .hkrc>div:last-child>span:first-child{font-size:15px!important}
+.rs .hkrc>div:last-child>span:last-child{font-size:33px!important}
+.rs .hkp{font-size:16px!important}
+.rs .s2{padding:56px 16px 24px!important;gap:10px!important}
 .rs .s2 h2{font-size:42px!important;line-height:.98!important}
 .rs .s3,.rs .s4,.rs .s5{padding:24px 16px 40px!important;gap:20px!important}
 .rs .s5{padding-bottom:56px!important}
@@ -274,35 +279,78 @@ export default function RentalsV3() {
     </div>
   </section>
 
-  <section className="hk" id="keep" style={{ maxWidth: "1280px", margin: "0 auto", padding: "16px 48px 80px", display: "flex", flexDirection: "column", gap: "32px" }}>
-    <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-      <div className="ey" style={{ fontSize: "13px", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "#0b7a50" }}>How you keep them</div>
-      <h2 style={{ margin: 0, maxWidth: "900px", fontFamily: "var(--font-instrument), Georgia, serif", fontWeight: 400, fontSize: "64px", lineHeight: 0.95, letterSpacing: "-0.015em", textWrap: "balance" }}>Every stay turns into a guest you can reach.</h2>
+  <section className="hk" id="keep" style={{ background: "#f6f1e4" }}>
+    <div className="hki" style={{ maxWidth: "1280px", margin: "0 auto", padding: "96px 48px", display: "flex", flexDirection: "column", gap: "40px" }}>
+      <div className="hkh" style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "860px" }}>
+        <div className="ey" style={{ fontSize: "13px", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "#0b7a50" }}>How you keep them</div>
+        <h2 style={{ margin: 0, fontFamily: "var(--font-instrument), Georgia, serif", fontWeight: 400, fontSize: "56px", lineHeight: 1, letterSpacing: "-0.01em", textWrap: "balance" }}>Every stay turns into a guest you can reach.</h2>
+      </div>
+      <div className="hkD">
+        <div style={{ display: "flex", alignItems: "flex-start", gap: "16px" }}>
+        <div style={{ flex: "1 1 0", minWidth: "0", display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "10px" }}>
+          <svg viewBox="0 0 120 100" width="110" height="91" aria-hidden="true"><g filter="url(#rough)"><rect x="42" y="8" width="40" height="78" rx="9" fill="#34d399" transform="translate(6 5)"/><rect x="42" y="8" width="40" height="78" rx="9" fill="#fffdf6" stroke="#1a1c20" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/><path d="M50 52 L62 40 L74 52 M53 49 V64 H71 V49" fill="none" stroke="#1a1c20" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/><path d="M58 64 V57 H66 V64" fill="none" stroke="#1a1c20" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/><path d="M56 16 h12" fill="none" stroke="#1a1c20" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/></g></svg>
+          <div style={{ display: "flex", alignItems: "baseline", gap: "10px" }}><span style={{ fontFamily: "var(--font-instrument), Georgia, serif", fontSize: "44px", lineHeight: "1", color: "#0b7a50" }}>1</span><span style={{ fontSize: "20px", fontWeight: "700" }}>During the stay</span></div>
+          <span style={{ fontSize: "16px", lineHeight: "1.5", color: "#45423c" }}>They use your app for codes, picks and questions.</span>
+        </div>
+        <svg viewBox="0 0 70 40" width="70" height="40" aria-hidden="true" style={{ flex: "0 0 auto", marginTop: "30px" }}><g filter="url(#rough)"><path d="M4 26 C 22 6, 44 6, 62 20" fill="none" stroke="#1a1c20" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="2 7"/><path d="M52 16 L63 21 L54 29" fill="none" stroke="#1a1c20" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></g></svg>
+        <div style={{ flex: "1 1 0", minWidth: "0", display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "10px" }}>
+          <svg viewBox="0 0 120 100" width="110" height="91" aria-hidden="true"><g filter="url(#rough)"><rect x="24" y="24" width="72" height="50" rx="5" fill="#e2a43c" transform="translate(6 5)"/><rect x="24" y="24" width="72" height="50" rx="5" fill="#fffdf6" stroke="#1a1c20" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/><path d="M27 28 L60 52 L93 28" fill="none" stroke="#1a1c20" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/><circle cx="94" cy="24" r="10" fill="#34d399" stroke="#1a1c20" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/></g></svg>
+          <div style={{ display: "flex", alignItems: "baseline", gap: "10px" }}><span style={{ fontFamily: "var(--font-instrument), Georgia, serif", fontSize: "44px", lineHeight: "1", color: "#0b7a50" }}>2</span><span style={{ fontSize: "20px", fontWeight: "700" }}>After checkout</span></div>
+          <span style={{ fontSize: "16px", lineHeight: "1.5", color: "#45423c" }}>They get your updates by push, email or text.</span>
+        </div>
+        <svg viewBox="0 0 70 40" width="70" height="40" aria-hidden="true" style={{ flex: "0 0 auto", marginTop: "30px" }}><g filter="url(#rough)"><path d="M4 26 C 22 6, 44 6, 62 20" fill="none" stroke="#1a1c20" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="2 7"/><path d="M52 16 L63 21 L54 29" fill="none" stroke="#1a1c20" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></g></svg>
+        <div style={{ flex: "1 1 0", minWidth: "0", display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "10px" }}>
+          <svg viewBox="0 0 120 100" width="110" height="91" aria-hidden="true"><g filter="url(#rough)"><rect x="26" y="20" width="68" height="62" rx="6" fill="#34d399" transform="translate(6 5)"/><rect x="26" y="20" width="68" height="62" rx="6" fill="#fffdf6" stroke="#1a1c20" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/><path d="M26 36 H94 M44 12 V26 M76 12 V26" fill="none" stroke="#1a1c20" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/><path d="M46 58 L56 68 L76 46" fill="none" stroke="#1a1c20" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/></g></svg>
+          <div style={{ display: "flex", alignItems: "baseline", gap: "10px" }}><span style={{ fontFamily: "var(--font-instrument), Georgia, serif", fontSize: "44px", lineHeight: "1", color: "#0b7a50" }}>3</span><span style={{ fontSize: "20px", fontWeight: "700" }}>Next trip</span></div>
+          <span style={{ fontSize: "16px", lineHeight: "1.5", color: "#45423c" }}>They book you direct, and you keep the whole payment.</span>
+        </div>
+        </div>
+        <div style={{ position: "relative", height: "70px", marginTop: "4px" }}>
+        <svg viewBox="0 0 1000 70" preserveAspectRatio="none" width="100%" height="70" aria-hidden="true" style={{ position: "absolute", inset: "0" }}><g filter="url(#rough)"><path d="M880 6 C 900 50, 820 60, 500 60 C 180 60, 90 50, 70 14" fill="none" stroke="#1a1c20" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="2 8" vectorEffect="non-scaling-stroke"/></g></svg>
+        <svg viewBox="0 0 30 30" width="22" height="22" aria-hidden="true" style={{ position: "absolute", left: "5.6%", top: "2px" }}><path d="M4 22 L14 6 L24 20" fill="none" stroke="#1a1c20" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        <span style={{ position: "absolute", left: "50%", top: "44px", transform: "translateX(-50%)", background: "#f6f1e4", padding: "0 12px", fontFamily: "var(--font-instrument), Georgia, serif", fontStyle: "italic", fontSize: "24px", whiteSpace: "nowrap" }}>and again next summer</span>
+      </div>
+      </div>
+    <div className="hkM" style={{ display: "flex", flexDirection: "column" }}>
+      <div style={{ display: "flex", gap: "14px", alignItems: "center" }}>
+        <svg viewBox="0 0 120 100" width="84" height="70" aria-hidden="true" style={{ flex: "0 0 auto" }}><g filter="url(#rough)"><rect x="42" y="8" width="40" height="78" rx="9" fill="#34d399" transform="translate(6 5)"/><rect x="42" y="8" width="40" height="78" rx="9" fill="#fffdf6" stroke="#1a1c20" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/><path d="M50 52 L62 40 L74 52 M53 49 V64 H71 V49" fill="none" stroke="#1a1c20" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/><path d="M58 64 V57 H66 V64" fill="none" stroke="#1a1c20" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/><path d="M56 16 h12" fill="none" stroke="#1a1c20" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/></g></svg>
+        <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}><div style={{ display: "flex", alignItems: "baseline", gap: "8px" }}><span style={{ fontFamily: "var(--font-instrument), Georgia, serif", fontSize: "34px", lineHeight: "1", color: "#0b7a50" }}>1</span><span style={{ fontSize: "18px", fontWeight: "700" }}>During the stay</span></div><span style={{ fontSize: "15px", lineHeight: "1.45", color: "#45423c" }}>They use your app for codes, picks and questions.</span></div>
+      </div>
+      <svg viewBox="0 0 40 50" width="40" height="50" aria-hidden="true" style={{ marginLeft: "30px" }}><g filter="url(#rough)"><path d="M14 4 C 4 20, 8 34, 20 44" fill="none" stroke="#1a1c20" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="2 7"/><path d="M10 40 L21 45 L24 33" fill="none" stroke="#1a1c20" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></g></svg>
+      <div style={{ display: "flex", gap: "14px", alignItems: "center" }}>
+        <svg viewBox="0 0 120 100" width="84" height="70" aria-hidden="true" style={{ flex: "0 0 auto" }}><g filter="url(#rough)"><rect x="24" y="24" width="72" height="50" rx="5" fill="#e2a43c" transform="translate(6 5)"/><rect x="24" y="24" width="72" height="50" rx="5" fill="#fffdf6" stroke="#1a1c20" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/><path d="M27 28 L60 52 L93 28" fill="none" stroke="#1a1c20" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/><circle cx="94" cy="24" r="10" fill="#34d399" stroke="#1a1c20" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/></g></svg>
+        <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}><div style={{ display: "flex", alignItems: "baseline", gap: "8px" }}><span style={{ fontFamily: "var(--font-instrument), Georgia, serif", fontSize: "34px", lineHeight: "1", color: "#0b7a50" }}>2</span><span style={{ fontSize: "18px", fontWeight: "700" }}>After checkout</span></div><span style={{ fontSize: "15px", lineHeight: "1.45", color: "#45423c" }}>They get your updates by push, email or text.</span></div>
+      </div>
+      <svg viewBox="0 0 40 50" width="40" height="50" aria-hidden="true" style={{ marginLeft: "30px" }}><g filter="url(#rough)"><path d="M14 4 C 4 20, 8 34, 20 44" fill="none" stroke="#1a1c20" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="2 7"/><path d="M10 40 L21 45 L24 33" fill="none" stroke="#1a1c20" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></g></svg>
+      <div style={{ display: "flex", gap: "14px", alignItems: "center" }}>
+        <svg viewBox="0 0 120 100" width="84" height="70" aria-hidden="true" style={{ flex: "0 0 auto" }}><g filter="url(#rough)"><rect x="26" y="20" width="68" height="62" rx="6" fill="#34d399" transform="translate(6 5)"/><rect x="26" y="20" width="68" height="62" rx="6" fill="#fffdf6" stroke="#1a1c20" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/><path d="M26 36 H94 M44 12 V26 M76 12 V26" fill="none" stroke="#1a1c20" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/><path d="M46 58 L56 68 L76 46" fill="none" stroke="#1a1c20" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/></g></svg>
+        <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}><div style={{ display: "flex", alignItems: "baseline", gap: "8px" }}><span style={{ fontFamily: "var(--font-instrument), Georgia, serif", fontSize: "34px", lineHeight: "1", color: "#0b7a50" }}>3</span><span style={{ fontSize: "18px", fontWeight: "700" }}>Next trip</span></div><span style={{ fontSize: "15px", lineHeight: "1.45", color: "#45423c" }}>They book you direct, and you keep the whole payment.</span></div>
+      </div>
+      <div style={{ margin: "10px 0 0 30px", fontFamily: "var(--font-instrument), Georgia, serif", fontStyle: "italic", fontSize: "22px" }}>&#8634; and again next summer</div>
     </div>
-    <div className="hkr" style={{ display: "flex", flexWrap: "wrap", gap: "40px" }}>
-      <div className="hkc" style={{ flex: "1 1 260px", minWidth: 0, display: "flex", flexDirection: "column", gap: "8px" }}>
-        <span className="hkn" style={{ fontFamily: "var(--font-instrument), Georgia, serif", fontSize: "96px", lineHeight: 0.9, color: "#0b7a50" }}>1</span>
-        <svg aria-hidden="true" width="84" height="10" viewBox="0 0 84 10" fill="none" style={{ display: "block" }}><path d="M2 6 C14 1 22 9 34 5 S58 2 70 6 S78 5 82 4" stroke="#34d399" strokeWidth="3" strokeLinecap="round" filter="url(#rough)" /></svg>
-        <h3 style={{ margin: "8px 0 0", fontFamily: "var(--font-schibsted), 'Helvetica Neue', Helvetica, sans-serif", fontSize: "22px", lineHeight: 1.15, fontWeight: 700 }}>During the stay</h3>
-        <p style={{ margin: 0, fontSize: "17px", lineHeight: 1.55, color: "#45423c" }}>They use your app for codes, picks and questions.</p>
-      </div>
-      <div className="hkc" style={{ flex: "1 1 260px", minWidth: 0, display: "flex", flexDirection: "column", gap: "8px" }}>
-        <span className="hkn" style={{ fontFamily: "var(--font-instrument), Georgia, serif", fontSize: "96px", lineHeight: 0.9, color: "#0b7a50" }}>2</span>
-        <svg aria-hidden="true" width="84" height="10" viewBox="0 0 84 10" fill="none" style={{ display: "block" }}><path d="M2 6 C14 1 22 9 34 5 S58 2 70 6 S78 5 82 4" stroke="#34d399" strokeWidth="3" strokeLinecap="round" filter="url(#rough)" /></svg>
-        <h3 style={{ margin: "8px 0 0", fontFamily: "var(--font-schibsted), 'Helvetica Neue', Helvetica, sans-serif", fontSize: "22px", lineHeight: 1.15, fontWeight: 700 }}>After checkout</h3>
-        <p style={{ margin: 0, fontSize: "17px", lineHeight: 1.55, color: "#45423c" }}>They get your updates by push, email or text.</p>
-      </div>
-      <div className="hkc" style={{ flex: "1 1 260px", minWidth: 0, display: "flex", flexDirection: "column", gap: "8px" }}>
-        <span className="hkn" style={{ fontFamily: "var(--font-instrument), Georgia, serif", fontSize: "96px", lineHeight: 0.9, color: "#0b7a50" }}>3</span>
-        <svg aria-hidden="true" width="84" height="10" viewBox="0 0 84 10" fill="none" style={{ display: "block" }}><path d="M2 6 C14 1 22 9 34 5 S58 2 70 6 S78 5 82 4" stroke="#34d399" strokeWidth="3" strokeLinecap="round" filter="url(#rough)" /></svg>
-        <h3 style={{ margin: "8px 0 0", fontFamily: "var(--font-schibsted), 'Helvetica Neue', Helvetica, sans-serif", fontSize: "22px", lineHeight: 1.15, fontWeight: 700 }}>Next trip</h3>
-        <p style={{ margin: 0, fontSize: "17px", lineHeight: 1.55, color: "#45423c" }}>They book you direct, and you keep the whole payment.</p>
+      <div className="hkr2" style={{ display: "flex", flexDirection: "column", gap: "22px", alignItems: "center", paddingTop: "16px" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "40px", justifyContent: "center", width: "100%" }} className="hkrr">
+        <div className="hkrc" style={{ flex: "1 1 260px", maxWidth: "340px", background: "#fffdf6", borderRadius: "4px", padding: "22px 22px 24px", boxSizing: "border-box", boxShadow: "0 18px 36px -26px rgba(26,28,32,0.5)", transform: "rotate(-1.5deg)", display: "flex", flexDirection: "column", gap: "10px", borderBottom: "3px dotted #d9cfb8" }}>
+          <span style={{ fontSize: "11px", fontWeight: "800", letterSpacing: "0.14em", color: "#6f6b60", textAlign: "center" }}>THROUGH AIRBNB</span>
+          <span style={{ borderTop: "1px dashed #c9c3b3" }}></span>
+          <div style={{ display: "flex", justifyContent: "space-between", gap: "12px", fontSize: "15px" }}><span>A week at the beach house</span><span style={{ whiteSpace: "nowrap" }}>$1,200.00</span></div><div style={{ display: "flex", justifyContent: "space-between", gap: "12px", fontSize: "15px", color: "#9a5b00", fontWeight: "700" }}><span>Airbnb host fee (15.5%)</span><span style={{ whiteSpace: "nowrap" }}>−$186.00</span></div>
+          <span style={{ borderTop: "1px dashed #c9c3b3" }}></span>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: "12px" }}><span style={{ fontSize: "16px", fontWeight: "800" }}>You keep</span><span style={{ fontFamily: "var(--font-instrument), Georgia, serif", fontSize: "34px", lineHeight: "1", padding: "2px 8px", borderRadius: "6px", background: "#f3dcae" }}>$1,014</span></div>
+        </div>
+        <div className="hkrc" style={{ flex: "1 1 260px", maxWidth: "340px", background: "#fffdf6", borderRadius: "4px", padding: "22px 22px 24px", boxSizing: "border-box", boxShadow: "0 18px 36px -26px rgba(26,28,32,0.5)", transform: "rotate(1.2deg)", display: "flex", flexDirection: "column", gap: "10px", borderBottom: "3px dotted #d9cfb8" }}>
+          <span style={{ fontSize: "11px", fontWeight: "800", letterSpacing: "0.14em", color: "#6f6b60", textAlign: "center" }}>BOOKED DIRECT</span>
+          <span style={{ borderTop: "1px dashed #c9c3b3" }}></span>
+          <div style={{ display: "flex", justifyContent: "space-between", gap: "12px", fontSize: "15px" }}><span>A week at the beach house</span><span style={{ whiteSpace: "nowrap" }}>$1,200.00</span></div><div style={{ display: "flex", justifyContent: "space-between", gap: "12px", fontSize: "15px", color: "#0b7a50", fontWeight: "700" }}><span>Booking fee</span><span style={{ whiteSpace: "nowrap" }}>$0.00</span></div>
+          <span style={{ borderTop: "1px dashed #c9c3b3" }}></span>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: "12px" }}><span style={{ fontSize: "16px", fontWeight: "800" }}>You keep</span><span style={{ fontFamily: "var(--font-instrument), Georgia, serif", fontSize: "34px", lineHeight: "1", padding: "2px 8px", borderRadius: "6px", background: "#d7f5e8" }}>$1,200</span></div>
+        </div>
+        </div>
+        <p style={{ margin: "0", textAlign: "center", fontSize: "18px", lineHeight: "1.5", color: "#45423c" }}>Airbnb keeps about <strong style={{ color: "#1a1c20" }}>15.5%</strong> of every booking. A direct booking keeps it with you.</p>
       </div>
     </div>
-    <p style={{ margin: 0, fontSize: "16px", lineHeight: 1.55, color: "#6f6b60" }}>Airbnb keeps about 15.5% of every booking. A direct booking keeps it with you.</p>
   </section>
 
-  <section className="s2" id="shorty" style={{ "maxWidth": "1280px", "margin": "0 auto", "padding": "0 48px 48px", "display": "flex", "flexDirection": "column", "gap": "12px" }}>
+  <section className="s2" id="shorty" style={{ "maxWidth": "1280px", "margin": "0 auto", "padding": "96px 48px 48px", "display": "flex", "flexDirection": "column", "gap": "12px" }}>
     <div className="ey" style={{ "fontSize": "13px", "fontWeight": "700", "letterSpacing": "0.14em", "textTransform": "uppercase", "color": "#0b7a50" }}>Meet Shorty, your house's front desk</div>
     <h2 style={{ "margin": "0", "maxWidth": "900px", "fontFamily": "var(--font-instrument), Georgia, serif", "fontWeight": "400", "fontSize": "64px", "lineHeight": "0.95", "letterSpacing": "-0.015em", "textWrap": "balance" }}>He answers. He guides. He keeps in touch.</h2>
   </section>

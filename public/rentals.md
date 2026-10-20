@@ -20,6 +20,18 @@ Shorty answers your guests, shares your local picks and stays in touch after che
 2. After checkout: They get your updates by push, email or text.
 3. Next trip: They book you direct, and you keep the whole payment.
 
+and again next summer.
+
+Through Airbnb:
+- A week at the beach house: $1,200.00
+- Airbnb host fee (15.5%): -$186.00
+- You keep: $1,014
+
+Booked direct:
+- A week at the beach house: $1,200.00
+- Booking fee: $0.00
+- You keep: $1,200
+
 Airbnb keeps about 15.5% of every booking. A direct booking keeps it with you.
 
 ## Meet Shorty, your house's front desk
