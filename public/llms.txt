@@ -62,7 +62,7 @@ We are building an Admin MCP, shipping over the next day or two, so an owner's a
 - [Privacy policy (see "AI Assistants (Agent Door)")](https://app.shortlistpass.com/privacy)
 
 ## Shortlist Stay (vacation rentals)
-- [Shortlist Stay](https://www.shortlistpass.com/rentals): gives a vacation rental its own guest app. Shorty answers guests from what the host teaches him, shares the host's local picks, and keeps in touch after checkout. Guests book directly with the host, no booking fees. $50/month per property.
+- [Shortlist Stay](https://www.shortlistpass.com/rentals): gives a vacation rental its own guest app. Shorty answers guests from what the host teaches him, shares the host's local picks, and keeps in touch after checkout. Guests book directly with the host, no booking fees. From $29/month (first house), $15 for houses 2 to 9, $9 after that.
 - [Plain-text version](https://www.shortlistpass.com/rentals.md)
 - [Try the demo house](https://thebeachhouse-demo.shortlistpass.com)
 - [Sign up](https://app.shortlistpass.com/go/rental)

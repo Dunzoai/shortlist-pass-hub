@@ -4,7 +4,7 @@ import { instrumentSerif, schibsted } from "@/lib/fonts-rentals";
 
 const PAGE_URL = "https://www.shortlistpass.com/rentals";
 const TITLE = "Shortlist Stay: your rental has its own app";
-const DESCRIPTION = "Give your vacation rental its own app. Shorty answers guests, shares your local picks, and keeps in touch after checkout, so they book with you directly. No booking fees. $50 a month per property.";
+const DESCRIPTION = "Airbnb found your guests. Shortlist Stay helps you keep them. Your rental gets its own app, guests stay in touch after checkout, and next time they book you direct with no booking fee.";
 const IMAGE = "https://www.shortlistpass.com/rentals/og-rentals.png";
 const IMAGE_ALT = "Shortlist Stay: your rental has its own app. Book direct, no booking fees.";
 

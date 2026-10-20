@@ -2,6 +2,8 @@ import Image from "next/image";
 import { SIGNUP_HREF, DEMO_HREF } from "./tokens";
 import { FAQ } from "./faq";
 
+const SERIF_V = "var(--font-instrument), Georgia, serif";
+
 /** The v3 design for shortlistpass.com/rentals. The markup is the design file's, word for word, with its inline SVG drawings and the two filters (rough, grain) defined once at the top. The CSS below is the design's two animations plus the phone-width rules from the phone design file. */
 const CSS = `.rs,.rs *{-webkit-font-smoothing:auto}
 .rs,.rs *,.rs *::before,.rs *::after{box-sizing:content-box}
@@ -14,6 +16,11 @@ const CSS = `.rs,.rs *{-webkit-font-smoothing:auto}
 @keyframes cyc{0%{opacity:0;transform:translateY(10px)}4%,22%{opacity:1;transform:none}26%,100%{opacity:0;transform:none}}
 .rs .ht{transform-box:fill-box;transform-origin:center;animation:rise 4.4s ease-in-out infinite}
 @keyframes rise{0%{opacity:0;transform:translateY(16px)}25%,75%{opacity:1}100%{opacity:0;transform:translateY(-12px)}}
+.rs .hsw{position:absolute;inset:0}
+.rs .hs{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;animation:hcyc 14s infinite}
+.rs .hs2{animation-delay:3.5s}.rs .hs3{animation-delay:7s}.rs .hs4{animation-delay:10.5s}
+@keyframes hcyc{0%{opacity:0;transform:translateY(8px)}4%,22%{opacity:1;transform:none}26%,100%{opacity:0;transform:none}}
+@media (prefers-reduced-motion: reduce){.rs .hs{animation:none}.rs .hs1{opacity:1}}
 @media (prefers-reduced-motion: reduce){.rs .ht{animation:none}.rs .kn,.rs .sl{animation:none}.rs .sl.s1x{opacity:1}.rs .k1{background:#d7f5e8;color:#1a1c20}}
 @media (max-width:700px){
 .rs h1,.rs h2,.rs h3,.rs p,.rs .ey{text-wrap:wrap!important}
@@ -33,7 +40,7 @@ const CSS = `.rs,.rs *{-webkit-font-smoothing:auto}
 .rs .hc{gap:16px!important}
 .rs h1{font-size:52px!important;line-height:.95!important}
 .rs .s1 p{font-size:17px!important}
-.rs .s1 .hc>p:nth-of-type(2){font-size:26px!important}
+.rs .s1 .hc>p:nth-of-type(1){font-size:26px!important}
 .rs .hb{flex-direction:column!important;align-items:stretch!important;gap:10px!important}
 .rs .hb a{min-height:52px;justify-content:center;padding:0!important;font-size:16px!important}
 .rs .hn{text-align:center}
@@ -41,14 +48,15 @@ const CSS = `.rs,.rs *{-webkit-font-smoothing:auto}
 .rs .hph{left:0!important;right:0!important;top:0!important;bottom:auto!important;height:300px;border-radius:24px!important}
 .rs .hp{right:16px!important;bottom:0!important;width:190px!important;height:360px!important;border-radius:32px!important;padding:8px!important}
 .rs .hps{border-radius:25px!important}
-.rs .hpi{height:80px!important}
-.rs .hpt{padding:10px 10px 0!important;gap:3px!important}
-.rs .hpt span:first-child{font-size:8px!important}.rs .hpt span:last-child{font-size:19px!important}
-.rs .hpq,.rs .hpw{display:none!important}
-.rs .hpd{margin:10px 10px 0!important;padding:10px!important;border-radius:14px!important;gap:4px!important}
-.rs .hpd span:nth-child(1),.rs .hpd span:nth-child(2){font-size:8px!important}.rs .hpd span:nth-child(3){font-size:22px!important}
-.rs .hpg{margin:10px 10px 0!important;gap:6px!important}
-.rs .hpgt{height:44px!important;border-radius:10px!important}
+.rs .hsw{right:auto;bottom:auto;width:250px;height:494px;transform:scale(.696);transform-origin:0 0}
+.rs .hk{padding:8px 16px 40px!important;gap:20px!important}
+.rs .hk h2{font-size:42px!important;line-height:.98!important}
+.rs .hkr{flex-direction:column!important;gap:28px!important}
+.rs .hkc{flex:none!important}
+.rs .hkn{font-size:72px!important}
+.rs .hkc p{font-size:16px!important}
+.rs .hkc h3{font-size:22px!important;line-height:1.15!important}
+.rs .hk>p{font-size:15px!important}
 .rs .s2{padding:0 16px 24px!important;gap:10px!important}
 .rs .s2 h2{font-size:42px!important;line-height:.98!important}
 .rs .s3,.rs .s4,.rs .s5{padding:24px 16px 40px!important;gap:20px!important}
@@ -162,42 +170,127 @@ export default function RentalsV3() {
     <div className="hc" style={{ "flex": "1 1 480px", "minWidth": "0", "display": "flex", "flexDirection": "column", "gap": "20px" }}>
       <div className="ey" style={{ "fontSize": "13px", "fontWeight": "700", "letterSpacing": "0.14em", "textTransform": "uppercase", "color": "#0b7a50" }}>For vacation rental hosts</div>
       <h1 style={{ "margin": "0", "fontFamily": "var(--font-instrument), Georgia, serif", "fontWeight": "400", "fontSize": "86px", "lineHeight": "0.92", "letterSpacing": "-0.015em", "textWrap": "balance" }}>Your rental has its own app.</h1>
-      <p style={{ "margin": "0", "maxWidth": "540px", "fontSize": "19px", "lineHeight": "1.55", "color": "#45423c", "textWrap": "pretty" }}>Shorty answers your guests, shows them the best of the area, and keeps in touch long after checkout. When they come back, they book with you directly. We never take a booking fee.</p>
-      <p style={{ "margin": "0", "fontFamily": "var(--font-instrument), Georgia, serif", "fontSize": "30px", "lineHeight": "1.1" }}>Your rental. Your guests. You keep them.</p>
+      <p style={{ "margin": "0", "fontFamily": "var(--font-instrument), Georgia, serif", "fontSize": "30px", "lineHeight": "1.1" }}>Airbnb found your guests. Your app keeps them.</p>
+      <p style={{ "margin": "0", "maxWidth": "540px", "fontSize": "19px", "lineHeight": "1.55", "color": "#45423c", "textWrap": "pretty" }}>Shorty answers your guests, shares your local picks and stays in touch after checkout, so next time they book you direct. No booking fee.</p>
       <div className="hb" style={{ "display": "flex", "gap": "12px", "flexWrap": "wrap", "alignItems": "center" }}>
         <a href={SIGNUP_HREF} style={{ "minHeight": "52px", "padding": "0 28px", "borderRadius": "999px", "background": "#1a1c20", "color": "#f6f1e4", "textDecoration": "none", "display": "inline-flex", "alignItems": "center", "fontSize": "16px", "fontWeight": "700" }}>Get started</a>
         <a href={DEMO_HREF} style={{ "minHeight": "52px", "padding": "0 28px", "borderRadius": "999px", "background": "#34d399", "color": "#0d2b20", "textDecoration": "none", "display": "inline-flex", "alignItems": "center", "fontSize": "16px", "fontWeight": "700" }}>Try the demo house</a>
       </div>
-      <div className="hn" style={{ "fontSize": "14px", "color": "#6f6b60" }}>$50 a month per property. No download for guests.</div>
+      <div className="hn" style={{ "fontSize": "14px", "color": "#6f6b60" }}>From $29 a month. No download for guests. Cancel anytime.</div>
     </div>
     <div className="hv" style={{ "flex": "1 1 520px", "minWidth": "0", "position": "relative", "minHeight": "560px" }}>
       <div className="hph" style={{ "overflow": "hidden", "position": "absolute", "inset": "0 80px 0 0", "borderRadius": "28px", "background": "#d9cfb8", "display": "flex", "alignItems": "flex-end", "padding": "20px", "boxSizing": "border-box" }}>
         <Image src="/rentals/rentals-hero-porch.jpg" alt="Beach house porch at golden hour" fill sizes="(max-width: 700px) 100vw, 600px" priority style={{ objectFit: "cover" }} />
       </div>
       <div className="hp" style={{ "position": "absolute", "right": "0", "bottom": "-24px", "width": "270px", "height": "540px", "borderRadius": "40px", "background": "#14161a", "padding": "10px", "boxSizing": "border-box", "boxShadow": "0 24px 48px -28px rgba(26,28,32,0.55)" }}>
-        <div className="hps" style={{ "width": "100%", "height": "100%", "borderRadius": "32px", "background": "#fbf8f0", "overflow": "hidden", "display": "flex", "flexDirection": "column" }}>
-          <div className="hpi" style={{ "overflow": "hidden", "position": "relative", "height": "120px", "background": "#e9c98f" }}>
-        <Image src="/rentals/rentals-phone-house.jpg" alt="Raised beach house at sunrise" fill sizes="270px" style={{ objectFit: "cover" }} /></div>
-          <div className="hpt" style={{ "padding": "14px 14px 0", "display": "flex", "flexDirection": "column", "gap": "4px" }}>
-            <span style={{ "fontSize": "9px", "fontWeight": "700", "letterSpacing": "0.14em", "color": "#0b7a50" }}>WELCOME IN</span>
-            <span style={{ "fontFamily": "var(--font-instrument), Georgia, serif", "fontSize": "24px", "lineHeight": "1" }}>The Beach House</span>
+        <div className="hps" style={{ width: "100%", height: "100%", borderRadius: "32px", background: "#fbf8f0", overflow: "hidden", position: "relative" }}>
+          <div className="hsw">
+          <div className="hs hs1">
+            <div style={{ position: "relative", height: "120px", background: "#e9c98f" }}><Image src="/rentals/rentals-phone-house.jpg" alt="Raised beach house at sunrise" fill sizes="250px" style={{ objectFit: "cover" }} /></div>
+            <div style={{ padding: "14px 14px 0", display: "flex", flexDirection: "column", gap: "4px" }}>
+              <span style={{ fontSize: "9px", fontWeight: 700, letterSpacing: "0.14em", color: "#0b7a50" }}>WELCOME IN</span>
+              <span style={{ fontFamily: SERIF_V, fontSize: "24px", lineHeight: 1 }}>The Beach House</span>
+            </div>
+            <div style={{ margin: "12px 14px 0", padding: "8px 12px", borderRadius: 999, border: "1px solid #1a1c20", fontSize: "11px", color: "#6f6b60" }}>Ask anything about your stay</div>
+            <div style={{ margin: "12px 14px 0", padding: "12px", borderRadius: "16px", background: "#14161a", color: "#f6f1e4", display: "flex", flexDirection: "column", gap: "6px" }}>
+              <span style={{ fontSize: "9px", fontWeight: 700, letterSpacing: "0.14em", color: "#34d399" }}>YOUR STAY</span>
+              <span style={{ fontSize: "9px", color: "#c9c3b3" }}>FRONT DOOR</span>
+              <span style={{ fontFamily: SERIF_V, fontSize: "26px", letterSpacing: "0.08em" }}>4821</span>
+              <span style={{ fontSize: "10px", color: "#c9c3b3" }}>Wi-Fi: BeachHouse_Guest</span>
+            </div>
           </div>
-          <div className="hpq" style={{ "margin": "12px 14px 0", "padding": "8px 12px", "borderRadius": "999px", "border": "1px solid #1a1c20", "fontSize": "11px", "color": "#6f6b60" }}>Ask anything about your stay</div>
-          <div className="hpd" style={{ "margin": "12px 14px 0", "padding": "12px", "borderRadius": "16px", "background": "#14161a", "color": "#f6f1e4", "display": "flex", "flexDirection": "column", "gap": "6px" }}>
-            <span style={{ "fontSize": "9px", "fontWeight": "700", "letterSpacing": "0.14em", "color": "#34d399" }}>YOUR STAY</span>
-            <span style={{ "fontSize": "9px", "color": "#c9c3b3" }}>FRONT DOOR</span>
-            <span style={{ "fontFamily": "var(--font-instrument), Georgia, serif", "fontSize": "26px", "letterSpacing": "0.08em" }}>4821</span>
-            <span className="hpw" style={{ "fontSize": "10px", "color": "#c9c3b3" }}>Wi-Fi: BeachHouse_Guest</span>
+          <div className="hs hs2" style={{ padding: "18px 14px", boxSizing: "border-box", gap: "10px" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
+              <span style={{ fontSize: "9px", fontWeight: 700, letterSpacing: "0.14em", color: "#0b7a50" }}>AROUND HERE</span>
+              <span style={{ fontFamily: SERIF_V, fontSize: "26px", lineHeight: 1 }}>Top restaurants</span>
+              <span style={{ fontSize: "10px", color: "#6f6b60" }}>Jenna&apos;s picks</span>
+            </div>
+            <div style={{ display: "flex", gap: "5px" }}><span style={{ padding: "4px 8px", borderRadius: 999, background: "#1a1c20", color: "#f6f1e4", fontSize: "9px", fontWeight: 700 }}>All</span><span style={{ padding: "4px 8px", borderRadius: 999, border: "1px solid #e6dfcc", fontSize: "9px", fontWeight: 700 }}>Seafood</span><span style={{ padding: "4px 8px", borderRadius: 999, border: "1px solid #e6dfcc", fontSize: "9px", fontWeight: 700 }}>Breakfast</span></div>
+            <div style={{ borderRadius: "14px", background: "#ffffff", border: "1px solid #e6dfcc", overflow: "hidden" }}>
+              <div style={{ position: "relative", height: "64px", background: "#e9c98f" }}><Image src="/rentals/rentals-pick-grill.jpg" alt="Shrimp basket on a table" fill sizes="250px" style={{ objectFit: "cover" }} /></div>
+              <div style={{ padding: "8px 10px 10px", display: "flex", flexDirection: "column", gap: "2px" }}>
+                <span style={{ fontSize: "12px", fontWeight: 700 }}>Dockside Grill</span>
+                <span style={{ fontSize: "10px", lineHeight: 1.35, color: "#45423c" }}>Shrimp basket on the deck at sunset.</span>
+              </div>
+            </div>
+            <div style={{ borderRadius: "14px", background: "#ffffff", border: "1px solid #e6dfcc", overflow: "hidden" }}>
+              <div style={{ position: "relative", height: "64px", background: "#f0d9c4" }}></div>
+              <div style={{ padding: "8px 10px 10px", display: "flex", flexDirection: "column", gap: "2px" }}>
+                <span style={{ fontSize: "12px", fontWeight: 700 }}>Low Tide Tacos</span>
+                <span style={{ fontSize: "10px", lineHeight: 1.35, color: "#45423c" }}>Our favorite. Check where the truck is tonight.</span>
+              </div>
+            </div>
           </div>
-          <div className="hpg" style={{ "margin": "12px 14px 0", "display": "grid", "gridTemplateColumns": "repeat(2, minmax(0, 1fr))", "gap": "8px" }}>
-            <div className="hpgt" style={{ "overflow": "hidden", "position": "relative", "height": "56px", "borderRadius": "12px", "background": "#e9c98f" }}>
-        <Image src="/rentals/rentals-phone-tile-1.jpg" alt="Fried shrimp basket" fill sizes="120px" style={{ objectFit: "cover" }} /></div>
-            <div className="hpgt" style={{ "overflow": "hidden", "position": "relative", "height": "56px", "borderRadius": "12px", "background": "#c9d3d8" }}>
-        <Image src="/rentals/rentals-phone-tile-2.jpg" alt="Boardwalk over the dunes to the ocean" fill sizes="120px" style={{ objectFit: "cover" }} /></div>
+          <div className="hs hs3" style={{ padding: "18px 14px", boxSizing: "border-box", gap: "10px" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
+              <span style={{ fontSize: "9px", fontWeight: 700, letterSpacing: "0.14em", color: "#45423c" }}>RAIN AFTER 2PM</span>
+              <span style={{ fontFamily: SERIF_V, fontSize: "26px", lineHeight: 1 }}>Rainy day plans</span>
+              <span style={{ fontSize: "10px", color: "#6f6b60" }}>Jenna&apos;s picks</span>
+            </div>
+            <div style={{ borderRadius: "14px", background: "#ffffff", border: "1px solid #e6dfcc", overflow: "hidden" }}>
+              <div style={{ position: "relative", height: "64px", background: "#c9d3d8" }}><Image src="/rentals/rentals-pick-aquarium.jpg" alt="Aquarium" fill sizes="250px" style={{ objectFit: "cover" }} /></div>
+              <div style={{ padding: "8px 10px 10px", display: "flex", flexDirection: "column", gap: "2px" }}>
+                <span style={{ fontSize: "12px", fontWeight: 700 }}>The aquarium</span>
+                <span style={{ fontSize: "10px", lineHeight: 1.35, color: "#45423c" }}>Our go-to when it rains. Go early.</span>
+              </div>
+            </div>
+            <div style={{ borderRadius: "14px", background: "#ffffff", border: "1px solid #e6dfcc", overflow: "hidden" }}>
+              <div style={{ position: "relative", height: "64px", background: "#d7f5e8" }}></div>
+              <div style={{ padding: "8px 10px 10px", display: "flex", flexDirection: "column", gap: "2px" }}>
+                <span style={{ fontSize: "12px", fontWeight: 700 }}>Bowling downtown</span>
+                <span style={{ fontSize: "10px", lineHeight: 1.35, color: "#45423c" }}>Cheap, close, and the kids love it.</span>
+              </div>
+            </div>
+          </div>
+          <div className="hs hs4">
+            <div style={{ padding: "16px 14px 10px", borderBottom: "1px solid #e6dfcc", display: "flex", flexDirection: "column", gap: "2px" }}>
+              <span style={{ fontSize: "9px", fontWeight: 700, letterSpacing: "0.14em", color: "#0b7a50" }}>ASK SHORTY</span>
+              <span style={{ fontFamily: SERIF_V, fontSize: "20px", lineHeight: 1 }}>The Beach House</span>
+            </div>
+            <div style={{ padding: "12px", display: "flex", flexDirection: "column", gap: "8px" }}>
+              <div style={{ alignSelf: "flex-end", maxWidth: "75%", padding: "8px 11px", borderRadius: "14px", background: "#1a1c20", color: "#f6f1e4", fontSize: "12px", lineHeight: 1.4 }}>best breakfast near us?</div>
+              <div style={{ alignSelf: "flex-start", maxWidth: "85%", padding: "8px 11px", borderRadius: "14px", background: "#ffffff", border: "1px solid #e6dfcc", fontSize: "12px", lineHeight: 1.4 }}>Jenna&apos;s go-to is Sunrise Pancake House, 5 minutes away. Get there before 9.</div>
+              <div style={{ borderRadius: "14px", background: "#ffffff", border: "1px solid #e6dfcc", overflow: "hidden" }}>
+              <div style={{ position: "relative", height: "64px", background: "#e9c98f" }}></div>
+              <div style={{ padding: "8px 10px 10px", display: "flex", flexDirection: "column", gap: "2px" }}>
+                <span style={{ fontSize: "12px", fontWeight: 700 }}>Sunrise Pancake House</span>
+                <span style={{ fontSize: "10px", lineHeight: 1.35, color: "#45423c" }}>Blueberry stack. Worth the wait.</span>
+              </div>
+            </div>
+            </div>
+          </div>
           </div>
         </div>
       </div>
     </div>
+  </section>
+
+  <section className="hk" id="keep" style={{ maxWidth: "1280px", margin: "0 auto", padding: "16px 48px 80px", display: "flex", flexDirection: "column", gap: "32px" }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+      <div className="ey" style={{ fontSize: "13px", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "#0b7a50" }}>How you keep them</div>
+      <h2 style={{ margin: 0, maxWidth: "900px", fontFamily: "var(--font-instrument), Georgia, serif", fontWeight: 400, fontSize: "64px", lineHeight: 0.95, letterSpacing: "-0.015em", textWrap: "balance" }}>Every stay turns into a guest you can reach.</h2>
+    </div>
+    <div className="hkr" style={{ display: "flex", flexWrap: "wrap", gap: "40px" }}>
+      <div className="hkc" style={{ flex: "1 1 260px", minWidth: 0, display: "flex", flexDirection: "column", gap: "8px" }}>
+        <span className="hkn" style={{ fontFamily: "var(--font-instrument), Georgia, serif", fontSize: "96px", lineHeight: 0.9, color: "#0b7a50" }}>1</span>
+        <svg aria-hidden="true" width="84" height="10" viewBox="0 0 84 10" fill="none" style={{ display: "block" }}><path d="M2 6 C14 1 22 9 34 5 S58 2 70 6 S78 5 82 4" stroke="#34d399" strokeWidth="3" strokeLinecap="round" filter="url(#rough)" /></svg>
+        <h3 style={{ margin: "8px 0 0", fontFamily: "var(--font-schibsted), 'Helvetica Neue', Helvetica, sans-serif", fontSize: "22px", lineHeight: 1.15, fontWeight: 700 }}>During the stay</h3>
+        <p style={{ margin: 0, fontSize: "17px", lineHeight: 1.55, color: "#45423c" }}>They use your app for codes, picks and questions.</p>
+      </div>
+      <div className="hkc" style={{ flex: "1 1 260px", minWidth: 0, display: "flex", flexDirection: "column", gap: "8px" }}>
+        <span className="hkn" style={{ fontFamily: "var(--font-instrument), Georgia, serif", fontSize: "96px", lineHeight: 0.9, color: "#0b7a50" }}>2</span>
+        <svg aria-hidden="true" width="84" height="10" viewBox="0 0 84 10" fill="none" style={{ display: "block" }}><path d="M2 6 C14 1 22 9 34 5 S58 2 70 6 S78 5 82 4" stroke="#34d399" strokeWidth="3" strokeLinecap="round" filter="url(#rough)" /></svg>
+        <h3 style={{ margin: "8px 0 0", fontFamily: "var(--font-schibsted), 'Helvetica Neue', Helvetica, sans-serif", fontSize: "22px", lineHeight: 1.15, fontWeight: 700 }}>After checkout</h3>
+        <p style={{ margin: 0, fontSize: "17px", lineHeight: 1.55, color: "#45423c" }}>They get your updates by push, email or text.</p>
+      </div>
+      <div className="hkc" style={{ flex: "1 1 260px", minWidth: 0, display: "flex", flexDirection: "column", gap: "8px" }}>
+        <span className="hkn" style={{ fontFamily: "var(--font-instrument), Georgia, serif", fontSize: "96px", lineHeight: 0.9, color: "#0b7a50" }}>3</span>
+        <svg aria-hidden="true" width="84" height="10" viewBox="0 0 84 10" fill="none" style={{ display: "block" }}><path d="M2 6 C14 1 22 9 34 5 S58 2 70 6 S78 5 82 4" stroke="#34d399" strokeWidth="3" strokeLinecap="round" filter="url(#rough)" /></svg>
+        <h3 style={{ margin: "8px 0 0", fontFamily: "var(--font-schibsted), 'Helvetica Neue', Helvetica, sans-serif", fontSize: "22px", lineHeight: 1.15, fontWeight: 700 }}>Next trip</h3>
+        <p style={{ margin: 0, fontSize: "17px", lineHeight: 1.55, color: "#45423c" }}>They book you direct, and you keep the whole payment.</p>
+      </div>
+    </div>
+    <p style={{ margin: 0, fontSize: "16px", lineHeight: 1.55, color: "#6f6b60" }}>Airbnb keeps about 15.5% of every booking. A direct booking keeps it with you.</p>
   </section>
 
   <section className="s2" id="shorty" style={{ "maxWidth": "1280px", "margin": "0 auto", "padding": "0 48px 48px", "display": "flex", "flexDirection": "column", "gap": "12px" }}>
@@ -444,15 +537,16 @@ export default function RentalsV3() {
   <section className="s11" id="price" style={{ "maxWidth": "1280px", "margin": "0 auto", "padding": "112px 48px 96px" }}>
     <div className="pc" style={{ "background": "#ffffff", "border": "1px solid #e6dfcc", "borderRadius": "24px", "boxShadow": "0 18px 36px -26px rgba(26,28,32,0.5)", "padding": "48px", "display": "flex", "flexWrap": "wrap", "gap": "48px", "alignItems": "center" }}>
       <div className="pl" style={{ "flex": "1 1 320px", "minWidth": "0", "display": "flex", "flexDirection": "column", "gap": "8px" }}>
-        <span style={{ "fontSize": "13px", "fontWeight": "700", "letterSpacing": "0.14em", "textTransform": "uppercase", "color": "#0b7a50" }}>One price, one house</span>
-        <span className="pp" style={{ "fontFamily": "var(--font-instrument), Georgia, serif", "fontSize": "86px", "lineHeight": "0.9" }}>$50<span className="pm" style={{ "fontSize": "28px", "color": "#6f6b60" }}> / month</span></span>
-        <span style={{ "fontSize": "16px", "color": "#45423c" }}>Per property. Pay and go. Cancel anytime.</span>
+        <span style={{ "fontSize": "13px", "fontWeight": "700", "letterSpacing": "0.14em", "textTransform": "uppercase", "color": "#0b7a50" }}>Simple pricing</span>
+        <span className="pp" style={{ "fontFamily": "var(--font-instrument), Georgia, serif", "fontSize": "86px", "lineHeight": "0.9" }}>$29<span className="pm" style={{ "fontSize": "28px", "color": "#6f6b60" }}> / month</span></span>
+        <span style={{ "fontSize": "16px", "color": "#45423c" }}>For your first house. $15 a month for each house 2 to 9, and $9 for each house after that. Pay and go. Cancel anytime.</span>
       </div>
       <ul className="pu" style={{ "flex": "1 1 360px", "minWidth": "0", "margin": "0", "padding": "0", "listStyle": "none", "display": "flex", "flexDirection": "column", "gap": "12px", "fontSize": "16.5px", "color": "#45423c" }}>
         <li>Your own house app, with Shorty trained by you</li>
         <li>Your local picks, perks and emergency info</li>
-        <li>Texts, emails and push notifications to your guests</li>
+        <li>Push, email, and check-in and checkout texts to your guests</li>
         <li>Found in ChatGPT, book direct, no fees</li>
+        <li style={{ fontSize: "14px", lineHeight: 1.45, color: "#6f6b60" }}>Want to text guests anytime and have Shorty run your socials? Add Communications for $30 a month.</li>
       </ul>
       <a className="pb" href={SIGNUP_HREF} style={{ "flex": "0 0 auto", "minHeight": "56px", "padding": "0 32px", "borderRadius": "999px", "background": "#1a1c20", "color": "#f6f1e4", "textDecoration": "none", "display": "inline-flex", "alignItems": "center", "fontSize": "17px", "fontWeight": "700" }}>Get started</a>
     </div>

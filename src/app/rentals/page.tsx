@@ -10,10 +10,11 @@ const JSON_LD = {
       "@type": "SoftwareApplication",
       name: "Shortlist Stay",
       url: "https://www.shortlistpass.com/rentals",
+      description: "Airbnb found your guests. Shortlist Stay helps you keep them. Your rental gets its own app, guests stay in touch after checkout, and next time they book you direct with no booking fee.",
       applicationCategory: "BusinessApplication",
       operatingSystem: "Web",
       publisher: { "@type": "Organization", name: "The Shortlist Pass Co." },
-      offers: { "@type": "Offer", price: "50", priceCurrency: "USD", description: "Per property, per month", url: SIGNUP_HREF },
+      offers: { "@type": "Offer", price: "29", priceCurrency: "USD", description: "Per month for the first house; $15 per month for houses 2 to 9; $9 per month for each house after that.", url: SIGNUP_HREF },
     },
     {
       "@type": "FAQPage",

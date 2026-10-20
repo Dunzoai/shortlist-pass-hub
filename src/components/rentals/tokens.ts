@@ -10,6 +10,6 @@ export const SANS = "var(--font-schibsted), 'Helvetica Neue', Helvetica, sans-se
  * THE ONE PLACE TO CHANGE when the real rentals sign-up exists: every button on /rentals (header, hero, pricing) reads this.
  */
 export const SIGNUP_HREF = "https://app.shortlistpass.com/go/rental";
-export const PRICE_LINE = "$50/month per property. Pay and go.";
+export const PRICE_LINE = "From $29/month. Pay and go.";
 /** "Try the demo house": the live demo listing. */
 export const DEMO_HREF = "https://thebeachhouse-demo.shortlistpass.com";

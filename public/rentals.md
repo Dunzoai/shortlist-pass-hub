@@ -2,13 +2,25 @@
 
 Canonical page: https://www.shortlistpass.com/rentals
 
-Shortlist Stay is a house app for vacation rental hosts, from The Shortlist Pass Co. Shorty answers your guests, shows them the best of the area, and keeps in touch long after checkout. When they come back, they book with you directly. We never take a booking fee.
+Shortlist Stay is a house app for vacation rental hosts, from The Shortlist Pass Co.
 
-**Your rental. Your guests. You keep them.**
+**Airbnb found your guests. Your app keeps them.**
+
+Shorty answers your guests, shares your local picks and stays in touch after checkout, so next time they book you direct. No booking fee.
 
 - Get started: https://app.shortlistpass.com/go/rental
 - Try the demo house: https://thebeachhouse-demo.shortlistpass.com
-- $50 a month per property. No download for guests.
+- From $29 a month. No download for guests. Cancel anytime.
+
+## How you keep them
+
+**Every stay turns into a guest you can reach.**
+
+1. During the stay: They use your app for codes, picks and questions.
+2. After checkout: They get your updates by push, email or text.
+3. Next trip: They book you direct, and you keep the whole payment.
+
+Airbnb keeps about 15.5% of every booking. A direct booking keeps it with you.
 
 ## Meet Shorty, your house's front desk
 
@@ -73,21 +85,23 @@ A guest requests dates, you confirm, they pay through your own Stripe or Square.
 - Where the money goes: Your bank
 - Whose guests they are: Yours
 
-## Price: one price, one house
+## Price: simple pricing
 
-**$50 a month.** Per property. Pay and go. Cancel anytime.
+**$29 a month.** For your first house. $15 a month for each house 2 to 9, and $9 for each house after that. Pay and go. Cancel anytime.
 
 - Your own house app, with Shorty trained by you
 - Your local picks, perks and emergency info
-- Texts, emails and push notifications to your guests
+- Push, email, and check-in and checkout texts to your guests
 - Found in ChatGPT, book direct, no fees
+
+Want to text guests anytime and have Shorty run your socials? Add Communications for $30 a month.
 
 Get started: https://app.shortlistpass.com/go/rental
 
 ## Good questions: what hosts ask us
 
 **How much does Shortlist Stay cost?**
-$50 a month per property. Pay and go, cancel anytime.
+$29 a month for your first house, $15 a month for each house 2 to 9, and $9 a month for each house after that. Pay and go, cancel anytime.
 
 **Do my guests have to download an app?**
 No. Your house app opens from a link or a QR code, right in their browser.
