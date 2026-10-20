@@ -401,7 +401,7 @@ export default function RentalsV3() {
         </div>
       </div>
       <svg className="kar kar1" aria-hidden="true" viewBox="0 0 90 120" width="90" height="120" fill="none" style={{ position: "absolute", left: "200px", top: "80px", zIndex: 3, pointerEvents: "none", overflow: "visible" }}><g filter="url(#rough)"><path d="M6 8 C 40 -8, 66 40, 52 100" stroke="#1a1c20" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="2 7" /><path d="M44 90 L52 102 L62 90" stroke="#1a1c20" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></g></svg>
-      <svg className="kar kar2" aria-hidden="true" viewBox="0 0 70 210" width="70" height="210" fill="none" style={{ position: "absolute", left: "262px", top: "190px", zIndex: 3, pointerEvents: "none", overflow: "visible" }}><g filter="url(#rough)"><path d="M4 6 C 62 20, 64 150, 22 190" stroke="#1a1c20" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="2 7" /><path d="M35.5 186.6 L22 190 L25.8 176.6" stroke="#1a1c20" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></g></svg>
+      <svg className="kar kar2" aria-hidden="true" viewBox="0 0 80 210" width="80" height="210" fill="none" style={{ position: "absolute", left: "270px", top: "186px", zIndex: 3, pointerEvents: "none", overflow: "visible" }}><g filter="url(#rough)"><path d="M4 4 C 70 6, 78 60, 74 110 S 70 190, 40 199" stroke="#1a1c20" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="2 7" /><path d="M52.7 202 L40 199 L49 189.5" stroke="#1a1c20" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></g></svg>
       </div>
     </div>
     <div className="tc" style={{ "flex": "1 1 420px", "minWidth": "0", "display": "flex", "flexDirection": "column", "gap": "14px" }}>
