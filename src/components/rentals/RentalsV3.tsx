@@ -196,7 +196,16 @@ export default function RentalsV3() {
               <span style={{ fontSize: "9px", fontWeight: 700, letterSpacing: "0.14em", color: "#34d399" }}>YOUR STAY</span>
               <span style={{ fontSize: "9px", color: "#c9c3b3" }}>FRONT DOOR</span>
               <span style={{ fontFamily: SERIF_V, fontSize: "26px", letterSpacing: "0.08em" }}>4821</span>
-              <span style={{ fontSize: "10px", color: "#c9c3b3" }}>Wi-Fi: BeachHouse_Guest</span>
+              <span style={{ fontSize: "9px", color: "#c9c3b3", marginTop: "4px" }}>WI-FI</span>
+              <span style={{ fontSize: "11px", color: "#f6f1e4" }}>BeachHouse_Guest</span>
+              <span style={{ fontFamily: SERIF_V, fontSize: "18px", letterSpacing: "0.06em" }}>sandcastle24</span>
+            </div>
+            <div style={{ margin: "10px 14px 0", padding: "10px 12px", borderRadius: "14px", background: "#d7f5e8", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px" }}>
+              <span style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
+                <span style={{ fontSize: "12px", fontWeight: 700, color: "#1a1c20" }}>Text your host</span>
+                <span style={{ fontSize: "10px", color: "#45423c" }}>Jenna replies fast</span>
+              </span>
+              <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0b7a50" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 5h16v11H9l-5 4z" /></svg>
             </div>
           </div>
           <div className="hs hs2" style={{ padding: "18px 14px", boxSizing: "border-box", gap: "10px" }}>
@@ -214,7 +223,7 @@ export default function RentalsV3() {
               </div>
             </div>
             <div style={{ borderRadius: "14px", background: "#ffffff", border: "1px solid #e6dfcc", overflow: "hidden" }}>
-              <div style={{ position: "relative", height: "64px", background: "#f0d9c4" }}></div>
+              <div style={{ position: "relative", height: "64px", background: "#f0d9c4" }}><Image src="/rentals/rentals-pick-tacos.jpg" alt="Fish tacos on a wooden board" fill sizes="250px" style={{ objectFit: "cover" }} /></div>
               <div style={{ padding: "8px 10px 10px", display: "flex", flexDirection: "column", gap: "2px" }}>
                 <span style={{ fontSize: "12px", fontWeight: 700 }}>Low Tide Tacos</span>
                 <span style={{ fontSize: "10px", lineHeight: 1.35, color: "#45423c" }}>Our favorite. Check where the truck is tonight.</span>
@@ -235,7 +244,7 @@ export default function RentalsV3() {
               </div>
             </div>
             <div style={{ borderRadius: "14px", background: "#ffffff", border: "1px solid #e6dfcc", overflow: "hidden" }}>
-              <div style={{ position: "relative", height: "64px", background: "#d7f5e8" }}></div>
+              <div style={{ position: "relative", height: "64px", background: "#d7f5e8" }}><Image src="/rentals/rentals-pick-bowling.jpg" alt="Bowling lane with pins" fill sizes="250px" style={{ objectFit: "cover", objectPosition: "50% 22%" }} /></div>
               <div style={{ padding: "8px 10px 10px", display: "flex", flexDirection: "column", gap: "2px" }}>
                 <span style={{ fontSize: "12px", fontWeight: 700 }}>Bowling downtown</span>
                 <span style={{ fontSize: "10px", lineHeight: 1.35, color: "#45423c" }}>Cheap, close, and the kids love it.</span>
@@ -251,7 +260,7 @@ export default function RentalsV3() {
               <div style={{ alignSelf: "flex-end", maxWidth: "75%", padding: "8px 11px", borderRadius: "14px", background: "#1a1c20", color: "#f6f1e4", fontSize: "12px", lineHeight: 1.4 }}>best breakfast near us?</div>
               <div style={{ alignSelf: "flex-start", maxWidth: "85%", padding: "8px 11px", borderRadius: "14px", background: "#ffffff", border: "1px solid #e6dfcc", fontSize: "12px", lineHeight: 1.4 }}>Jenna&apos;s go-to is Sunrise Pancake House, 5 minutes away. Get there before 9.</div>
               <div style={{ borderRadius: "14px", background: "#ffffff", border: "1px solid #e6dfcc", overflow: "hidden" }}>
-              <div style={{ position: "relative", height: "64px", background: "#e9c98f" }}></div>
+              <div style={{ position: "relative", height: "64px", background: "#e9c98f" }}><Image src="/rentals/rentals-pick-pancakes.jpg" alt="Stack of blueberry pancakes" fill sizes="250px" style={{ objectFit: "cover" }} /></div>
               <div style={{ padding: "8px 10px 10px", display: "flex", flexDirection: "column", gap: "2px" }}>
                 <span style={{ fontSize: "12px", fontWeight: 700 }}>Sunrise Pancake House</span>
                 <span style={{ fontSize: "10px", lineHeight: 1.35, color: "#45423c" }}>Blueberry stack. Worth the wait.</span>

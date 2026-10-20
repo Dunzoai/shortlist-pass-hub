@@ -12,6 +12,11 @@ All from Unsplash (Unsplash License) or Pexels (Pexels License): free for commer
 | "The aquarium" card | rentals-pick-aquarium.jpg | Ashley Nunkissor | https://www.pexels.com/photo/loggerhead-sea-turtle-in-durban-aquarium-31418185/ | Pexels License |
 | Instagram post | rentals-social-deck.jpg | Sunira Moses | https://unsplash.com/photos/lUwaTF6BwIo | Unsplash License |
 | Instagram avatar | rentals-social-avatar.jpg | Phil Hearing | https://unsplash.com/photos/teal-wooden-door-with-sunlight-casting-shadows-05buwQcykFc | Unsplash License |
+| Phone screen 2, "Low Tide Tacos" card | rentals-pick-tacos.jpg | Amar | https://www.pexels.com/photo/tacos-on-table-18032209/ | Pexels License |
+| Phone screen 3, "Bowling downtown" card | rentals-pick-bowling.jpg | Pavel Danilyuk | https://www.pexels.com/photo/bowling-pins-arranged-at-a-bowling-alley-7429597/ | Pexels License |
+| Phone screen 4, "Sunrise Pancake House" card | rentals-pick-pancakes.jpg | Wendy Wei | https://www.pexels.com/photo/photograph-of-pancakes-with-blueberries-12326493/ | Pexels License |
 
 Notes: the hero and boardwalk photos were not shot in the Carolinas (hero: Surfside Beach, Texas; boardwalk: Portugal). They read as coastal, but they are not Carolina places.
 The grill photo is a shrimp and fries basket on a wooden table, not a waterfront deck at sunset (none found that met every rule).
+
+The tacos photo is fish tacos, not the truck's own food. The bowling photo is a generic lane, not a Myrtle Beach alley.
