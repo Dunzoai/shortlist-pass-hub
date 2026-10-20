@@ -16,6 +16,13 @@ const CSS = `.rs,.rs *{-webkit-font-smoothing:auto}
 @keyframes cyc{0%{opacity:0;transform:translateY(10px)}4%,22%{opacity:1;transform:none}26%,100%{opacity:0;transform:none}}
 .rs .ht{transform-box:fill-box;transform-origin:center;animation:rise 4.4s ease-in-out infinite}
 @keyframes rise{0%{opacity:0;transform:translateY(16px)}25%,75%{opacity:1}100%{opacity:0;transform:translateY(-12px)}}
+.rs .kw{position:relative;display:flex;align-items:center}
+.rs .kc{flex:0 0 auto!important;width:260px;max-width:none!important;padding:18px 34px 18px 18px!important;transform:rotate(-2deg)}
+.rs .kph{height:auto!important;flex:0 0 240px!important;position:relative;z-index:2;transform:rotate(2deg);margin-left:-30px}
+.rs .kps{height:auto!important}
+.rs .kpb{display:grid}
+.rs .sl{position:relative;inset:auto;grid-area:1/1}
+.rs .kar2{display:none}
 .rs .hsw{position:absolute;inset:0}
 .rs .hkM{display:none!important}
 .rs .hs{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;animation:hcyc 14s infinite}
@@ -67,12 +74,13 @@ const CSS = `.rs,.rs *{-webkit-font-smoothing:auto}
 .rs .s3,.rs .s4,.rs .s5{padding:24px 16px 40px!important;gap:20px!important}
 .rs .s5{padding-bottom:56px!important}
 .rs .kp{border-radius:24px!important;padding:24px 20px!important;align-items:center!important;gap:12px!important}
-.rs .karrow{display:none}
-.rs .karrow2{display:block!important}
-.rs .kc{width:100%;max-width:280px!important;padding:16px!important;gap:3px!important}
+.rs .kw{display:block;width:100%}
+.rs .kc{width:280px;max-width:none!important;padding:16px!important;gap:3px!important}
+.rs .kar1{display:none}
+.rs .kar2{display:block}
 .rs .kc>span:nth-child(2){font-size:22px!important}
 .rs .kn{padding:7px 9px}
-.rs .kph{width:240px!important;height:260px!important;border-radius:32px!important}
+.rs .kph{width:240px!important;margin:-40px 0 0 auto!important;border-radius:32px!important}
 .rs .kps{border-radius:25px!important}
 .rs .kpn{padding:12px 12px 8px!important}
 .rs .kpn2{font-size:18px!important}
@@ -357,6 +365,7 @@ export default function RentalsV3() {
 
   <section className="s3" style={{ "maxWidth": "1280px", "margin": "0 auto", "padding": "48px 48px", "display": "flex", "flexWrap": "wrap", "gap": "56px", "alignItems": "center" }}>
     <div className="kp" style={{ "flex": "1 1 560px", "minWidth": "0", "borderRadius": "28px", "background": "#d7f5e8", "padding": "40px", "boxSizing": "border-box", "display": "flex", "flexWrap": "wrap", "gap": "20px", "alignItems": "center", "justifyContent": "center" }}>
+      <div className="kw">
       <div className="kc" style={{ "flex": "1 1 230px", "maxWidth": "250px", "background": "#ffffff", "border": "1px solid #e6dfcc", "borderRadius": "18px", "padding": "18px", "boxSizing": "border-box", "display": "flex", "flexDirection": "column", "gap": "4px", "boxShadow": "0 18px 36px -26px rgba(26,28,32,0.5)" }}>
         <span style={{ "fontSize": "11px", "fontWeight": "800", "letterSpacing": "0.12em", "color": "#0b7a50" }}>YOUR HOUSE NOTES</span>
         <span style={{ "fontFamily": "var(--font-instrument), Georgia, serif", "fontSize": "24px", "lineHeight": "1.1", "paddingBottom": "6px", "borderBottom": "1px solid #e6dfcc", "marginBottom": "4px" }}>What Shorty knows</span>
@@ -365,32 +374,34 @@ export default function RentalsV3() {
         <div className="kn k3">Checkout 10am. Trash to the curb.</div>
         <div className="kn k4">Something broken? Text me: 843-555-0142</div>
       </div>
-      <svg className="karrow" aria-hidden="true" width="40" height="24" viewBox="0 0 40 24" fill="none" stroke="#1a1c20" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12h34M28 4l8 8-8 8"/></svg><svg className="karrow2" aria-hidden="true" width="24" height="32" viewBox="0 0 24 32" fill="none" stroke="#1a1c20" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ display: "none" }}><path d="M12 2v26M4 20l8 8 8-8"/></svg>
       <div className="kph" style={{ "flex": "0 0 240px", "height": "300px", "borderRadius": "34px", "background": "#14161a", "padding": "8px", "boxSizing": "border-box", "boxShadow": "0 24px 48px -28px rgba(26,28,32,0.55)" }}>
         <div className="kps" style={{ "width": "100%", "height": "100%", "borderRadius": "27px", "background": "#fbf8f0", "overflow": "hidden", "display": "flex", "flexDirection": "column" }}>
           <div className="kpn" style={{ "padding": "14px 14px 10px", "borderBottom": "1px solid #e6dfcc", "display": "flex", "flexDirection": "column", "gap": "2px" }}>
             <span style={{ "fontSize": "9px", "fontWeight": "700", "letterSpacing": "0.14em", "color": "#0b7a50" }}>ASK SHORTY</span>
             <span className="kpn2" style={{ "fontFamily": "var(--font-instrument), Georgia, serif", "fontSize": "19px", "lineHeight": "1" }}>The Beach House</span>
           </div>
-          <div style={{ "position": "relative", "flex": "1 1 auto" }}>
+          <div className="kpb" style={{ "position": "relative", "flex": "1 1 auto" }}>
             <div className="sl s1x">
               <div style={{ "alignSelf": "flex-end", "maxWidth": "170px", "padding": "9px 12px", "borderRadius": "14px", "background": "#1a1c20", "color": "#f6f1e4", "fontSize": "13px", "lineHeight": "1.4" }}>can we swim tonight?</div>
-              <div style={{ "alignSelf": "flex-start", "maxWidth": "185px", "padding": "9px 12px", "borderRadius": "14px", "background": "#ffffff", "border": "1px solid #e6dfcc", "fontSize": "13px", "lineHeight": "1.4" }}>Pool's open till 9. Cans and plastic only out there, no glass.</div>
+              <div style={{ "alignSelf": "flex-start", "maxWidth": "185px", "padding": "9px 12px", "borderRadius": "14px", "background": "#d7f5e8", "border": "1px solid #d7f5e8", "fontSize": "13px", "lineHeight": "1.4" }}>Pool's open till 9. Cans and plastic only out there, no glass.</div>
             </div>
             <div className="sl s2x">
               <div style={{ "alignSelf": "flex-end", "maxWidth": "170px", "padding": "9px 12px", "borderRadius": "14px", "background": "#1a1c20", "color": "#f6f1e4", "fontSize": "13px", "lineHeight": "1.4" }}>where are the extra towels</div>
-              <div style={{ "alignSelf": "flex-start", "maxWidth": "185px", "padding": "9px 12px", "borderRadius": "14px", "background": "#ffffff", "border": "1px solid #e6dfcc", "fontSize": "13px", "lineHeight": "1.4" }}>Hall closet, top shelf.</div>
+              <div style={{ "alignSelf": "flex-start", "maxWidth": "185px", "padding": "9px 12px", "borderRadius": "14px", "background": "#d7f5e8", "border": "1px solid #d7f5e8", "fontSize": "13px", "lineHeight": "1.4" }}>Hall closet, top shelf.</div>
             </div>
             <div className="sl s3x">
               <div style={{ "alignSelf": "flex-end", "maxWidth": "170px", "padding": "9px 12px", "borderRadius": "14px", "background": "#1a1c20", "color": "#f6f1e4", "fontSize": "13px", "lineHeight": "1.4" }}>what time do we leave sunday?</div>
-              <div style={{ "alignSelf": "flex-start", "maxWidth": "185px", "padding": "9px 12px", "borderRadius": "14px", "background": "#ffffff", "border": "1px solid #e6dfcc", "fontSize": "13px", "lineHeight": "1.4" }}>Checkout's at 10. Just roll the trash to the curb on your way out.</div>
+              <div style={{ "alignSelf": "flex-start", "maxWidth": "185px", "padding": "9px 12px", "borderRadius": "14px", "background": "#d7f5e8", "border": "1px solid #d7f5e8", "fontSize": "13px", "lineHeight": "1.4" }}>Checkout's at 10. Just roll the trash to the curb on your way out.</div>
             </div>
             <div className="sl s4x">
               <div style={{ "alignSelf": "flex-end", "maxWidth": "170px", "padding": "9px 12px", "borderRadius": "14px", "background": "#1a1c20", "color": "#f6f1e4", "fontSize": "13px", "lineHeight": "1.4" }}>the AC stopped working</div>
-              <div style={{ "alignSelf": "flex-start", "maxWidth": "185px", "padding": "9px 12px", "borderRadius": "14px", "background": "#ffffff", "border": "1px solid #e6dfcc", "fontSize": "13px", "lineHeight": "1.4" }}>Sorry about that. Jenna's best by text at 843-555-0142. I just let her know too.</div>
+              <div style={{ "alignSelf": "flex-start", "maxWidth": "185px", "padding": "9px 12px", "borderRadius": "14px", "background": "#d7f5e8", "border": "1px solid #d7f5e8", "fontSize": "13px", "lineHeight": "1.4" }}>Sorry about that. Jenna's best by text at 843-555-0142. I just let her know too.</div>
             </div>
           </div>
         </div>
+      </div>
+      <svg className="kar kar1" aria-hidden="true" viewBox="0 0 90 120" width="90" height="120" fill="none" style={{ position: "absolute", left: "200px", top: "80px", zIndex: 3, pointerEvents: "none", overflow: "visible" }}><g filter="url(#rough)"><path d="M6 8 C 40 -8, 66 40, 52 100" stroke="#1a1c20" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="2 7" /><path d="M44 90 L52 102 L62 90" stroke="#1a1c20" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></g></svg>
+      <svg className="kar kar2" aria-hidden="true" viewBox="0 0 70 210" width="70" height="210" fill="none" style={{ position: "absolute", left: "262px", top: "190px", zIndex: 3, pointerEvents: "none", overflow: "visible" }}><g filter="url(#rough)"><path d="M4 6 C 62 20, 64 150, 22 190" stroke="#1a1c20" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="2 7" /><path d="M35.5 186.6 L22 190 L25.8 176.6" stroke="#1a1c20" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></g></svg>
       </div>
     </div>
     <div className="tc" style={{ "flex": "1 1 420px", "minWidth": "0", "display": "flex", "flexDirection": "column", "gap": "14px" }}>
