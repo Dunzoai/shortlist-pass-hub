@@ -25,7 +25,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
 import Image from 'next/image';
-import { Caveat } from 'next/font/google';
+import localFont from 'next/font/local';
 import { createClient } from '@supabase/supabase-js';
 import {
   Monitor,
@@ -53,7 +53,7 @@ import {
 // FONTS
 // =============================================================================
 
-const caveat = Caveat({ subsets: ['latin'] });
+const Caveat = localFont({ src: [{ path: "../../../fonts/caveat/caveat-normal-1.woff2", weight: "400 700", style: "normal" }], display: "swap", adjustFontFallback: false, fallback: ["Caveat Fallback"] });   /* self-hosted (src/fonts/, see src/lib/fonts.ts) */
 
 // =============================================================================
 // ANIMATION VARIANTS

@@ -1,0 +1,13 @@
+/* GOOGLE FONTS, SELF-HOSTED (2026-11-25) — the fallback faces Next's Google font loader used to generate, with Google's own numbers
+   (next/dist/server/font-utils calculateSizeAdjustValues): each one sizes the local Times New Roman / Arial to its web font, so text that
+   renders before the font loads, or a glyph the font lacks, looks exactly as it did. Written by scripts/fonts/fetch-google-fonts.mjs's
+   family list; the loaders (src/lib/fonts*.ts, src/app/layout.tsx, …) name these in their fallback with adjustFontFallback off. */
+@font-face{font-family:"Sora Fallback";src:local("Arial");ascent-override:85.29%;descent-override:25.50%;line-gap-override:0.00%;size-adjust:113.73%}
+@font-face{font-family:"Libre Baskerville Fallback";src:local("Times New Roman");ascent-override:76.22%;descent-override:21.22%;line-gap-override:0.00%;size-adjust:127.26%}
+@font-face{font-family:"Cormorant Garamond Fallback";src:local("Times New Roman");ascent-override:95.27%;descent-override:29.59%;line-gap-override:0.00%;size-adjust:96.98%}
+@font-face{font-family:"Inter Fallback";src:local("Arial");ascent-override:90.44%;descent-override:22.52%;line-gap-override:0.00%;size-adjust:107.12%}
+@font-face{font-family:"Fraunces Fallback";src:local("Times New Roman");ascent-override:84.71%;descent-override:22.09%;line-gap-override:0.00%;size-adjust:115.45%}
+@font-face{font-family:"Instrument Serif Fallback";src:local("Times New Roman");ascent-override:117.94%;descent-override:36.93%;line-gap-override:0.00%;size-adjust:83.94%}
+@font-face{font-family:"Schibsted Grotesk Fallback";src:local("Arial");ascent-override:93.46%;descent-override:24.67%;line-gap-override:0.00%;size-adjust:104.49%}
+@font-face{font-family:"Caveat Fallback";src:local("Arial");ascent-override:124.77%;descent-override:38.99%;line-gap-override:0.00%;size-adjust:76.94%}
+@font-face{font-family:"UnifrakturCook Fallback";src:local("Arial");ascent-override:120.59%;descent-override:32.58%;line-gap-override:0.00%;size-adjust:85.43%}

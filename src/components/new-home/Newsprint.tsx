@@ -4,9 +4,12 @@
  * out so it reads as texture, not as something to read. It fills the film section; the card sits on top. Decorative only.
  */
 import Image from "next/image";
-import { UnifrakturCook } from "next/font/google";
+import localFont from "next/font/local";
 
-const blackletter = UnifrakturCook({ weight: "700", subsets: ["latin"], display: "swap" });
+/* named "UnifrakturCook" as Google did (next/font/local names the face after its const); the masthead adds font-bold, which Google's
+   class carried (font-weight:700) and next/font/local's does not */
+const UnifrakturCook = localFont({ src: [{ path: "../../fonts/unifrakturcook/unifrakturcook-normal-1.woff2", weight: "700", style: "normal" }], display: "swap", adjustFontFallback: false, fallback: ["UnifrakturCook Fallback"] });   /* self-hosted (src/fonts/, see src/lib/fonts.ts) */
+const blackletter = UnifrakturCook;
 
 export const NEWSPRINT = "#E5D7B1";
 const PRINT = "#33291d";
@@ -32,7 +35,7 @@ function TruckPage() {
           <p className="font-bold">The Weather</p>
           <p>Warm and breezy at the park, perfect truck weather. Windows open at eleven. Low tonight, 68.</p>
         </div>
-        <p className={`${blackletter.className} text-center leading-none`} style={{ fontSize: 72, letterSpacing: "0.01em" }}>The Food Truck Gazette</p>
+        <p className={`${blackletter.className} font-bold text-center leading-none`} style={{ fontSize: 72, letterSpacing: "0.01em" }}>The Food Truck Gazette</p>
         <div className="w-[190px] text-right text-[8px] leading-[1.3]" style={{ fontFamily: BODY }}>
           <p className="font-bold">Established 2026</p>
           <p>Published wherever there is a truck, a line, and a customer wondering what is on the menu.</p>
@@ -130,7 +133,7 @@ export function NewsBackdrop({ clip, edition = "main" }: { clip?: string; editio
             <p className="font-bold">The Weather</p>
             <p>Sunny and mild on Main Street, a light breeze from the south. Shops open early. Low tonight, 61.</p>
           </div>
-          <p className={`${blackletter.className} text-center leading-none`} style={{ fontSize: 76, letterSpacing: "0.01em" }}>The Shortlist Gazette</p>
+          <p className={`${blackletter.className} font-bold text-center leading-none`} style={{ fontSize: 76, letterSpacing: "0.01em" }}>The Shortlist Gazette</p>
           <div className="w-[190px] text-right text-[8px] leading-[1.3]" style={{ fontFamily: BODY }}>
             <p className="font-bold">Established 2026</p>
             <p>Published wherever there is a shop, a text, and a customer waiting to hear back.</p>
