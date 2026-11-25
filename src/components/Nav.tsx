@@ -54,6 +54,12 @@ export function Nav() {
           >
             Digital
           </Link>
+          <Link
+            href="/brands"
+            className="text-sm text-[#F4F1EC] px-4 py-2 rounded-full transition-all duration-300 hover:bg-[#5A6570] hover:text-[#F4F1EC]"
+          >
+            For brands
+          </Link>
         </div>
 
         {/* Mobile Menu Button */}
@@ -110,6 +116,13 @@ export function Nav() {
               onClick={() => setMobileOpen(false)}
             >
               Digital
+            </Link>
+            <Link
+              href="/brands"
+              className="text-sm text-[#F4F1EC] hover:text-[#F4F1EC]/70 transition-colors"
+              onClick={() => setMobileOpen(false)}
+            >
+              For brands
             </Link>
           </div>
         </div>
