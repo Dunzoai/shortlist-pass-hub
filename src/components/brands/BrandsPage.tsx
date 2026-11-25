@@ -154,8 +154,8 @@ export default function BrandsPage() {
       <section className="offer" aria-labelledby="bx-hire"><div className="w">
         <div className="badge"><div className="t"><div className="face" aria-hidden="true" /><div><b>Shorty</b><small>Manager, <span data-badge-biz="">{v.biz}</span></small></div></div>
           <dl><dt>Hours</dt><dd>24/7, every day</dd><dt>Sick days</dt><dd>None</dd><dt>Reports to</dt><dd>You</dd><dt>Reach him by</dt><dd>App or text</dd><dt>Cut of your sales</dt><dd className="g">Never</dd><dt>Start date</dt><dd className="g">Today</dd></dl></div>
-        <div><div className="ey">Make the hire</div><h2 id="bx-hire" style={{ marginTop: 12 }}>The best manager you&apos;ll ever hire costs less than $2 a day.</h2>
-          <p>You stay the boss. He works from what you tell him, and you can change anything, any time.</p>
+        <div><div className="ey">Make the hire</div><h2 id="bx-hire" style={{ marginTop: 12 }}>Starts at $0.<br /> Give him a raise and he runs the&nbsp;place.</h2>
+          <p>The full job, from orders and bookings to analytics and Instagram, for about $2.50 a day. You stay the boss. He works from what you tell him, and you can change anything, any time.</p>
           <div className="price"><div><b>$0</b><small>Website, app and 24/7 answers</small></div><div><b>$50<span> / mo</span></b><small>Adds orders, bookings and reports</small></div><div><b>+$30<span> / mo</span></b><small>Adds texts, emails and social posting</small></div></div>
           <div className="ctas"><a className="btn" href={SIGNUP_HREF} data-hire="offer">Hire Shorty, free</a><span>Live in minutes</span></div>
           <div className="fine">Payments go straight to your Stripe or Square.</div></div>

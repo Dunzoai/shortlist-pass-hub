@@ -92,7 +92,8 @@ function MoreMenu() {
       {open && (
         <div role="menu" className="absolute right-0 top-[calc(100%+10px)] w-52 rounded-xl border border-[#f6f1e4]/10 bg-[#14161a] p-1.5 shadow-[0_10px_30px_rgba(0,0,0,.45)]">
           <a role="menuitem" href={EVENTS_URL} className={`${item} flex items-center gap-2`} onClick={() => setOpen(false)}>Create Events <Pumpkin className="h-[18px] w-[18px]" /></a>
-          <Link role="menuitem" href="/brands" className={item} onClick={() => setOpen(false)}>For brands</Link>
+          {/* inline in the bar from 1024px (EventsLink), so the menu copy is for narrower screens only */}
+          <Link role="menuitem" href="/brands" className={`${item} lg:hidden`} onClick={() => setOpen(false)}>For brands</Link>
           <Link role="menuitem" href="/social" className={item} onClick={() => setOpen(false)}>Social</Link>
           <Link role="menuitem" href="/digital" className={item} onClick={() => setOpen(false)}>Digital</Link>
           <a role="menuitem" href={APP_URL} className={`${item} mt-1 border-t border-[#f6f1e4]/10 sm:hidden`} onClick={() => setOpen(false)}>Sign in</a>
