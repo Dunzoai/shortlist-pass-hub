@@ -2,8 +2,12 @@
 
 `shortlistpass.com/brands`: the landing page for brands (bakers, realtors, barbers, trainers, anyone else), built 2026-11-25 from Marc's
 approved mockup `shorty-manager-landing-final.html`. It sells Shorty as a manager you hire. Every "Hire Shorty" button opens the brand
-signup in the app (`app.shortlistpass.com/freeshorty?type=brand`), and "Sign in" opens `app.shortlistpass.com`. The site-wide nav's
-"For brands" link points here.
+signup in the app (`app.shortlistpass.com/freeshorty?type=brand`), and "Sign in" opens `app.shortlistpass.com`.
+
+**"For brands" in the nav:** the header visitors see on the home page is `src/components/new-home/SiteHeader.tsx`. There, "For brands"
+sits inline after "Find Food Trucks" at 1024px and up, and in the ☰ menu at every width. The older pages (/social, /smartassistant,
+/digital) show the legacy bar `src/components/Nav.tsx`, which has the link too. /foodtrucks and /rentals have their own headers with no
+nav items; they are unchanged.
 
 **Page order (the mockup's four sections, nothing more):**
 1. Hero: "You bake. Shorty runs everything else." with the job chips and the live text thread. "On shift" shows the visitor's own time.
